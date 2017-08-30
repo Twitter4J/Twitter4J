@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.auth.AccessToken;
+import org.twitter4j.core.*;
+import org.twitter4j.core.auth.AccessToken;
 
 import java.io.InputStream;
 import java.util.ArrayList;

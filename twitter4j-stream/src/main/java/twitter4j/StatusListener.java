@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import org.twitter4j.core.Status;
+import org.twitter4j.core.StatusDeletionNotice;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4

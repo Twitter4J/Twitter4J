@@ -15,11 +15,12 @@
  */
 package twitter4j;
 
+import org.twitter4j.core.TwitterBase;
 import twitter4j.api.*;
-import twitter4j.auth.AsyncOAuth2Support;
-import twitter4j.auth.AsyncOAuthSupport;
-import twitter4j.auth.OAuth2Support;
-import twitter4j.auth.OAuthSupport;
+import org.twitter4j.core.auth.AsyncOAuth2Support;
+import org.twitter4j.core.auth.AsyncOAuthSupport;
+import org.twitter4j.core.auth.OAuth2Support;
+import org.twitter4j.core.auth.OAuthSupport;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

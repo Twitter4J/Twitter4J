@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +30,7 @@ import java.util.Iterator;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-/*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
+public final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
     private static final long serialVersionUID = 2054973282133379835L;
     private Date asOf;
     private Date trendAt;
@@ -41,7 +42,7 @@ import java.util.Iterator;
         return this.trendAt.compareTo(that.getTrendAt());
     }
 
-    TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         init(res.asString(), conf.isJSONStoreEnabled());
         if (conf.isJSONStoreEnabled()) {
@@ -50,11 +51,11 @@ import java.util.Iterator;
         }
     }
 
-    TrendsJSONImpl(String jsonStr) throws TwitterException {
+    public TrendsJSONImpl(String jsonStr) throws TwitterException {
         this(jsonStr, false);
     }
 
-    TrendsJSONImpl(String jsonStr, boolean storeJSON) throws TwitterException {
+    public TrendsJSONImpl(String jsonStr, boolean storeJSON) throws TwitterException {
         init(jsonStr, storeJSON);
     }
 
@@ -89,8 +90,7 @@ import java.util.Iterator;
         this.trends = trends;
     }
 
-    /*package*/
-    static ResponseList<Trends> createTrendsList(HttpResponse res, boolean storeJSON) throws
+    public static ResponseList<Trends> createTrendsList(HttpResponse res, boolean storeJSON) throws
             TwitterException {
         JSONObject json = res.asJSONObject();
         ResponseList<Trends> trends;

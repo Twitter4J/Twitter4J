@@ -16,7 +16,7 @@
 
 package twitter4j.examples.list;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 /**
  * List the lists of the specified user.

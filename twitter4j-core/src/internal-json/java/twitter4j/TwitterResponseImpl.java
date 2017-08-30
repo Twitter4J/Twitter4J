@@ -17,13 +17,15 @@
 package twitter4j;
 
 
+import org.twitter4j.core.*;
+
 /**
  * Super interface of Twitter Response data interfaces which indicates that rate limit status is available.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @see twitter4j.DirectMessage
- * @see twitter4j.Status
- * @see twitter4j.User
+ * @see DirectMessage
+ * @see Status
+ * @see User
  */
 /*package*/ abstract class TwitterResponseImpl implements TwitterResponse, java.io.Serializable {
 

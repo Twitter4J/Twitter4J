@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import org.twitter4j.core.TwitterException;
+
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */

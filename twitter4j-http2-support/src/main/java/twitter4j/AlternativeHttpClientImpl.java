@@ -22,10 +22,12 @@ import okhttp3.internal.Util;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.net.Authenticator;
@@ -39,7 +41,8 @@ import java.util.concurrent.TimeUnit;
  * @author Yuuto Uehara - muemi.himazin at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class AlternativeHttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
+public class AlternativeHttpClientImpl extends HttpClientBase implements HttpResponseCode, Serializable {
+
     private static final long serialVersionUID = 1757413669925424213L;
     private static final Logger logger = Logger.getLogger(AlternativeHttpClientImpl.class);
 
@@ -66,7 +69,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 
 
     @Override
-    HttpResponse handleRequest(HttpRequest req) throws TwitterException {
+    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         prepareOkHttpClient();
 
         OkHttpResponse res = null;

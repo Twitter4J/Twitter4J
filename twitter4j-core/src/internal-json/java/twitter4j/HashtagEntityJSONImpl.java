@@ -16,23 +16,27 @@
 
 package twitter4j;
 
+import org.twitter4j.core.HashtagEntity;
+import org.twitter4j.core.SymbolEntity;
+import org.twitter4j.core.TwitterException;
+
 /**
  * A data class representing one single Hashtag entity.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-/*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
+public class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
     private static final long serialVersionUID = -5317828991902848906L;
     private String text;
 
 
-    /* package */ HashtagEntityJSONImpl(JSONObject json) throws TwitterException {
+    public HashtagEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
 
-    /* package */ HashtagEntityJSONImpl(int start, int end, String text) {
+    public HashtagEntityJSONImpl(int start, int end, String text) {
         super();
         setStart(start);
         setEnd(end);
@@ -40,7 +44,7 @@ package twitter4j;
     }
 
     /* For serialization purposes only. */
-    /* package */ HashtagEntityJSONImpl() {
+    public HashtagEntityJSONImpl() {
 
     }
 

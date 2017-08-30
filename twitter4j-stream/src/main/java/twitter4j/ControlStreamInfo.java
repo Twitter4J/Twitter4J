@@ -17,6 +17,8 @@
 
 package twitter4j;
 
+import org.twitter4j.core.TwitterException;
+
 import java.io.Serializable;
 import java.util.Arrays;
 

@@ -1,6 +1,6 @@
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

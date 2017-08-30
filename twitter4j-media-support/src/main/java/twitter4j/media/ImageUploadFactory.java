@@ -16,11 +16,11 @@
 
 package twitter4j.media;
 
-import twitter4j.auth.Authorization;
-import twitter4j.auth.AuthorizationFactory;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.auth.Authorization;
+import org.twitter4j.core.auth.AuthorizationFactory;
+import org.twitter4j.core.auth.OAuthAuthorization;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import static twitter4j.media.MediaProvider.*;
 

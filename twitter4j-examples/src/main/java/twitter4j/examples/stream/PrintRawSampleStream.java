@@ -16,7 +16,7 @@
 package twitter4j.examples.stream;
 
 import twitter4j.RawStreamListener;
-import twitter4j.TwitterException;
+import org.twitter4j.core.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 

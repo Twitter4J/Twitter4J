@@ -17,9 +17,10 @@
 package twitter4j;
 
 import junit.framework.Assert;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-import twitter4j.conf.PropertyConfiguration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationContext;
+import org.twitter4j.core.conf.PropertyConfiguration;
 
 import java.io.InputStream;
 import java.util.ArrayList;

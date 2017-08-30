@@ -8,12 +8,12 @@
       http://www.springframework.org/schema/tx
       http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-    <bean id="twitterFactory" class="twitter4j.TwitterFactory"/>
+    <bean id="twitterFactory" class="org.twitter4j.core.TwitterFactory"/>
 
     <bean id="asyncTwitterFactory" class="twitter4j.AsyncTwitterFactory"/>
 
     <bean id="twitterStreamFactory" class="twitter4j.TwitterStreamFactory"/>
-    <bean id="twitter" class="twitter4j.Twitter"
+    <bean id="twitter" class="org.twitter4j.core.Twitter"
           factory-bean="twitterFactory" factory-method="getInstance"
           depends-on="twitterFactory">
     </bean>

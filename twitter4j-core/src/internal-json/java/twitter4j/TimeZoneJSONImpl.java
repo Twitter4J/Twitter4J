@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import org.twitter4j.core.TimeZone;
+import org.twitter4j.core.TwitterException;
+
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com
  */

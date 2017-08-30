@@ -16,7 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.RateLimitStatus;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,7 +32,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
  */
-/*package*/ final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
+public final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
 
     private static final long serialVersionUID = 7790337632915862445L;
     private int remaining;
@@ -47,7 +50,7 @@ import java.util.Map;
         return map;
     }
 
-    static Map<String, RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
+    public static Map<String, RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
         Map<String, RateLimitStatus> map = new HashMap<String, RateLimitStatus>();
         try {
             JSONObject resources = json.getJSONObject("resources");
@@ -86,7 +89,7 @@ import java.util.Map;
         this.secondsUntilReset = (int) ((resetTimeInSeconds * 1000L - System.currentTimeMillis()) / 1000);
     }
 
-    static RateLimitStatus createFromResponseHeader(HttpResponse res) {
+    public static RateLimitStatus createFromResponseHeader(HttpResponse res) {
         if (null == res) {
             return null;
         }

@@ -16,7 +16,11 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.SavedSearch;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Date;
 
@@ -26,7 +30,7 @@ import java.util.Date;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.8
  */
-/*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
+public final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
     private static final long serialVersionUID = -2281949861485441692L;
     private Date createdAt;
@@ -35,7 +39,7 @@ import java.util.Date;
     private String name;
     private long id;
 
-    /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();
@@ -47,12 +51,11 @@ import java.util.Date;
         }
     }
 
-    /*package*/ SavedSearchJSONImpl(JSONObject savedSearch) throws TwitterException {
+    public SavedSearchJSONImpl(JSONObject savedSearch) throws TwitterException {
         init(savedSearch);
     }
 
-    /*package*/
-    static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();
         }

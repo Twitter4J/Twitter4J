@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterResponse;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -31,13 +34,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-final class ParseUtil {
+public final class ParseUtil {
+
     private ParseUtil() {
         // should never be instantiated
         throw new AssertionError();
     }
 
-    static String getUnescapedString(String str, JSONObject json) {
+    public static String getUnescapedString(String str, JSONObject json) {
         return HTMLEntity.unescape(getRawString(str, json));
     }
 

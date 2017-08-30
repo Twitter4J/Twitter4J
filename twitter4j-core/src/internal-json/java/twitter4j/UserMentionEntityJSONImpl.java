@@ -16,24 +16,27 @@
 
 package twitter4j;
 
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.UserMentionEntity;
+
 /**
  * A data interface representing one single user mention entity.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-/*package*/ class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
+public class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
     private static final long serialVersionUID = 6060510953676673013L;
     private String name;
     private String screenName;
     private long id;
 
-    /* package */ UserMentionEntityJSONImpl(JSONObject json) throws TwitterException {
+    public UserMentionEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
 
-    /* package */ UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
+    public UserMentionEntityJSONImpl(int start, int end, String name, String screenName, long id) {
         super();
         setStart(start);
         setEnd(end);
@@ -43,7 +46,7 @@ package twitter4j;
     }
 
     /* For serialization purposes only. */
-    /* package */ UserMentionEntityJSONImpl() {
+    public UserMentionEntityJSONImpl() {
 
     }
 

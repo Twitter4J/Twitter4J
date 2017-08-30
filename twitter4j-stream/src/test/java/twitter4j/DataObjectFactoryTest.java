@@ -1,6 +1,9 @@
 package twitter4j;
 
 import junit.framework.TestCase;
+import org.twitter4j.core.Status;
+import org.twitter4j.core.StatusDeletionNotice;
+import org.twitter4j.core.TwitterObjectFactory;
 
 /**
  * Unit test for TwitterObjectFactory

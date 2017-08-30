@@ -16,7 +16,7 @@
 
 package twitter4j.examples.media;
 
-import twitter4j.TwitterException;
+import org.twitter4j.core.TwitterException;
 import twitter4j.media.ImageUpload;
 import twitter4j.media.ImageUploadFactory;
 import twitter4j.media.MediaProvider;

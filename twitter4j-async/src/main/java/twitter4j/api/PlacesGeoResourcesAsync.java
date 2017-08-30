@@ -17,8 +17,8 @@
 package twitter4j.api;
 
 
-import twitter4j.GeoLocation;
-import twitter4j.GeoQuery;
+import org.twitter4j.core.GeoLocation;
+import org.twitter4j.core.GeoQuery;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -26,7 +26,7 @@ import twitter4j.GeoQuery;
  */
 public interface PlacesGeoResourcesAsync {
     /**
-     * Find out more details of a place that was returned from the {@link PlacesGeoResourcesAsync#reverseGeoCode(twitter4j.GeoQuery)} method.
+     * Find out more details of a place that was returned from the {@link PlacesGeoResourcesAsync#reverseGeoCode(GeoQuery)} method.
      * <br>This method calls https://api.twitter.com/1.1/geo/id/:id.json
      *
      * @param id The ID of the location to query about.

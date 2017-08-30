@@ -15,7 +15,11 @@
  */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.MediaEntity;
+import org.twitter4j.core.TwitterAPIConfiguration;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Arrays;
 import java.util.HashMap;

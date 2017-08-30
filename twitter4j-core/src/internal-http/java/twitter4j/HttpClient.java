@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.auth.Authorization;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.auth.Authorization;
 
 import java.util.Map;
 

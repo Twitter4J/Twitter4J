@@ -20,6 +20,8 @@ import junit.framework.TestCase;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.twitter4j.core.Twitter;
+import org.twitter4j.core.TwitterFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;

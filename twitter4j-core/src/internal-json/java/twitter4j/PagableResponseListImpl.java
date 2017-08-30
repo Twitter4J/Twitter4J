@@ -16,6 +16,10 @@
 
 package twitter4j;
 
+import org.twitter4j.core.PagableResponseList;
+import org.twitter4j.core.RateLimitStatus;
+import org.twitter4j.core.TwitterResponse;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3

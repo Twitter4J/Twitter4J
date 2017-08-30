@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.io.*;
 import java.util.List;
@@ -31,7 +32,7 @@ public abstract class HttpResponse {
     private static final Logger logger = Logger.getLogger(HttpResponseImpl.class);
     protected final HttpClientConfiguration CONF;
 
-    HttpResponse() {
+    public HttpResponse() {
         this.CONF = ConfigurationContext.getInstance().getHttpClientConfiguration();
     }
 

@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -28,7 +29,7 @@ import static twitter4j.ParseUtil.getDate;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
+public final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
     private static final long serialVersionUID = -6461195536943679985L;
 
@@ -67,7 +68,7 @@ import static twitter4j.ParseUtil.getDate;
     private Status quotedStatus;
     private long quotedStatusId = -1L;
 
-    /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
@@ -77,7 +78,7 @@ import static twitter4j.ParseUtil.getDate;
         }
     }
 
-    /*package*/StatusJSONImpl(JSONObject json, Configuration conf) throws TwitterException {
+    public StatusJSONImpl(JSONObject json, Configuration conf) throws TwitterException {
         super();
         init(json);
         if (conf.isJSONStoreEnabled()) {
@@ -85,13 +86,13 @@ import static twitter4j.ParseUtil.getDate;
         }
     }
 
-    /*package*/ StatusJSONImpl(JSONObject json) throws TwitterException {
+    public StatusJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
 
     /* Only for serialization purposes. */
-    /*package*/ StatusJSONImpl() {
+    public StatusJSONImpl() {
 
     }
 
@@ -456,7 +457,7 @@ import static twitter4j.ParseUtil.getDate;
         return lang;
     }
 
-    /*package*/
+    public
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {

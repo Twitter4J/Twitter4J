@@ -17,12 +17,13 @@
 
 package twitter4j;
 
-import twitter4j.api.HelpResources;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.Authorization;
-import twitter4j.auth.OAuth2Token;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.api.HelpResources;
+import org.twitter4j.core.auth.AccessToken;
+import org.twitter4j.core.auth.Authorization;
+import org.twitter4j.core.auth.OAuth2Token;
+import org.twitter4j.core.auth.RequestToken;
+import org.twitter4j.core.conf.Configuration;
 
 import java.io.File;
 import java.io.InputStream;
@@ -41,6 +42,7 @@ import static twitter4j.TwitterMethod.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
+
     private static final long serialVersionUID = 6491978434917152443L;
     private final Twitter twitter;
     private final List<TwitterListener> listeners = new ArrayList<TwitterListener>();
@@ -2703,7 +2705,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                     // dispatcher is held statically, but it'll be instantiated with
                     // the configuration instance associated with this TwitterStream
                     // instance which invokes getDispatcher() on the first time.
-                    AsyncTwitterImpl.dispatcher = new DispatcherFactory(conf).getInstance();
+                    AsyncTwitterImpl.dispatcher = new DispatcherFactory(getConfiguration()).getInstance();
                 }
             }
         }

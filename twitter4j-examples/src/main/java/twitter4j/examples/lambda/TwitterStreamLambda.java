@@ -17,7 +17,7 @@
 package twitter4j.examples.lambda;
 
 import twitter4j.FilterQuery;
-import twitter4j.Status;
+import org.twitter4j.core.Status;
 import twitter4j.StatusAdapter;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;

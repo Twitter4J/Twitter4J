@@ -16,19 +16,24 @@
 
 package twitter4j;
 
+import org.twitter4j.core.HashtagEntity;
+import org.twitter4j.core.MediaEntity;
+import org.twitter4j.core.URLEntity;
+import org.twitter4j.core.UserMentionEntity;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-final class HTMLEntity {
+public final class HTMLEntity {
 
-    static String escape(String original) {
+    public static String escape(String original) {
         StringBuilder buf = new StringBuilder(original);
         escape(buf);
         return buf.toString();
     }
 
-    static void escape(StringBuilder original) {
+    public static void escape(StringBuilder original) {
         int index = 0;
         String escaped;
         while (index < original.length()) {
@@ -42,7 +47,7 @@ final class HTMLEntity {
         }
     }
 
-    static String unescape(String original) {
+    public static String unescape(String original) {
         String returnValue = null;
         if (original != null) {
             StringBuilder buf = new StringBuilder(original);
@@ -52,7 +57,7 @@ final class HTMLEntity {
         return returnValue;
     }
 
-    static void unescape(StringBuilder original) {
+    public static void unescape(StringBuilder original) {
         int index = 0;
         int semicolonIndex;
         String escaped;
@@ -76,7 +81,7 @@ final class HTMLEntity {
         }
     }
 
-    static String unescapeAndSlideEntityIncdices(String text, UserMentionEntity[] userMentionEntities,
+    public static String unescapeAndSlideEntityIncdices(String text, UserMentionEntity[] userMentionEntities,
                                                  URLEntity[] urlEntities, HashtagEntity[] hashtagEntities,
                                                  MediaEntity[] mediaEntities) {
         

@@ -16,10 +16,10 @@
 
 package twitter4j.examples.directmessage;
 
-import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import org.twitter4j.core.DirectMessage;
+import org.twitter4j.core.Twitter;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterFactory;
 
 /**
  * Example application that gets a specified direct message.<br>

@@ -16,11 +16,12 @@
 
 package twitter4j;
 
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.*;
+import org.twitter4j.core.auth.AccessToken;
+import org.twitter4j.core.auth.OAuthAuthorization;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationBuilder;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.io.*;
 import java.util.*;

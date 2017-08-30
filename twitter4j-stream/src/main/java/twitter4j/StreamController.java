@@ -16,9 +16,11 @@
  */
 package twitter4j;
 
-import twitter4j.auth.Authorization;
-import twitter4j.auth.AuthorizationFactory;
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.CursorSupport;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.auth.Authorization;
+import org.twitter4j.core.auth.AuthorizationFactory;
+import org.twitter4j.core.conf.Configuration;
 
 import java.io.Serializable;
 import java.util.Arrays;

@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class HttpClientFactory {
     private static final Constructor<?> HTTP_CLIENT_CONSTRUCTOR;
-    private static final String HTTP_CLIENT_IMPLEMENTATION = "twitter4j.http.httpClient";
+    private static final String HTTP_CLIENT_IMPLEMENTATION = "org.twitter4j.core.http.httpClient";
 
     static {
         Class<?> clazz = null;

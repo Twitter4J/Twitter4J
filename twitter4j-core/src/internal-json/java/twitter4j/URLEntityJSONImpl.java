@@ -16,25 +16,28 @@
 
 package twitter4j;
 
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.URLEntity;
+
 /**
  * A data class representing one single URL entity.
  *
  * @author Mocel - mocel at guma.jp
  * @since Twitter4J 2.1.9
  */
-/* package */ final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
+public final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
     private static final long serialVersionUID = 7333552738058031524L;
     private String url;
     private String expandedURL;
     private String displayURL;
 
-    /* package */ URLEntityJSONImpl(JSONObject json) throws TwitterException {
+    public URLEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
 
-    /* package */ URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL) {
+    public URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL) {
         super();
         setStart(start);
         setEnd(end);
@@ -44,7 +47,7 @@ package twitter4j;
     }
 
     /* For serialization purposes only. */
-    /* package */ URLEntityJSONImpl() {
+    public URLEntityJSONImpl() {
 
     }
 

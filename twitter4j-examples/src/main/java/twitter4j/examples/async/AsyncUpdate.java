@@ -16,6 +16,8 @@
 
 package twitter4j.examples.async;
 
+import org.twitter4j.core.Status;
+import org.twitter4j.core.TwitterException;
 import twitter4j.*;
 
 import static twitter4j.TwitterMethod.UPDATE_STATUS;

@@ -16,8 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-final class DispatcherFactory {
+public final class DispatcherFactory {
     private final String dispatcherImpl;
     private final Configuration conf;
 

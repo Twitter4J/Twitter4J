@@ -19,9 +19,9 @@ package twitter4j.media;
 import twitter4j.HttpParameter;
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
-import twitter4j.TwitterException;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.auth.OAuthAuthorization;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author withgod - noname at withgod.jp

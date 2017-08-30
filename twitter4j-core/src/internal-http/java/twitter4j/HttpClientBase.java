@@ -1,6 +1,8 @@
 package twitter4j;
 
-import twitter4j.auth.Authorization;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.Version;
+import org.twitter4j.core.auth.Authorization;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -67,7 +69,7 @@ public abstract class HttpClientBase implements HttpClient, Serializable {
         }
     }
 
-    abstract HttpResponse handleRequest(HttpRequest req) throws TwitterException;
+    public abstract HttpResponse handleRequest(HttpRequest req) throws TwitterException;
 
     @Override
     public HttpResponse get(String url, HttpParameter[] parameters

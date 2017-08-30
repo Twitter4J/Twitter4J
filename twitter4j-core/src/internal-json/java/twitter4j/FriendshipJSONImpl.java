@@ -16,13 +16,17 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.Friendship;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
-class FriendshipJSONImpl implements Friendship {
+public class FriendshipJSONImpl implements Friendship {
     private static final long serialVersionUID = 6847273186993125826L;
     private final long id;
     private final String name;
@@ -30,7 +34,7 @@ class FriendshipJSONImpl implements Friendship {
     private boolean following = false;
     private boolean followedBy = false;
 
-    /*package*/ FriendshipJSONImpl(JSONObject json) throws TwitterException {
+    public FriendshipJSONImpl(JSONObject json) throws TwitterException {
         super();
         try {
             id = ParseUtil.getLong("id", json);
@@ -50,8 +54,7 @@ class FriendshipJSONImpl implements Friendship {
         }
     }
 
-    /*package*/
-    static ResponseList<Friendship> createFriendshipList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<Friendship> createFriendshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();

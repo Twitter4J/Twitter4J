@@ -16,7 +16,10 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.IDs;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Arrays;
 
@@ -25,14 +28,14 @@ import java.util.Arrays;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class IDsJSONImpl extends TwitterResponseImpl implements IDs {
+public final class IDsJSONImpl extends TwitterResponseImpl implements IDs {
 
     private static final long serialVersionUID = 6999637496007165672L;
     private long[] ids;
     private long previousCursor = -1;
     private long nextCursor = -1;
 
-    /*package*/ IDsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public IDsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         String json = res.asString();
         init(json);
@@ -42,7 +45,7 @@ import java.util.Arrays;
         }
     }
 
-    /*package*/ IDsJSONImpl(String json) throws TwitterException {
+    public IDsJSONImpl(String json) throws TwitterException {
         init(json);
     }
 

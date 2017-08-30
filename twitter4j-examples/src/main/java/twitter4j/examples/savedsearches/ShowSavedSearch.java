@@ -16,10 +16,10 @@
 
 package twitter4j.examples.savedsearches;
 
-import twitter4j.SavedSearch;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import org.twitter4j.core.SavedSearch;
+import org.twitter4j.core.Twitter;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterFactory;
 
 /**
  * Shows one single saved search.

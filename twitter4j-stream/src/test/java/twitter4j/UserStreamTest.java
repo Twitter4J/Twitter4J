@@ -17,6 +17,7 @@
 package twitter4j;
 
 import junit.framework.Assert;
+import org.twitter4j.core.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;

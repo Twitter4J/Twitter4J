@@ -16,7 +16,7 @@
 
 package twitter4j.api;
 
-import twitter4j.Paging;
+import org.twitter4j.core.Paging;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

@@ -16,6 +16,7 @@
 
 package twitter4j.examples.stream;
 
+import org.twitter4j.core.*;
 import twitter4j.*;
 
 /**

@@ -17,8 +17,8 @@
 package twitter4j.api;
 
 
-import twitter4j.OEmbedRequest;
-import twitter4j.StatusUpdate;
+import org.twitter4j.core.OEmbedRequest;
+import org.twitter4j.core.StatusUpdate;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

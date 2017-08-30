@@ -22,6 +22,7 @@ import junit.framework.TestSuite;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import org.twitter4j.core.*;
 
 import java.lang.reflect.Field;
 
@@ -132,7 +133,7 @@ public class Http2ClientTest extends TestCase {
     
     public void testUploadMediaFromStream() throws Exception {
         Twitter twitter = TwitterFactory.getSingleton();
-        UploadedMedia media2 = twitter.uploadMedia("fromInputStream", 
+        UploadedMedia media2 = twitter.uploadMedia("fromInputStream",
                 Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
 
         StatusUpdate update = new StatusUpdate("from input stream");

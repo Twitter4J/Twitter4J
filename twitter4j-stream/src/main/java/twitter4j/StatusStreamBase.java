@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.conf.Configuration;
 
 import java.io.BufferedReader;
 import java.io.IOException;

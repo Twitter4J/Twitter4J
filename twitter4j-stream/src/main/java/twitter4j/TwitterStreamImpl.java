@@ -15,9 +15,13 @@
  */
 package twitter4j;
 
-import twitter4j.auth.Authorization;
-import twitter4j.conf.Configuration;
-import twitter4j.util.function.Consumer;
+import org.twitter4j.core.ConnectionLifeCycleListener;
+import org.twitter4j.core.Status;
+import org.twitter4j.core.TwitterBaseImpl;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.auth.Authorization;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,9 +122,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + relativeUrl
+            return new StatusStreamImpl(getDispatcher(), http.post(getConfiguration().getStreamBaseURL() + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
-                    , stallWarningsParam}, auth, null), conf);
+                    , stallWarningsParam}, getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -150,8 +154,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
-                    , new HttpParameter[]{stallWarningsParam}, auth, null), conf);
+            return new StatusStreamImpl(getDispatcher(), http.post(getConfiguration().getStreamBaseURL() + "statuses/retweet.json"
+                    , new HttpParameter[]{stallWarningsParam}, getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -193,8 +197,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
-                    + stallWarningsGetParam, null, auth, null), conf);
+            return new StatusStreamImpl(getDispatcher(), http.get(getConfiguration().getStreamBaseURL() + "statuses/sample.json?"
+                    + stallWarningsGetParam, null, getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -214,8 +218,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream(String language) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
-                    + stallWarningsGetParam + "&language=" + language, null, auth, null), conf);
+            return new StatusStreamImpl(getDispatcher(), http.get(getConfiguration().getStreamBaseURL() + "statuses/sample.json?"
+                    + stallWarningsGetParam + "&language=" + language, null, getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -252,18 +256,18 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         try {
             List<HttpParameter> params = new ArrayList<HttpParameter>();
             params.add(stallWarningsParam);
-            if (conf.isUserStreamRepliesAllEnabled()) {
+            if (getConfiguration().isUserStreamRepliesAllEnabled()) {
                 params.add(new HttpParameter("replies", "all"));
             }
-            if (!conf.isUserStreamWithFollowingsEnabled()) {
+            if (!getConfiguration().isUserStreamWithFollowingsEnabled()) {
                 params.add(new HttpParameter("with", "user"));
             }
             if (track != null) {
                 params.add(new HttpParameter("track", StringUtil.join(track)));
             }
-            return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
+            return new UserStreamImpl(getDispatcher(), http.post(getConfiguration().getUserStreamBaseURL() + "user.json"
                     , params.toArray(new HttpParameter[params.size()])
-                    , auth, null), conf);
+                    , getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -273,12 +277,12 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public StreamController site(final boolean withFollowings, final long[] follow) {
         ensureOAuthEnabled();
         ensureSiteStreamsListenerIsSet();
-        final StreamController cs = new StreamController(http, auth);
+        final StreamController cs = new StreamController(http, getAuthorization());
         startHandler(new TwitterStreamConsumer(Mode.site) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 try {
-                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf, cs);
+                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), getConfiguration(), cs);
                 } catch (IOException e) {
                     throw new TwitterException(e);
                 }
@@ -294,7 +298,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                     // dispatcher is held statically, but it'll be instantiated with
                     // the configuration instance associated with this TwitterStream
                     // instance which invokes getDispatcher() on the first time.
-                    TwitterStreamImpl.dispatcher = new DispatcherFactory(conf).getInstance();
+                    TwitterStreamImpl.dispatcher = new DispatcherFactory(getConfiguration()).getInstance();
                 }
             }
         }
@@ -305,11 +309,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
         ensureOAuthEnabled();
-        return http.post(conf.getSiteStreamBaseURL() + "site.json",
+        return http.post(getConfiguration().getSiteStreamBaseURL() + "site.json",
                 new HttpParameter[]{
                         new HttpParameter("with", withFollowings ? "followings" : "user")
                         , new HttpParameter("follow", StringUtil.join(follow))
-                        , stallWarningsParam}, auth, null
+                        , stallWarningsParam}, getAuthorization(), null
         ).asStream();
     }
 
@@ -344,9 +348,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getFilterStream(FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
+            return new StatusStreamImpl(getDispatcher(), http.post(getConfiguration().getStreamBaseURL()
                     + "statuses/filter.json"
-                    , query.asHttpParameterArray(stallWarningsParam), auth, null), conf);
+                    , query.asHttpParameterArray(stallWarningsParam), getAuthorization(), null), getConfiguration());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -524,7 +528,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         TwitterStreamConsumer(Mode mode) {
             super();
             this.mode = mode;
-            NAME = format("Twitter Stream consumer / %s [%s]", conf.getStreamThreadName(), ++count);
+            NAME = format("Twitter Stream consumer / %s [%s]", getConfiguration().getStreamThreadName(), ++count);
             updateListeners();
             setName(NAME + "[initializing]");
         }

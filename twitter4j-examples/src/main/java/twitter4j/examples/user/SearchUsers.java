@@ -16,7 +16,7 @@
 
 package twitter4j.examples.user;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 /**
  * Search users with the specified query.

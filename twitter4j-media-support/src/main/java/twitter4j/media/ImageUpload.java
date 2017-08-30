@@ -16,7 +16,7 @@
 
 package twitter4j.media;
 
-import twitter4j.TwitterException;
+import org.twitter4j.core.TwitterException;
 
 import java.io.File;
 import java.io.InputStream;

@@ -16,12 +16,17 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.Location;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class LocationJSONImpl implements Location {
+public final class LocationJSONImpl implements Location {
+
     private static final long serialVersionUID = -1312752311160422264L;
     private final int woeid;
     private final String countryName;
@@ -31,7 +36,7 @@ import twitter4j.conf.Configuration;
     private final String name;
     private final String url;
 
-    /*package*/ LocationJSONImpl(JSONObject location) throws TwitterException {
+    public LocationJSONImpl(JSONObject location) throws TwitterException {
         try {
             woeid = ParseUtil.getInt("woeid", location);
             countryName = ParseUtil.getUnescapedString("country", location);
@@ -51,16 +56,14 @@ import twitter4j.conf.Configuration;
         }
     }
 
-    /*package*/
-    static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         return createLocationList(res.asJSONArray(), conf.isJSONStoreEnabled());
     }
 
-    /*package*/
-    static ResponseList<Location> createLocationList(JSONArray list, boolean storeJSON) throws TwitterException {
+    public static ResponseList<Location> createLocationList(JSONArray list, boolean storeJSON) throws TwitterException {
         try {
             int size = list.length();
             ResponseList<Location> locations =

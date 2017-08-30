@@ -16,7 +16,11 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.Relationship;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * A data class that has detailed information about a relationship between two users
@@ -25,7 +29,7 @@ import twitter4j.conf.Configuration;
  * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/show">GET friendships/show | Twitter Developers</a>
  * @since Twitter4J 2.1.0
  */
-/*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
+public class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
     private static final long serialVersionUID = -2001484553401916448L;
     private final long targetUserId;
@@ -40,7 +44,7 @@ import twitter4j.conf.Configuration;
     private final String sourceUserScreenName;
     private boolean wantRetweets;
 
-    /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();
@@ -48,11 +52,11 @@ import twitter4j.conf.Configuration;
         }
     }
 
-    /*package*/ RelationshipJSONImpl(JSONObject json) throws TwitterException {
+    public RelationshipJSONImpl(JSONObject json) throws TwitterException {
         this(null, json);
     }
 
-    /*package*/ RelationshipJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
+    public RelationshipJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
         super(res);
         try {
             JSONObject relationship = json.getJSONObject("relationship");

@@ -16,8 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

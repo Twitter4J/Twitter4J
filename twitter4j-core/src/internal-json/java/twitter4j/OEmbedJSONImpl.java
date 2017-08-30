@@ -15,7 +15,10 @@
  */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.OEmbed;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -41,7 +44,7 @@ public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.
         }
     }
 
-    /*package*/ OEmbedJSONImpl(JSONObject json) throws TwitterException {
+    public OEmbedJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }

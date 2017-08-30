@@ -15,6 +15,8 @@
  */
 package twitter4j;
 
+import org.twitter4j.core.Scopes;
+
 /**
  * A data interface representing targeting scopes applied to a status.
  *

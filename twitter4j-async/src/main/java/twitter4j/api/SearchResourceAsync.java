@@ -16,7 +16,7 @@
 
 package twitter4j.api;
 
-import twitter4j.Query;
+import org.twitter4j.core.Query;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

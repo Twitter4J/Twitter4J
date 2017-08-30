@@ -15,8 +15,12 @@
  */
 package twitter4j;
 
-import twitter4j.api.HelpResources;
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.api.HelpResources;
+import org.twitter4j.core.api.HelpResources;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -59,12 +63,11 @@ public class LanguageJSONImpl implements HelpResources.Language {
         return status;
     }
 
-    static ResponseList<HelpResources.Language> createLanguageList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<HelpResources.Language> createLanguageList(HttpResponse res, Configuration conf) throws TwitterException {
         return createLanguageList(res.asJSONArray(), res, conf);
     }
 
-    /*package*/
-    static ResponseList<HelpResources.Language> createLanguageList(JSONArray list, HttpResponse res
+    public static ResponseList<HelpResources.Language> createLanguageList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();

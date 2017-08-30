@@ -17,8 +17,7 @@
 
 package twitter4j.api;
 
-import twitter4j.GeoLocation;
-import twitter4j.TwitterException;
+import org.twitter4j.core.GeoLocation;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -17,9 +17,9 @@
 package twitter4j.media;
 
 import junit.framework.TestCase;
-import twitter4j.TwitterException;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.conf.Configuration;
+import org.twitter4j.core.conf.ConfigurationBuilder;
 
 import java.io.File;
 import java.io.FileNotFoundException;

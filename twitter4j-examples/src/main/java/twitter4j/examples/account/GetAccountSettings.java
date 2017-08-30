@@ -16,7 +16,7 @@
 
 package twitter4j.examples.account;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 /**
  * Gets account settings.

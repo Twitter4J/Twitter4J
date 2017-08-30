@@ -15,8 +15,11 @@
  */
 package twitter4j;
 
-import twitter4j.auth.OAuthSupport;
-import twitter4j.util.function.Consumer;
+import org.twitter4j.core.ConnectionLifeCycleListener;
+import org.twitter4j.core.Status;
+import org.twitter4j.core.TwitterBase;
+import org.twitter4j.core.auth.OAuthSupport;
+import org.twitter4j.core.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -16,9 +16,10 @@
 
 package twitter4j.media;
 
+import org.twitter4j.core.TwitterException;
 import twitter4j.*;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.auth.OAuthAuthorization;
+import org.twitter4j.core.conf.Configuration;
 
 import java.io.File;
 import java.io.InputStream;

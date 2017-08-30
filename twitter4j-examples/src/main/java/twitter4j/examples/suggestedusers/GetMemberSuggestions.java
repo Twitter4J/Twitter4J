@@ -16,7 +16,7 @@
 
 package twitter4j.examples.suggestedusers;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 /**
  * Shows suggested users in specified category.

@@ -16,20 +16,24 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.Category;
+import org.twitter4j.core.ResponseList;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterObjectFactory;
+import org.twitter4j.core.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
-final class CategoryJSONImpl implements Category, java.io.Serializable {
+public final class CategoryJSONImpl implements Category, java.io.Serializable {
 
     private static final long serialVersionUID = 3811335888122469876L;
     private String name;
     private String slug;
     private int size;
 
-    CategoryJSONImpl(JSONObject json) throws JSONException {
+    public CategoryJSONImpl(JSONObject json) throws JSONException {
         init(json);
     }
 
@@ -39,7 +43,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         this.size = ParseUtil.getInt("size", json);
     }
 
-    static ResponseList<Category> createCategoriesList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<Category> createCategoriesList(HttpResponse res, Configuration conf) throws TwitterException {
         return createCategoriesList(res.asJSONArray(), res, conf);
     }
 

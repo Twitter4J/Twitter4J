@@ -16,7 +16,7 @@
 
 package twitter4j.examples.timeline;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 import java.util.List;
 

@@ -15,6 +15,9 @@
  */
 package twitter4j;
 
+import org.twitter4j.core.MediaEntity;
+import org.twitter4j.core.TwitterException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +26,7 @@ import java.util.Map;
  * @since Twitter4J 2.2.3
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
+
     private static final long serialVersionUID = 1571961225214439778L;
     protected long id;
     protected String url;
@@ -39,7 +43,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private String extAltText;
 
 
-    MediaEntityJSONImpl(JSONObject json) throws TwitterException {
+    public MediaEntityJSONImpl(JSONObject json) throws TwitterException {
         try {
             JSONArray indicesArray = json.getJSONArray("indices");
             setStart(indicesArray.getInt(0));

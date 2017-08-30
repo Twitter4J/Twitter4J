@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.*;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -26,7 +27,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
+public final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
@@ -73,7 +74,7 @@ import java.util.Date;
     private boolean isFollowRequestSent;
     private String[] withheldInCountries;
 
-    /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    public UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         if (conf.isJSONStoreEnabled()) {
             TwitterObjectFactory.clearThreadLocalMap();
@@ -85,13 +86,13 @@ import java.util.Date;
         }
     }
 
-    /*package*/UserJSONImpl(JSONObject json) throws TwitterException {
+    public UserJSONImpl(JSONObject json) throws TwitterException {
         super();
         init(json);
     }
 
     /* Only for serialization purposes. */
-    /*package*/UserJSONImpl() {
+    public UserJSONImpl() {
 
     }
 
@@ -486,8 +487,7 @@ import java.util.Date;
         return withheldInCountries;
     }
 
-    /*package*/
-    static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();
@@ -514,13 +514,11 @@ import java.util.Date;
         }
     }
 
-    /*package*/
-    static ResponseList<User> createUserList(HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<User> createUserList(HttpResponse res, Configuration conf) throws TwitterException {
         return createUserList(res.asJSONArray(), res, conf);
     }
 
-    /*package*/
-    static ResponseList<User> createUserList(JSONArray list, HttpResponse res, Configuration conf) throws TwitterException {
+    public static ResponseList<User> createUserList(JSONArray list, HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();

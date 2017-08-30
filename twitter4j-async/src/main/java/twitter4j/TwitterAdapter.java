@@ -17,10 +17,11 @@
 
 package twitter4j;
 
-import twitter4j.api.HelpResources;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.OAuth2Token;
-import twitter4j.auth.RequestToken;
+import org.twitter4j.core.*;
+import org.twitter4j.core.api.HelpResources;
+import org.twitter4j.core.auth.AccessToken;
+import org.twitter4j.core.auth.OAuth2Token;
+import org.twitter4j.core.auth.RequestToken;
 
 import java.util.Map;
 

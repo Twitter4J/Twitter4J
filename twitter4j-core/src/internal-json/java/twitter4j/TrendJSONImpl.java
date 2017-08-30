@@ -16,19 +16,22 @@
 
 package twitter4j;
 
+import org.twitter4j.core.Trend;
+import org.twitter4j.core.TwitterObjectFactory;
+
 /**
  * A data class representing Trend.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.2
  */
-/*package*/ final class TrendJSONImpl implements Trend, java.io.Serializable {
+public final class TrendJSONImpl implements Trend, java.io.Serializable {
     private static final long serialVersionUID = -4353426776065521132L;
     private final String name;
     private String url = null;
     private String query = null;
 
-    /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
+    public TrendJSONImpl(JSONObject json, boolean storeJSON) {
         this.name = ParseUtil.getRawString("name", json);
         this.url = ParseUtil.getRawString("url", json);
         this.query = ParseUtil.getRawString("query", json);
@@ -37,7 +40,7 @@ package twitter4j;
         }
     }
 
-    /*package*/ TrendJSONImpl(JSONObject json) {
+    public TrendJSONImpl(JSONObject json) {
         this(json, false);
     }
 

@@ -16,7 +16,7 @@
 
 package twitter4j.examples.json;
 
-import twitter4j.*;
+import org.twitter4j.core.*;
 
 import java.io.*;
 import java.util.List;

@@ -15,7 +15,7 @@
  */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
+import org.twitter4j.core.conf.Configuration;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

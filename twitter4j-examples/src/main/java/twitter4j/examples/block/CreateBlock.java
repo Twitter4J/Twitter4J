@@ -16,9 +16,9 @@
 
 package twitter4j.examples.block;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import org.twitter4j.core.Twitter;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterFactory;
 
 /**
  * Blocks the specified user.

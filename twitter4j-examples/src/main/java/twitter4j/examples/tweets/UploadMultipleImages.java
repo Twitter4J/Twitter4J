@@ -18,12 +18,12 @@ package twitter4j.examples.tweets;
 
 import java.io.File;
 
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.UploadedMedia;
+import org.twitter4j.core.Status;
+import org.twitter4j.core.StatusUpdate;
+import org.twitter4j.core.Twitter;
+import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.TwitterFactory;
+import org.twitter4j.core.UploadedMedia;
 
 /**
  * Example application that uploads multiple images.<br>
