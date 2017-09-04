@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package org.twitter4j.http2;
 
 /**
  * @author Hiroaki Takeuchi - takke30 at gmail.com

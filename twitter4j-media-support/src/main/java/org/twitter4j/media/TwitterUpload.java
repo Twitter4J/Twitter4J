@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 import org.twitter4j.core.StatusUpdate;
 import org.twitter4j.core.Twitter;

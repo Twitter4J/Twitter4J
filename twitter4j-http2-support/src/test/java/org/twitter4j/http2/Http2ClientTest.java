@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package org.twitter4j.http2;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

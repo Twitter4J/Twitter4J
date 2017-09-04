@@ -14,25 +14,12 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
-
-import org.twitter4j.core.TwitterException;
-
-import java.io.File;
-import java.io.InputStream;
+package org.twitter4j.media;
 
 /**
- * @author Rémy Rakic - remy.rakic at gmail.com
- * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
- * @author withgod - noname at withgod.jp
+ * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
-public interface ImageUpload {
-    String upload(File image, String message) throws TwitterException;
-
-    String upload(File image) throws TwitterException;
-
-    String upload(String imageFileName, InputStream imageBody) throws TwitterException;
-
-    String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
+public enum MediaProvider {
+    TWITTER, IMG_LY, TWIPPLE, MOBYPICTURE
 }

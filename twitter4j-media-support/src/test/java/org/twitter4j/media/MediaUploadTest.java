@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 import junit.framework.TestCase;
 import org.twitter4j.core.TwitterException;
 import org.twitter4j.core.conf.Configuration;
 import org.twitter4j.core.conf.ConfigurationBuilder;
+import org.twitter4j.media.ImageUpload;
+import org.twitter4j.media.ImageUploadFactory;
+import org.twitter4j.media.MediaProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;

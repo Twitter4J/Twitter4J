@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 import org.twitter4j.core.internal.http.HttpParameter;
 import org.twitter4j.core.internal.json.JSONException;
@@ -24,54 +24,47 @@ import org.twitter4j.core.auth.OAuthAuthorization;
 import org.twitter4j.core.conf.Configuration;
 
 /**
+ * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
- * @see <a href="http://developers.mobypicture.com/documentation/">mobyapi documentation</a>
- * @since Twitter4J 2.1.12
+ * @since Twitter4J 2.1.8
  */
-class MobypictureUpload extends AbstractImageUploadImpl {
+class ImgLyUpload extends AbstractImageUploadImpl {
 
-    public MobypictureUpload(Configuration conf, String apiKey, OAuthAuthorization oauth) {
-        super(conf, apiKey, oauth);
+    public ImgLyUpload(Configuration conf, OAuthAuthorization oauth) {
+        super(conf, oauth);
     }
 
     @Override
     protected String postUpload() throws TwitterException {
         int statusCode = httpResponse.getStatusCode();
         if (statusCode != 200)
-            throw new TwitterException("Mobypic image upload returned invalid status code", httpResponse);
+            throw new TwitterException("ImgLy image upload returned invalid status code", httpResponse);
 
         String response = httpResponse.asString();
 
         try {
             JSONObject json = new JSONObject(response);
-            if (!json.isNull("media")) {
-                return json.getJSONObject("media").getString("mediaurl");
-            }
+            if (!json.isNull("url"))
+                return json.getString("url");
         } catch (JSONException e) {
-            throw new TwitterException("Invalid Mobypic response: " + response, e);
+            throw new TwitterException("Invalid ImgLy response: " + response, e);
         }
 
-        throw new TwitterException("Unknown Mobypic response", httpResponse);
+        throw new TwitterException("Unknown ImgLy response", httpResponse);
     }
 
     @Override
     protected void preUpload() throws TwitterException {
-        uploadUrl = "https://api.mobypicture.com/2.0/upload.json";
+        uploadUrl = "http://img.ly/api/2/upload.json";
         String verifyCredentialsAuthorizationHeader = generateVerifyCredentialsAuthorizationHeader();
 
         headers.put("X-Auth-Service-Provider", TWITTER_VERIFY_CREDENTIALS_JSON_V1_1);
         headers.put("X-Verify-Credentials-Authorization", verifyCredentialsAuthorizationHeader);
 
-        if (null == apiKey) {
-            throw new IllegalStateException("No API Key for Mobypic specified. put media.providerAPIKey in twitter4j.properties.");
-        }
-        HttpParameter[] params = {
-                new HttpParameter("key", apiKey),
-                this.image};
+        HttpParameter[] params = {this.image};
         if (message != null) {
             params = appendHttpParameters(new HttpParameter[]{
-                    this.message
-            }, params);
+                    this.message}, params);
         }
         this.postParameter = params;
     }

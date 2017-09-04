@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 import org.twitter4j.core.internal.http.HttpParameter;
 import org.twitter4j.core.TwitterException;

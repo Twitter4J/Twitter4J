@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

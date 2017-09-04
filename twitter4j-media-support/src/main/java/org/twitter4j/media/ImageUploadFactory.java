@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.media;
+package org.twitter4j.media;
 
 import org.twitter4j.core.auth.Authorization;
 import org.twitter4j.core.auth.AuthorizationFactory;
@@ -22,7 +22,7 @@ import org.twitter4j.core.auth.OAuthAuthorization;
 import org.twitter4j.core.conf.Configuration;
 import org.twitter4j.core.conf.ConfigurationContext;
 
-import static twitter4j.media.MediaProvider.*;
+import static org.twitter4j.media.MediaProvider.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

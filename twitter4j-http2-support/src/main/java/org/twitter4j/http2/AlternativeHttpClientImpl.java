@@ -15,7 +15,7 @@
  */
 
 
-package twitter4j;
+package org.twitter4j.http2;
 
 import okhttp3.*;
 import okhttp3.internal.Util;
