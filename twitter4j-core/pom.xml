@@ -4,7 +4,7 @@
 
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j-core</artifactId>
-    <version>4.0.6</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>twitter4j-core</name>
     <description>A Java library for the Twitter API</description>
@@ -22,7 +22,7 @@
         <developerConnection>scm:https://github.com/yusuke/twitter4j.git
         </developerConnection>
 
-        <tag>4.0.6</tag>
+        <tag>5.0.0-SNAPSHOT</tag>
     </scm>
     <developers>
         <developer>

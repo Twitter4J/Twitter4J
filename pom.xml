@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.twitter4j</groupId>
     <artifactId>twitter4j</artifactId>
-    <version>4.0.6</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>twitter4j</name>
     <description>A Java library for the Twitter API</description>
@@ -19,9 +19,8 @@
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
         <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
-        <developerConnection>scm:git:https://github.com/yusuke/twitter4j.git
-        </developerConnection>
-        <tag>4.0.6</tag>
+        <developerConnection>scm:git:https://github.com/yusuke/twitter4j.git</developerConnection>
+        <tag>5.0.0-SNAPSHOT</tag>
     </scm>
 
     <developers>
@@ -59,8 +58,7 @@
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>org.twitter4j</id>
