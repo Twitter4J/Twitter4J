@@ -17,7 +17,7 @@
 package org.twitter4j.stream;
 
 import org.twitter4j.core.internal.http.HttpParameter;
-import org.twitter4j.core.internal.utils.StringUtil;
+import org.twitter4j.core.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;

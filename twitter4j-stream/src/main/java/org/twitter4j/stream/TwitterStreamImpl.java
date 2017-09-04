@@ -28,7 +28,7 @@ import org.twitter4j.core.internal.http.HttpClientConfiguration;
 import org.twitter4j.core.internal.http.HttpClientFactory;
 import org.twitter4j.core.internal.http.HttpParameter;
 import org.twitter4j.core.internal.logging.Logger;
-import org.twitter4j.core.internal.utils.StringUtil;
+import org.twitter4j.core.util.StringUtil;
 import org.twitter4j.core.util.function.Consumer;
 
 import java.io.IOException;

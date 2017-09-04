@@ -20,7 +20,7 @@ package org.twitter4j.core;
 import org.twitter4j.core.internal.http.HttpParameter;
 import org.twitter4j.core.internal.http.HttpResponse;
 import org.twitter4j.core.internal.json.JSONException;
-import org.twitter4j.core.internal.utils.StringUtil;
+import org.twitter4j.core.util.StringUtil;
 import org.twitter4j.core.api.*;
 import org.twitter4j.core.auth.Authorization;
 import org.twitter4j.core.conf.Configuration;

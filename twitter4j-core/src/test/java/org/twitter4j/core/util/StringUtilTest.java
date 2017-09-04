@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.twitter4j.core;
+package org.twitter4j.core.util;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.internal.utils.StringUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

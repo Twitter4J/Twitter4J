@@ -30,7 +30,7 @@ import org.twitter4j.core.internal.json.JSONException;
 import org.twitter4j.core.internal.json.JSONObject;
 import org.twitter4j.core.internal.json.ParseUtil;
 import org.twitter4j.core.internal.logging.Logger;
-import org.twitter4j.core.internal.utils.StringUtil;
+import org.twitter4j.core.util.StringUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;
