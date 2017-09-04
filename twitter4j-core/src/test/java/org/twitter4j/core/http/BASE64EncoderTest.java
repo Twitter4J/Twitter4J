@@ -17,7 +17,7 @@
 package org.twitter4j.core.http;
 
 import junit.framework.TestCase;
-import twitter4j.BASE64Encoder;
+import org.twitter4j.core.internal.http.BASE64Encoder;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

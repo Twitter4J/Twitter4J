@@ -15,7 +15,7 @@
  */
 package org.twitter4j.core;
 
-import twitter4j.Logger;
+import org.twitter4j.core.internal.logging.Logger;
 import org.twitter4j.core.management.APIStatistics;
 import org.twitter4j.core.management.APIStatisticsMBean;
 import org.twitter4j.core.management.APIStatisticsOpenMBean;

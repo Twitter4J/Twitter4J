@@ -16,8 +16,8 @@
 
 package org.twitter4j.core;
 
-import twitter4j.JSONObject;
-import twitter4j.ParseUtil;
+import org.twitter4j.core.internal.json.JSONObject;
+import org.twitter4j.core.internal.json.ParseUtil;
 
 /**
  * StatusDeletionNotice implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.

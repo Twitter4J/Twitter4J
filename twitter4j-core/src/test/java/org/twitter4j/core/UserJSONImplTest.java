@@ -19,11 +19,9 @@
 package org.twitter4j.core;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.TwitterException;
-import org.twitter4j.core.URLEntity;
-import twitter4j.JSONException;
-import twitter4j.JSONObject;
-import twitter4j.UserJSONImpl;
+import org.twitter4j.core.internal.json.JSONException;
+import org.twitter4j.core.internal.json.JSONObject;
+import org.twitter4j.core.internal.json.UserJSONImpl;
 
 public class UserJSONImplTest extends TestCase {
 

@@ -16,9 +16,9 @@
 
 package org.twitter4j.core.auth;
 
-import twitter4j.HttpResponse;
-import twitter4j.JSONException;
-import twitter4j.JSONObject;
+import org.twitter4j.core.internal.http.HttpResponse;
+import org.twitter4j.core.internal.json.JSONException;
+import org.twitter4j.core.internal.json.JSONObject;
 import org.twitter4j.core.TwitterException;
 
 import java.io.UnsupportedEncodingException;

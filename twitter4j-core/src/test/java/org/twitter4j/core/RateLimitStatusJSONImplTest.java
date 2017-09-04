@@ -16,9 +16,8 @@
 package org.twitter4j.core;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.RateLimitStatus;
-import twitter4j.HttpResponse;
-import twitter4j.RateLimitStatusJSONImpl;
+import org.twitter4j.core.internal.http.HttpResponse;
+import org.twitter4j.core.internal.json.RateLimitStatusJSONImpl;
 
 import java.io.IOException;
 import java.util.List;

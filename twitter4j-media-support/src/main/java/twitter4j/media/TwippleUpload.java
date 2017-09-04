@@ -16,7 +16,7 @@
 
 package twitter4j.media;
 
-import twitter4j.HttpParameter;
+import org.twitter4j.core.internal.http.HttpParameter;
 import org.twitter4j.core.TwitterException;
 import org.twitter4j.core.auth.OAuthAuthorization;
 import org.twitter4j.core.conf.Configuration;

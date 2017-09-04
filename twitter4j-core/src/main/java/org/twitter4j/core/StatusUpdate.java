@@ -16,8 +16,8 @@
 
 package org.twitter4j.core;
 
-import twitter4j.HttpParameter;
-import twitter4j.StringUtil;
+import org.twitter4j.core.internal.http.HttpParameter;
+import org.twitter4j.core.internal.utils.StringUtil;
 
 import java.io.File;
 import java.io.InputStream;

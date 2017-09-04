@@ -16,8 +16,8 @@
 
 package org.twitter4j.core.auth;
 
-import twitter4j.HttpResponse;
 import org.twitter4j.core.TwitterException;
+import org.twitter4j.core.internal.http.HttpResponse;
 
 import javax.crypto.spec.SecretKeySpec;
 
@@ -39,7 +39,7 @@ abstract class OAuthToken implements java.io.Serializable {
         this.tokenSecret = tokenSecret;
     }
 
-    OAuthToken(HttpResponse response) throws TwitterException {
+    OAuthToken(final HttpResponse response) throws TwitterException {
         this(response.asString());
     }
 

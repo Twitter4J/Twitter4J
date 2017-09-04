@@ -2,7 +2,6 @@ package org.twitter4j.core;
 
 import com.esotericsoftware.kryo.Kryo;
 import junit.framework.TestCase;
-import org.twitter4j.core.*;
 
 import java.nio.ByteBuffer;
 
@@ -23,8 +22,8 @@ public class KryoSerializationTest extends TestCase {
         kryo.register(MediaEntity[].class);
         kryo.register(SymbolEntity[].class);
         kryo.register(UserMentionEntity[].class);
-        kryo.register(Class.forName("twitter4j.UserJSONImpl"));
-        kryo.register(Class.forName("twitter4j.StatusJSONImpl"));
+        kryo.register(Class.forName("org.twitter4j.core.internal.json.UserJSONImpl"));
+        kryo.register(Class.forName("org.twitter4j.core.internal.json.StatusJSONImpl"));
     }
 
     public void testKryoSerialization() throws TwitterException, ClassNotFoundException {
@@ -36,7 +35,7 @@ public class KryoSerializationTest extends TestCase {
         System.out.println(buffer.position() + " vs. " + TEST_STATUS_JSON.length());
         buffer.rewind();
 
-        Status deserializedStatus = (Status) kryo.readObject(buffer, Class.forName("twitter4j.StatusJSONImpl"));
+        Status deserializedStatus = (Status) kryo.readObject(buffer, Class.forName("org.twitter4j.core.internal.json.StatusJSONImpl"));
         assertNotNull(deserializedStatus);
         assertEquals(status, deserializedStatus);
     }

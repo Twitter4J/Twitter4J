@@ -16,8 +16,8 @@
 
 package org.twitter4j.core;
 
-import twitter4j.StringUtil;
 import junit.framework.TestCase;
+import org.twitter4j.core.internal.utils.StringUtil;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -16,7 +16,7 @@
 
 package org.twitter4j.core.auth;
 
-import twitter4j.HttpResponse;
+import org.twitter4j.core.internal.http.HttpResponse;
 import org.twitter4j.core.TwitterException;
 
 /**

@@ -16,11 +16,14 @@
 
 package twitter4j.examples.async;
 
+import org.twitter4j.async.AsyncTwitter;
+import org.twitter4j.async.AsyncTwitterFactory;
+import org.twitter4j.async.TwitterAdapter;
+import org.twitter4j.async.TwitterMethod;
 import org.twitter4j.core.Status;
 import org.twitter4j.core.TwitterException;
-import twitter4j.*;
 
-import static twitter4j.TwitterMethod.UPDATE_STATUS;
+import static org.twitter4j.async.TwitterMethod.UPDATE_STATUS;
 
 /**
  * <p>This is a code example of Twitter4J async API.<br>

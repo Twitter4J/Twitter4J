@@ -23,6 +23,9 @@ import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import org.twitter4j.core.*;
+import org.twitter4j.core.internal.http.HttpRequest;
+import org.twitter4j.core.internal.http.RequestMethod;
+import org.twitter4j.core.internal.json.JSONException;
 
 import java.lang.reflect.Field;
 

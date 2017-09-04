@@ -17,11 +17,7 @@
 package org.twitter4j.core;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.HashtagEntity;
-import org.twitter4j.core.MediaEntity;
-import org.twitter4j.core.URLEntity;
-import org.twitter4j.core.UserMentionEntity;
-import twitter4j.*;
+import org.twitter4j.core.internal.json.*;
 
 public class HTMLEntityTest extends TestCase {
     public HTMLEntityTest(String name) {

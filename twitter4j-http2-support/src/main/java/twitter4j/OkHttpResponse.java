@@ -18,6 +18,9 @@
 package twitter4j;
 
 import okhttp3.*;
+import org.twitter4j.core.internal.http.HttpClientConfiguration;
+import org.twitter4j.core.internal.http.HttpResponse;
+import org.twitter4j.core.internal.http.StreamingGZIPInputStream;
 
 import java.io.*;
 import java.util.HashMap;

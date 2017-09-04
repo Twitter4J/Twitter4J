@@ -16,7 +16,10 @@
 
 package org.twitter4j.core;
 
-import twitter4j.*;
+import org.twitter4j.core.internal.http.*;
+import org.twitter4j.core.internal.json.JSONImplFactory;
+import org.twitter4j.core.internal.json.ObjectFactory;
+import org.twitter4j.core.internal.json.UserJSONImpl;
 import org.twitter4j.core.auth.*;
 import org.twitter4j.core.conf.Configuration;
 import org.twitter4j.core.util.function.Consumer;
@@ -27,7 +30,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static twitter4j.HttpResponseCode.*;
+import static org.twitter4j.core.internal.http.HttpResponseCode.ENHANCE_YOUR_CLAIM;
+import static org.twitter4j.core.internal.http.HttpResponseCode.SERVICE_UNAVAILABLE;
+import static org.twitter4j.core.internal.http.HttpResponseCode.TOO_MANY_REQUESTS;
+
 
 /**
  * Base class of Twitter / AsyncTwitter / TwitterStream supports OAuth.

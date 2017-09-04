@@ -17,7 +17,10 @@
 package twitter4j.examples.stream;
 
 import org.twitter4j.core.*;
-import twitter4j.*;
+import org.twitter4j.stream.StallWarning;
+import org.twitter4j.stream.TwitterStream;
+import org.twitter4j.stream.TwitterStreamFactory;
+import org.twitter4j.stream.UserStreamListener;
 
 /**
  * <p>

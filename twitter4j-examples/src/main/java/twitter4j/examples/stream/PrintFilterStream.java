@@ -19,7 +19,7 @@ package twitter4j.examples.stream;
 import org.twitter4j.core.Status;
 import org.twitter4j.core.StatusDeletionNotice;
 import org.twitter4j.core.TwitterException;
-import twitter4j.*;
+import org.twitter4j.stream.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

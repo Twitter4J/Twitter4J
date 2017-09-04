@@ -17,10 +17,10 @@
 
 package org.twitter4j.core;
 
-import twitter4j.HttpParameter;
-import twitter4j.HttpResponse;
-import twitter4j.JSONException;
-import twitter4j.StringUtil;
+import org.twitter4j.core.internal.http.HttpParameter;
+import org.twitter4j.core.internal.http.HttpResponse;
+import org.twitter4j.core.internal.json.JSONException;
+import org.twitter4j.core.internal.utils.StringUtil;
 import org.twitter4j.core.api.*;
 import org.twitter4j.core.auth.Authorization;
 import org.twitter4j.core.conf.Configuration;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static twitter4j.HttpParameter.getParameterArray;
+import static org.twitter4j.core.internal.http.HttpParameter.getParameterArray;
 
 /**
  * A java representation of the <a href="https://dev.twitter.com/docs/api">Twitter REST API</a><br>

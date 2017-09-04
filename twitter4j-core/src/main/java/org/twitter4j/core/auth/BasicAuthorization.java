@@ -16,15 +16,18 @@
 
 package org.twitter4j.core.auth;
 
-import twitter4j.BASE64Encoder;
-import twitter4j.HttpRequest;
+
+import org.twitter4j.core.internal.http.BASE64Encoder;
+import org.twitter4j.core.internal.http.HttpRequest;
+
+import java.io.Serializable;
 
 /**
  * An authentication implementation implements Basic authentication
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class BasicAuthorization implements Authorization, java.io.Serializable {
+public class BasicAuthorization implements Authorization, Serializable {
 
     private static final long serialVersionUID = 7420629998989177351L;
     private final String userId;

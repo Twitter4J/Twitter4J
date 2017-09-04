@@ -17,7 +17,8 @@
 package org.twitter4j.core.auth;
 
 import org.twitter4j.core.TwitterException;
-import twitter4j.*;
+import org.twitter4j.core.internal.http.*;
+import org.twitter4j.core.internal.logging.Logger;
 import org.twitter4j.core.conf.Configuration;
 
 import javax.crypto.Mac;

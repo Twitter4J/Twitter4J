@@ -16,7 +16,8 @@
 
 package org.twitter4j.core.auth;
 
-import twitter4j.HttpRequest;
+
+import org.twitter4j.core.internal.http.HttpRequest;
 
 /**
  * An interface represents credentials.

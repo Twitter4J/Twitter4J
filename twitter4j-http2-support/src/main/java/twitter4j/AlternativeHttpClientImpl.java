@@ -24,6 +24,8 @@ import okio.Okio;
 import okio.Source;
 import org.twitter4j.core.TwitterException;
 import org.twitter4j.core.conf.ConfigurationContext;
+import org.twitter4j.core.internal.http.*;
+import org.twitter4j.core.internal.logging.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;

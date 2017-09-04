@@ -16,11 +16,11 @@
 
 package twitter4j.examples.lambda;
 
-import twitter4j.FilterQuery;
+import org.twitter4j.stream.FilterQuery;
 import org.twitter4j.core.Status;
-import twitter4j.StatusAdapter;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
+import org.twitter4j.stream.StatusAdapter;
+import org.twitter4j.stream.TwitterStream;
+import org.twitter4j.stream.TwitterStreamFactory;
 
 /**
  * example code to explain lambda expression. Prints tweets containing twitter4j or #twitter4j.

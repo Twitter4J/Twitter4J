@@ -1,9 +1,8 @@
 package org.twitter4j.core;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.MediaEntity;
-import twitter4j.JSONObject;
-import twitter4j.MediaEntityJSONImpl;
+import org.twitter4j.core.internal.json.JSONObject;
+import org.twitter4j.core.internal.json.MediaEntityJSONImpl;
 
 /**
  * @author Hiroaki TAKEUCHI

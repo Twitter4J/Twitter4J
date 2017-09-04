@@ -17,7 +17,7 @@
 
 package org.twitter4j.core;
 
-import twitter4j.HttpParameter;
+import org.twitter4j.core.internal.http.HttpParameter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

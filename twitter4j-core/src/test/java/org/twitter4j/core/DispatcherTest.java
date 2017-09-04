@@ -18,8 +18,8 @@ package org.twitter4j.core;
 
 import junit.framework.TestCase;
 import org.twitter4j.core.conf.ConfigurationContext;
-import twitter4j.Dispatcher;
-import twitter4j.DispatcherFactory;
+import org.twitter4j.core.internal.async.Dispatcher;
+import org.twitter4j.core.internal.async.DispatcherFactory;
 
 import java.util.Map;
 

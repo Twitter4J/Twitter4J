@@ -10,18 +10,18 @@
 
     <bean id="twitterFactory" class="org.twitter4j.core.TwitterFactory"/>
 
-    <bean id="asyncTwitterFactory" class="twitter4j.AsyncTwitterFactory"/>
+    <bean id="asyncTwitterFactory" class="org.twitter4j.async.AsyncTwitterFactory"/>
 
-    <bean id="twitterStreamFactory" class="twitter4j.TwitterStreamFactory"/>
+    <bean id="twitterStreamFactory" class="org.twitter4j.stream.TwitterStreamFactory"/>
     <bean id="twitter" class="org.twitter4j.core.Twitter"
           factory-bean="twitterFactory" factory-method="getInstance"
           depends-on="twitterFactory">
     </bean>
-    <bean id="asyncTwitter" class="twitter4j.AsyncTwitter"
+    <bean id="asyncTwitter" class="org.twitter4j.async.AsyncTwitter"
           factory-bean="asyncTwitterFactory" factory-method="getInstance"
           depends-on="asyncTwitterFactory">
     </bean>
-    <bean id="twitterStream" class="twitter4j.TwitterStream"
+    <bean id="twitterStream" class="org.twitter4j.stream.TwitterStream"
           factory-bean="twitterStreamFactory" factory-method="getInstance">
     </bean>
     <!--

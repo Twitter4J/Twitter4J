@@ -16,8 +16,8 @@
 
 package org.twitter4j.core.conf;
 
-import twitter4j.HttpClientConfiguration;
 import org.twitter4j.core.auth.AuthorizationConfiguration;
+import org.twitter4j.core.internal.http.HttpClientConfiguration;
 
 import java.util.Properties;
 

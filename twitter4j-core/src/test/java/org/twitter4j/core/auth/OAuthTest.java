@@ -17,7 +17,7 @@
 package org.twitter4j.core.auth;
 
 import org.twitter4j.core.*;
-import twitter4j.*;
+import org.twitter4j.core.internal.http.*;
 import org.twitter4j.core.conf.Configuration;
 import org.twitter4j.core.conf.ConfigurationBuilder;
 import org.twitter4j.core.conf.ConfigurationContext;

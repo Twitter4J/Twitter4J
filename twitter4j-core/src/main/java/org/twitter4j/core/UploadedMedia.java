@@ -15,9 +15,9 @@
  */
 package org.twitter4j.core;
 
-import twitter4j.JSONException;
-import twitter4j.JSONObject;
-import twitter4j.ParseUtil;
+import org.twitter4j.core.internal.json.JSONException;
+import org.twitter4j.core.internal.json.JSONObject;
+import org.twitter4j.core.internal.json.ParseUtil;
 
 /**
  * Represents result of "/1.1/media/upload.json"

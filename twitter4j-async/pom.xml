@@ -19,8 +19,7 @@
     <scm>
         <url>https://github.com/yusuke/twitter4j</url>
         <connection>scm:git:https://github.com/yusuke/twitter4j.git</connection>
-        <developerConnection>scm:https://github.com/yusuke/twitter4j.git
-        </developerConnection>
+        <developerConnection>scm:https://github.com/yusuke/twitter4j.git</developerConnection>
 
         <tag>4.0.6</tag>
     </scm>
@@ -47,8 +46,7 @@
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
             <id>org.twitter4j</id>
@@ -134,10 +132,8 @@
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF
                         </manifestFile>
                         <manifest>
-                            <addDefaultSpecificationEntries>true
-                            </addDefaultSpecificationEntries>
-                            <addDefaultImplementationEntries>true
-                            </addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
                 </configuration>

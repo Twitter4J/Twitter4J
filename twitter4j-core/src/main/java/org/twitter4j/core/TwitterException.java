@@ -16,11 +16,16 @@
 
 package org.twitter4j.core;
 
-import twitter4j.*;
+import org.twitter4j.core.internal.http.HttpResponse;
+import org.twitter4j.core.internal.http.HttpResponseCode;
+import org.twitter4j.core.internal.json.JSONException;
+import org.twitter4j.core.internal.json.JSONImplFactory;
+import org.twitter4j.core.internal.json.JSONObject;
+import org.twitter4j.core.internal.json.ParseUtil;
 
 import java.util.List;
 
-import static twitter4j.ParseUtil.getInt;
+import static org.twitter4j.core.internal.json.ParseUtil.getInt;
 
 /**
  * An exception class that will be thrown when TwitterAPI calls are failed.<br>

@@ -15,8 +15,8 @@
  */
 package org.twitter4j.core;
 
-import twitter4j.HttpClient;
-import twitter4j.HttpClientFactory;
+import org.twitter4j.core.internal.http.HttpClient;
+import org.twitter4j.core.internal.http.HttpClientFactory;
 
 import java.io.File;
 import java.io.FileInputStream;

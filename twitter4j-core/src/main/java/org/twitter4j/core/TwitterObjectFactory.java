@@ -1,6 +1,6 @@
 package org.twitter4j.core;
 
-import twitter4j.*;
+import org.twitter4j.core.internal.json.*;
 
 import java.util.HashMap;
 import java.util.Map;

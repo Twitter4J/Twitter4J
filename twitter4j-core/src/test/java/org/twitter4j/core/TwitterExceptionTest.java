@@ -17,8 +17,7 @@
 package org.twitter4j.core;
 
 import junit.framework.TestCase;
-import org.twitter4j.core.TwitterException;
-import twitter4j.JSONObject;
+import org.twitter4j.core.internal.json.JSONObject;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
