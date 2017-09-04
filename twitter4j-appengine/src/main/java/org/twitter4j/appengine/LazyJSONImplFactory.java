@@ -49,7 +49,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<Status> createStatusList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<Status>() {
             private static final long serialVersionUID = 7409380696188770069L;
 
             @Override
@@ -66,7 +66,7 @@ class LazyJSONImplFactory implements ObjectFactory {
     }
 
     public ResponseList<Trends> createTrendsList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<Trends>() {
             private static final long serialVersionUID = 4409084320158745041L;
 
             @Override
@@ -95,7 +95,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<User> createUserListFromJSONArray(final HttpResponse res) throws TwitterException {
-        return new LazyPagableResponseList<>() {
+        return new LazyPagableResponseList<User>() {
             private static final long serialVersionUID = -4560012795625599671L;
 
             @Override
@@ -208,7 +208,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<Friendship> createFriendshipList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<Friendship>() {
             private static final long serialVersionUID = 2000670419499499826L;
 
             @Override
@@ -235,7 +235,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<SavedSearch> createSavedSearchList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<SavedSearch>() {
             private static final long serialVersionUID = 5885155689227833223L;
 
             @Override
@@ -247,7 +247,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<Location> createLocationList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<Location>() {
             private static final long serialVersionUID = -5502050661491788149L;
 
             @Override
@@ -264,7 +264,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<Place> createPlaceList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<Place>() {
             private static final long serialVersionUID = 3477694658457823153L;
 
             @Override
@@ -291,7 +291,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<HelpResources.Language> createLanguageList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<>() {
+        return new LazyResponseList<HelpResources.Language>() {
             private static final long serialVersionUID = -7722971198897121377L;
 
             @Override
