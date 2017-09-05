@@ -55,7 +55,7 @@ public class TwitterFactory implements java.io.Serializable {
 
         String className = null;
         if (gaeDetected) {
-            final String APP_ENGINE_TWITTER_IMPL = "twitter4j.AppEngineTwitterImpl";
+            final String APP_ENGINE_TWITTER_IMPL = "org.twitter4j.appengine.AppEngineTwitterImpl";
             try {
                 Class.forName(APP_ENGINE_TWITTER_IMPL);
                 className = APP_ENGINE_TWITTER_IMPL;
@@ -63,7 +63,7 @@ public class TwitterFactory implements java.io.Serializable {
             }
         }
         if (className == null) {
-            className = "twitter4j.TwitterImpl";
+            className = "org.twitter4j.core.TwitterImpl";
         }
         Constructor<Twitter> constructor;
         Class clazz;
