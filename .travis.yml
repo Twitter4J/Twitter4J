@@ -11,3 +11,5 @@ group: edge
 cache:
   directories:
   - $HOME/.m2
+
+script: mvn package -DskipTests=true -B
