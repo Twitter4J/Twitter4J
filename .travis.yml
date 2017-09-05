@@ -4,6 +4,8 @@ jdk:
  - oraclejdk8
  - oraclejdk9
 
+sudo: required
+
 dist: trusty
 
 group: edge
@@ -13,3 +15,7 @@ cache:
   - $HOME/.m2
 
 script: mvn package -DskipTests=true -B
+
+addons:
+  apt:
+    packages: oracle-java9-installer
