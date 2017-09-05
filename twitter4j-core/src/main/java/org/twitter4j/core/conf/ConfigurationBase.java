@@ -39,62 +39,62 @@ public class ConfigurationBase implements Configuration, Serializable {
     private String password = null;
     private HttpClientConfiguration httpConf;
 
-    protected int httpStreamingReadTimeout = 40 * 1000;
-    protected int httpRetryCount = 0;
-    protected int httpRetryIntervalSeconds = 5;
+    private int httpStreamingReadTimeout = 40 * 1000;
+    private int httpRetryCount = 0;
+    private int httpRetryIntervalSeconds = 5;
 
-    protected String oAuthConsumerKey = null;
-    protected String oAuthConsumerSecret = null;
-    protected String oAuthAccessToken = null;
-    protected String oAuthAccessTokenSecret = null;
-    protected String oAuth2TokenType;
-    protected String oAuth2AccessToken;
-    protected String oAuth2Scope;
-    protected String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
-    protected String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
-    protected String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
-    protected String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
-    protected String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
-    protected String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
+    private String oAuthConsumerKey = null;
+    private String oAuthConsumerSecret = null;
+    private String oAuthAccessToken = null;
+    private String oAuthAccessTokenSecret = null;
+    private String oAuth2TokenType;
+    private String oAuth2AccessToken;
+    private String oAuth2Scope;
+    private String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
+    private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
+    private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
+    private String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
+    private String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
+    private String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
 
-    protected String restBaseURL = "https://api.twitter.com/1.1/";
-    protected String streamBaseURL = "https://stream.twitter.com/1.1/";
-    protected String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
-    protected String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
-    protected String uploadBaseURL = "https://upload.twitter.com/1.1/";
+    private String restBaseURL = "https://api.twitter.com/1.1/";
+    private String streamBaseURL = "https://stream.twitter.com/1.1/";
+    private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
+    private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
+    private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
-    protected String dispatcherImpl = "twitter4j.DispatcherImpl";
-    protected int asyncNumThreads = 1;
+    private String dispatcherImpl = "org.twitter4j.core.internal.async.DispatcherImpl";
+    private int asyncNumThreads = 1;
 
-    protected String loggerFactory = null;
+    private String loggerFactory = null;
 
-    protected long contributingTo = -1L;
+    private long contributingTo = -1L;
 
-    protected boolean includeMyRetweetEnabled = true;
-    protected boolean includeEntitiesEnabled = true;
-    protected boolean trimUserEnabled = false;
-    protected boolean includeExtAltTextEnabled = true;
-    protected boolean tweetModeExtended = false;
-    protected boolean includeEmailEnabled = false;
+    private boolean includeMyRetweetEnabled = true;
+    private boolean includeEntitiesEnabled = true;
+    private boolean trimUserEnabled = false;
+    private boolean includeExtAltTextEnabled = true;
+    private boolean tweetModeExtended = false;
+    private boolean includeEmailEnabled = false;
 
-    protected boolean jsonStoreEnabled = false;
+    private boolean jsonStoreEnabled = false;
 
-    protected boolean mbeanEnabled = false;
+    private boolean mbeanEnabled = false;
 
-    protected boolean userStreamRepliesAllEnabled = false;
-    protected boolean userStreamWithFollowingsEnabled = true;
-    protected boolean stallWarningsEnabled = true;
+    private boolean userStreamRepliesAllEnabled = false;
+    private boolean userStreamWithFollowingsEnabled = true;
+    private boolean stallWarningsEnabled = true;
 
-    protected boolean applicationOnlyAuthEnabled = false;
+    private boolean applicationOnlyAuthEnabled = false;
 
-    protected String mediaProvider = "TWITTER";
-    protected String mediaProviderAPIKey = null;
-    protected Properties mediaProviderParameters = null;
-    protected boolean daemonEnabled = true;
+    private String mediaProvider = "TWITTER";
+    private String mediaProviderAPIKey = null;
+    private Properties mediaProviderParameters = null;
+    private boolean daemonEnabled = true;
 
-    protected String streamThreadName = "";
+    private String streamThreadName = "";
 
-    protected ConfigurationBase() {
+    ConfigurationBase() {
         httpConf = new MyHttpClientConfiguration(null // proxy host
                 , null // proxy user
                 , null // proxy password

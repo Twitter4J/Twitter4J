@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-final class DispatcherImpl implements Dispatcher {
+public final class DispatcherImpl implements Dispatcher {
     private final ExecutorService executorService;
     private static final Logger logger = Logger.getLogger(DispatcherImpl.class);
     private static final long SHUTDOWN_TIME = 5000;

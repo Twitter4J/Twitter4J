@@ -42,7 +42,13 @@ public final class HttpClientFactory {
         }
         if (null == clazz) {
             try {
-                clazz = Class.forName("twitter4j.AlternativeHttpClientImpl");
+                clazz = Class.forName("org.twitter4j.http2.AlternativeHttpClientImpl");
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
+        if (null == clazz) {
+            try {
+                clazz = Class.forName("org.twitter4j.appengine.AlternativeHttpClientImpl");
             } catch (ClassNotFoundException ignore) {
             }
         }
