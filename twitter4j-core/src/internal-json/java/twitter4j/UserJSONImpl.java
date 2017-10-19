@@ -256,6 +256,11 @@ import java.util.Date;
         return toResizedURL(profileImageUrl, "");
     }
 
+    @Override
+    public String get400x400ProfileImageURL() {
+        return toResizedURL(profileImageUrl, "_400x400");
+    }
+
     private String toResizedURL(String originalURL, String sizeSuffix) {
         if (null != originalURL) {
             int index = originalURL.lastIndexOf("_");
@@ -288,6 +293,11 @@ import java.util.Date;
     @Override
     public String getOriginalProfileImageURLHttps() {
         return toResizedURL(profileImageUrlHttps, "");
+    }
+
+    @Override
+    public String get400x400ProfileImageURLHttps() {
+        return toResizedURL(profileImageUrlHttps, "_400x400");
     }
 
     @Override

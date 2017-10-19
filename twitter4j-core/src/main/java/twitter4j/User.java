@@ -87,6 +87,8 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getOriginalProfileImageURL();
 
+    String get400x400ProfileImageURL();
+
     String getProfileImageURLHttps();
 
     String getBiggerProfileImageURLHttps();
@@ -94,6 +96,8 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     String getMiniProfileImageURLHttps();
 
     String getOriginalProfileImageURLHttps();
+
+    String get400x400ProfileImageURLHttps();
 
     /**
      * Tests if the user has not uploaded their own avatar
