@@ -67,7 +67,7 @@ public interface TweetsResourcesAsync {
 
     /**
      * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
-     * <br>Statuses over 140 characters will be forcibly truncated.
+     * <br>Statuses over 280 characters will be forcibly truncated.
      * <br>This method calls https://api.twitter.com/1.1/statuses/update
      *
      * @param status the latest status to be updated.
