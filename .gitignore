@@ -11,6 +11,7 @@ twitter4j-async/src/test/resources/test.properties
 twitter4j-media-support/src/test/resources/twitter4j.properties
 twitter4j-examples/src/main/resources/twitter4j.properties
 twitter4j-http2-support/src/test/resources/test.properties
+twitter4j-http2-support/src/test/resources/twitter4j.properties
 .DS_Store
 ~$*
 .classpath

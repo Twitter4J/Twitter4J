@@ -86,8 +86,8 @@ public class TimeSpanConverterTest extends TestCase {
         converter = new TimeSpanConverter(locale);
         assertTimeSpanString("Ahora", System.currentTimeMillis() - second);
         assertTimeSpanString("hace 4 segundos", System.currentTimeMillis() - second * 4);
-        assertTimeSpanString("hace 1 munito", System.currentTimeMillis() - second * 61);
-        assertTimeSpanString("hace 3 munitos", System.currentTimeMillis() - minute * 3);
+        assertTimeSpanString("hace 1 minuto", System.currentTimeMillis() - second * 61);
+        assertTimeSpanString("hace 3 minutos", System.currentTimeMillis() - minute * 3);
         assertTimeSpanString("hace 1 hora", System.currentTimeMillis() - hour);
         assertTimeSpanString("hace 3 horas", System.currentTimeMillis() - hour * 3);
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));

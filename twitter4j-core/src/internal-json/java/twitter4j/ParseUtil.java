@@ -50,6 +50,8 @@ final class ParseUtil {
             }
         } catch (JSONException jsone) {
             return null;
+        } catch (Exception ex) {
+            return null;
         }
     }
 

@@ -54,7 +54,10 @@ package twitter4j;
             setStart(indicesArray.getInt(0));
             setEnd(indicesArray.getInt(1));
 
-            this.url = json.getString("url");
+            if (!json.isNull("url")) {
+                this.url = json.getString("url");
+            }
+
             if (!json.isNull("expanded_url")) {
                 // sets expandedURL to url if expanded_url is null
                 // http://jira.twitter4j.org/browse/TFJ-704

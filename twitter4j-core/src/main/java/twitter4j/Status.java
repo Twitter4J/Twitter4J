@@ -48,6 +48,10 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     String getText();
 
+    int getDisplayTextRangeStart();
+
+    int getDisplayTextRangeEnd();
+
     /**
      * Returns the source
      *

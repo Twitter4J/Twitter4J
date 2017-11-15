@@ -67,7 +67,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
 
-        assertTrue(status.getText().matches(dateStr + "test http://t.co/.* @" + id2.screenName + " #twitter4jtest"));
+        assertTrue(status.getText().matches(dateStr + "test https://t.co/.* @" + id2.screenName + " #twitter4jtest"));
 
         // http://jira.twitter4j.org/browse/TFJ-715
         // current_user_retweet contains only id
@@ -87,7 +87,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
         Status status2 = twitter2.updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(TwitterObjectFactory.getRawJSON(status2));
         assertEquals(status2, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status2)));
-        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test http://t.co/.* @" + id2.screenName + " #twitter4jtest"));
+        assertTrue(status2.getText().matches("@" + id1.screenName + " " + dateStr + "test https://t.co/.* @" + id2.screenName + " #twitter4jtest"));
         assertEquals(status.getId(), status2.getInReplyToStatusId());
         assertEquals(id1.id, status2.getInReplyToUserId());
         status = twitter1.destroyStatus(status.getId());
@@ -116,7 +116,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         File randomFile = getRandomlyChosenFile();
         FileInputStream fis = new FileInputStream(randomFile);
-        UploadedMedia media2 = twitter1.uploadMedia(randomFile.getName(), fis);
+        UploadedMedia media2 = twitter1.uploadMedia("fromInputStream", fis);
 
         assertNotNull(media2.getMediaId());
         assertNotNull(media2.getSize());
@@ -148,7 +148,7 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         assertNotNull(oembed.getHtml());
         assertEquals("Jason Costa", oembed.getAuthorName());
-        assertEquals("https://twitter.com/jasoncosta/statuses/240192632003911681", oembed.getURL());
+        assertEquals("https://twitter.com/jasoncosta/status/240192632003911681", oembed.getURL());
         assertEquals("1.0", oembed.getVersion());
         assertEquals(3153600000L, oembed.getCacheAge());
         assertEquals("https://twitter.com/jasoncosta", oembed.getAuthorURL());

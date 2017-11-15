@@ -20,7 +20,6 @@ public class KryoSerializationTest extends TestCase {
         kryo.register(twitter4j.HashtagEntity[].class);
         kryo.register(twitter4j.URLEntity[].class);
         kryo.register(twitter4j.MediaEntity[].class);
-        kryo.register(twitter4j.ExtendedMediaEntity[].class);
         kryo.register(twitter4j.SymbolEntity[].class);
         kryo.register(twitter4j.UserMentionEntity[].class);
         kryo.register(Class.forName("twitter4j.UserJSONImpl"));

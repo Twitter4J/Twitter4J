@@ -14,7 +14,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         //when
         JSONObject json = new JSONObject(rawJson);
-        ExtendedMediaEntityJSONImpl mediaEntity = new ExtendedMediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
+        MediaEntityJSONImpl mediaEntity = new MediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
 
         //then
         assertEquals(560070131976392705L, mediaEntity.getId());
@@ -27,7 +27,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         assertEquals(30033, mediaEntity.getVideoDurationMillis());
 
-        ExtendedMediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
+        MediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
         assertEquals(5, variants.length);
 
         assertEquals(2176000, variants[0].getBitrate());
@@ -40,6 +40,7 @@ public class MediaEntityJSONImplTest extends TestCase {
         assertEquals("https://video.twimg.com/ext_tw_video/560070131976392705/pu/pl/r1kgzh5PmLgium3-.m3u8",
                 variants[4].getUrl());
 
+        assertNull(mediaEntity.getExtAltText());
     }
 
 
@@ -50,7 +51,7 @@ public class MediaEntityJSONImplTest extends TestCase {
 
         //when
         JSONObject json = new JSONObject(rawJson);
-        ExtendedMediaEntityJSONImpl mediaEntity = new ExtendedMediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
+        MediaEntityJSONImpl mediaEntity = new MediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
 
         //then
         assertEquals(100, mediaEntity.getId());
@@ -64,13 +65,33 @@ public class MediaEntityJSONImplTest extends TestCase {
         // duration_millis is not appeared in animated_gif
         assertEquals(0, mediaEntity.getVideoDurationMillis());
 
-        ExtendedMediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
+        MediaEntity.Variant[] variants = mediaEntity.getVideoVariants();
         assertEquals(2, variants.length);
 
         assertEquals(123, variants[0].getBitrate());
         assertEquals("video/mp4", variants[0].getContentType());
         assertEquals("variantUrl1",
                 variants[0].getUrl());
+
+        assertNull(mediaEntity.getExtAltText());
+    }
+
+
+    public void testExtAltText() throws Exception {
+
+        //given from https://api.twitter.com/1.1/statuses/show/715085258010406912.json?include_ext_alt_text=true
+        String rawJson = "{\"extended_entities\":  {\"media\":  [{\"id\": 715085245385740300,\"id_str\": \"715085245385740288\",\"indices\":  [10,33],\"media_url\": \"http://pbs.twimg.com/media/Cex-PfNXEAA5X9y.jpg\",\"media_url_https\": \"https://pbs.twimg.com/media/Cex-PfNXEAA5X9y.jpg\",\"url\": \"https://t.co/30svb05LET\",\"display_url\": \"pic.twitter.com/30svb05LET\",\"expanded_url\": \"http://twitter.com/takke/status/715085258010406912/photo/1\",\"type\": \"photo\",\"sizes\":  {\"medium\":  {\"w\": 600,\"h\": 140,\"resize\": \"fit\"},\"thumb\":  {\"w\": 150,\"h\": 150,\"resize\": \"crop\"},\"small\":  {\"w\": 340,\"h\": 79,\"resize\": \"fit\"},\"large\":  {\"w\": 1024,\"h\": 239,\"resize\": \"fit\"}},\"ext_alt_text\": \"カレーパンマンのパズル的なやつ\"}]}}";
+
+        //when
+        JSONObject json = new JSONObject(rawJson);
+        MediaEntityJSONImpl mediaEntity = new MediaEntityJSONImpl(json.getJSONObject("extended_entities").getJSONArray("media").getJSONObject(0));
+
+        //then
+        assertEquals(715085245385740300L, mediaEntity.getId());
+        assertEquals("http://pbs.twimg.com/media/Cex-PfNXEAA5X9y.jpg",
+                mediaEntity.getMediaURL());
+
+        assertEquals("カレーパンマンのパズル的なやつ", mediaEntity.getExtAltText());
     }
 
 

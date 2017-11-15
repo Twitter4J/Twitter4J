@@ -103,6 +103,7 @@ public interface UsersResourcesAsync {
      * @param profileSidebarBorderColor optional, can be null
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
      * @since Twitter4J 2.0.0
+     * @deprecated Since Twitter4J 4.0.5
      */
     void updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor);
 

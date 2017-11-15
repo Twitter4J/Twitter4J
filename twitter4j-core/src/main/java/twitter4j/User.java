@@ -37,6 +37,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return the name of the user
      */
     String getName();
+    
+    /**
+     * Returns the email of the user, if the app is whitelisted by Twitter
+     *
+     * @return the email of the user
+     */
+    String getEmail();
 
     /**
      * Returns the screen name of the user
