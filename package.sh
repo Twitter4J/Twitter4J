@@ -11,6 +11,7 @@ mkdir $DIR
 mkdir $DIR/twitter4j-core
 cp -r twitter4j-core/src $DIR/twitter4j-core/
 cp twitter4j-core/pom.xml $DIR/twitter4j-core/
+rm $DIR/twitter4j-core/src/test/resources/twitter4j.properties
 rm $DIR/twitter4j-core/src/test/resources/test.properties
 rm $DIR/twitter4j-core/src/test/resources/xauth-test.properties
 
@@ -18,6 +19,8 @@ mkdir $DIR/twitter4j-examples
 cp -r twitter4j-examples/src $DIR/twitter4j-examples/
 cp twitter4j-examples/pom.xml $DIR/twitter4j-examples/
 cp -r twitter4j-examples/bin $DIR/
+rm $DIR/twitter4j-examples/src/main/resources/twitter4j.properties
+rm $DIR/twitter4j-examples/src/test/resources/twitter4j.properties
 
 mkdir $DIR/twitter4j-media-support
 cp -r twitter4j-media-support/src $DIR/twitter4j-media-support/
@@ -41,6 +44,7 @@ mkdir $DIR/twitter4j-http2-support
 cp -r twitter4j-http2-support/src $DIR/twitter4j-http2-support/
 cp twitter4j-http2-support/pom.xml $DIR/twitter4j-http2-support/
 rm $DIR/twitter4j-http2-support/src/test/resources/test.properties
+rm $DIR/twitter4j-http2-support/src/test/resources/twitter4j.properties
 
 cp pom.xml $DIR/pom.xml
 cp LICENSE.txt $DIR/
@@ -128,6 +132,7 @@ unzip twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-jav
 mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-javadoc.jar twitter4j-http2-support/
 # mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION-sources.jar twitter4j-http2-support/
 mv twitter4j-http2-support/target/twitter4j-http2-support-$LATEST_VERSION.jar twitter4j-http2-support/
+rm twitter4j-http2-support/src/test/resources/twitter4j.properties
 
 mkdir lib
 cp ../readme-libs.txt lib

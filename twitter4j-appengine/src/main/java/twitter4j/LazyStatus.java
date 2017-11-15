@@ -81,6 +81,15 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getText();
     }
 
+    @Override
+    public int getDisplayTextRangeStart() {
+        return getTarget().getDisplayTextRangeStart();
+    }
+
+    @Override
+    public int getDisplayTextRangeEnd() {
+        return getTarget().getDisplayTextRangeEnd();
+    }
 
     /**
      * Returns the source
@@ -317,11 +326,6 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getMediaEntities();
     }
     
-    @Override
-    public ExtendedMediaEntity[] getExtendedMediaEntities() {
-        return getTarget().getExtendedMediaEntities();
-    }
-
     @Override
     public SymbolEntity[] getSymbolEntities() {
         return getTarget().getSymbolEntities();

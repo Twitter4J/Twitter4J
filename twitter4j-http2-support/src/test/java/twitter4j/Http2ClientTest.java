@@ -16,11 +16,12 @@
 
 package twitter4j;
 
-import com.squareup.okhttp.ConnectionPool;
-import com.squareup.okhttp.OkHttpClient;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 
 import java.lang.reflect.Field;
 
@@ -61,12 +62,10 @@ public class Http2ClientTest extends TestCase {
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
 
-        ConnectionPool p = client.getConnectionPool();
-        assertEquals(1, p.getConnectionCount());
-        assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getMultiplexedConnectionCount());
+        ConnectionPool p = client.connectionPool();
+        assertEquals(1, p.connectionCount());
 
-        assertEquals("h2", http.getLastRequestProtocol());
+        assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
     }
 
     public void testSpdy() throws Exception {
@@ -80,12 +79,10 @@ public class Http2ClientTest extends TestCase {
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
 
-        ConnectionPool p = client.getConnectionPool();
-        assertEquals(1, p.getConnectionCount());
-        assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getMultiplexedConnectionCount());
+        ConnectionPool p = client.connectionPool();
+        assertEquals(1, p.connectionCount());
 
-        assertEquals("spdy/3.1", http.getLastRequestProtocol());
+        assertEquals(Protocol.SPDY_3, http.getLastRequestProtocol());
     }
 
     public void testHttp2() throws Exception {
@@ -99,12 +96,10 @@ public class Http2ClientTest extends TestCase {
         OkHttpClient client = (OkHttpClient) f.get(http);
         assertNotNull("ensure that OkHttpClient is used", client);
 
-        ConnectionPool p = client.getConnectionPool();
-        assertEquals(1, p.getConnectionCount());
-        assertEquals(0, p.getHttpConnectionCount());
-        assertEquals(1, p.getMultiplexedConnectionCount());
+        ConnectionPool p = client.connectionPool();
+        assertEquals(1, p.connectionCount());
 
-        assertEquals("h2", http.getLastRequestProtocol());
+        assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
     }
 
     public void testNoSpdy() throws Exception {
@@ -118,12 +113,10 @@ public class Http2ClientTest extends TestCase {
         f.setAccessible(true);
         OkHttpClient client = (OkHttpClient) f.get(http);
 
-        ConnectionPool p = client.getConnectionPool();
-        assertEquals(1, p.getConnectionCount());
-        assertEquals(1, p.getHttpConnectionCount());
-        assertEquals(0, p.getMultiplexedConnectionCount());
+        ConnectionPool p = client.connectionPool();
+        assertEquals(1, p.connectionCount());
 
-        assertEquals("http/1.1", http.getLastRequestProtocol());
+        assertEquals(Protocol.HTTP_1_1, http.getLastRequestProtocol());
     }
 
     private AlternativeHttpClientImpl callOembed() throws TwitterException, JSONException {
@@ -135,5 +128,16 @@ public class Http2ClientTest extends TestCase {
         http.request(req).asJSONObject();
 
         return http;
+    }
+    
+    public void testUploadMediaFromStream() throws Exception {
+        Twitter twitter = TwitterFactory.getSingleton();
+        UploadedMedia media2 = twitter.uploadMedia("fromInputStream", 
+                Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
+
+        StatusUpdate update = new StatusUpdate("from input stream");
+        update.setMediaIds(media2.getMediaId());
+        Status status = twitter.updateStatus(update);
+        assertEquals("from input stream", status.getText());
     }
 }

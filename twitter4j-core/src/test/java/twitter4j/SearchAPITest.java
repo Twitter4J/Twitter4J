@@ -63,7 +63,7 @@ public class SearchAPITest extends TwitterTestBase {
         RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
         assertTrue("sinceId", -1 != queryResult.getSinceId());
         assertTrue(1265204883 < queryResult.getMaxId());
-        assertTrue(-1 != queryResult.getRefreshURL().indexOf(queryStr));
+        assertTrue(queryResult.getRefreshURL().contains(queryStr));
         assertEquals(15, queryResult.getCount());
         assertTrue(0 < queryResult.getCompletedIn());
         assertEquals(queryStr + " until:" + dateStr, queryResult.getQuery());
@@ -77,7 +77,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertTrue(-1 != tweets.get(0).getId());
         assertNotNull(tweets.get(0).getUser().getProfileImageURL());
         String source = tweets.get(0).getSource();
-        assertTrue(-1 != source.indexOf("<a href=\"") || "web".equals(source) || "API".equals(source));
+        assertTrue(source.contains("<a href=\"") || "web".equals(source) || "API".equals(source));
 
 
         query = new Query("from:twit4j doesnothit");
@@ -111,7 +111,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertNotNull(queryResult.nextQuery());
 
         query = new Query("\\u5e30%u5e30 <%}& foobar").count(100);
-        QueryResult result = twitter1.search(query);
+        twitter1.search(query);
     }
 
     public void testEasyPaging() throws Exception {
@@ -127,36 +127,35 @@ public class SearchAPITest extends TwitterTestBase {
     }
 
     public void testEasyPaging2() throws Exception {
-        int count=0;
-        
-        Calendar now=Calendar.getInstance();
+        int count = 0;
+
+        Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, 1);
-        String until=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH);
-        
-        Set<Long> maxids=new HashSet<Long>();
+        String until = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+
+        Set<Long> maxids = new HashSet<Long>();
 
         // Don't test since_id here -- it gets clobbered by since
         // Don't test locale here -- only JP is valid
-        // #tbt is "throwback thursday" -- a fabulously popular hashtag
-        Query query=new Query("#tbt")
-            .lang("en")
-            .geoCode(new GeoLocation(40.7903, -73.9597), 10, "mi")
-            .resultType(Query.ResultType.recent)
-            .since("2014-1-1")
-            .until(until);
+        Query query = new Query("starbucks")
+                .lang("en")
+                .geoCode(new GeoLocation(47.6097271, -122.3465704), 10, "mi")
+                .resultType(Query.ResultType.recent)
+                .since("2014-1-1")
+                .until(until);
         do {
-            QueryResult qr=twitter1.search(query);
-            count = count+1;
+            QueryResult qr = twitter1.search(query);
+            count = count + 1;
             query = qr.nextQuery();
             assertNotNull(query);
             assertEquals("en", query.getLang());
             assertTrue(query.getGeocode().endsWith(",10.0mi"));
             assertEquals(Query.ResultType.recent, query.getResultType());
-            assertTrue("max id not set", query.getMaxId()!=-1L);
+            assertTrue("max id not set", query.getMaxId() != -1L);
             assertFalse("max id seen before", maxids.contains(query.getMaxId()));
             maxids.add(query.getMaxId());
         } while (count < 3);
-        
+
         assertTrue("not enough pages for #tbt in test", count >= 3);
     }
 

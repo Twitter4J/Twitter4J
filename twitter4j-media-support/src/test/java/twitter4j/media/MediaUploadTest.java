@@ -57,8 +57,6 @@ public class MediaUploadTest extends TestCase {
         new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
         new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.YFROG.name()).build();
-        new ImageUploadFactory(conf);
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
         new ImageUploadFactory(conf);
     }
@@ -81,18 +79,6 @@ public class MediaUploadTest extends TestCase {
         try {
             ImageUploadFactory factory = new ImageUploadFactory();
             ImageUpload upload = factory.getInstance(MediaProvider.TWITTER);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testYFrogUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.YFROG);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
         } finally {

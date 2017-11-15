@@ -23,6 +23,7 @@ import twitter4j.conf.Configuration;
  * @since Twitter4J 2.2.3
  */
 public class LanguageJSONImpl implements HelpResources.Language {
+    private static final long serialVersionUID = 7494362811767097342L;
     private String name;
     private String code;
     private String status;

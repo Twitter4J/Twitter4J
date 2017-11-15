@@ -1012,23 +1012,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
             final String profileBackgroundColor, final String profileTextColor,
             final String profileLinkColor, final String profileSidebarFillColor,
             final String profileSidebarBorderColor) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_COLORS,
-                listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners)
-                    throws TwitterException {
-                User user = twitter.updateProfileColors(
-                        profileBackgroundColor, profileTextColor,
-                        profileLinkColor, profileSidebarFillColor,
-                        profileSidebarBorderColor);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedProfileColors(user);
-                    } catch (Exception ignore) {
-                    }
-                }
-            }
-        });
+        throw new UnsupportedOperationException("this API is no longer supported. https://twittercommunity.com/t/deprecation-of-account-update-profile-colors/28692");
     }
 
     @Override
