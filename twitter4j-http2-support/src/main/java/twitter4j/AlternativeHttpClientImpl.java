@@ -297,6 +297,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
     }
 
     public OkHttpClient getOkHttpClient() {
+        prepareOkHttpClient();
         return okHttpClient;
     }
 }
