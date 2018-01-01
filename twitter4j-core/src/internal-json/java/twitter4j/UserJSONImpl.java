@@ -257,7 +257,7 @@ import java.util.Date;
     }
 
     private String toResizedURL(String originalURL, String sizeSuffix) {
-        if (null != originalURL) {
+        if (null != originalURL && originalURL.length() >= 1) {
             int index = originalURL.lastIndexOf("_");
             int suffixIndex = originalURL.lastIndexOf(".");
             int slashIndex = originalURL.lastIndexOf("/");
