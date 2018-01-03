@@ -71,6 +71,14 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getId();
     }
 
+    /**
+     * Returns the id_str of the status
+     *
+     * @return the id_str
+     */
+    public String getIdStr() {
+        return getTarget().getIdStr();
+    }
 
     /**
      * Returns the text of the status
@@ -121,6 +129,16 @@ final class LazyStatus implements twitter4j.Status {
      */
     public long getInReplyToStatusId() {
         return getTarget().getInReplyToStatusId();
+    }
+
+    /**
+     * Returns the in_reply_tostatus_id_str
+     *
+     * @return the in_reply_status_id_str
+     * @since Twitter4J 4.0.6
+     */
+    public String getInReplyToStatusIdStr() {
+        return getTarget().getInReplyToStatusIdStr();
     }
 
 

@@ -42,6 +42,14 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     long getId();
 
     /**
+     * Returns the id_str
+     *
+     * @return the id_str
+     * @since Twitter4J 4.0.6
+     */
+    String getIdStr();
+
+    /**
      * Returns the text of the status
      *
      * @return the text (e.g. Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC)
@@ -76,6 +84,14 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @since Twitter4J 1.0.4
      */
     long getInReplyToStatusId();
+
+    /**
+     * Returns the in_reply_status_id_str
+     *
+     * @return the in_reply_status_id_str
+     * @since Twitter4J 4.0.6
+     */
+    String getInReplyToStatusIdStr();
 
     /**
      * Returns the in_reply_user_id

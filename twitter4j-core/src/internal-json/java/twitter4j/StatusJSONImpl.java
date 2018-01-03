@@ -34,12 +34,14 @@ import static twitter4j.ParseUtil.getDate;
 
     private Date createdAt;
     private long id;
+    private String idStr;
     private String text;
     private int displayTextRangeStart = -1;
     private int displayTextRangeEnd = -1;
     private String source;
     private boolean isTruncated;
     private long inReplyToStatusId;
+    private String inReplyToStatusIdStr;
     private long inReplyToUserId;
     private boolean isFavorited;
     private boolean isRetweeted;
@@ -97,10 +99,12 @@ import static twitter4j.ParseUtil.getDate;
 
     private void init(JSONObject json) throws TwitterException {
         id = ParseUtil.getLong("id", json);
+        idStr = ParseUtil.getUnescapedString("id_str", json);
         source = ParseUtil.getUnescapedString("source", json);
         createdAt = getDate("created_at", json);
         isTruncated = ParseUtil.getBoolean("truncated", json);
         inReplyToStatusId = ParseUtil.getLong("in_reply_to_status_id", json);
+        inReplyToStatusIdStr = ParseUtil.getUnescapedString("in_reply_to_status_id_str", json);
         inReplyToUserId = ParseUtil.getLong("in_reply_to_user_id", json);
         isFavorited = ParseUtil.getBoolean("favorited", json);
         isRetweeted = ParseUtil.getBoolean("retweeted", json);
@@ -301,6 +305,11 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     @Override
+    public String getIdStr() {
+        return this.idStr;
+    }
+
+    @Override
     public String getText() {
         return this.text;
     }
@@ -329,6 +338,11 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
+    }
+
+    @Override
+    public String getInReplyToStatusIdStr() {
+        return inReplyToStatusIdStr;
     }
 
     @Override
