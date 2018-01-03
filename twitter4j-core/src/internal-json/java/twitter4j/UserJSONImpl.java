@@ -30,6 +30,7 @@ import java.util.Date;
 
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
+    private String idStr;
     private String name;
     private String email;
     private String screenName;
@@ -98,6 +99,7 @@ import java.util.Date;
     private void init(JSONObject json) throws TwitterException {
         try {
             id = ParseUtil.getLong("id", json);
+            idStr = ParseUtil.getRawString("id_str", json);
             name = ParseUtil.getRawString("name", json);
             email = ParseUtil.getRawString("email", json);
             screenName = ParseUtil.getRawString("screen_name", json);
@@ -204,6 +206,11 @@ import java.util.Date;
     @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public String getIdStr() {
+        return idStr;
     }
 
     @Override

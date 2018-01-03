@@ -63,6 +63,15 @@ final class LazyUser implements twitter4j.User {
 
 
     /**
+     * Returns the id of the user
+     *
+     * @return the id of the user
+     */
+    public String getIdStr() {
+        return getTarget().getIdStr();
+    }
+
+    /**
      * Returns the name of the user
      *
      * @return the name of the user
