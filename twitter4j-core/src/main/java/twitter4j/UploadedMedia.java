@@ -32,6 +32,7 @@ public final class UploadedMedia implements java.io.Serializable {
     private long size;
     private String processingState;
     private int processingCheckAfterSecs;
+    private int progressPercent;
 
     /*package*/ UploadedMedia(JSONObject json) throws TwitterException {
         init(json);
@@ -64,6 +65,10 @@ public final class UploadedMedia implements java.io.Serializable {
     public int getProcessingCheckAfterSecs() {
     	return processingCheckAfterSecs;
     }
+  
+    public int getProgressPercent() {
+    	return progressPercent;
+    }
 
     private void init(JSONObject json) throws TwitterException {
         mediaId = ParseUtil.getLong("media_id", json);
@@ -80,6 +85,8 @@ public final class UploadedMedia implements java.io.Serializable {
             	JSONObject processingInfo = json.getJSONObject("processing_info");
             	processingState = ParseUtil.getUnescapedString("state", processingInfo);
             	processingCheckAfterSecs = ParseUtil.getInt("check_after_secs", processingInfo);
+            	progressPercent = ParseUtil.getInt("progress_percent", processingInfo);
+            	
             }
             
         } catch (JSONException jsone) {
