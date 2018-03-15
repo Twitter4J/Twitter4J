@@ -189,7 +189,8 @@
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8
-        </project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- these tests will not work without storing API creds -->
+        <skipTests>true</skipTests>
     </properties>
 </project>
