@@ -340,16 +340,22 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
 	private UploadedMedia uploadMediaChunkedFinalize(long mediaId) throws TwitterException {
 		int tries = 0;
-		int maxWait = 10;
+		int maxTries = 20;
+		int lastProgressPercent = 0;
+		int currentProgressPercent = 0;
 		UploadedMedia uploadedMedia = uploadMediaChunkedFinalize0(mediaId);
-		while (tries < maxWait) {
-			tries++;
+		while (tries < maxTries) {
+			if(lastProgressPercent == currentProgressPercent) {
+				tries++;
+			}
+			lastProgressPercent = currentProgressPercent;
 			String state = uploadedMedia.getProcessingState();
 			if (state.equals("failed")) {
 				throw new TwitterException("Failed to finalize the chuncked upload.");
 			}
 			if (state.equals("pending") || state.equals("in_progress")) {
-				int waitSec = uploadedMedia.getProcessingCheckAfterSecs();
+				currentProgressPercent = uploadedMedia.getProgressPercent();
+				int waitSec = Math.max(uploadedMedia.getProcessingCheckAfterSecs(), 1);
 				logger.debug("Chunked finalize, wait for:" + waitSec + " sec");
 				try {
 					Thread.sleep(waitSec * 1000);
@@ -362,7 +368,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 			}
 			uploadedMedia = uploadMediaChunkedStatus(mediaId);
 		} 
-		throw new TwitterException("Failed to finalize the chuncked upload, tried" + maxWait + "times.");
+		throw new TwitterException("Failed to finalize the chuncked upload, progress has stopped, tried " + tries+1 + " times.");
 	}
 	
 	private UploadedMedia uploadMediaChunkedFinalize0(long mediaId) throws TwitterException {
