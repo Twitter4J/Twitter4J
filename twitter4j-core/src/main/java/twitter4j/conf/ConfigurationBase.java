@@ -73,6 +73,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeEntitiesEnabled = true;
     private boolean trimUserEnabled = false;
     private boolean includeExtAltTextEnabled = true;
+    private boolean tweetModeExtended = false;
     private boolean includeEmailEnabled = false;
 
     private boolean jsonStoreEnabled = false;
@@ -621,6 +622,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
+    public boolean isTweetModeExtended() {
+        return this.tweetModeExtended;
+    }
+
+    @Override
     public boolean isDaemonEnabled() {
         return daemonEnabled;
     }
@@ -644,6 +650,10 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     public void setIncludeExtAltTextEnabled(boolean enabled) {
         this.includeExtAltTextEnabled = enabled;
+    }
+
+    public void setTweetModeExtended(boolean enabled) {
+        this.tweetModeExtended = enabled;
     }
 
     @Override
@@ -769,6 +779,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
         if (trimUserEnabled != that.trimUserEnabled) return false;
         if (includeExtAltTextEnabled != that.includeExtAltTextEnabled) return false;
+        if (tweetModeExtended != that.tweetModeExtended) return false;
         if (includeEmailEnabled != that.includeEmailEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
@@ -863,6 +874,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
         result = 31 * result + (trimUserEnabled ? 1 : 0);
         result = 31 * result + (includeExtAltTextEnabled ? 1 : 0);
+        result = 31 * result + (tweetModeExtended ? 1 : 0);
         result = 31 * result + (includeEmailEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
@@ -914,6 +926,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
                 ", includeExtAltTextEnabled=" + includeExtAltTextEnabled +
+                ", tweetModeExtended=" + tweetModeExtended +
                 ", includeEmailEnabled=" + includeEmailEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
