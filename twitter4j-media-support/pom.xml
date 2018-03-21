@@ -13,6 +13,11 @@
   <name>twitter4j-media-support</name>
   <description>Twitter4J optional component adds multimedia support</description>
 
+  <properties>
+    <!-- these tests currently fail due to an unsupported media provider -->
+    <skipTests>true</skipTests>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.twitter4j</groupId>
@@ -39,9 +44,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.12.4</version>
-        <configuration>
-          <skipTests>true</skipTests>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
