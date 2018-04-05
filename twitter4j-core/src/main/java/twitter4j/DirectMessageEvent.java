@@ -6,7 +6,7 @@ import java.util.Date;
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  * @since Twitter4J 4.0.7
  */
-public interface DirectMessageEvent {
+public interface DirectMessageEvent extends TwitterResponse {
 
     String getType();
 

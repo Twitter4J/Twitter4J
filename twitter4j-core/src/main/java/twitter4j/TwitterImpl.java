@@ -284,6 +284,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public DirectMessageEventList getDirectMessageEvents(int count) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count) ));
+    }
+
+    @Override
+    public DirectMessageEventList getDirectMessageEvents(int count, String cursor) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count)
+                , new HttpParameter("cursor", cursor)));
+    }
+
+    @Override
     public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
         return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/sent.json?full_text=true"));
     }

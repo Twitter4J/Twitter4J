@@ -186,6 +186,33 @@ import java.util.Date;
         }
     }
 
+    /*package*/
+    static DirectMessageEventList createDirectMessageEventList(HttpResponse res, Configuration conf) throws TwitterException {
+        try {
+            if (conf.isJSONStoreEnabled()) {
+                TwitterObjectFactory.clearThreadLocalMap();
+            }
+            JSONObject jsonObject = res.asJSONObject();
+            JSONArray list = jsonObject.getJSONArray("events");
+            int size = list.length();
+            DirectMessageEventList directMessages = new DirectMessageEventListImpl(size, jsonObject, res);
+            for (int i = 0; i < size; i++) {
+                JSONObject json = list.getJSONObject(i);
+                DirectMessageEvent directMessage = new DirectMessageEventJSONImpl(json);
+                directMessages.add(directMessage);
+                if (conf.isJSONStoreEnabled()) {
+                    TwitterObjectFactory.registerJSONObject(directMessage, json);
+                }
+            }
+            if (conf.isJSONStoreEnabled()) {
+                TwitterObjectFactory.registerJSONObject(directMessages, list);
+            }
+            return directMessages;
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
+        }
+    }
+
     @Override
     public int hashCode() {
         return (int) id;

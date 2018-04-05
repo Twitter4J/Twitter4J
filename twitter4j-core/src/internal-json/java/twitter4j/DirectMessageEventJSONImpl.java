@@ -27,10 +27,14 @@ import java.util.Date;
     /*package*/DirectMessageEventJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
-        init(json);
-        if (conf.isJSONStoreEnabled()) {
-            TwitterObjectFactory.clearThreadLocalMap();
-            TwitterObjectFactory.registerJSONObject(this, json);
+        try {
+            init(json.getJSONObject("event"));
+            if (conf.isJSONStoreEnabled()) {
+                TwitterObjectFactory.clearThreadLocalMap();
+                TwitterObjectFactory.registerJSONObject(this, json);
+            }
+        } catch (JSONException jsone) {
+            throw new TwitterException(jsone);
         }
     }
 
@@ -38,10 +42,9 @@ import java.util.Date;
         init(json);
     }
 
-    private void init(JSONObject json) throws TwitterException {
+    private void init(JSONObject event) throws TwitterException {
 
         try {
-            final JSONObject event = json.getJSONObject("event");
             type = ParseUtil.getUnescapedString("type", event);
             id = ParseUtil.getLong("id", event);
             createdTimestamp = new Date(event.getLong("created_timestamp"));

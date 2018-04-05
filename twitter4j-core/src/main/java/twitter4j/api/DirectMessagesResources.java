@@ -18,6 +18,7 @@ package twitter4j.api;
 
 import twitter4j.DirectMessage;
 import twitter4j.DirectMessageEvent;
+import twitter4j.DirectMessageEventList;
 import twitter4j.MessageData;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -79,6 +80,31 @@ public interface DirectMessagesResources {
      */
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
         throws TwitterException;
+
+    /**
+     * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/list.json
+     *
+     * @param count Max number of events to be returned. 20 default. 50 max.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html" title="GET direct_messages/events/list — Twitter Developers">GET direct_messages/events/list — Twitter Developers</a>
+     */
+    DirectMessageEventList getDirectMessageEvents(int count)
+            throws TwitterException;
+
+    /**
+     * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/list.json
+     *
+     * @param count Max number of events to be returned. 20 default. 50 max.
+     * @param cursor For paging through result sets greater than 1 page, use the “next_cursor” property from the previous request.
+     * @return List
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html" title="GET direct_messages/events/list — Twitter Developers">GET direct_messages/events/list — Twitter Developers</a>
+     */
+    DirectMessageEventList getDirectMessageEvents(int count, String cursor)
+            throws TwitterException;
 
     /**
      * Returns a single direct message, specified by an id parameter.
