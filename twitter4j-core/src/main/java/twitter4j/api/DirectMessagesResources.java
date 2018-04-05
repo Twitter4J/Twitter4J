@@ -95,6 +95,19 @@ public interface DirectMessagesResources {
     DirectMessage showDirectMessage(long id) throws TwitterException;
 
     /**
+     * Returns a single Direct Message event by the given id.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/show.json
+     *
+     * @param id message id
+     * @return DirectMessageEvent
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/get-event.html" title="GET direct_messages/events/show — Twitter Developers">GET direct_messages/events/show — Twitter Developers</a>
+     * @since Twitter4J 4.0.x
+     */
+    DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException;
+
+    /**
      * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/destroy
      *
