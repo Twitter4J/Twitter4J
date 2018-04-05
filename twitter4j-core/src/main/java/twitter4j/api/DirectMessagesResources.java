@@ -36,6 +36,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     ResponseList<DirectMessage> getDirectMessages()
         throws TwitterException;
@@ -48,6 +49,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     ResponseList<DirectMessage> getDirectMessages(Paging paging)
         throws TwitterException;
@@ -59,6 +61,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     ResponseList<DirectMessage> getSentDirectMessages()
         throws TwitterException;
@@ -72,6 +75,7 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      * @since Twitter4J 2.0.1
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
         throws TwitterException;
@@ -86,6 +90,7 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     DirectMessage showDirectMessage(long id) throws TwitterException;
 
@@ -98,6 +103,7 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     DirectMessage destroyDirectMessage(long id)
         throws TwitterException;
@@ -127,6 +133,7 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      * @since Twitter4j 2.1.0
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     DirectMessage sendDirectMessage(long userId, String text)
         throws TwitterException;
@@ -141,6 +148,7 @@ public interface DirectMessagesResources {
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
+     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     DirectMessage sendDirectMessage(String screenName, String text)
         throws TwitterException;
