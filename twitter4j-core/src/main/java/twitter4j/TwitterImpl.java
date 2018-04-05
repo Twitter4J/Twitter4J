@@ -320,10 +320,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public DirectMessage destroyDirectMessage(long id) throws
-        TwitterException {
+    public DirectMessage destroyDirectMessage(long id) throws TwitterException {
         return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy.json?id=" + id
             + "&full_text=true"));
+    }
+
+    @Override
+    public void destroyDirectMessageEvent(long id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        http.delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
     }
 
     @Override

@@ -148,6 +148,18 @@ public interface DirectMessagesResources {
         throws TwitterException;
 
     /**
+     * Deletes the direct message specified in the required ID parameter.
+     * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/destroy.json
+     *
+     * @param The id of the Direct Message event that should be deleted.
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/delete-message-event.html" title="DELETE direct_messages/events/destroy — Twitter Developers">DELETE direct_messages/events/destroy — Twitter Developers</a>
+     * @since Twitter4J 4.0.x
+     */
+    void destroyDirectMessageEvent(long id)
+            throws TwitterException;
+
+    /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
