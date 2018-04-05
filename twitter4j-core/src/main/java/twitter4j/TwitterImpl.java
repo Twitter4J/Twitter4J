@@ -284,6 +284,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public DirectMessageEventList getDirectMessageEvents(int count) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count) ));
+    }
+
+    @Override
+    public DirectMessageEventList getDirectMessageEvents(int count, String cursor) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+                , new HttpParameter("count", count)
+                , new HttpParameter("cursor", cursor)));
+    }
+
+    @Override
     public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
         return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/sent.json?full_text=true"));
     }
@@ -302,10 +315,20 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public DirectMessage destroyDirectMessage(long id) throws
-        TwitterException {
+    public DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException {
+        return factory.createDirectMessageEvent(get(conf.getRestBaseURL() + "direct_messages/events/show.json?id=" + id));
+    }
+
+    @Override
+    public DirectMessage destroyDirectMessage(long id) throws TwitterException {
         return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy.json?id=" + id
             + "&full_text=true"));
+    }
+
+    @Override
+    public void destroyDirectMessageEvent(long id) throws TwitterException {
+        ensureAuthorizationEnabled();
+        http.delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
     }
 
     @Override
