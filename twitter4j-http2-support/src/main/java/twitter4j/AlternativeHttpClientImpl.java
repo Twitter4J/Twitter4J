@@ -75,8 +75,10 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
         requestBuilder.url(req.getURL()).headers(getHeaders(req));
         switch (req.getMethod()) {
             case HEAD:
-            case DELETE:
             case PUT:
+                break;
+            case DELETE:
+                requestBuilder.delete();
                 break;
             case GET:
                 requestBuilder.get();
