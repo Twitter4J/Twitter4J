@@ -30,6 +30,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private String mediaURLHttps;
     private String expandedURL;
     private String displayURL;
+    private String unshortenedURL;
     private Map<Integer, MediaEntity.Size> sizes;
     protected String type;
     private int videoAspectRatioWidth;
@@ -61,6 +62,14 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.THUMB, "thumb");
             if (!json.isNull("type")) {
                 this.type = json.getString("type");
+            }
+
+            if (!json.isNull("unshortened_url")) {
+                // sets displayURL to url if expanded_url is null
+                // http://jira.twitter4j.org/browse/TFJ-704
+                this.unshortenedURL = json.getString("unshortened_url");
+            } else {
+                this.unshortenedURL = expandedURL;
             }
 
             if (json.has("video_info")) {
@@ -136,6 +145,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     @Override
     public String getExpandedURL() {
         return expandedURL;
+    }
+
+    @Override
+    public String getUnshortenedURL() {
+        return unshortenedURL;
     }
 
     @Override

@@ -24,10 +24,11 @@ package twitter4j;
  */
 /* package */ final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
-    private static final long serialVersionUID = 7333552738058031524L;
+    private static final long serialVersionUID = 7333552738058031525L;
     private String url;
     private String expandedURL;
     private String displayURL;
+    private String unshortenedURL;
 
     /* package */ URLEntityJSONImpl(JSONObject json) throws TwitterException {
         super();
@@ -41,6 +42,16 @@ package twitter4j;
         this.url = url;
         this.expandedURL = expandedURL;
         this.displayURL = displayURL;
+    }
+
+    /* package */ URLEntityJSONImpl(int start, int end, String url, String expandedURL, String displayURL, String unshortenedURL) {
+        super();
+        setStart(start);
+        setEnd(end);
+        this.url = url;
+        this.expandedURL = expandedURL;
+        this.displayURL = displayURL;
+        this.unshortenedURL = unshortenedURL;
     }
 
     /* For serialization purposes only. */
@@ -73,6 +84,14 @@ package twitter4j;
             } else {
                 this.displayURL = url;
             }
+
+            if (!json.isNull("unshortened_url")) {
+                // sets displayURL to url if expanded_url is null
+                // http://jira.twitter4j.org/browse/TFJ-704
+                this.unshortenedURL = json.getString("unshortened_url");
+            } else {
+                this.unshortenedURL = this.expandedURL;
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -96,6 +115,11 @@ package twitter4j;
     @Override
     public String getDisplayURL() {
         return displayURL;
+    }
+
+    @Override
+    public String getUnshortenedURL() {
+        return unshortenedURL;
     }
 
     @Override
@@ -136,6 +160,7 @@ package twitter4j;
                 "url='" + url + '\'' +
                 ", expandedURL='" + expandedURL + '\'' +
                 ", displayURL='" + displayURL + '\'' +
+                ", unshortenedURL='" + unshortenedURL + '\'' +
                 '}';
     }
 }

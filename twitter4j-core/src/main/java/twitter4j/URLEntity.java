@@ -48,6 +48,13 @@ public interface URLEntity extends TweetEntity, java.io.Serializable {
     String getExpandedURL();
 
     /**
+     * Returns the unshortened URL if mentioned URL is shorten.
+     *
+     * @return the unshortened URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
+     */
+    String getUnshortenedURL();
+
+    /**
      * Returns the display URL if mentioned URL is shorten.
      *
      * @return the display URL if mentioned URL is shorten, or null if no shorten URL was mentioned.
