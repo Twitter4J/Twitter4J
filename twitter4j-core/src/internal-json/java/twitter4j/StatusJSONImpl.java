@@ -65,6 +65,7 @@ import static twitter4j.ParseUtil.getDate;
     private String[] withheldInCountries = null;
     private Status quotedStatus;
     private long quotedStatusId = -1L;
+    private URLEntity quotedStatusPermalink;
 
     /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -192,6 +193,9 @@ import static twitter4j.ParseUtil.getDate;
             }
             if (!json.isNull("quoted_status_id")) {
                 quotedStatusId = ParseUtil.getLong("quoted_status_id", json);
+            }
+            if (!json.isNull("quoted_status_permalink")) {
+                quotedStatusPermalink = new QuotedStatusPermalinkJSONImpl(json.getJSONObject("quoted_status_permalink"));
             }
 
             userMentionEntities = userMentionEntities == null ? new UserMentionEntity[0] : userMentionEntities;
@@ -399,6 +403,12 @@ import static twitter4j.ParseUtil.getDate;
     @Override
     public Status getQuotedStatus() {
         return quotedStatus;
+    }
+
+    @Override
+    public URLEntity getQuotedStatusPermalink() {
+
+        return quotedStatusPermalink;
     }
 
     @Override

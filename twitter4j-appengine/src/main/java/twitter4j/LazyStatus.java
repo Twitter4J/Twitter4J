@@ -342,6 +342,11 @@ final class LazyStatus implements twitter4j.Status {
         return getTarget().getQuotedStatus();
     }
 
+    @Override
+    public URLEntity getQuotedStatusPermalink() {
+        return getTarget().getQuotedStatusPermalink();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }
