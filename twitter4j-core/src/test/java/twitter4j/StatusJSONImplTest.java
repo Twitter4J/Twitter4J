@@ -95,6 +95,8 @@ public class StatusJSONImplTest extends TestCase {
         Status quotedStatus = status.getQuotedStatus();
         assertNotNull(quotedStatus);
         assertEquals(560101531794821120L, quotedStatus.getId());
+
+        assertNull(status.getQuotedStatusPermalink());
     }
 
     public void testQuotedStatusPermalink() throws Exception {
