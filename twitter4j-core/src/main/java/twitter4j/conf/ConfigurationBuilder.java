@@ -90,6 +90,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setHttpProxySocks(boolean httpProxySocks) {
+        checkNotBuilt();
+        configurationBean.setHttpProxySocks(httpProxySocks);
+        return this;
+    }
+    
     public ConfigurationBuilder setHttpConnectionTimeout(int httpConnectionTimeout) {
         checkNotBuilt();
         configurationBean.setHttpConnectionTimeout(httpConnectionTimeout);
