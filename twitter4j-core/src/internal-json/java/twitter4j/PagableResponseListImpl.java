@@ -22,8 +22,10 @@ package twitter4j;
  */
 class PagableResponseListImpl<T extends TwitterResponse> extends ResponseListImpl<T> implements PagableResponseList<T> {
     private static final long serialVersionUID = -8603601553967559275L;
-    private final long previousCursor;
-    private final long nextCursor;
+    private long previousCursor = 0;
+    private long nextCursor = 0;
+    private String previousCursorString = null;
+    private String nextCursorString = null;
 
     PagableResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
         super(rateLimitStatus, accessLevel);
@@ -33,13 +35,27 @@ class PagableResponseListImpl<T extends TwitterResponse> extends ResponseListImp
 
     PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);
-        this.previousCursor = ParseUtil.getLong("previous_cursor", json);
-        this.nextCursor = ParseUtil.getLong("next_cursor", json);
+        try {
+            this.previousCursor = ParseUtil.getLong("previous_cursor", json);
+            if (previousCursor < 0) {
+                previousCursor = 0;
+            }
+        } catch (NumberFormatException nfe) {
+            this.previousCursorString = ParseUtil.getRawString("previous_cursor", json);
+        }
+        try {
+            this.nextCursor = ParseUtil.getLong("next_cursor", json);
+            if (nextCursor < 0) {
+                nextCursor = 0;
+            }
+        } catch (NumberFormatException nfe) {
+            this.nextCursorString = ParseUtil.getRawString("next_cursor", json);
+        }
     }
 
     @Override
     public boolean hasPrevious() {
-        return 0 != previousCursor;
+        return 0 != previousCursor || previousCursorString != null;
     }
 
     @Override
@@ -49,12 +65,27 @@ class PagableResponseListImpl<T extends TwitterResponse> extends ResponseListImp
 
     @Override
     public boolean hasNext() {
-        return 0 != nextCursor;
+        return 0 != nextCursor || nextCursorString != null;
     }
 
     @Override
     public long getNextCursor() {
         return nextCursor;
+    }
+
+    @Override
+    public String getStringPreviousCursor() {
+        return nextCursorString;
+    }
+
+    @Override
+    public String getStringNextCursor() {
+        return nextCursorString;
+    }
+
+    @Override
+    public boolean isStringCursor() {
+        return nextCursorString != null || previousCursorString != null;
     }
 
 }

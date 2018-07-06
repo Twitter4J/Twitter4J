@@ -38,4 +38,18 @@ abstract class LazyPagableResponseList<T extends TwitterResponse> extends LazyRe
         return ((PagableResponseList<T>) getTarget()).getNextCursor();
     }
 
+    @Override
+    public boolean isStringCursor() {
+        return ((PagableResponseList<T>) getTarget()).isStringCursor();
+    }
+
+    @Override
+    public String getStringNextCursor() {
+        return ((PagableResponseList<T>) getTarget()).getStringNextCursor();
+    }
+
+    @Override
+    public String getStringPreviousCursor() {
+        return ((PagableResponseList<T>) getTarget()).getStringPreviousCursor();
+    }
 }

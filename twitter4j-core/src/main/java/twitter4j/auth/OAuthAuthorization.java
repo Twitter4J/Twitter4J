@@ -197,7 +197,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
         List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size() + params.length);
         signatureBaseParams.addAll(oauthHeaderParams);
-        if (!HttpParameter.containsFile(params)) {
+        if (!HttpParameter.containsFile(params) && !HttpParameter.containsJsonBody(params)) {
             signatureBaseParams.addAll(toParamList(params));
         }
         parseGetParameters(url, signatureBaseParams);

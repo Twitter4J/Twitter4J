@@ -34,4 +34,9 @@ public interface PagableResponseList<T extends TwitterResponse> extends Response
     @Override
     long getNextCursor();
 
+    String getStringPreviousCursor();
+
+    String getStringNextCursor();
+
+    boolean isStringCursor();
 }

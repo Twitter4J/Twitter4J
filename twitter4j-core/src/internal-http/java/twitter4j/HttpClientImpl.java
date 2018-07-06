@@ -91,7 +91,16 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                     setHeaders(req, con);
                     con.setRequestMethod(req.getMethod().name());
                     if (req.getMethod() == RequestMethod.POST) {
-                        if (HttpParameter.containsFile(req.getParameters())) {
+                        if (HttpParameter.containsJsonBody(req.getParameters())) {
+                            con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                            HttpParameter jsonBodyParameter = HttpParameter.getJsonBodyParameter(req.getParameters());
+                            byte[] content = jsonBodyParameter.getJsonBody().toString().getBytes("UTF-8");
+                            con.setRequestProperty("Content-Length",
+                                    Integer.toString(content.length));
+                            con.setDoOutput(true);
+                            os = con.getOutputStream();
+                            os.write(content);
+                        } else if (HttpParameter.containsFile(req.getParameters())) {
                             String boundary = "----Twitter4J-upload" + System.currentTimeMillis();
                             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                             boundary = "--" + boundary;
@@ -156,6 +165,11 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                             }
                         }
                     }
+
+                    if (req.getMethod() == RequestMethod.DELETE && responseCode == NO_CONTENT) {
+                        break;
+                    }
+
                     if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
                         if (responseCode == ENHANCE_YOUR_CLAIM ||
                                 responseCode == BAD_REQUEST ||

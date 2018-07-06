@@ -112,7 +112,12 @@ final class ParseUtil {
         try {
             return sdf.parse(dateString);
         } catch (ParseException pe) {
-            throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
+            try {
+                Long dateLong = Long.valueOf(dateString);
+                return new Date(dateLong);
+            } catch (NumberFormatException nfe) {
+                throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
+            }
         } finally {
             try {
                 simpleDateFormats.put(sdf);

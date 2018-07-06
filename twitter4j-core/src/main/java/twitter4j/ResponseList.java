@@ -27,5 +27,5 @@ import java.util.List;
 public interface ResponseList<T> extends TwitterResponse, List<T> {
 
     @Override
-    public RateLimitStatus getRateLimitStatus();
+    RateLimitStatus getRateLimitStatus();
 }
