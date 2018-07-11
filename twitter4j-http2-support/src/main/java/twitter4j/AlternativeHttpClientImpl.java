@@ -173,7 +173,9 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
             }
             return multipartBodyBuilder.build();
         } else {
-            return RequestBody.create(FORM_URL_ENCODED, HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
+            return RequestBody.create(
+                    HttpParameter.containsJson(req.getParameters()) ? MediaType.parse("application/json") : FORM_URL_ENCODED,
+                    HttpParameter.encodeParameters(req.getParameters()).getBytes("UTF-8"));
         }
     }
 
