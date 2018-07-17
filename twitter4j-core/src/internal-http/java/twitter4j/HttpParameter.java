@@ -35,6 +35,11 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
     private String value = null;
     private File file = null;
     private InputStream fileBody = null;
+    private JSONObject jsonBody = null;
+
+    public HttpParameter(JSONObject jsonBody) {
+        this.jsonBody = jsonBody;
+    }
 
     public HttpParameter(String name, String value) {
         this.name = name;
@@ -94,6 +99,14 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     public boolean hasFileBody() {
         return fileBody != null;
+    }
+
+    public boolean isJsonBody() {
+        return jsonBody != null;
+    }
+
+    public JSONObject getJsonBody() {
+        return jsonBody;
     }
 
     private static final String JPEG = "image/jpeg";
@@ -183,6 +196,36 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         return containsFile;
     }
 
+    public static boolean containsJsonBody(HttpParameter[] params) {
+        boolean containsJsonBody = false;
+        for (HttpParameter param : params) {
+            if (param.isJsonBody()) {
+                containsJsonBody = true;
+                break;
+            }
+        }
+        return containsJsonBody;
+    }
+
+    public static List<HttpParameter> getCleanParameterList(List<HttpParameter> params) {
+        List<HttpParameter> cleanParams = new ArrayList<HttpParameter>();
+        for (HttpParameter param: params) {
+            if (!param.isJsonBody()) {
+                cleanParams.add(param);
+            }
+        }
+        return cleanParams;
+    }
+
+    static HttpParameter getJsonBodyParameter(HttpParameter[] params) {
+        for (HttpParameter param: params) {
+            if (param.isJsonBody()) {
+                return param;
+            }
+        }
+        return null;
+    }
+
     public static HttpParameter[] getParameterArray(String name, String value) {
         return new HttpParameter[]{new HttpParameter(name, value)};
     }
@@ -238,6 +281,9 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         StringBuilder buf = new StringBuilder();
         for (int j = 0; j < httpParams.length; j++) {
             if (httpParams[j].isFile()) {
+                throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
+            }
+            if (httpParams[j].isJsonBody()) {
                 throw new IllegalArgumentException("parameter [" + httpParams[j].name + "]should be text");
             }
             if (j != 0) {

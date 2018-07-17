@@ -52,7 +52,7 @@ public final class HttpRequest implements java.io.Serializable {
     public HttpRequest(RequestMethod method, String url, HttpParameter[] parameters
             , Authorization authorization, Map<String, String> requestHeaders) {
         this.method = method;
-        if (method != RequestMethod.POST && parameters != null && parameters.length != 0) {
+        if (method != RequestMethod.POST && method != RequestMethod.DELETE && parameters != null && parameters.length != 0) {
             this.url = url + "?" + HttpParameter.encodeParameters(parameters);
             this.parameters = NULL_PARAMETERS;
         } else {

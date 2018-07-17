@@ -30,13 +30,17 @@ import java.util.List;
  */
 public final class Paging implements java.io.Serializable {
     private static final long serialVersionUID = -7226113618341047983L;
-    private int page = -1;
-    private int count = -1;
-    private long sinceId = -1;
-    private long maxId = -1;
+    private Integer page = null;
+    private Integer count = null;
+    private Long sinceId = null;
+    private Long maxId = null;
+    private String cursor = null;
 
     // since only
     static final char[] S = new char[]{'s'};
+
+    // since
+    static final char[] SC = new char[]{'s', 'c'};
     // since, max_id, count, page
     static final char[] SMCP = new char[]{'s', 'm', 'c', 'p'};
 
@@ -44,6 +48,12 @@ public final class Paging implements java.io.Serializable {
     // somewhat GET list statuses requires "per_page" instead of "count"
     // @see <a href="https://dev.twitter.com/docs/api/1.1/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | Twitter Developers</a>
     static final String PER_PAGE = "per_page";
+
+    // with the changes of August 2018, direct messages can be pages by using a special cursor String
+    // @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events">GET direct_messages/events/list | Twitter Developers</a>
+    static final String CURSOR = "cursor";
+
+    static final String SINCE_ID = "since_id";
 
     /*package*/ List<HttpParameter> asPostParameterList() {
         return asPostParameterList(SMCP, COUNT);
@@ -59,6 +69,14 @@ public final class Paging implements java.io.Serializable {
         return list.toArray(new HttpParameter[list.size()]);
     }
 
+    /*package*/ HttpParameter[] asPostParameterArrayForDMevents() {
+        List<HttpParameter> list = asPostParameterList(SC, COUNT, CURSOR);
+        if (list.size() == 0) {
+            return NULL_PARAMETER_ARRAY;
+        }
+        return list.toArray(new HttpParameter[list.size()]);
+    }
+
     /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams) {
         return asPostParameterList(supportedParams, COUNT);
     }
@@ -66,26 +84,9 @@ public final class Paging implements java.io.Serializable {
 
     private static final List<HttpParameter> NULL_PARAMETER_LIST = new ArrayList<HttpParameter>(0);
 
-    /**
-     * Converts the pagination parameters into a List of PostParameter.<br>
-     * This method also Validates the preset parameters, and throws
-     * IllegalStateException if any unsupported parameter is set.
-     *
-     * @param supportedParams  char array representation of supported parameters
-     * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
-     * @return list of PostParameter
-     */
+
     /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
-        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
-        if (pagingParams.size() == 0) {
-            return NULL_PARAMETER_LIST;
-        } else {
-            return pagingParams;
-        }
+        return asPostParameterList(supportedParams, perPageParamName, SINCE_ID);
     }
 
     /**
@@ -97,12 +98,46 @@ public final class Paging implements java.io.Serializable {
      * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
      * @return list of PostParameter
      */
-    /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
+    /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams, String perPageParamName, String sinceParamName) {
         java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
+        if (SINCE_ID.equals(sinceParamName)) {
+            addPostParameter(supportedParams, 's', pagingParams, SINCE_ID, sinceId);
+        } else {
+            addPostParameter(supportedParams, 's', pagingParams, CURSOR, cursor);
+        }
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", maxId);
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, count);
+        addPostParameter(supportedParams, 'p', pagingParams, "page", page);
+        if (pagingParams.size() == 0) {
+            return NULL_PARAMETER_LIST;
+        } else {
+            return pagingParams;
+        }
+    }
+
+    /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
+        return asPostParameterArray(supportedParams, perPageParamName, SINCE_ID);
+    }
+
+    /**
+     * Converts the pagination parameters into a List of PostParameter.<br>
+     * This method also Validates the preset parameters, and throws
+     * IllegalStateException if any unsupported parameter is set.
+     *
+     * @param supportedParams  char array representation of supported parameters
+     * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
+     * @return list of PostParameter
+     */
+    /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName, String sinceParamName) {
+        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
+        if (SINCE_ID.equals(sinceParamName)) {
+            addPostParameter(supportedParams, 's', pagingParams, SINCE_ID, sinceId);
+        } else {
+            addPostParameter(supportedParams, 's', pagingParams, CURSOR, cursor);
+        }
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", maxId);
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, count);
+        addPostParameter(supportedParams, 'p', pagingParams, "page", page);
         if (pagingParams.size() == 0) {
             return NULL_PARAMETER_ARRAY;
         } else {
@@ -111,7 +146,7 @@ public final class Paging implements java.io.Serializable {
     }
 
     private void addPostParameter(char[] supportedParams, char paramKey
-            , List<HttpParameter> pagingParams, String paramName, long paramValue) {
+            , List<HttpParameter> pagingParams, String paramName, Object paramValue) {
         boolean supported = false;
         for (char supportedParam : supportedParams) {
             if (supportedParam == paramKey) {
@@ -119,16 +154,25 @@ public final class Paging implements java.io.Serializable {
                 break;
             }
         }
-        if (!supported && -1 != paramValue) {
+        if (!supported && null != paramValue) {
             throw new IllegalStateException("Paging parameter [" + paramName
                     + "] is not supported with this operation.");
         }
-        if (-1 != paramValue) {
+        if (null != paramValue) {
             pagingParams.add(new HttpParameter(paramName, String.valueOf(paramValue)));
         }
     }
 
     public Paging() {
+    }
+
+    public Paging(String cursor) {
+        setCursor(cursor);
+    }
+
+    public Paging(String cursor, int count) {
+        this(cursor);
+        setCount(count);
     }
 
     public Paging(int page) {
@@ -160,7 +204,11 @@ public final class Paging implements java.io.Serializable {
     }
 
     public int getPage() {
-        return page;
+        if (page == null) {
+            return -1;
+        } else {
+            return page;
+        }
     }
 
     public void setPage(int page) {
@@ -171,7 +219,11 @@ public final class Paging implements java.io.Serializable {
     }
 
     public int getCount() {
-        return count;
+        if (count == null) {
+            return -1;
+        } else {
+            return count;
+        }
     }
 
     public void setCount(int count) {
@@ -187,7 +239,11 @@ public final class Paging implements java.io.Serializable {
     }
 
     public long getSinceId() {
-        return sinceId;
+        if (sinceId == null) {
+            return -1;
+        } else {
+            return sinceId;
+        }
     }
 
     public void setSinceId(long sinceId) {
@@ -203,7 +259,11 @@ public final class Paging implements java.io.Serializable {
     }
 
     public long getMaxId() {
-        return maxId;
+        if (maxId == null) {
+            return -1;
+        } else {
+            return maxId;
+        }
     }
 
     public void setMaxId(long maxId) {
@@ -216,6 +276,14 @@ public final class Paging implements java.io.Serializable {
     public Paging maxId(long maxId) {
         setMaxId(maxId);
         return this;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
     }
 
     @Override

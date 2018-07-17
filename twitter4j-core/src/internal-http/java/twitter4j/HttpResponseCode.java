@@ -22,6 +22,7 @@ package twitter4j;
  */
 public interface HttpResponseCode {
     int OK = 200;// OK: Success!
+    int NO_CONTENT = 204; // No Content: okay for deleting a DM
     int MULTIPLE_CHOICES = 300;//
     int FOUND = 302;//
     int NOT_MODIFIED = 304;// Not Modified: There was no new data to return.

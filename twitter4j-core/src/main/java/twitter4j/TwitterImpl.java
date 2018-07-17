@@ -271,7 +271,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     /* Direct Messages Resources */
-
     @Override
     public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
         return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages.json?full_text=true"));
@@ -326,6 +325,37 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public InputStream getDMImageAsStream(String url) throws TwitterException {
         return get(url).asStream();
+    }
+
+    /* Direct Message Events Resources (the new new direct messages) */
+
+    @Override
+    public PagableResponseList<DirectMessageEvent> getDirectMessageEvents() throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json", new HttpParameter("count", 50)));
+    }
+
+    @Override
+    public PagableResponseList<DirectMessageEvent> getDirectMessageEvents(Paging paging) throws TwitterException {
+        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() +
+                        "direct_messages/events/list.json", mergeParameters(paging.asPostParameterArrayForDMevents(),  new HttpParameter("count", 50))));
+    }
+
+    @Override
+    public DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException {
+        return factory.createDirectMessageEvent(get(conf.getRestBaseURL() + "direct_messages/events/show.json?id=" + id));
+    }
+
+    @Override
+    public DirectMessageEvent sendDirectMessageEvent(long userId, String text) throws TwitterException {
+        MessageData messageData = new MessageData(userId);
+        messageData.setText(text);
+        return factory.createDirectMessageEvent(post(conf.getRestBaseURL() + "direct_messages/events/new.json"
+                , new HttpParameter(messageData.asJson())));
+    }
+
+    @Override
+    public void destroyDirectMessageEvent(long id) throws TwitterException {
+        delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id);
     }
 
     /* Friends & Followers Resources */
@@ -1826,6 +1856,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             long start = System.currentTimeMillis();
             try {
                 response = http.post(url, mergeImplicitParams(params), auth, this);
+            } finally {
+                long elapsedTime = System.currentTimeMillis() - start;
+                TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
+            }
+            return response;
+        }
+    }
+
+    private HttpResponse delete(String url, HttpParameter... params) throws TwitterException {
+        ensureAuthorizationEnabled();
+        if (!conf.isMBeanEnabled()) {
+            return http.delete(url, params, auth, this);
+        } else {
+            // intercept HTTP call for monitoring purposes
+            HttpResponse response = null;
+            long start = System.currentTimeMillis();
+            try {
+                response = http.post(url, params, auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));

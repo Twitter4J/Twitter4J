@@ -22,7 +22,9 @@ import java.util.Date;
  * A data interface representing sent/received direct message.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @deprecated with Twitter changes in August 2018 (https://twittercommunity.com/t/adding-delete-events-to-the-account-activity-api/106783)
  */
+@Deprecated
 public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.Serializable {
 
     long getId();

@@ -25,7 +25,9 @@ import java.io.InputStream;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
+ * @deprecated with Twitter changes in August 2018 (https://twittercommunity.com/t/adding-delete-events-to-the-account-activity-api/106783)
  */
+@Deprecated
 public interface DirectMessagesResources {
     /**
      * Returns a list of the direct messages sent to the authenticating user.
@@ -34,7 +36,9 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     ResponseList<DirectMessage> getDirectMessages()
         throws TwitterException;
 
@@ -46,7 +50,9 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     ResponseList<DirectMessage> getDirectMessages(Paging paging)
         throws TwitterException;
 
@@ -57,7 +63,9 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     ResponseList<DirectMessage> getSentDirectMessages()
         throws TwitterException;
 
@@ -70,7 +78,9 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      * @since Twitter4J 2.0.1
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
         throws TwitterException;
 
@@ -84,7 +94,9 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
      * @since Twitter4J 2.1.9
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     DirectMessage showDirectMessage(long id) throws TwitterException;
 
     /**
@@ -96,7 +108,9 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | Twitter Developers</a>
      * @since Twitter4J 2.0.1
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     DirectMessage destroyDirectMessage(long id)
         throws TwitterException;
 
@@ -111,7 +125,9 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
      * @since Twitter4j 2.1.0
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     DirectMessage sendDirectMessage(long userId, String text)
         throws TwitterException;
 
@@ -125,19 +141,9 @@ public interface DirectMessagesResources {
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
+     * @deprecated with August 2018 Twitter changes
      */
+    @Deprecated
     DirectMessage sendDirectMessage(String screenName, String text)
-        throws TwitterException;
-
-    /**
-     * Returns a stream of the image included in direct messages.
-     *
-     * @param url image url
-     * @return InputStream
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/discussions/24255">Access media shared in direct messages | Twitter Developers</a>
-     * @since Twitter4J 3.0.6
-     */
-    InputStream getDMImageAsStream(String url)
         throws TwitterException;
 }

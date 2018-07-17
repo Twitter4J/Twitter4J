@@ -1,0 +1,116 @@
+{
+  "events": [
+    {
+      "type": "message_create",
+      "id": "1324354657687980970",
+      "created_timestamp": "1530696350596",
+      "message_create": {
+        "target": {
+          "recipient_id": "1234567890"
+        },
+        "sender_id": "98765432",
+        "source_app_id": "654321",
+        "message_data": {
+          "text": " https:\/\/t.co\/G82d0X62Nq",
+          "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": [
+              {
+                "url": "https:\/\/t.co\/G82d0X62Nq",
+                "expanded_url": "https:\/\/twitter.com\/messages\/media\/1324354657687980970",
+                "display_url": "pic.twitter.com\/G82d0X62Nq",
+                "indices": [
+                  1,
+                  24
+                ]
+              }
+            ]
+          },
+          "attachment": {
+            "type": "media",
+            "media": {
+              "id": 1014440122497028096,
+              "id_str": "1014440122497028096",
+              "indices": [
+                1,
+                24
+              ],
+              "media_url": "https:\/\/pbs.twimg.com\/dm_gif_preview\/1014440122497028096\/tvREboDCC8dHgeq6qY8fH4J2pVcN_qjE3Xy0Cithfk1KUCjOQv.jpg",
+              "media_url_https": "https:\/\/pbs.twimg.com\/dm_gif_preview\/1014440122497028096\/tvREboDCC8dHgeq6qY8fH4J2pVcN_qjE3Xy0Cithfk1KUCjOQv.jpg",
+              "url": "https:\/\/t.co\/G82d0X62Nq",
+              "display_url": "pic.twitter.com\/G82d0X62Nq",
+              "expanded_url": "https:\/\/twitter.com\/messages\/media\/1324354657687980970",
+              "type": "animated_gif",
+              "sizes": {
+                "medium": {
+                  "w": 800,
+                  "h": 450,
+                  "resize": "fit"
+                },
+                "thumb": {
+                  "w": 150,
+                  "h": 150,
+                  "resize": "crop"
+                },
+                "small": {
+                  "w": 680,
+                  "h": 383,
+                  "resize": "fit"
+                },
+                "large": {
+                  "w": 800,
+                  "h": 450,
+                  "resize": "fit"
+                }
+              },
+              "video_info": {
+                "aspect_ratio": [
+                  16,
+                  9
+                ],
+                "variants": [
+                  {
+                    "bitrate": 0,
+                    "content_type": "video\/mp4",
+                    "url": "https:\/\/video.twimg.com\/dm_gif\/1014440122497028096\/tvREboDCC8dHgeq6qY8fH4J2pVcN_qjE3Xy0Cithfk1KUCjOQv.mp4"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "message_create",
+      "id": "1014440055329390596",
+      "created_timestamp": "1530696331232",
+      "message_create": {
+        "target": {
+          "recipient_id": "1234567890"
+        },
+        "sender_id": "98765432",
+        "source_app_id": "654321",
+        "message_data": {
+          "text": "and we need more great data",
+          "entities": {
+            "hashtags": [],
+            "symbols": [],
+            "user_mentions": [],
+            "urls": []
+          }
+        }
+      }
+    }
+  ],
+  "apps": {
+    "654321": {
+      "id": "654321",
+      "name": "Twitter Web Client",
+      "url": "http:\/\/twitter.com"
+    }
+  },
+  "next_cursor": "MTAxNDQ0MDA1NTMyOTM5MDU5Ng"
+}
