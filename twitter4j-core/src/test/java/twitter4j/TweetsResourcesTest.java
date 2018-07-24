@@ -230,13 +230,13 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
         MediaEntity.Size medium = sizes.get(MediaEntity.Size.MEDIUM);
         assertEquals(MediaEntity.Size.FIT, medium.getResize());
-        assertEquals(600, medium.getWidth());
-        assertEquals(399, medium.getHeight());
+        assertEquals(700, medium.getWidth());
+        assertEquals(466, medium.getHeight());
 
         MediaEntity.Size small = sizes.get(MediaEntity.Size.SMALL);
         assertEquals(MediaEntity.Size.FIT, small.getResize());
-        assertEquals(340, small.getWidth());
-        assertEquals(226, small.getHeight());
+        assertEquals(680, small.getWidth());
+        assertEquals(453, small.getHeight());
 
         MediaEntity.Size thumb = sizes.get(MediaEntity.Size.THUMB);
 
