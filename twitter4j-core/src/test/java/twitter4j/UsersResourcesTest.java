@@ -158,28 +158,20 @@ public class UsersResourcesTest extends TwitterTestBase {
         User original = twitter1.verifyCredentials();
         assertNotNull(TwitterObjectFactory.getRawJSON(original));
         assertEquals(original, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(original)));
-        if (original.getScreenName().endsWith("new") ||
-                original.getName().endsWith("new")) {
-            original = twitter1.updateProfile(
-                    "twit4j", "http://yusuke.homeip.net/twitter4j/"
-                    , "location:", "Hi there, I do test a lot!new");
 
-        }
-        String newName, newURL, newLocation, newDescription;
-        String neu = "new";
-        newName = original.getName() + neu;
-        newURL = original.getURL() + neu;
-        newLocation = new Date().toString();
-        newDescription = original.getDescription() + neu;
+        String newName = "name" + System.currentTimeMillis();
+        String newURL = "https://yusuke.blog/" + System.currentTimeMillis();
+        String newLocation = "city:" + System.currentTimeMillis();
+        String newDescription = "description:" + System.currentTimeMillis();
 
         User altered = twitter1.updateProfile(
                 newName, newURL, newLocation, newDescription);
         assertNotNull(TwitterObjectFactory.getRawJSON(altered));
         assertEquals(original, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(original)));
         assertEquals(altered, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(altered)));
-        twitter1.updateProfile(original.getName(), original.getURL().toString(), original.getLocation(), original.getDescription());
+        twitter1.updateProfile(original.getName(), original.getURL(), original.getLocation(), original.getDescription());
         assertEquals(newName, altered.getName());
-        assertEquals(newURL, altered.getURL().toString());
+        assertTrue(altered.getURL().startsWith("https://t.co/"));
         assertEquals(newLocation, altered.getLocation());
         assertEquals(newDescription, altered.getDescription());
         
