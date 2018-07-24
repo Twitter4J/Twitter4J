@@ -54,9 +54,6 @@ r-w-private.oauth.consumerSecret=
 r-w-private.oauth.accessToken=
 r-w-private.oauth.accessTokenSecret=
 
-twitpic.apiKey=
-tweetPhoto.apiKey=
-
 http.prettyDebug=true
 jsonStoreEnabled=true
 mbeanEnabled=true

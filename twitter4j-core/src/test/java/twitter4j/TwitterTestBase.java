@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -59,9 +60,41 @@ public class TwitterTestBase extends TestCase {
     protected String browserConsumerSecret;
     protected String browserConsumerKey;
 
+    private static int currentIndex;
+    private static int maxTestPropertyIndex;
+    static {
+        for (int i = 0; i < 100; i++) {
+            // lookup test[i].properties
+            InputStream resource = TwitterTestBase.class.getResourceAsStream("/test" + i + ".properties");
+            if (resource != null) {
+                try {
+                    resource.close();
+                } catch (IOException ignore) {
+                }
+                maxTestPropertyIndex = i;
+            } else {
+                break;
+            }
+
+        }
+        currentIndex = (int) (System.currentTimeMillis() % (maxTestPropertyIndex + 1));
+    }
+
+    /**
+     * rotate test property file
+     * @return test[index].properties as InputStream
+     */
+    private static InputStream getNextProperty(){
+        currentIndex++;
+        if (currentIndex > maxTestPropertyIndex) {
+            currentIndex = 0;
+        }
+        return TwitterTestBase.class.getResourceAsStream("/test" + currentIndex + ".properties");
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
-        InputStream is = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        InputStream is = getNextProperty();
         p.load(is);
         is.close();
 
