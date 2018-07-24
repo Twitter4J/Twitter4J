@@ -15,6 +15,8 @@
  */
 package twitter4j;
 
+import org.junit.Ignore;
+
 import java.util.Date;
 
 /**
@@ -30,6 +32,7 @@ public class DirectMessagesResourcesTest extends TwitterTestBase {
         super.tearDown();
     }
 
+    @Ignore
     public void testDirectMessages() throws Exception {
         ResponseList<DirectMessage> directMessages = twitter3.getDirectMessages();
         assertNotNull(TwitterObjectFactory.getRawJSON(directMessages));
