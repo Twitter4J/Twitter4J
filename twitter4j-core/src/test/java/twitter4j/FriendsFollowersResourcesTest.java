@@ -34,28 +34,6 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         int yusukey = 4933401;
         assertIDExsits("twit4j is following yusukey", ids, yusukey);
-        long ryunosukey = 48528137;
-        ids = twitter1.getFriendsIDs(ryunosukey, -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
-
-        ids = twitter1.getFriendsIDs(ryunosukey, -1, 100);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertEquals("ryunosukey is not following anyone", 0, ids.getIDs().length);
-
-        ids = twitter1.getFriendsIDs("yusukey", -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
-
-        ids = twitter1.getFriendsIDs("@yusukey", -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertIDExsits("@yusukey is following ryunosukey", ids, ryunosukey);
-
-        ids = twitter1.getFriendsIDs("yusukey", -1, 100);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertIDExsits("yusukey is following ryunosukey", ids, ryunosukey);
 
         IDs obamaFollowers;
         obamaFollowers = twitter1.getFollowersIDs("barackobama", -1);
@@ -173,14 +151,6 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
         assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
         assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
-        ids = twitter1.getFollowersIDs(ryunosukey, -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
-        ids = twitter1.getFollowersIDs("ryunosukey", -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertIDExsits("yusukey is following ryunosukey", ids, yusukey);
     }
 
     private void assertIDExsits(String assertion, IDs ids, long idToFind) {
@@ -347,7 +317,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(2, friendshipList.size());
 
 
-        String twitterapi = "twitterapi";
+        String twitterapi = "TwitterAPI";
         long twitterapiID = 6253282L;
         try {
             if (!twitter1.showFriendship(id1.id, twitterapiID).isSourceFollowingTarget()) {
@@ -369,11 +339,6 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(twitterapi, updatedRelationship.getTargetUserScreenName());
         assertTrue(updatedRelationship.isSourceNotificationsEnabled());
         assertTrue(updatedRelationship.isSourceWantRetweets());
-
-        Relationship relationship = twitter1.updateFriendship(twitterdev, false, false);
-        assertEquals(twitterdev, relationship.getTargetUserScreenName());
-        assertFalse(relationship.isSourceNotificationsEnabled());
-        assertFalse(relationship.isSourceWantRetweets());
     }
 
     public void testLookupFriendships() throws Exception {
