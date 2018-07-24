@@ -209,11 +209,6 @@ public class UsersResourcesTest extends TwitterTestBase {
     public void testAccountProfileImageUpdates() throws Exception {
         User user = twitter1.updateProfileImage(new FileInputStream(getRandomlyChosenFile()));
         assertNotNull(TwitterObjectFactory.getRawJSON(user));
-        // tile randomly
-        User user2 = twitter1.updateProfileBackgroundImage(getRandomlyChosenFile(),
-                (5 < System.currentTimeMillis() % 5));
-        assertNotNull(TwitterObjectFactory.getRawJSON(user2));
-        assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
     }
 
     private static final String[] profileImages = {"src/test/resources/t4j-reverse.jpeg",

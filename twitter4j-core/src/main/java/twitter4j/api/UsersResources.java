@@ -96,6 +96,7 @@ public interface UsersResources {
      *                          or when the specified file object in not representing a file (IOException will be nested)
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
      * @since Twitter4J 2.1.0
+     * @deprecated Since Twitter4J 4.0.7
      */
     User updateProfileBackgroundImage(File image, boolean tile)
         throws TwitterException;
