@@ -81,7 +81,8 @@ public class TwitterTestBase extends TestCase {
         // look up the number of property sets
         for (int i = 0; i < 100; i++) {
             String propName = i + ".id1.id";
-            if (System.getProperty(propName, System.getenv(propName)) != null) {
+            String envName = "t4j" + propName.replaceAll("\\.", "_");
+            if (System.getProperty(propName, System.getenv(envName)) != null) {
                 maxTestPropertyIndex = i;
             } else {
                 break;
@@ -101,16 +102,17 @@ public class TwitterTestBase extends TestCase {
         }
         Properties props = new Properties();
 
-        String stringIndex = String.valueOf(currentIndex) + ".";
+        String prefix = String.valueOf(currentIndex) + "_";
+        String envPrefix = "t4j"+  prefix;
         Map<String, String> map = System.getenv();
         for (String key : map.keySet()) {
-            if (key.startsWith(stringIndex)) {
-                props.setProperty(key.substring(stringIndex.length()), map.get(key));
+            if (key.startsWith(envPrefix)) {
+                props.setProperty(key.substring(envPrefix.length()), map.get(key));
             }
         }
         for (String key : System.getProperties().stringPropertyNames()) {
-            if (key.startsWith(stringIndex)) {
-                props.setProperty(key.substring(stringIndex.length()), System.getProperty(key));
+            if (key.startsWith(prefix)) {
+                props.setProperty(key.substring(prefix.length()), System.getProperty(key));
             }
         }
         return props;
