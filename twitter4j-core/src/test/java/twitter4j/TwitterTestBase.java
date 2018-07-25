@@ -98,8 +98,8 @@ public class TwitterTestBase extends TestCase {
         p.load(is);
         is.close();
 
-        desktopConsumerSecret = p.getProperty("oauth.consumerSecret");
-        desktopConsumerKey = p.getProperty("oauth.consumerKey");
+        desktopConsumerSecret = p.getProperty("desktop.oauth.consumerSecret");
+        desktopConsumerKey = p.getProperty("desktop.oauth.consumerKey");
         browserConsumerSecret = p.getProperty("browser.oauth.consumerSecret");
         browserConsumerKey = p.getProperty("browser.oauth.consumerKey");
 

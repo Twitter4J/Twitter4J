@@ -16,6 +16,9 @@
 
 package twitter4j.auth;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import org.openqa.selenium.By;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -50,7 +53,6 @@ public class OAuthTest extends TwitterTestBase {
         twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         Twitter twitter2 = new TwitterFactory().getInstance();
         twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        assertTrue(twitter1.equals(twitter2));
         assertEquals(twitter1, twitter2);
     }
 
@@ -123,7 +125,7 @@ public class OAuthTest extends TwitterTestBase {
         Twitter twitter = new TwitterFactory().getInstance();
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/");
+        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
         AccessToken at = getAccessToken(twitter, rt.getAuthenticationURL(), rt, id1.screenName, id1.password, false);
 
@@ -137,7 +139,7 @@ public class OAuthTest extends TwitterTestBase {
 
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/");
+        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
         AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, id1.screenName, id1.password, false);
         assertEquals(at.getScreenName(), id1.screenName);
@@ -145,31 +147,20 @@ public class OAuthTest extends TwitterTestBase {
     }
 
     private AccessToken getAccessToken(Twitter twitter, String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
-        Map<String, String> props = new HashMap<String, String>();
-        HttpClient http = HttpClientFactory.getInstance();
 
-        HttpResponse response = http.get(url);
-        List<String> cookies = response.getResponseHeaderFields().get("set-cookie");
-        for (String cookie : cookies) {
-            props.put("Cookie", cookie);
-        }
-        String resStr = response.asString();
-        String authorizeURL = catchPattern(resStr, "<form action=\"", "\" id=\"oauth_form\"");
-        HttpParameter[] params = new HttpParameter[4];
-        params[0] = new HttpParameter("authenticity_token"
-                , catchPattern(resStr, "\"authenticity_token\" type=\"hidden\" value=\"", "\">"));
-        params[1] = new HttpParameter("oauth_token",
-                catchPattern(resStr, "name=\"oauth_token\" type=\"hidden\" value=\"", "\">"));
-        params[2] = new HttpParameter("session[username_or_email]", screenName);
-        params[3] = new HttpParameter("session[password]", password);
-        response = http.request(new HttpRequest(RequestMethod.POST, authorizeURL, params, null, props));
-        resStr = response.asString();
+        BrowserVersion browserVersion = BrowserVersion.getDefault();
+        browserVersion.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15");
+        HtmlUnitDriver driver = new HtmlUnitDriver(browserVersion);
+        driver.get(rt.getAuthorizationURL());
+        driver.findElement(By.name("session[username_or_email]")).sendKeys(screenName);
+        driver.findElement(By.name("session[password]")).sendKeys(password);
+        driver.findElement(By.id("allow")).click();
+
         if (pinRequired) {
-            String pin = catchPattern(resStr, "<kbd aria-labelledby=\"code-desc\"><code>", "</code></kbd>");
-            return twitter.getOAuthAccessToken(rt, pin);
+            return twitter.getOAuthAccessToken(rt, driver.findElementsByTagName("code").get(0).getText());
 
         } else {
-            String oauthVerifier = catchPattern(resStr, "&oauth_verifier=", "\">");
+            String oauthVerifier = driver.getCurrentUrl().replaceFirst(".*&oauth_verifier=([a-zA-Z0-9]+)$", "$1");
             return twitter.getOAuthAccessToken(rt, oauthVerifier);
 
         }
