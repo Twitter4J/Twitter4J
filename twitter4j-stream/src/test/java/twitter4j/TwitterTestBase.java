@@ -22,6 +22,7 @@ import twitter4j.conf.PropertyConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 public class TwitterTestBase extends TestCase {
@@ -32,7 +33,7 @@ public class TwitterTestBase extends TestCase {
     Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
             rwPrivateMessage, readonly;
-    protected final Properties p = new Properties();
+    protected Properties p;
 
     protected String numberId, numberPass, followsOneWay;
     protected long numberIdId;
@@ -61,21 +62,30 @@ public class TwitterTestBase extends TestCase {
     protected String browserConsumerKey;
 
     private static int currentIndex;
-    private static int maxTestPropertyIndex;
+    private static int maxTestPropertyIndex = -1;
     static {
+        // set properties in test.properties to System property
+        InputStream resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        if (resource != null) {
+            Properties properties = new Properties();
+            try {
+                properties.load(resource);
+                resource.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (String propertyName : properties.stringPropertyNames()) {
+                System.setProperty(propertyName, properties.getProperty(propertyName));
+            }
+        }
+        // look up the number of property sets
         for (int i = 0; i < 100; i++) {
-            // lookup test[i].properties
-            InputStream resource = TwitterTestBase.class.getResourceAsStream("/test" + i + ".properties");
-            if (resource != null) {
-                try {
-                    resource.close();
-                } catch (IOException ignore) {
-                }
+            String propName = i + ".id1.id";
+            if (System.getProperty(propName, System.getenv(propName)) != null) {
                 maxTestPropertyIndex = i;
             } else {
                 break;
             }
-
         }
         currentIndex = (int) (System.currentTimeMillis() % (maxTestPropertyIndex + 1));
     }
@@ -84,19 +94,31 @@ public class TwitterTestBase extends TestCase {
      * rotate test property file
      * @return test[index].properties as InputStream
      */
-    private static InputStream getNextProperty(){
+    private static Properties getNextProperty() {
         currentIndex++;
         if (currentIndex > maxTestPropertyIndex) {
             currentIndex = 0;
         }
-        return TwitterTestBase.class.getResourceAsStream("/test" + currentIndex + ".properties");
+        Properties props = new Properties();
+
+        String stringIndex = String.valueOf(currentIndex) + ".";
+        Map<String, String> map = System.getenv();
+        for (String key : map.keySet()) {
+            if (key.startsWith(stringIndex)) {
+                props.setProperty(key.substring(stringIndex.length()), map.get(key));
+            }
+        }
+        for (String key : System.getProperties().stringPropertyNames()) {
+            if (key.startsWith(stringIndex)) {
+                props.setProperty(key.substring(stringIndex.length()), System.getProperty(key));
+            }
+        }
+        return props;
     }
 
     protected void setUp() throws Exception {
         super.setUp();
-        InputStream is = getNextProperty();
-        p.load(is);
-        is.close();
+        p = getNextProperty();
 
         desktopConsumerSecret = p.getProperty("desktop.oauth.consumerSecret");
         desktopConsumerKey = p.getProperty("desktop.oauth.consumerKey");
