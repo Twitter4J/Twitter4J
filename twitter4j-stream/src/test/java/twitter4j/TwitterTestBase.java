@@ -109,12 +109,12 @@ public class TwitterTestBase extends TestCase {
         }
         Properties props = new Properties();
 
-        String prefix = String.valueOf(currentIndex) + "_";
-        String envPrefix = "t4j"+  prefix;
+        String prefix = String.valueOf(currentIndex) + ".";
+        String envPrefix = "t4j" + String.valueOf(currentIndex) + "_";
         Map<String, String> map = System.getenv();
         for (String key : map.keySet()) {
             if (key.startsWith(envPrefix)) {
-                props.setProperty(key.substring(envPrefix.length()), map.get(key));
+                props.setProperty(key.substring(envPrefix.length()).replaceAll("_", "."), map.get(key));
             }
         }
         for (String key : System.getProperties().stringPropertyNames()) {
