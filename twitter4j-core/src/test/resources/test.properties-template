@@ -49,10 +49,10 @@ oauth.consumerSecret=
 browser.oauth.consumerKey=
 browser.oauth.consumerSecret=
 
-r-w-private.oauth.consumerKey=
-r-w-private.oauth.consumerSecret=
-r-w-private.oauth.accessToken=
-r-w-private.oauth.accessTokenSecret=
+rwprivate.oauth.consumerKey=
+rwprivate.oauth.consumerSecret=
+rwprivate.oauth.accessToken=
+rwprivate.oauth.accessTokenSecret=
 
 http.prettyDebug=true
 jsonStoreEnabled=true

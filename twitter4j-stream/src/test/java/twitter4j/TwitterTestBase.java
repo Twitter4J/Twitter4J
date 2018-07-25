@@ -140,13 +140,13 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2");
         conf3 = new PropertyConfiguration(p, "/id3");
         id3 = new TestUserInfo("id3");
-        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/r-w-private")).getInstance();
+        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/rwprivate")).getInstance();
         bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
         bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");
         bestFriend2 = new TestUserInfo("bestFriend2");
-        rwPrivate = new TestUserInfo("r-w-private");
-        rwPrivateConf = new PropertyConfiguration(p, "/r-w-private");
+        rwPrivate = new TestUserInfo("rwprivate");
+        rwPrivateConf = new PropertyConfiguration(p, "/rwprivate");
 
         numberId = p.getProperty("numberid.user");
         numberPass = p.getProperty("numberid.password");
