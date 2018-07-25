@@ -48,9 +48,16 @@ public class TwitterTestBase extends TestCase {
         public final String accessTokenSecret;
 
         TestUserInfo(String screenName) {
+            System.out.println("Composing test TestUserInfo for:" + screenName);
             this.screenName = p.getProperty(screenName + ".user");
             this.password = p.getProperty(screenName + ".password");
-            this.id = Long.valueOf(p.getProperty(screenName + ".id"));
+            Long id = -1L;
+            try {
+                id = Long.valueOf(p.getProperty(screenName + ".id"));
+            } catch (NumberFormatException nfe) {
+                fail("failed to parse:" + p.getProperty(screenName + ".id"));
+            }
+            this.id = id;
             this.accessToken = p.getProperty(screenName + ".oauth.accessToken");
             this.accessTokenSecret = p.getProperty(screenName + ".oauth.accessTokenSecret");
         }
