@@ -29,7 +29,7 @@ public class TwitterTestBase extends TestCase {
         super(name);
     }
 
-    protected Twitter twitter1, twitter2, twitter3,
+    Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
             rwPrivateMessage, readonly;
     protected final Properties p = new Properties();
@@ -37,7 +37,7 @@ public class TwitterTestBase extends TestCase {
     protected String numberId, numberPass, followsOneWay;
     protected long numberIdId;
     protected TestUserInfo id1, id2, id3, bestFriend1, bestFriend2;
-    protected Configuration conf1, conf2, conf3;
+    Configuration conf1, conf2, conf3;
 
     protected class TestUserInfo {
         public final String screenName;
@@ -133,10 +133,6 @@ public class TwitterTestBase extends TestCase {
         followsOneWay = p.getProperty("followsOneWay");
 
         readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
-    }
-
-    public void testDummy() {
-        // just to suppress warning
     }
 
     protected void tearDown() throws Exception {
