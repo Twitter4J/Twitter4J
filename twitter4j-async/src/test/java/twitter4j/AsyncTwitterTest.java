@@ -121,11 +121,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         async1.updateProfileImage(getRandomlyChosenFile());
         waitForResponse();
         assertNull(te);
-        // tile randomly
-        async1.updateProfileBackgroundImage(getRandomlyChosenFile(),
-                (5 < System.currentTimeMillis() % 5));
-        waitForResponse();
-        assertNull(te);
     }
 
 
@@ -200,30 +195,21 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
 
-        String oldName, oldURL, oldLocation, oldDescription;
-        oldName = user.getName();
-        oldURL = user.getURL().toString();
-        oldLocation = user.getLocation();
-        oldDescription = user.getDescription();
+        String oldURL = user.getURL();
 
         String newName, newURL, newLocation, newDescription;
-        String neu = "new";
-        newName = user.getName() + neu;
-        newURL = user.getURL() + neu;
-        newLocation = new Date().toString();
-        newDescription = user.getDescription() + neu;
+        newName = "name" + System.currentTimeMillis();
+        newURL = "https://yusuke.blog/" + System.currentTimeMillis();
+        newLocation = "location:" + System.currentTimeMillis();
+        newDescription = "description:" + System.currentTimeMillis();
 
         async1.updateProfile(newName, newURL, newLocation, newDescription);
 
         waitForResponse();
         assertEquals(newName, user.getName());
-        assertEquals(newURL, user.getURL().toString());
+        assertFalse(oldURL.equalsIgnoreCase(user.getURL()));
         assertEquals(newLocation, user.getLocation());
         assertEquals(newDescription, user.getDescription());
-
-        //revert the profile
-        async1.updateProfile(oldName, oldURL, oldLocation, oldDescription);
-        waitForResponse();
 
     }
 

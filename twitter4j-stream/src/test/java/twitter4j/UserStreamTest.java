@@ -69,96 +69,96 @@ public class UserStreamTest extends TwitterTestBase implements UserStreamListene
     }
 
     public void testUserStream() throws Exception {
-        TwitterStream twitterStream = new TwitterStreamFactory(conf1).getInstance();
+        TwitterStream twitterStream = new TwitterStreamFactory(rwPrivateConf).getInstance();
         twitterStream.addListener(this);
         try {
-            twitter1.destroyBlock(id2.id);
+            rwPrivateMessage.destroyBlock(id2.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter2.destroyBlock(id1.id);
+            twitter2.destroyBlock(rwPrivate.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter1.createFriendship(id2.id);
+            rwPrivateMessage.createFriendship(id2.id);
         } catch (TwitterException ignore) {
         }
         try {
-            twitter2.createFriendship(id1.id);
+            twitter2.createFriendship(rwPrivate.id);
         } catch (TwitterException ignore) {
         }
 
-        //twit4j: id1.id
+        //twit4j: rwPrivate.id
         //twit4j2: 6377362
         twitterStream.user("BAh7CToPY3JlYXR");
         //expecting onFriendList for twit4j and twit4j2
         waitForStatus("friend list", "onfriendlist");
 
 
-        DirectMessage dm = twitter2.sendDirectMessage(id1.id, "test " + new Date());
+        DirectMessage dm = twitter2.sendDirectMessage(rwPrivate.id, "test " + new Date());
         waitForStatus("sentDirectMessage", SEND_DIRECT_MESSAGE);
 
-        twitter1.destroyDirectMessage(dm.getId());
+        rwPrivateMessage.destroyDirectMessage(dm.getId());
 //        waitForStatus("destroyedDirectMessage");
 
 
-        Status status = twitter2.updateStatus(String.format("@%s %s", id1.screenName, new Date()));
+        Status status = twitter2.updateStatus(String.format("@%s %s", rwPrivate.screenName, new Date()));
         //expecting onStatus for twit4j from twit4j
         waitForStatus("onStatus", UPDATE_STATUS);
 
-        twitter1.retweetStatus(status.getId());
+        rwPrivateMessage.retweetStatus(status.getId());
         waitForStatus("onStatus", UPDATE_STATUS);
 
-        twitter1.createFavorite(status.getId());
+        rwPrivateMessage.createFavorite(status.getId());
         waitForStatus("createdFavorite", CREATE_FAVORITE);
 
-        twitter1.destroyFavorite(status.getId());
+        rwPrivateMessage.destroyFavorite(status.getId());
         waitForStatus("destroyedFavorite", DESTROY_FAVORITE);
 
-        // unfollow twit4j
-        twitter1.destroyFriendship(id2.id);
-        waitForStatus("destroyedFriendship", DESTROY_FRIENDSHIP);
+//        // unfollow twit4j
+//        rwPrivateMessage.destroyFriendship(id2.id);
+//        waitForStatus("destroyedFriendship", DESTROY_FRIENDSHIP);
 
-        // follow twit4j
-        twitter1.createFriendship(id2.id);
-        waitForStatus("createdFriendship", CREATE_FRIENDSHIP);
+//        // follow twit4j
+//        rwPrivateMessage.createFriendship(id2.id);
+//        waitForStatus("createdFriendship", CREATE_FRIENDSHIP);
 
-        status = twitter1.updateStatus("somerandometext " + new Date());
+        status = rwPrivateMessage.updateStatus("somerandometext " + new Date());
         waitForStatus("updatedStatus", UPDATE_STATUS);
 
-        twitter1.destroyStatus(status.getId());
+        rwPrivateMessage.destroyStatus(status.getId());
         waitForStatus("destroyedStatus", DESTROY_STATUS);
 
         // block twit4j2
-        twitter1.createBlock(id2.id);
+        rwPrivateMessage.createBlock(id2.id);
         waitForStatus("createdBlock", CREATE_BLOCK);
 
         // unblock twit4j2
-        twitter1.destroyBlock(id2.id);
+        rwPrivateMessage.destroyBlock(id2.id);
         waitForStatus("destroyedBlock", DESTROY_BLOCK);
 
-        twitter1.updateProfile(null, null, new Date().toString(), null);
+        rwPrivateMessage.updateProfile(null, null, new Date().toString(), null);
         waitForStatus("updateProfile", UPDATE_PROFILE);
 
-        UserList list = twitter1.createUserList("test", true, "desctription");
+        UserList list = rwPrivateMessage.createUserList("test", true, "desctription");
         waitForStatus("createdUserList", CREATE_USER_LIST);
 
-        list = twitter1.updateUserList(list.getId(), "test2", true, "description2");
+        list = rwPrivateMessage.updateUserList(list.getId(), "test2", true, "description2");
         waitForStatus("updatedUserList", UPDATE_USER_LIST);
 
-        twitter1.createUserListMember(list.getId(), id2.id);
+        rwPrivateMessage.createUserListMember(list.getId(), id2.id);
         waitForStatus("addedListMember", CREATE_LIST_MEMBER);
 
         twitter2.createUserListSubscription(list.getId());
         waitForStatus("createdUserListSubscription", SUBSCRIBE_LIST);
 
-        twitter1.destroyUserListMember(list.getId(), id2.id);
+        rwPrivateMessage.destroyUserListMember(list.getId(), id2.id);
         waitForStatus("deletedUserListMember", DESTROY_LIST_MEMBER);
 
         twitter2.destroyUserListSubscription(list.getId());
         waitForStatus("destroyedUserListSubscription", UNSUBSCRIBE_LIST);
 
-        twitter1.destroyUserList(list.getId());
+        rwPrivateMessage.destroyUserList(list.getId());
         waitForStatus("destroyedUserList", DESTROY_USER_LIST);
 
         // doesn't seem to get direct message deletion message now

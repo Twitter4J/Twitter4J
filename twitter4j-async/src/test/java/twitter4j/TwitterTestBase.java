@@ -20,6 +20,7 @@ import junit.framework.TestCase;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -28,12 +29,13 @@ public class TwitterTestBase extends TestCase {
         super(name);
     }
 
-    protected Twitter twitter1, twitter2, twitter3,
-            twitterAPIBestFriend1, twitterAPIBestFriend2;
+    Twitter twitter1, twitter2, twitter3,
+            twitterAPIBestFriend1, twitterAPIBestFriend2,
+            rwPrivateMessage, readonly;
     protected final Properties p = new Properties();
 
     protected String numberId, numberPass, followsOneWay;
-    protected int numberIdId;
+    protected long numberIdId;
     protected TestUserInfo id1, id2, id3, bestFriend1, bestFriend2;
     protected Configuration conf1, conf2, conf3, bestFriend1Conf, bestFriend2Conf;
 
@@ -58,9 +60,41 @@ public class TwitterTestBase extends TestCase {
     protected String browserConsumerSecret;
     protected String browserConsumerKey;
 
+    private static int currentIndex;
+    private static int maxTestPropertyIndex;
+    static {
+        for (int i = 0; i < 100; i++) {
+            // lookup test[i].properties
+            InputStream resource = TwitterTestBase.class.getResourceAsStream("/test" + i + ".properties");
+            if (resource != null) {
+                try {
+                    resource.close();
+                } catch (IOException ignore) {
+                }
+                maxTestPropertyIndex = i;
+            } else {
+                break;
+            }
+
+        }
+        currentIndex = (int) (System.currentTimeMillis() % (maxTestPropertyIndex + 1));
+    }
+
+    /**
+     * rotate test property file
+     * @return test[index].properties as InputStream
+     */
+    private static InputStream getNextProperty(){
+        currentIndex++;
+        if (currentIndex > maxTestPropertyIndex) {
+            currentIndex = 0;
+        }
+        return TwitterTestBase.class.getResourceAsStream("/test" + currentIndex + ".properties");
+    }
+
     protected void setUp() throws Exception {
         super.setUp();
-        InputStream is = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        InputStream is = getNextProperty();
         p.load(is);
         is.close();
 
@@ -75,6 +109,7 @@ public class TwitterTestBase extends TestCase {
         id2 = new TestUserInfo("id2");
         conf3 = new PropertyConfiguration(p, "/id3");
         id3 = new TestUserInfo("id3");
+        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/r-w-private")).getInstance();
         bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
         bestFriend1 = new TestUserInfo("bestFriend1");
         bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");
@@ -83,7 +118,7 @@ public class TwitterTestBase extends TestCase {
         numberId = p.getProperty("numberid.user");
         numberPass = p.getProperty("numberid.password");
 //        id1id = Integer.valueOf(p.getProperty("id1id"));
-        numberIdId = Integer.valueOf(p.getProperty("numberid.id"));
+        numberIdId = Long.valueOf(p.getProperty("numberid.id"));
 
         twitter1 = new TwitterFactory(conf1).getInstance();
 
@@ -96,6 +131,8 @@ public class TwitterTestBase extends TestCase {
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
         followsOneWay = p.getProperty("followsOneWay");
+
+        readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
     }
 
     protected void tearDown() throws Exception {
