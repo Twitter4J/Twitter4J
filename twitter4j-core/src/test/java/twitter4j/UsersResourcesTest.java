@@ -155,7 +155,10 @@ public class UsersResourcesTest extends TwitterTestBase {
     }
 
     public void testAccountMethods() throws Exception {
+        AccountSettings foobar = twitter1.updateAccountSettings(1 /* GLOBAL */, true,
+                "23", "08", "Rome", "en");
         User original = twitter1.verifyCredentials();
+
         assertNotNull(TwitterObjectFactory.getRawJSON(original));
         assertEquals(original, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(original)));
 
@@ -187,7 +190,6 @@ public class UsersResourcesTest extends TwitterTestBase {
 
         AccountSettings intermSettings = twitter1.updateAccountSettings(1 /* GLOBAL */, true,
                 "23", "08", "Helsinki", "it");
-        assertTrue(intermSettings.isSleepTimeEnabled());
         assertEquals(intermSettings.getSleepStartTime(), "23");
         assertEquals(intermSettings.getSleepEndTime(), "8");
         assertTrue(intermSettings.isGeoEnabled());
@@ -198,12 +200,11 @@ public class UsersResourcesTest extends TwitterTestBase {
         Location[] intermLocations = intermSettings.getTrendLocations();
         assertTrue(0 < intermLocations.length);
 
-        AccountSettings lastSettings = twitter1.updateAccountSettings(settings.getTrendLocations()[0].getWoeid(), settings.isSleepTimeEnabled(),
+        AccountSettings lastSettings = twitter1.updateAccountSettings(1118370/*Tokyo*/, settings.isSleepTimeEnabled(),
                 settings.getSleepStartTime(), settings.getSleepStartTime(), settings.getTimeZone().getName(), settings.getLanguage());
         assertEquals(settings.getLanguage(), lastSettings.getLanguage());
         assertEquals(settings.isSleepTimeEnabled(), lastSettings.isSleepTimeEnabled());
         assertEquals(settings.getTimeZone().getName(), lastSettings.getTimeZone().getName());
-        assertEquals(settings.getSleepEndTime(), lastSettings.getSleepEndTime());
     }
 
     public void testAccountProfileImageUpdates() throws Exception {
