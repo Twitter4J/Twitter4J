@@ -317,17 +317,17 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
     }
 
     public void testIncomingOutgoingFriendships() throws Exception {
-        IDs ids;
-        ids = twitter3.getIncomingFriendships(-1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertTrue(ids.getIDs().length > 0);
-        ids = twitter2.getOutgoingFriendships(-1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertTrue(ids.getIDs().length > 0);
-        // needs the account has at least one user who is not received any retweets.
-        //assertTrue(ids.getIDs().length > 0);
+        long[] twitter1followsIDs = twitter1.getFollowersIDs(id1.id).getIDs();
+        IDs incomingFriendships = twitter1.getIncomingFriendships(-1);
+        assertNotNull(TwitterObjectFactory.getRawJSON(incomingFriendships));
+        assertEquals(incomingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(incomingFriendships)));
+        assertEquals(twitter1followsIDs.length, incomingFriendships.getIDs().length);
+
+        long[] twitter1FollwoingIDs = twitter1.getFriendsIDs(id1.id).getIDs();
+        IDs outgoingFriendships = twitter1.getOutgoingFriendships(-1);
+        assertNotNull(TwitterObjectFactory.getRawJSON(outgoingFriendships));
+        assertEquals(outgoingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(outgoingFriendships)));
+        assertEquals(twitter1FollwoingIDs.length, outgoingFriendships.getIDs().length);
     }
 
     public void testFriendsFollowersList() throws Exception {
