@@ -15,6 +15,8 @@
  */
 package twitter4j;
 
+import twitter4j.conf.PropertyConfiguration;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
@@ -229,9 +231,12 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
     }
 
     public void testRelationship() throws Exception {
+        Twitter followsOneWay = new TwitterFactory(new PropertyConfiguration(p,"/followsOneWay")).getInstance();
+        followsOneWay.createFriendship(id1.screenName);
+        TestUserInfo followsOneWayInfo = new TestUserInfo("followsOneWay");
         //  TESTING PRECONDITIONS:
         //  1) id1 is followed by "followsOneWay", but not following "followsOneWay"
-        Relationship rel1 = twitter1.showFriendship(id1.screenName, followsOneWay);
+        Relationship rel1 = twitter1.showFriendship(id1.screenName, followsOneWayInfo.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(rel1));
         assertEquals(rel1, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel1)));
 
@@ -243,7 +248,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertFalse(rel1.isTargetFollowedBySource());
         assertTrue(rel1.canSourceDm());
 
-        rel1 = twitter1.showFriendship("@"+id1.screenName, followsOneWay);
+        rel1 = twitter1.showFriendship("@"+id1.screenName, followsOneWayInfo.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(rel1));
         assertEquals(rel1, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel1)));
 
@@ -256,7 +261,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1.canSourceDm());
 
         // reverse precondition
-        Relationship rel1r = twitter1.showFriendship(followsOneWay, id1.screenName);
+        Relationship rel1r = twitter1.showFriendship(followsOneWayInfo.screenName, id1.screenName);
         assertNotNull(rel1r);
         assertFalse(rel1r.isSourceFollowedByTarget());
         assertTrue(rel1r.isSourceFollowingTarget());
@@ -264,7 +269,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1r.isTargetFollowedBySource());
         assertFalse(rel1r.canSourceDm());
 
-        rel1r = twitter1.showFriendship(followsOneWay, "@"+id1.screenName);
+        rel1r = twitter1.showFriendship(followsOneWayInfo.screenName, "@"+id1.screenName);
         assertNotNull(rel1r);
         assertFalse(rel1r.isSourceFollowedByTarget());
         assertTrue(rel1r.isSourceFollowingTarget());
@@ -272,49 +277,13 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1r.isTargetFollowedBySource());
         assertFalse(rel1r.canSourceDm());
 
+        ResponseList<Friendship> friendshipList = twitter1.lookupFriendships("barakobama", followsOneWayInfo.screenName);
 
-        try {
-            twitterAPIBestFriend1.createFriendship(bestFriend2.id);
-        } catch (TwitterException ignore) {
-
-        }
-
-        try {
-            twitterAPIBestFriend2.createFriendship("@"+bestFriend1.id);
-        } catch (TwitterException ignore) {
-
-        }
-        //  2) best_friend1 is following and followed by best_friend2
-        Relationship rel2 = twitter1.showFriendship(bestFriend1.screenName, bestFriend2.screenName);
-        assertNull(TwitterObjectFactory.getRawJSON(rel1));
-        assertNotNull(TwitterObjectFactory.getRawJSON(rel2));
-        assertEquals(rel2, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel2)));
-
-        // test second precondition
-        assertNotNull(rel2);
-        assertTrue(rel2.isSourceFollowedByTarget());
-        assertTrue(rel2.isSourceFollowingTarget());
-        assertTrue(rel2.isTargetFollowingSource());
-        assertTrue(rel2.isTargetFollowedBySource());
-
-        // test equality
-        Relationship rel3 = twitter1.showFriendship(id1.screenName, followsOneWay);
-        assertNotNull(TwitterObjectFactory.getRawJSON(rel3));
-        assertEquals(rel3, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel3)));
-        assertEquals(rel1, rel3);
-        assertFalse(rel1.equals(rel2));
-
-        ResponseList<Friendship> friendshipList = twitter1.lookupFriendships("barakobama", id2.screenName, id3.screenName);
-
-        assertEquals(3, friendshipList.size());
+        assertEquals(2, friendshipList.size());
         assertEquals("barakobama", friendshipList.get(0).getScreenName());
         assertFalse(friendshipList.get(0).isFollowing());
         assertFalse(friendshipList.get(0).isFollowedBy());
-        assertEquals(id3.screenName, friendshipList.get(2).getScreenName());
-        assertTrue(friendshipList.get(2).isFollowing());
-        assertTrue(friendshipList.get(2).isFollowedBy());
-        friendshipList = twitter1.lookupFriendships(id2.id, id3.id);
-        assertEquals(2, friendshipList.size());
+        assertEquals(followsOneWay.getScreenName(), friendshipList.get(1).getScreenName());
 
 
         String twitterapi = "TwitterAPI";
