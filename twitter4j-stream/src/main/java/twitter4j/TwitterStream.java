@@ -128,6 +128,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      *
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
      * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
+     * @deprecated Since Twitter4J 4.0.7
      */
     void user();
 
@@ -138,6 +139,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
      * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
      * @since Twitter4J 2.1.9
+     * @deprecated Since Twitter4J 4.0.7
      */
     void user(final String... track);
 
@@ -153,6 +155,7 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
      * @return controller to control the site stream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
      * @since Twitter4J 2.1.8
+     * @deprecated Since Twitter4J 4.0.7
      */
     StreamController site(final boolean withFollowings, final long... follow);
 
