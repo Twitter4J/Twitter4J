@@ -23,7 +23,6 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -228,15 +227,15 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
         async1.getBlocksList();
         waitForResponse();
-        assertEquals(1, users.size());
+        assertTrue(users.size() > 0);
         assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksList(-1L);
         waitForResponse();
-        assertEquals(1, users.size());
+        assertTrue(users.size() > 0);
         assertEquals(twit4jblockID, users.get(0).getId());
         async1.getBlocksIDs();
         waitForResponse();
-        assertEquals(1, ids.getIDs().length);
+        assertTrue(ids.getIDs().length > 0);
         assertEquals(twit4jblockID, ids.getIDs()[0]);
     }
 
@@ -277,16 +276,6 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
         waitForResponse();
         assertEquals("", "@" + id1.screenName + " " + date, status.getText());
         assertDeserializedFormIsEqual(status);
-    }
-
-    public void testDirectMessages() throws Exception {
-        String expectedReturn = new Date() + ":directmessage test";
-        async1.sendDirectMessage(id3.id, expectedReturn);
-        waitForResponse();
-        assertEquals(expectedReturn, message.getText());
-        async3.getDirectMessages();
-        waitForResponse();
-        assertTrue(1 <= messages.size());
     }
 
     public void testCreateDestroyFriend() throws Exception {
@@ -1085,7 +1074,7 @@ public class AsyncTwitterTest extends TwitterTestBase implements TwitterListener
 
     @Override
     public void gotOAuth2Token(OAuth2Token token) {
-        System.out.println("[gotOAuth2Token] token:" + token.getAccessToken() + " type:" + token.getTokenType());
+        System.out.println("[gotOAuth2Token] token:" + token.getAccessToken().replaceAll("\\w","*") + " type:" + token.getTokenType());
         assertEquals("bearer", token.getTokenType());
         notifyResponse();
     }
