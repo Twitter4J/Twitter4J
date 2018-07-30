@@ -21,5 +21,17 @@ package twitter4j.media;
  * @since Twitter4J 2.1.8
  */
 public enum MediaProvider {
-    TWITTER, IMG_LY, TWIPPLE, MOBYPICTURE
+    TWITTER,
+    /**
+     * @deprecated
+     */
+    IMG_LY,
+    /**
+     * @deprecated
+     */
+    TWIPPLE,
+    /**
+     * @deprecated
+     */
+    MOBYPICTURE
 }

@@ -40,13 +40,11 @@ public class Http2ClientTest extends TestCase {
 
         suite.addTest(new Http2ClientTest("testNoPreferOption"));    // must be called first
         suite.addTest(new Http2ClientTest("testHttp2"));
-        suite.addTest(new Http2ClientTest("testSpdy"));
-        suite.addTest(new Http2ClientTest("testNoSpdy"));
 
         return suite;
     }
 
-    public Http2ClientTest(String name) {
+    private Http2ClientTest(String name) {
         super(name);
     }
 
@@ -68,23 +66,6 @@ public class Http2ClientTest extends TestCase {
         assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
     }
 
-    public void testSpdy() throws Exception {
-        AlternativeHttpClientImpl.sPreferSpdy = true;
-        AlternativeHttpClientImpl.sPreferHttp2 = false;
-        AlternativeHttpClientImpl http = callOembed();
-
-        // check SPDY
-        Field f = http.getClass().getDeclaredField("okHttpClient");
-        f.setAccessible(true);
-        OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNotNull("ensure that OkHttpClient is used", client);
-
-        ConnectionPool p = client.connectionPool();
-        assertEquals(1, p.connectionCount());
-
-        assertEquals(Protocol.SPDY_3, http.getLastRequestProtocol());
-    }
-
     public void testHttp2() throws Exception {
         AlternativeHttpClientImpl.sPreferSpdy = false;
         AlternativeHttpClientImpl.sPreferHttp2 = true;
@@ -102,24 +83,7 @@ public class Http2ClientTest extends TestCase {
         assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
     }
 
-    public void testNoSpdy() throws Exception {
-        AlternativeHttpClientImpl.sPreferSpdy = false;
-        AlternativeHttpClientImpl.sPreferHttp2 = false;
-
-        AlternativeHttpClientImpl http = callOembed();
-
-        // check not SPDY
-        Field f = http.getClass().getDeclaredField("okHttpClient");
-        f.setAccessible(true);
-        OkHttpClient client = (OkHttpClient) f.get(http);
-
-        ConnectionPool p = client.connectionPool();
-        assertEquals(1, p.connectionCount());
-
-        assertEquals(Protocol.HTTP_1_1, http.getLastRequestProtocol());
-    }
-
-    private AlternativeHttpClientImpl callOembed() throws TwitterException, JSONException {
+    private AlternativeHttpClientImpl callOembed() throws TwitterException {
         AlternativeHttpClientImpl http = new AlternativeHttpClientImpl();
         String url = "https://api.twitter.com/1/statuses/oembed.json?id=441617258578583554";
 

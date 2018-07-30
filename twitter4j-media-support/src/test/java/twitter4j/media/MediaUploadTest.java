@@ -16,10 +16,10 @@
 
 package twitter4j.media;
 
-import junit.framework.TestCase;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+import twitter4j.conf.PropertyConfiguration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,7 +31,7 @@ import java.util.Date;
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
-public class MediaUploadTest extends TestCase {
+public class MediaUploadTest extends TwitterTestBase {
     public MediaUploadTest(String name) {
         super(name);
 
@@ -53,12 +53,6 @@ public class MediaUploadTest extends TestCase {
         Configuration conf;
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.name()).build();
         new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.IMG_LY.name()).build();
-        new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWIPPLE.name()).build();
-        new ImageUploadFactory(conf);
-        conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.MOBYPICTURE.name()).build();
-        new ImageUploadFactory(conf);
     }
 
     public void testNonexistingFileUpload() throws Exception {
@@ -77,7 +71,7 @@ public class MediaUploadTest extends TestCase {
     public void testTwitterUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
-            ImageUploadFactory factory = new ImageUploadFactory();
+            ImageUploadFactory factory = new ImageUploadFactory(conf1);
             ImageUpload upload = factory.getInstance(MediaProvider.TWITTER);
             String url = upload.upload(fileName, is, message);
             assertTrue(url.length() > 0);
@@ -86,52 +80,4 @@ public class MediaUploadTest extends TestCase {
         }
     }
 
-    public void testImgLyUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
-            String url = upload.upload(fileName, is, message);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testTwippleUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration(null));
-            ImageUpload upload = factory.getInstance(MediaProvider.TWIPPLE);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testMobypictureUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("IOUxMoqc8Snms9nU"));
-            ImageUpload upload = factory.getInstance(MediaProvider.MOBYPICTURE);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
-
-    public void testFromConfigurationUpload() throws Exception {
-        InputStream is = getClass().getResourceAsStream("/" + fileName);
-        try {
-            ImageUploadFactory factory = new ImageUploadFactory();
-            ImageUpload upload = factory.getInstance();
-            System.out.println(upload);
-            String url = upload.upload(fileName, is);
-            assertTrue(url.length() > 0);
-        } finally {
-            is.close();
-        }
-    }
 }
