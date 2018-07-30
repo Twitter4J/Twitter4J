@@ -114,6 +114,5 @@ public class TimelineResourcesTest extends TwitterTestBase {
 
     public void testRetweetsOfMe() throws Exception {
         List<Status> statuses = twitter2.getRetweetsOfMe();
-        assertTrue(0 < statuses.size());
     }
 }

@@ -43,10 +43,6 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
-        obamaFollowers = twitter1.getFollowersIDs("@barackobama", -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
-        assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
         obamaFollowers = twitter1.getFollowersIDs("barackobama", obamaFollowers.getNextCursor());
         assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
@@ -59,100 +55,21 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
-        obamaFollowers = twitter1.getFollowersIDs("barackobama", obamaFollowers.getNextCursor(), 100);
-        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertTrue(obamaFollowers.hasNext());
-        assertTrue(obamaFollowers.hasPrevious());
-
-        obamaFollowers = twitter1.getFollowersIDs(813286, -1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
-        assertTrue(obamaFollowers.hasNext());
-        assertFalse(obamaFollowers.hasPrevious());
-        obamaFollowers = twitter1.getFollowersIDs(813286, obamaFollowers.getNextCursor());
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
-        assertTrue(obamaFollowers.hasNext());
 
         obamaFollowers = twitter1.getFollowersIDs(813286, -1, 100);
         assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
         assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
         assertTrue(obamaFollowers.hasNext());
         assertFalse(obamaFollowers.hasPrevious());
-        obamaFollowers = twitter1.getFollowersIDs(813286, obamaFollowers.getNextCursor(), 100);
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertEquals(obamaFollowers, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFollowers)));
-        assertTrue(obamaFollowers.hasNext());
-        assertTrue(obamaFollowers.hasPrevious());
+
 
         IDs obamaFriends;
-        obamaFriends = twitter1.getFriendsIDs("barackobama", -1);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertFalse(obamaFriends.hasPrevious());
-        obamaFriends = twitter1.getFriendsIDs("@barackobama", -1);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertFalse(obamaFriends.hasPrevious());
-        obamaFriends = twitter1.getFriendsIDs("barackobama", obamaFriends.getNextCursor());
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertTrue(obamaFriends.hasPrevious());
-
         obamaFriends = twitter1.getFriendsIDs("barackobama", -1, 100);
         assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
         assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
         assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
         assertTrue(obamaFriends.hasNext());
         assertFalse(obamaFriends.hasPrevious());
-        obamaFriends = twitter1.getFriendsIDs("barackobama", obamaFriends.getNextCursor(), 100);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertTrue(obamaFriends.hasPrevious());
-
-        obamaFriends = twitter1.getFriendsIDs(813286, -1);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertFalse(obamaFriends.hasPrevious());
-        obamaFriends = twitter1.getFriendsIDs(813286, obamaFriends.getNextCursor());
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertTrue(obamaFriends.hasPrevious());
-
-        obamaFriends = twitter1.getFriendsIDs(813286, -1, 100);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertFalse(obamaFriends.hasPrevious());
-        obamaFriends = twitter1.getFriendsIDs(813286, obamaFriends.getNextCursor(), 100);
-        assertNull(TwitterObjectFactory.getRawJSON(obamaFollowers));
-        assertNotNull(TwitterObjectFactory.getRawJSON(obamaFriends));
-        assertEquals(obamaFriends, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(obamaFriends)));
-        assertTrue(obamaFriends.hasNext());
-        assertTrue(obamaFriends.hasPrevious());
-
-        try {
-            twitter2.createFriendship(id1.screenName);
-        } catch (TwitterException ignore) {
-        }
-        ids = twitter1.getFollowersIDs(-1);
-        assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        assertEquals(ids, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(ids)));
-        assertIDExsits("twit4j2 is following twit4j", ids, 6377362);
     }
 
     private void assertIDExsits(String assertion, IDs ids, long idToFind) {
