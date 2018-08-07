@@ -88,7 +88,7 @@ public interface DirectMessagesResources {
      * @param count Max number of events to be returned. 20 default. 50 max.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html" title="GET direct_messages/events/list — Twitter Developers">GET direct_messages/events/list — Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html">GET direct_messages/events/list — Twitter Developers</a>
      */
     DirectMessageEventList getDirectMessageEvents(int count)
             throws TwitterException;
@@ -101,7 +101,7 @@ public interface DirectMessagesResources {
      * @param cursor For paging through result sets greater than 1 page, use the “next_cursor” property from the previous request.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html" title="GET direct_messages/events/list — Twitter Developers">GET direct_messages/events/list — Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html">GET direct_messages/events/list — Twitter Developers</a>
      */
     DirectMessageEventList getDirectMessageEvents(int count, String cursor)
             throws TwitterException;
@@ -128,7 +128,7 @@ public interface DirectMessagesResources {
      * @param id message id
      * @return DirectMessageEvent
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/get-event.html" title="GET direct_messages/events/show — Twitter Developers">GET direct_messages/events/show — Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/get-event.html">GET direct_messages/events/show — Twitter Developers</a>
      * @since Twitter4J 4.0.x
      */
     DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException;
@@ -151,9 +151,9 @@ public interface DirectMessagesResources {
      * Deletes the direct message specified in the required ID parameter.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/destroy.json
      *
-     * @param The id of the Direct Message event that should be deleted.
+     * @param id The id of the Direct Message event that should be deleted.
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/delete-message-event.html" title="DELETE direct_messages/events/destroy — Twitter Developers">DELETE direct_messages/events/destroy — Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/delete-message-event.html">DELETE direct_messages/events/destroy — Twitter Developers</a>
      * @since Twitter4J 4.0.x
      */
     void destroyDirectMessageEvent(long id)
