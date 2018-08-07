@@ -121,7 +121,7 @@ import java.util.Date;
     }
 
     @Override
-    public URLEntity[] getUrlEntities() {
+    public URLEntity[] getURLEntities() {
         return urlEntities;
     }
 
