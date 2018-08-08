@@ -234,17 +234,18 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
     }
 
     public void testIncomingOutgoingFriendships() throws Exception {
-        long[] twitter1followsIDs = twitter1.getFollowersIDs(id1.id).getIDs();
-        IDs incomingFriendships = twitter1.getIncomingFriendships(-1);
+        IDs incomingFriendships = twitter1.getIncomingFriendships(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(incomingFriendships));
         assertEquals(incomingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(incomingFriendships)));
-        assertEquals(twitter1followsIDs.length, incomingFriendships.getIDs().length);
 
-        long[] twitter1FollwoingIDs = twitter1.getFriendsIDs(id1.id).getIDs();
-        IDs outgoingFriendships = twitter1.getOutgoingFriendships(-1);
+        IDs outgoingFriendships = twitter1.getOutgoingFriendships(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(outgoingFriendships));
         assertEquals(outgoingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(outgoingFriendships)));
-        assertEquals(twitter1FollwoingIDs.length, outgoingFriendships.getIDs().length);
+    }
+
+    public void testFriendsFolowers() throws TwitterException {
+        twitter1.getFollowersIDs(id1.id, -1L).getIDs();
+        twitter1.getFriendsIDs(id1.id, -1L).getIDs();
     }
 
     public void testFriendsFollowersList() throws Exception {
