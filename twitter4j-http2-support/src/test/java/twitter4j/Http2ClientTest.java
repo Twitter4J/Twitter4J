@@ -27,16 +27,26 @@ import java.lang.reflect.Field;
 
 /**
  * Test case for HttpCient
+ * The fllowing argument is requred to run this test case:
+ * -Xbootclasspath/p:~/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.12.v20180117/alpn-boot-8.1.12.v20180117.jar
  *
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
 public class Http2ClientTest extends TestCase {
 
+    static boolean alpnBootJarFoundInBootClassPath;
+
     // specify running order
     public static Test suite() {
 
         TestSuite suite = new TestSuite();
+        alpnBootJarFoundInBootClassPath = System.getProperty("sun.boot.class.path").matches(".*alpn-boot-[0-9.]+\\.v[0-9]+\\.jar.*");
+        if (alpnBootJarFoundInBootClassPath) {
+            System.out.println("alpn jar found in boot classpath.");
+        } else {
+            System.out.println("alpn jar not found in boot classpath.");
+        }
 
         suite.addTest(new Http2ClientTest("testNoPreferOption"));    // must be called first
         suite.addTest(new Http2ClientTest("testHttp2"));
@@ -52,35 +62,39 @@ public class Http2ClientTest extends TestCase {
     }
 
     public void testNoPreferOption() throws Exception {
-        AlternativeHttpClientImpl http = callOembed();
+        if (alpnBootJarFoundInBootClassPath) {
+            AlternativeHttpClientImpl http = callOembed();
 
-        // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("okHttpClient");
-        f.setAccessible(true);
-        OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNotNull("ensure that OkHttpClient is used", client);
+            // check HTTP/2.0
+            Field f = http.getClass().getDeclaredField("okHttpClient");
+            f.setAccessible(true);
+            OkHttpClient client = (OkHttpClient) f.get(http);
+            assertNotNull("ensure that OkHttpClient is used", client);
 
-        ConnectionPool p = client.connectionPool();
-        assertEquals(1, p.connectionCount());
+            ConnectionPool p = client.connectionPool();
+            assertEquals(1, p.connectionCount());
 
-        assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
+            assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
+        }
     }
 
     public void testHttp2() throws Exception {
-        AlternativeHttpClientImpl.sPreferSpdy = false;
-        AlternativeHttpClientImpl.sPreferHttp2 = true;
-        AlternativeHttpClientImpl http = callOembed();
+        if (alpnBootJarFoundInBootClassPath) {
+            AlternativeHttpClientImpl.sPreferSpdy = false;
+            AlternativeHttpClientImpl.sPreferHttp2 = true;
+            AlternativeHttpClientImpl http = callOembed();
 
-        // check HTTP/2.0
-        Field f = http.getClass().getDeclaredField("okHttpClient");
-        f.setAccessible(true);
-        OkHttpClient client = (OkHttpClient) f.get(http);
-        assertNotNull("ensure that OkHttpClient is used", client);
+            // check HTTP/2.0
+            Field f = http.getClass().getDeclaredField("okHttpClient");
+            f.setAccessible(true);
+            OkHttpClient client = (OkHttpClient) f.get(http);
+            assertNotNull("ensure that OkHttpClient is used", client);
 
-        ConnectionPool p = client.connectionPool();
-        assertEquals(1, p.connectionCount());
+            ConnectionPool p = client.connectionPool();
+            assertEquals(1, p.connectionCount());
 
-        assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
+            assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
+        }
     }
 
     private AlternativeHttpClientImpl callOembed() throws TwitterException {
@@ -93,15 +107,17 @@ public class Http2ClientTest extends TestCase {
 
         return http;
     }
-    
-    public void testUploadMediaFromStream() throws Exception {
-        Twitter twitter = TwitterFactory.getSingleton();
-        UploadedMedia media2 = twitter.uploadMedia("fromInputStream", 
-                Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
 
-        StatusUpdate update = new StatusUpdate("from input stream");
-        update.setMediaIds(media2.getMediaId());
-        Status status = twitter.updateStatus(update);
-        assertEquals("from input stream", status.getText());
+    public void testUploadMediaFromStream() throws Exception {
+        if (alpnBootJarFoundInBootClassPath) {
+            Twitter twitter = TwitterFactory.getSingleton();
+            UploadedMedia media2 = twitter.uploadMedia("fromInputStream",
+                    Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
+
+            StatusUpdate update = new StatusUpdate("from input stream");
+            update.setMediaIds(media2.getMediaId());
+            Status status = twitter.updateStatus(update);
+            assertEquals("from input stream", status.getText());
+        }
     }
 }
