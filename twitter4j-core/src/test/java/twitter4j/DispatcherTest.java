@@ -16,29 +16,31 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import twitter4j.conf.ConfigurationContext;
 
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class DispatcherTest extends TestCase {
+class DispatcherTest {
     private Dispatcher dispatcher = null;
 
-    public DispatcherTest(String name) {
-        super(name);
-    }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @AfterEach
+    protected void afterEach() throws Exception {
         dispatcher = null;
     }
 
     private int count;
 
-    public void testInvokeLater() throws Exception {
+    @Test
+    void testInvokeLater() throws Exception {
         String name = "Twitter4J Async Dispatcher";
         int threadCount = ConfigurationContext.getInstance().getAsyncNumThreads();
         dispatcher = new DispatcherFactory(ConfigurationContext.getInstance()).getInstance();

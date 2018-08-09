@@ -16,33 +16,34 @@
 
 package twitter4j;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.5
  */
-public class ParseUtilTest extends TestCase {
-    public ParseUtilTest(String name) {
-        super(name);
+class ParseUtilTest {
+
+    @Test
+    void testParseLongReturns101() {
+        assertEquals(101, ParseUtil.getLong("100+"));
     }
 
-    public void testParseLongReturns101() {
-        Assert.assertEquals(101, ParseUtil.getLong("100+"));
+    @Test
+    void testParseIntOverflow() {
+        assertEquals(-1, ParseUtil.getInt("4294967295"));
     }
 
-    public void testParseIntOverflow() {
-        Assert.assertEquals(-1, ParseUtil.getInt("4294967295"));
-    }
-
-    public void testParseTrendDate() throws Exception {
+    @Test
+    void testParseTrendDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Assert.assertEquals("2011-07-11"
+        assertEquals("2011-07-11"
                 , sdf.format(ParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
     }
 

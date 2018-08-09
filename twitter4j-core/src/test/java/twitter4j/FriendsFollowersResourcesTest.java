@@ -15,22 +15,19 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
 import twitter4j.conf.PropertyConfiguration;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class FriendsFollowersResourcesTest extends TwitterTestBase {
-    public FriendsFollowersResourcesTest(String name) {
-        super(name);
-    }
+class FriendsFollowersResourcesTest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testSocialGraphMethods() throws Exception {
+    @Test
+    void testSocialGraphMethods() throws Exception {
         IDs ids;
         ids = twitter1.getFriendsIDs(-1);
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
@@ -80,10 +77,11 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
                 break;
             }
         }
-        assertTrue(assertion, found);
+        assertTrue(found, assertion);
     }
 
-    public void testCreateDestroyFriend() throws Exception {
+    @Test
+    void testCreateDestroyFriend() throws Exception {
         User user;
         try {
             user = twitter2.destroyFriendship(id1.screenName);
@@ -106,7 +104,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(id1.screenName, user.getScreenName());
 
         try {
-            user = twitter2.destroyFriendship("@"+id1.screenName);
+            user = twitter2.destroyFriendship("@" + id1.screenName);
             assertNotNull(TwitterObjectFactory.getRawJSON(user));
             assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         } catch (TwitterException te) {
@@ -114,13 +112,13 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         }
 
         try {
-            user = twitter2.destroyFriendship("@"+id1.screenName);
+            user = twitter2.destroyFriendship("@" + id1.screenName);
             assertNotNull(TwitterObjectFactory.getRawJSON(user));
             assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
-        user = twitter2.createFriendship("@"+id1.screenName, true);
+        user = twitter2.createFriendship("@" + id1.screenName, true);
         assertNotNull(TwitterObjectFactory.getRawJSON(user));
         assertEquals(user, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user)));
         assertEquals(id1.screenName, user.getScreenName());
@@ -147,8 +145,9 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
 
     }
 
-    public void testRelationship() throws Exception {
-        Twitter followsOneWay = new TwitterFactory(new PropertyConfiguration(p,"/followsOneWay")).getInstance();
+    @Test
+    void testRelationship() throws Exception {
+        Twitter followsOneWay = new TwitterFactory(new PropertyConfiguration(p, "/followsOneWay")).getInstance();
         followsOneWay.createFriendship(id1.screenName);
         TestUserInfo followsOneWayInfo = new TestUserInfo("followsOneWay");
         //  TESTING PRECONDITIONS:
@@ -165,7 +164,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertFalse(rel1.isTargetFollowedBySource());
         assertTrue(rel1.canSourceDm());
 
-        rel1 = twitter1.showFriendship("@"+id1.screenName, followsOneWayInfo.screenName);
+        rel1 = twitter1.showFriendship("@" + id1.screenName, followsOneWayInfo.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(rel1));
         assertEquals(rel1, TwitterObjectFactory.createRelationship(TwitterObjectFactory.getRawJSON(rel1)));
 
@@ -186,7 +185,7 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(rel1r.isTargetFollowedBySource());
         assertFalse(rel1r.canSourceDm());
 
-        rel1r = twitter1.showFriendship(followsOneWayInfo.screenName, "@"+id1.screenName);
+        rel1r = twitter1.showFriendship(followsOneWayInfo.screenName, "@" + id1.screenName);
         assertNotNull(rel1r);
         assertFalse(rel1r.isSourceFollowedByTarget());
         assertTrue(rel1r.isSourceFollowingTarget());
@@ -227,13 +226,15 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(updatedRelationship.isSourceWantRetweets());
     }
 
-    public void testLookupFriendships() throws Exception {
+    @Test
+    void testLookupFriendships() throws Exception {
         // https://dev.twitter.com/discussions/13658
         //http://jira.twitter4j.org/browse/TFJ-746
         readonly.lookupUsers(255794088L, 441705930L, 100581062L, 49255734L, 996328051L, 559170296L, 119261332L, 373027695L, 18515199L, 83777877L, 28973601L, 228325562L, 3474001L, 297909405L, 79159050L, 94355673L, 882514368L, 97212832L, 6459802L, 124127525L, 9121432L, 57142748L, 15797140L, 985973888L, 216250008L, 121663344L, 14832427L, 54904048L, 47539662L, 22330739L, 41032024L, 24160034L, 70614432L, 489294299L, 165725102L, 203209274L, 93831273L, 49661959L, 15670331L, 30597967L, 194643708L, 70630881L, 105973663L, 114333005L, 76407522L, 5898822L, 43796154L, 5929112L, 14118563L, 64378588L, 60287587L, 28745562L, 77718059L, 106944925L, 15744975L, 81170234L, 98512820L, 20766533L, 91238103L, 15965719L, 351559615L, 5371072L, 582489524L, 367671660L, 4037021L, 52773639L, 440662114L, 14288985L, 3868621L, 13585812L, 3811061L, 14724896L, 5491152L, 4862261L, 106114624L, 459133564L, 6609032L, 4175171L, 565734536L, 174637883L, 834785976L, 338234111L, 278590903L, 205621126L, 7362472L, 329830408L, 116640150L, 52106559L, 831322291L, 53856691L, 313143098L, 563798434L, 219589985L, 5420012L, 15142903L, 107381955L, 117652722L, 188738873L, 167628541L);
     }
 
-    public void testIncomingOutgoingFriendships() throws Exception {
+    @Test
+    void testIncomingOutgoingFriendships() throws Exception {
         IDs incomingFriendships = twitter1.getIncomingFriendships(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(incomingFriendships));
         assertEquals(incomingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(incomingFriendships)));
@@ -243,12 +244,14 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals(outgoingFriendships, TwitterObjectFactory.createIDs(TwitterObjectFactory.getRawJSON(outgoingFriendships)));
     }
 
-    public void testFriendsFolowers() throws TwitterException {
+    @Test
+    void testFriendsFolowers() throws TwitterException {
         twitter1.getFollowersIDs(id1.id, -1L).getIDs();
         twitter1.getFriendsIDs(id1.id, -1L).getIDs();
     }
 
-    public void testFriendsFollowersList() throws Exception {
+    @Test
+    void testFriendsFollowersList() throws Exception {
         PagableResponseList<User> t4jfriends = twitter1.getFriendsList("t4j_news", -1L);
         PagableResponseList<User> t4jfriends2 = twitter1.getFriendsList(72297675L, -1L);
         assertEquals(t4jfriends, t4jfriends2);
@@ -272,7 +275,8 @@ public class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertTrue(t4jfollowers1.size() <= 3);
     }
 
-    public void testFriendsFollowersListWithSkipStatusIncludeUserEntities() throws Exception {
+    @Test
+    void testFriendsFollowersListWithSkipStatusIncludeUserEntities() throws Exception {
         PagableResponseList<User> t4jfriends = twitter1.getFriendsList("t4j_news", -1L, 3, true, false);
         PagableResponseList<User> t4jfriends2 = twitter1.getFriendsList(72297675L, -1L, 3, true, false);
         assertEquals(t4jfriends, t4jfriends2);

@@ -16,7 +16,9 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,31 +28,29 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class SpringCompatibilityTest extends TestCase {
+class SpringCompatibilityTest {
     XmlBeanFactory beanFactory;
 
-    public SpringCompatibilityTest(String name) {
-        super(name);
-    }
-
-
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
         writeFile("./twitter4j.properties", "user=one"
                 + "\n" + "password=pasword-one");
         Resource res = new ClassPathResource("spring-beans.xml");
         beanFactory = new XmlBeanFactory(res);
     }
 
+    @AfterEach
     protected void tearDown() throws Exception {
-        super.tearDown();
         deleteFile("./twitter4j.properties");
     }
 
-    public void testFactoryInstantiation() throws Exception {
+    @Test
+    void testFactoryInstantiation() throws Exception {
         TwitterFactory twitterFactory = (TwitterFactory) beanFactory.getBean("twitterFactory");
         Twitter twitter = twitterFactory.getInstance();
         assertTrue(twitter instanceof Twitter);
@@ -64,7 +64,8 @@ public class SpringCompatibilityTest extends TestCase {
         assertTrue(twitterStream instanceof TwitterStream);
     }
 
-    public void testTwitterInstantiation() throws Exception {
+    @Test
+    void testTwitterInstantiation() throws Exception {
         Twitter twitter = (Twitter) beanFactory.getBean("twitter");
         assertTrue(twitter instanceof Twitter);
 

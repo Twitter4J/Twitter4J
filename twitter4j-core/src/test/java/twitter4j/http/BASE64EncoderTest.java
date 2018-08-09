@@ -16,19 +16,18 @@
 
 package twitter4j.http;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import twitter4j.BASE64Encoder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class BASE64EncoderTest extends TestCase {
-    public BASE64EncoderTest(String name) {
-        super(name);
-    }
+class BASE64EncoderTest {
 
-
-    public void testEncode() {
+    @Test
+    void testEncode() {
         assertEquals("QUJDREVGRw==", BASE64Encoder.encode("ABCDEFG".getBytes()));
         assertEquals("VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wZWQgb3ZlciB0aGUgbGF6eSBkb2cu", BASE64Encoder.encode("The quick brown fox jumped over the lazy dog.".getBytes()));
         assertEquals("bGVhc3VyZS4=", BASE64Encoder.encode("leasure.".getBytes()));

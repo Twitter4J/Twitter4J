@@ -15,20 +15,19 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TrendsResourcesTest extends TwitterTestBase {
-    public TrendsResourcesTest(String name) {
-        super(name);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testLocalTrendsMethods() throws Exception {
+class TrendsResourcesTest extends TwitterTestBase {
+    @Test
+    void testLocalTrendsMethods() throws Exception {
         Trends trends = twitter2.getPlaceTrends(1);
         assertEquals("Worldwide", trends.getLocation().getName());
         ResponseList<Location> locations;

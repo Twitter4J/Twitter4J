@@ -15,23 +15,23 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class SavedSearchesResourcesTest extends TwitterTestBase {
-    public SavedSearchesResourcesTest(String name) {
-        super(name);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
+class SavedSearchesResourcesTest extends TwitterTestBase {
 
     /* Saved Searches Methods */
-    public void testSavedSearches() throws Exception {
+    @Test
+    void testSavedSearches() throws Exception {
         List<SavedSearch> list = twitter1.getSavedSearches();
         assertNotNull(TwitterObjectFactory.getRawJSON(list));
         for (SavedSearch savedSearch : list) {

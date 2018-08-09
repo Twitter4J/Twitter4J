@@ -15,25 +15,25 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TweetsResourcesTest extends TwitterTestBase {
-    public TweetsResourcesTest(String name) {
-        super(name);
-    }
+class TweetsResourcesTest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testShowStatus() throws Exception {
+    @Test
+    void testShowStatus() throws Exception {
         Status status;
         status = TwitterObjectFactory.createStatus("{\"text\":\"\\\\u5e30%u5e30 &lt;%\\u007d& foobar &lt;&Cynthia&gt;\",\"contributors\":null,\"geo\":null,\"retweeted\":false,\"in_reply_to_screen_name\":null,\"truncated\":false,\"entities\":{\"urls\":[],\"hashtags\":[],\"user_mentions\":[]},\"in_reply_to_status_id_str\":null,\"id\":12029015787307008,\"in_reply_to_user_id_str\":null,\"source\":\"web\",\"favorited\":false,\"in_reply_to_status_id\":null,\"in_reply_to_user_id\":null,\"created_at\":\"Tue Dec 07 06:21:55 +0000 2010\",\"retweet_count\":0,\"id_str\":\"12029015787307008\",\"place\":null,\"user\":{\"location\":\"location:\",\"statuses_count\":13405,\"profile_background_tile\":false,\"lang\":\"en\",\"profile_link_color\":\"0000ff\",\"id\":6358482,\"following\":true,\"favourites_count\":2,\"protected\":false,\"profile_text_color\":\"000000\",\"contributors_enabled\":false,\"description\":\"Hi there, I do test a lot!new\",\"verified\":false,\"profile_sidebar_border_color\":\"87bc44\",\"name\":\"twit4j\",\"profile_background_color\":\"9ae4e8\",\"created_at\":\"Sun May 27 09:52:09 +0000 2007\",\"followers_count\":24,\"geo_enabled\":true,\"profile_background_image_url\":\"http://a3.twimg.com/profile_background_images/179009017/t4j-reverse.gif\",\"follow_request_sent\":false,\"url\":\"http://yusuke.homeip.net/twitter4j/\",\"utc_offset\":-32400,\"time_zone\":\"Alaska\",\"notifications\":false,\"friends_count\":4,\"profile_use_background_image\":true,\"profile_sidebar_fill_color\":\"e0ff92\",\"screen_name\":\"twit4j\",\"id_str\":\"6358482\",\"profile_image_url\":\"http://a3.twimg.com/profile_images/1184543043/t4j-reverse_normal.jpeg\",\"show_all_inline_media\":false,\"listed_count\":3},\"coordinates\":null}");
         assertEquals("\\u5e30%u5e30 <%}& foobar <&Cynthia>", status.getText());
@@ -60,7 +60,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals("\\u5e30%u5e30 <%}& foobar <&Cynthia>", status2.getText());
     }
 
-    public void testStatusMethods() throws Exception {
+    @Test
+    void testStatusMethods() throws Exception {
         String dateStr = new java.util.Date().toString();
         String date = dateStr + "test mytweet @" + id2.screenName + " #twitter4jtest";
         Status status = twitter1.updateStatus(date);
@@ -93,8 +94,9 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertTrue(status.getText().startsWith(date));
         assertEquals(1, status.getMediaEntities().length);
     }
-    
-    public void testUploadMediaByFile() throws Exception {
+
+    @Test
+    void testUploadMediaByFile() throws Exception {
 
         UploadedMedia media = twitter1.uploadMedia(getRandomlyChosenFile());
 
@@ -102,7 +104,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertNotNull(media.getSize());
     }
 
-    public void testUploadMediaByStream() throws Exception {
+    @Test
+    void testUploadMediaByStream() throws Exception {
 
         File randomFile = getRandomlyChosenFile();
         FileInputStream fis = new FileInputStream(randomFile);
@@ -112,7 +115,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertNotNull(media2.getSize());
     }
 
-    public void testRetweetMethods() throws Exception {
+    @Test
+    void testRetweetMethods() throws Exception {
         List<Status> statuses;
 
         statuses = twitter1.getRetweets(1021608606934822912L);
@@ -131,7 +135,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
         }
     }
 
-    public void testOEmbed() throws TwitterException {
+    @Test
+    void testOEmbed() throws TwitterException {
         OEmbed oembed = twitter1.getOEmbed(new OEmbedRequest(240192632003911681L, "http://samuraism.com/"));
         assertNotNull(TwitterObjectFactory.getRawJSON(oembed));
         assertEquals(oembed, TwitterObjectFactory.createOEmbed(TwitterObjectFactory.getRawJSON(oembed)));
@@ -148,7 +153,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
 
     }
 
-    public void testLookup() throws TwitterException {
+    @Test
+    void testLookup() throws TwitterException {
         // from "Example Result" of https://dev.twitter.com/docs/api/1.1/get/statuses/lookup
         ResponseList<Status> statuses = twitter1.lookup(20L, 432656548536401920L);
 
@@ -160,7 +166,8 @@ public class TweetsResourcesTest extends TwitterTestBase {
         assertEquals("POST statuses/update. Great way to start. https://t.co/9S8YO69xzf (disclaimer, this was not posted via the API).", second.getText());
     }
 
-    public void testEntities() throws Exception {
+    @Test
+    void testEntities() throws Exception {
         Status status = twitter2.showStatus(332341548203261953L);
         SymbolEntity[] symbolEntities = status.getSymbolEntities();
         assertEquals(4, symbolEntities.length);

@@ -17,28 +17,28 @@
 
 package twitter4j.conf;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import twitter4j.auth.RequestToken;
 
 import java.io.*;
 import java.util.Properties;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class ConfigurationTest extends TestCase {
-
-    public ConfigurationTest(String name) {
-        super(name);
-    }
+public class ConfigurationTest {
 
 
-    public void testGetInstance() throws Exception {
+    @Test
+    void testGetInstance() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         assertNotNull(conf);
     }
 
-    public void testFixURL() throws Exception {
+    @Test
+    void testFixURL() throws Exception {
         assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "http://www.bea.com"));
         assertEquals("http://www.bea.com", ConfigurationBase.fixURL(false, "https://www.bea.com"));
         assertEquals("https://www.bea.com", ConfigurationBase.fixURL(true, "http://www.bea.com"));
@@ -47,7 +47,8 @@ public class ConfigurationTest extends TestCase {
         assertNull(ConfigurationBase.fixURL(true, null));
     }
 
-    public void testConfiguration() throws Exception {
+    @Test
+    void testConfiguration() throws Exception {
         ConfigurationBase conf = new PropertyConfiguration();
 
         String test = "t4j";
@@ -155,7 +156,8 @@ public class ConfigurationTest extends TestCase {
         deleteFile("./twitter4j.properties");
     }
 
-    public void testSSL() throws Exception {
+    @Test
+    void testSSL() throws Exception {
         Configuration conf;
 
         // disable SSL
@@ -182,7 +184,8 @@ public class ConfigurationTest extends TestCase {
         deleteFile("./twitter4j.properties");
     }
 
-    public void testTwitter4jPrefixOmittable() throws Exception {
+    @Test
+    void testTwitter4jPrefixOmittable() throws Exception {
         System.getProperties().remove("http.useSSL");
         System.getProperties().remove("twitter4j.http.useSSL");
         Configuration conf;
@@ -195,7 +198,8 @@ public class ConfigurationTest extends TestCase {
         assertEquals("http://somewhere2.com/", conf.getRestBaseURL());
     }
 
-    public void testTreeConfiguration() throws Exception {
+    @Test
+    void testTreeConfiguration() throws Exception {
         Configuration conf;
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"
                 + "\n" + "twitter4j.http.useSSL=false");
@@ -214,12 +218,12 @@ public class ConfigurationTest extends TestCase {
 
         // configuration for two different countries and default
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                        + "\n" + "http.useSSL=false"
-                        + "\n" + "user=one"
-                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                        + "\n" + "china.user=two"
-                        + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
-                        + "\n" + "japan.user=three"
+                + "\n" + "http.useSSL=false"
+                + "\n" + "user=one"
+                + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                + "\n" + "china.user=two"
+                + "\n" + "japan.restBaseURL=http://yusuke.homeip.net/"
+                + "\n" + "japan.user=three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());
@@ -230,14 +234,14 @@ public class ConfigurationTest extends TestCase {
 
 
         writeFile("./twitter4j.properties", "restBaseURL=http://somewhere.com/"
-                        + "\n" + "http.useSSL=false"
-                        + "\n" + "user=one"
-                        + "\n" + "password=pasword-one"
-                        + "\n" + "china.restBaseURL=http://somewhere.cn/"
-                        + "\n" + "china.user1.user=two"
-                        + "\n" + "china.user1.password=pasword-two"
-                        + "\n" + "china.user2.user=three"
-                        + "\n" + "china.user2.password=pasword-three"
+                + "\n" + "http.useSSL=false"
+                + "\n" + "user=one"
+                + "\n" + "password=pasword-one"
+                + "\n" + "china.restBaseURL=http://somewhere.cn/"
+                + "\n" + "china.user1.user=two"
+                + "\n" + "china.user1.password=pasword-two"
+                + "\n" + "china.user2.user=three"
+                + "\n" + "china.user2.password=pasword-three"
         );
         conf = new PropertyConfiguration();
         assertEquals("one", conf.getUser());
@@ -251,7 +255,8 @@ public class ConfigurationTest extends TestCase {
         deleteFile("./twitter4j.properties");
     }
 
-    public void testConfigurationBuilder() throws Exception {
+    @Test
+    void testConfigurationBuilder() throws Exception {
         deleteFile("./twitter4j.properties");
         ConfigurationBuilder builder;
         Configuration conf;
@@ -316,7 +321,8 @@ public class ConfigurationTest extends TestCase {
         return that;
     }
 
-    public void testEnvironmentVariableBasedConfiguration() throws Exception {
+    @Test
+    void testEnvironmentVariableBasedConfiguration() throws Exception {
         Configuration conf = ConfigurationContext.getInstance();
         // perquisite: export twitter4j.debug=true
 //        assertTrue(conf.isDebugEnabled());

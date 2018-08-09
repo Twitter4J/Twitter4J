@@ -16,14 +16,18 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.6
  */
-public class StringUtilTest extends TestCase {
-    public void testJoin() throws Exception {
+class StringUtilTest {
+    @Test
+    void testJoin() throws Exception {
         assertEquals("6358482", StringUtil.join(new long[]{6358482L}));
         assertEquals("6358482,6358483", StringUtil.join(new long[]{6358482L, 6358483L}));
     }

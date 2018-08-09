@@ -15,20 +15,20 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class FavoritesResourcesTest extends TwitterTestBase {
-    public FavoritesResourcesTest(String name) {
-        super(name);
-    }
+class FavoritesResourcesTest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testFavoriteMethods() throws Exception {
+    @Test
+    void testFavoriteMethods() throws Exception {
         Status status = twitter1.getHomeTimeline().get(0);
         try {
             twitter2.destroyFavorite(status.getId());

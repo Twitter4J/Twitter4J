@@ -16,6 +16,8 @@
 
 package twitter4j.media;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
@@ -26,49 +28,32 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Takao Nakaguchi - takao.nakaguchi at gmail.com
  * @author withgod - noname at withgod.jp
  * @since Twitter4J 2.1.8
  */
 public class MediaUploadTest extends TwitterTestBase {
-    public MediaUploadTest(String name) {
-        super(name);
-
-    }
 
     private final String fileName = "t4j.jpeg";
     private final String message = "Twitter4J image upload test" + new Date().toString();
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
 
     private Configuration getConfiguration(String apiKey) {
         return new ConfigurationBuilder().setMediaProviderAPIKey(apiKey).build();
     }
 
-    public void testProviders() throws Exception {
+    @Test
+    void testProviders() throws Exception {
         Configuration conf;
         conf = new ConfigurationBuilder().setMediaProvider(MediaProvider.TWITTER.name()).build();
         new ImageUploadFactory(conf);
     }
 
-    public void testNonexistingFileUpload() throws Exception {
-
-        ImageUploadFactory factory = new ImageUploadFactory(getConfiguration("d414e7c05f440c867990fbb08286bdfd"));
-        ImageUpload upload = factory.getInstance(MediaProvider.IMG_LY);
-        try {
-            upload.upload(new File("foobar"));
-        } catch (TwitterException te) {
-            if (!(te.getCause() instanceof FileNotFoundException)) {
-                fail("expecting FileNotFoundException");
-            }
-        }
-    }
-
-    public void testTwitterUpload() throws Exception {
+    @Test
+    void testTwitterUpload() throws Exception {
         InputStream is = getClass().getResourceAsStream("/" + fileName);
         try {
             ImageUploadFactory factory = new ImageUploadFactory(conf1);

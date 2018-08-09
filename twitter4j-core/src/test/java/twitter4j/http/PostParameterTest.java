@@ -16,26 +16,26 @@
 
 package twitter4j.http;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import twitter4j.HttpParameter;
 
 import java.io.File;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class PostParameterTest extends TestCase {
+class PostParameterTest {
 
-    public PostParameterTest(String name) {
-        super(name);
-    }
-
-    public void testBooleanParameter() throws Exception {
+    @Test
+    void testBooleanParameter() throws Exception {
         assertEquals("true", new HttpParameter("test", true).getValue());
         assertEquals("false", new HttpParameter("test", false).getValue());
     }
 
-    public void testgetContentType() throws Exception {
+    @Test
+    void testgetContentType() throws Exception {
         assertValidContentType("image/jpeg", "img.jpeg");
         assertValidContentType("image/jpeg", "img.JPEG");
         assertValidContentType("image/jpeg", "img.jpg");

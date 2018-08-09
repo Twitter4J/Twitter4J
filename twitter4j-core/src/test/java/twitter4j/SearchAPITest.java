@@ -17,6 +17,8 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,17 +26,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SearchAPITest extends TwitterTestBase {
+import static org.junit.jupiter.api.Assertions.*;
 
-    public SearchAPITest(String name) {
-        super(name);
-    }
+class SearchAPITest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testQuery() throws Exception {
+    @Test
+    void testQuery() throws Exception {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Query query = new Query("test")
                 .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
@@ -54,14 +51,15 @@ public class SearchAPITest extends TwitterTestBase {
         return found;
     }
 
-    public void testSearch() throws Exception {
+    @Test
+    void testSearch() throws Exception {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
         Query query = new Query(queryStr).until(dateStr);
         QueryResult queryResult = twitter1.search(query);
         RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
-        assertTrue("sinceId", -1 != queryResult.getSinceId());
+        assertTrue(-1 != queryResult.getSinceId(), "sinceId");
         assertTrue(1265204883 < queryResult.getMaxId());
         assertTrue(queryResult.getRefreshURL().contains(queryStr));
         assertEquals(15, queryResult.getCount());
@@ -73,7 +71,7 @@ public class SearchAPITest extends TwitterTestBase {
         assertEquals(tweets.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(tweets.get(0))));
         assertNotNull(tweets.get(0).getText());
         assertNotNull(tweets.get(0).getCreatedAt());
-        assertNotNull("user", tweets.get(0).getUser());
+        assertNotNull(tweets.get(0).getUser(), "user");
         assertTrue(-1 != tweets.get(0).getId());
         assertNotNull(tweets.get(0).getUser().getProfileImageURL());
         String source = tweets.get(0).getSource();
@@ -114,7 +112,8 @@ public class SearchAPITest extends TwitterTestBase {
         twitter1.search(query);
     }
 
-    public void testEasyPaging() throws Exception {
+    @Test
+    void testEasyPaging() throws Exception {
         Query query = new Query("from:twit4j doesnothit").resultType(Query.POPULAR);
         QueryResult result = twitter1.search(query);
         assertFalse(result.hasNext());
@@ -126,7 +125,8 @@ public class SearchAPITest extends TwitterTestBase {
         } while ((query = result.nextQuery()) != null);
     }
 
-    public void testEasyPaging2() throws Exception {
+    @Test
+    void testEasyPaging2() throws Exception {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, 1);
         String until = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
@@ -142,7 +142,7 @@ public class SearchAPITest extends TwitterTestBase {
         Query nextQuery = qr.nextQuery();
         if (nextQuery != null) {
             assertEquals(Query.ResultType.recent, nextQuery.getResultType());
-            assertTrue("max id not set", nextQuery.getMaxId() != -1L);
+            assertTrue(nextQuery.getMaxId() != -1L, "max id not set");
         }
     }
 

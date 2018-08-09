@@ -15,22 +15,20 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
 import twitter4j.api.HelpResources;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class HelpResoursesTest extends TwitterTestBase {
-    public HelpResoursesTest(String name) {
-        super(name);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testHelpMethods() throws Exception {
+class HelpResoursesTest extends TwitterTestBase {
+    @Test
+    void testHelpMethods() throws Exception {
         ResponseList<HelpResources.Language> languages = twitter1.getLanguages();
         assertTrue(languages.size() > 5);
         HelpResources.Language language = languages.get(0);
@@ -48,7 +46,8 @@ public class HelpResoursesTest extends TwitterTestBase {
         assertEquals(1, conf.getMaxMediaPerUpload());
     }
 
-    public void testLegalResources() throws Exception {
+    @Test
+    void testLegalResources() throws Exception {
         assertNotNull(twitter1.getTermsOfService());
         assertNotNull(twitter1.getPrivacyPolicy());
     }

@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,20 +24,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class TwitterTest extends TwitterTestBase {
+class TwitterTest extends TwitterTestBase {
 
-    public TwitterTest(String name) {
-        super(name);
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testGetScreenName() throws Exception {
+    @Test
+    void testGetScreenName() throws Exception {
         assertEquals(id1.screenName, twitter1.getScreenName());
         assertEquals(id1.id, twitter1.getId());
     }
@@ -47,7 +42,8 @@ public class TwitterTest extends TwitterTestBase {
     boolean ipLimitStatusAcquired;
 
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
-    public void testRateLimitStatus() throws Exception {
+    @Test
+    void testRateLimitStatus() throws Exception {
         Map<String, RateLimitStatus> rateLimitStatus = twitter1.getRateLimitStatus();
         assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
         assertEquals(rateLimitStatus, TwitterObjectFactory.createRateLimitStatus(TwitterObjectFactory.getRawJSON(rateLimitStatus)));
@@ -99,7 +95,8 @@ public class TwitterTest extends TwitterTestBase {
         assertEquals(previous.getLimit(), this.rateLimitStatus.getLimit());
     }
 
-    public void testGetAccessLevel() throws Exception {
+    @Test
+    void testGetAccessLevel() throws Exception {
         TwitterResponse response;
         response = twitter1.verifyCredentials();
         assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
@@ -117,7 +114,7 @@ public class TwitterTest extends TwitterTestBase {
         Object that = ois.readObject();
         byteInputStream.close();
         ois.close();
-        Assert.assertFalse(obj.equals(that));
+        assertFalse(obj.equals(that));
         return that;
     }
 }

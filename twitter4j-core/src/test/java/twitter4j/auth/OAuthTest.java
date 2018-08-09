@@ -17,6 +17,8 @@
 package twitter4j.auth;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import twitter4j.*;
@@ -31,21 +33,16 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class OAuthTest extends TwitterTestBase {
+class OAuthTest extends TwitterTestBase {
 
-    public OAuthTest(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    public void testDeterministic() throws Exception {
+    @Test
+    void testDeterministic() throws Exception {
         ArrayList list1 = new ArrayList();
         ArrayList list2 = new ArrayList();
         assertEquals(list1, list2);
@@ -56,7 +53,8 @@ public class OAuthTest extends TwitterTestBase {
         assertEquals(twitter1, twitter2);
     }
 
-    public void testOAuth() throws Exception {
+    @Test
+    void testOAuth() throws Exception {
         ConfigurationBuilder build = new ConfigurationBuilder();
         String oAuthAccessToken = p.getProperty("id1.oauth.accessToken");
         String oAuthAccessTokenSecret = p.getProperty("id1.oauth.accessTokenSecret");
@@ -71,7 +69,8 @@ public class OAuthTest extends TwitterTestBase {
         twitter.verifyCredentials();
     }
 
-    public void testDesktopClient() throws Exception {
+    @Test
+    void testDesktopClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
 
         // desktop client - requiring pin
@@ -113,7 +112,8 @@ public class OAuthTest extends TwitterTestBase {
         assertEquals(TwitterResponse.READ, res.getAccessLevel());
     }
 
-    public void testIllegalStatus() throws Exception {
+    @Test
+    void testIllegalStatus() throws Exception {
         try {
             new TwitterFactory().getInstance().getOAuthAccessToken();
             fail("should throw IllegalStateException since request token hasn't been acquired.");
@@ -121,7 +121,8 @@ public class OAuthTest extends TwitterTestBase {
         }
     }
 
-    public void testSigninWithTwitter() throws Exception {
+    @Test
+    void testSigninWithTwitter() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
         // browser client - not requiring pin
         twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
@@ -134,7 +135,8 @@ public class OAuthTest extends TwitterTestBase {
 
     }
 
-    public void testBrowserClient() throws Exception {
+    @Test
+    void testBrowserClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
 
         // browser client - not requiring pin
@@ -172,7 +174,8 @@ public class OAuthTest extends TwitterTestBase {
         return body.substring(beforeIndex + before.length(), afterIndex);
     }
 
-    public void testAccessToken() {
+    @Test
+    void testAccessToken() {
         AccessToken at = new AccessToken("oauth_token=6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk&oauth_token_secret=ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY&user_id=6377362&screen_name=twit4j2");
         assertEquals("6377362-kW0YV1ymaqEUCSHP29ux169mDeA4kQfhEuqkdvHk", at.getToken());
         assertEquals("ghoTpd7LuMLHtJDyHkhYo40Uq5bWSxeCyOUAkbsOoOY", at.getTokenSecret());
@@ -181,7 +184,8 @@ public class OAuthTest extends TwitterTestBase {
     }
 
 
-    public void testSign() throws Exception {
+    @Test
+    void testSign() throws Exception {
         String baseStr = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
         OAuthAuthorization oauth = new OAuthAuthorization(ConfigurationContext.getInstance());
         oauth.setOAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44");
@@ -198,7 +202,8 @@ public class OAuthTest extends TwitterTestBase {
         assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
     }
 
-    public void testHeader() throws Exception {
+    @Test
+    void testHeader() throws Exception {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("file", "vacation.jpg");
         params[1] = new HttpParameter("size", "original");
@@ -209,7 +214,8 @@ public class OAuthTest extends TwitterTestBase {
 
     }
 
-    public void testEncodeParameter() throws Exception {
+    @Test
+    void testEncodeParameter() throws Exception {
         //http://wiki.oauth.net/TestCases
         assertEquals("abcABC123", HttpParameter.encode("abcABC123"));
         assertEquals("-._~", HttpParameter.encode("-._~"));
@@ -226,7 +232,8 @@ public class OAuthTest extends TwitterTestBase {
         assertEquals(unreserved, HttpParameter.encode(unreserved));
     }
 
-    public void testNormalizeRequestParameters() throws Exception {
+    @Test
+    void testNormalizeRequestParameters() throws Exception {
         // a=1, c=hi%20there, f=25, f=50, f=a, z=p, z=t
         HttpParameter[] params = new HttpParameter[]{
                 new HttpParameter("a", "1"),
@@ -272,7 +279,8 @@ public class OAuthTest extends TwitterTestBase {
 
     }
 
-    public void testConstructRequestURL() throws Exception {
+    @Test
+    void testConstructRequestURL() throws Exception {
         //http://oauth.net/core/1.0#rfc.section.9.1.2
         assertEquals("http://example.com/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:80/resource?id=123"));
         assertEquals("http://example.com:8080/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:8080/resource?id=123"));
@@ -282,7 +290,8 @@ public class OAuthTest extends TwitterTestBase {
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com/resource?id=123"));
     }
 
-    public void testXAuth() throws Exception {
+    @Test
+    void testXAuth() throws Exception {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey(desktopConsumerKey);
         builder.setOAuthConsumerSecret(desktopConsumerSecret);

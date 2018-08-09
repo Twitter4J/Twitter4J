@@ -15,21 +15,20 @@
  */
 package twitter4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class RateLimitStatusJSONImplTest extends TestCase {
-    public RateLimitStatusJSONImplTest(String name) {
-        super(name);
-    }
-
-    public void testGetResetTimeInSeconds() throws Exception {
+class RateLimitStatusJSONImplTest {
+    @Test
+    void testGetResetTimeInSeconds() throws Exception {
         RateLimitStatus status = RateLimitStatusJSONImpl.createFromResponseHeader(new MockHttpResponse());
 //        System.out.println(status.getResetTimeInSeconds());
 //        System.out.println((System.currentTimeMillis() / 1000) + 13 * 60);

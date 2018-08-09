@@ -16,29 +16,20 @@
 
 package twitter4j.util;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.Locale;
 
-public class TimeSpanConverterTest extends TestCase {
-    public TimeSpanConverterTest(String name) {
-        super(name);
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class TimeSpanConverterTest {
 
     final int second = 1000;
     final int minute = second * 60;
     final int hour = minute * 60;
 
     TimeSpanConverter converter;
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 
     private void assertTimeSpanString(String expected, long time) {
         assertEquals(expected, converter.toTimeSpanString(time));
@@ -64,7 +55,8 @@ public class TimeSpanConverterTest extends TestCase {
         return cal.get(Calendar.YEAR);
     }
 
-    public void testItalian() throws Exception {
+    @Test
+    void testItalian() throws Exception {
         converter = new TimeSpanConverter(Locale.ITALIAN);
         assertTimeSpanString("Ora", System.currentTimeMillis() - second);
         assertTimeSpanString("4 secondi fa", System.currentTimeMillis() - second * 4);
@@ -75,7 +67,8 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
-    public void testSpanish() throws Exception {
+    @Test
+    void testSpanish() throws Exception {
         Locale[] locales = Locale.getAvailableLocales();
         Locale locale = null;
         for (Locale loc : locales) {
@@ -93,7 +86,8 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
-    public void testEnglish() throws Exception {
+    @Test
+    void testEnglish() throws Exception {
         converter = new TimeSpanConverter(Locale.ENGLISH);
         assertTimeSpanString("now", System.currentTimeMillis() - second);
         assertTimeSpanString("4 seconds ago", System.currentTimeMillis() - second * 4);
@@ -105,7 +99,8 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("18 Dec 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
-    public void testFrench() throws Exception {
+    @Test
+    void testFrench() throws Exception {
         converter = new TimeSpanConverter(Locale.FRENCH);
         assertTimeSpanString("Maintenant", System.currentTimeMillis() - second);
         assertTimeSpanString("Il y a 4 secondes", System.currentTimeMillis() - second * 4);
@@ -116,7 +111,8 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("18 déc. 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
-    public void testGerman() throws Exception {
+    @Test
+    void testGerman() throws Exception {
         converter = new TimeSpanConverter(Locale.GERMAN);
         assertTimeSpanString("Jetzt", System.currentTimeMillis() - second);
         assertTimeSpanString("vor 4 Sekunden", System.currentTimeMillis() - second * 4);
@@ -127,7 +123,8 @@ public class TimeSpanConverterTest extends TestCase {
         assertTimeSpanString("18 Dez 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
-    public void testJapanese() throws Exception {
+    @Test
+    void testJapanese() throws Exception {
         converter = new TimeSpanConverter(Locale.JAPANESE);
         assertTimeSpanString("今", System.currentTimeMillis() - second);
         assertTimeSpanString("4秒前", System.currentTimeMillis() - second * 4);

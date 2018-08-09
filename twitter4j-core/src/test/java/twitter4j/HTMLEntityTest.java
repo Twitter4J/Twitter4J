@@ -16,21 +16,15 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import twitter4j.*;
 
-public class HTMLEntityTest extends TestCase {
-    public HTMLEntityTest(String name) {
-        super(name);
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    protected void setUp() {
-    }
+class HTMLEntityTest {
 
-    protected void tearDown() {
-    }
-
-    public void testUnescapeAndSlideEntityIncdices() throws Exception {
+    @Test
+    void testUnescapeAndSlideEntityIncdices() throws Exception {
         // @null &lt; #test &gt; &amp;\u307b\u3052\u307b\u3052 @t4j_news %&amp; http:\/\/t.co\/HwbSpYFr http:\/\/t.co\/d4G7MQ62
         // 01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
         // 0         1         2         3         4         5         6         7         8         9         10        11
@@ -59,8 +53,9 @@ public class HTMLEntityTest extends TestCase {
         assertEquals("http://t.co/d4G7MQ62", escaped.substring(media.getStart(), media.getEnd()));
 
     }
-    
-    public void testUnescapeAndSlideEntityIncdicesWithNullParameters() throws Exception {
+
+    @Test
+    void testUnescapeAndSlideEntityIncdicesWithNullParameters() throws Exception {
         String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
         JSONObject json = new JSONObject(rawJSON);
         String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),
@@ -68,8 +63,9 @@ public class HTMLEntityTest extends TestCase {
         assertEquals("@null < #test > &ほげほげ @t4j_news %& http://t.co/HwbSpYFr http://t.co/d4G7MQ62"
                 , escaped);
     }
-    
-    public void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() throws Exception {
+
+    @Test
+    void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() throws Exception {
         URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
                 , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
 
@@ -82,7 +78,8 @@ public class HTMLEntityTest extends TestCase {
         assertEquals("http://t.co/HwbSpYFr", escaped.substring(t4jURL.getStart(), t4jURL.getEnd()));
     }
 
-    public void testEscape() {
+    @Test
+    void testEscape() {
         String original = "<=% !>";
         String expected = "&lt;=% !&gt;";
         assertEquals(expected, HTMLEntity.escape(original));
@@ -91,7 +88,8 @@ public class HTMLEntityTest extends TestCase {
         assertEquals(expected, buf.toString());
     }
 
-    public void testUnescape() {
+    @Test
+    void testUnescape() {
         String original = "&lt;&lt;=% !&nbsp;&gt;";
         String expected = "<<=% !\u00A0>";
         assertEquals(expected, HTMLEntity.unescape(original));
@@ -126,11 +124,13 @@ public class HTMLEntityTest extends TestCase {
         assertEquals(expected, HTMLEntity.unescapeAndSlideEntityIncdices(original, new UserMentionEntity[]{},
                 new URLEntity[]{}, new HashtagEntity[]{}, new MediaEntity[]{}));
     }
-    public void testUnescapeAndSlideEntityIncdicesWithCorrectedIndices() throws Exception {
+
+    @Test
+    void testUnescapeAndSlideEntityIncdicesWithCorrectedIndices() throws Exception {
         // #test&amp;test &amp;#test #test&amp; #test&gt;
-    	// 0123456789012345678901234567890123456789012345
-    	// 0         1         2         3         4
-    	//"entities":{"hashtags":[{"text":"test","indices":[0,5]},{"text":"test","indices":[20,25]},{"text":"test","indices":[26,31]},{"text":"test","indices":[37,42]}],"symbols":[],"urls":[],"user_mentions":[]}
+        // 0123456789012345678901234567890123456789012345
+        // 0         1         2         3         4
+        //"entities":{"hashtags":[{"text":"test","indices":[0,5]},{"text":"test","indices":[20,25]},{"text":"test","indices":[26,31]},{"text":"test","indices":[37,42]}],"symbols":[],"urls":[],"user_mentions":[]}
         HashtagEntityJSONImpl test1 = new HashtagEntityJSONImpl(0, 5, "test");
         HashtagEntityJSONImpl test2 = new HashtagEntityJSONImpl(20, 25, "test");
         HashtagEntityJSONImpl test3 = new HashtagEntityJSONImpl(26, 31, "test");
@@ -138,7 +138,7 @@ public class HTMLEntityTest extends TestCase {
         String rawJSON = "{\"text\":\"#test&amp;test &amp;#test #test&amp; #test&gt;\"}";
 
         JSONObject json = new JSONObject(rawJSON);
-        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),null, null, new HashtagEntity[]{test1,test2,test3,test4},null);
+        String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"), null, null, new HashtagEntity[]{test1, test2, test3, test4}, null);
         assertEquals("#test&test &#test #test& #test>", escaped);
         assertEquals("#test", escaped.substring(test1.getStart(), test1.getEnd()));
         assertEquals("#test", escaped.substring(test2.getStart(), test2.getEnd()));

@@ -15,22 +15,22 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class TimelineResourcesTest extends TwitterTestBase {
-    public TimelineResourcesTest(String name) {
-        super(name);
-    }
+class TimelineResourcesTest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testGetHomeTimeline() throws Exception {
+    @Test
+    void testGetHomeTimeline() throws Exception {
         List<Status> statuses = twitter1.getHomeTimeline();
         assertTrue(0 < statuses.size());
         assertTrue(twitter1.getConfiguration().isJSONStoreEnabled());
@@ -38,31 +38,32 @@ public class TimelineResourcesTest extends TwitterTestBase {
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
     }
 
-    public void testUserTimeline() throws Exception {
+    @Test
+    void testUserTimeline() throws Exception {
         List<Status> statuses;
         statuses = twitter1.getUserTimeline();
-        assertTrue("size", 0 < statuses.size());
+        assertTrue(0 < statuses.size(), "size");
         try {
             statuses = twitter1.getUserTimeline("1000");
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
-            assertTrue("size", 0 < statuses.size());
+            assertTrue(0 < statuses.size(), "size");
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertEquals(9737332, statuses.get(0).getUser().getId());
             statuses = twitter1.getUserTimeline(1000);
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
-            assertTrue("size", 0 < statuses.size());
+            assertTrue(0 < statuses.size(), "size");
             assertEquals(1000, statuses.get(0).getUser().getId());
 
             statuses = twitter1.getUserTimeline(id1.screenName, new Paging().count(10));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
-            assertTrue("size", 0 < statuses.size());
+            assertTrue(0 < statuses.size(), "size");
             statuses = twitter1.getUserTimeline(id1.screenName, new Paging(999383469l));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
-            assertTrue("size", 0 < statuses.size());
+            assertTrue(0 < statuses.size(), "size");
         } catch (TwitterException te) {
             // is being rate limited
             assertEquals(400, te.getStatusCode());
@@ -71,11 +72,11 @@ public class TimelineResourcesTest extends TwitterTestBase {
         statuses = twitter1.getUserTimeline(new Paging(999383469l));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
-        assertTrue("size", 0 < statuses.size());
+        assertTrue(0 < statuses.size(), "size");
         statuses = twitter1.getUserTimeline(new Paging(999383469l).count(15));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
-        assertTrue("size", 0 < statuses.size());
+        assertTrue(0 < statuses.size(), "size");
 
 
         statuses = twitter1.getUserTimeline(new Paging(1).count(30));
@@ -86,7 +87,8 @@ public class TimelineResourcesTest extends TwitterTestBase {
         assertEquals(statuses.get(statuses.size() - 1), statuses2.get(statuses2.size() - 1));
     }
 
-    public void testGetMentions() throws Exception {
+    @Test
+    void testGetMentions() throws Exception {
         Status status = twitter2.updateStatus("@" + id1.screenName + " reply to id1 " + new java.util.Date());
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         List<Status> statuses = twitter1.getMentionsTimeline();
@@ -112,7 +114,8 @@ public class TimelineResourcesTest extends TwitterTestBase {
         assertTrue(statuses.size() > 0);
     }
 
-    public void testRetweetsOfMe() throws Exception {
+    @Test
+    void testRetweetsOfMe() throws Exception {
         List<Status> statuses = twitter2.getRetweetsOfMe();
     }
 }

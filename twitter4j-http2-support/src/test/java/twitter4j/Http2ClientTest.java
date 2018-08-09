@@ -16,14 +16,15 @@
 
 package twitter4j;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test case for HttpCient
@@ -33,35 +34,23 @@ import java.lang.reflect.Field;
  * @author Hiroaki Takeuchi - takke30 at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class Http2ClientTest extends TestCase {
+public class Http2ClientTest {
 
     static boolean alpnBootJarFoundInBootClassPath;
 
-    // specify running order
-    public static Test suite() {
+    static {
 
-        TestSuite suite = new TestSuite();
         alpnBootJarFoundInBootClassPath = System.getProperty("sun.boot.class.path").matches(".*alpn-boot-[0-9.]+\\.v[0-9]+\\.jar.*");
         if (alpnBootJarFoundInBootClassPath) {
             System.out.println("alpn jar found in boot classpath.");
         } else {
             System.out.println("alpn jar not found in boot classpath.");
         }
-
-        suite.addTest(new Http2ClientTest("testNoPreferOption"));    // must be called first
-        suite.addTest(new Http2ClientTest("testHttp2"));
-
-        return suite;
     }
 
-    private Http2ClientTest(String name) {
-        super(name);
-    }
-
-    protected void tearDown() {
-    }
-
-    public void testNoPreferOption() throws Exception {
+    @Test
+    void testNoPreferOption() throws Exception {
+        // no prefer option
         if (alpnBootJarFoundInBootClassPath) {
             AlternativeHttpClientImpl http = callOembed();
 
@@ -69,16 +58,15 @@ public class Http2ClientTest extends TestCase {
             Field f = http.getClass().getDeclaredField("okHttpClient");
             f.setAccessible(true);
             OkHttpClient client = (OkHttpClient) f.get(http);
-            assertNotNull("ensure that OkHttpClient is used", client);
+            assertNotNull(client, "ensure that OkHttpClient is used");
 
             ConnectionPool p = client.connectionPool();
             assertEquals(1, p.connectionCount());
 
             assertEquals(Protocol.HTTP_2, http.getLastRequestProtocol());
         }
-    }
 
-    public void testHttp2() throws Exception {
+        // http2
         if (alpnBootJarFoundInBootClassPath) {
             AlternativeHttpClientImpl.sPreferSpdy = false;
             AlternativeHttpClientImpl.sPreferHttp2 = true;
@@ -88,7 +76,7 @@ public class Http2ClientTest extends TestCase {
             Field f = http.getClass().getDeclaredField("okHttpClient");
             f.setAccessible(true);
             OkHttpClient client = (OkHttpClient) f.get(http);
-            assertNotNull("ensure that OkHttpClient is used", client);
+            assertNotNull(client, "ensure that OkHttpClient is used");
 
             ConnectionPool p = client.connectionPool();
             assertEquals(1, p.connectionCount());
@@ -108,7 +96,8 @@ public class Http2ClientTest extends TestCase {
         return http;
     }
 
-    public void testUploadMediaFromStream() throws Exception {
+    @Test
+    void testUploadMediaFromStream() throws Exception {
         if (alpnBootJarFoundInBootClassPath) {
             Twitter twitter = TwitterFactory.getSingleton();
             UploadedMedia media2 = twitter.uploadMedia("fromInputStream",

@@ -16,6 +16,8 @@
 
 package twitter4j.auth;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -24,26 +26,27 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
  */
 public class ApplicationOnlyAuthTest extends TwitterTestBase {
     private ConfigurationBuilder builder;
 
-    public ApplicationOnlyAuthTest(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    protected void beforeEach() throws Exception {
+        super.beforeEach();
         builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
     }
 
     // --- Authentication
 
-    public void testAuthWithBuildingConf1() throws Exception {
+    @Test
+    void testAuthWithBuildingConf1() throws Exception {
         // setup
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
@@ -68,7 +71,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         }
     }
 
-    public void testAuthWithBuildingConf2() throws Exception {
+    @Test
+    void testAuthWithBuildingConf2() throws Exception {
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
@@ -83,7 +87,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
     }
 
-    public void testSettingAccessToken1() throws TwitterException {
+    @Test
+    void testSettingAccessToken1() throws TwitterException {
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
@@ -103,7 +108,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
     }
 
-    public void testSettingAccessToken2() throws TwitterException {
+    @Test
+    void testSettingAccessToken2() throws TwitterException {
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
@@ -124,7 +130,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
     }
 
-    public void testInvalidation() throws Exception {
+    @Test
+    void testInvalidation() throws Exception {
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
@@ -151,7 +158,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         }
     }
 
-    public void testAuthWithPropertyFile() throws Exception {
+    @Test
+    void testAuthWithPropertyFile() throws Exception {
         String filename = "./twitter4j.properties";
 
         try {
@@ -179,7 +187,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         }
     }
 
-    public void testSettingAccessTokenFromPropertyFile() throws Exception {
+    @Test
+    void testSettingAccessTokenFromPropertyFile() throws Exception {
         String filename = "./twitter4j.properties";
 
         try {

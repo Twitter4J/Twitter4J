@@ -16,37 +16,32 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.NullAuthorization;
 import twitter4j.auth.OAuth2Authorization;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.ConfigurationBuilder;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public class AuthorizationTest extends TwitterTestBase {
+class AuthorizationTest extends TwitterTestBase {
 
-    public AuthorizationTest(String name) {
-        super(name);
-    }
 
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testAnonymousInstance() throws Exception {
+    @Test
+    void testAnonymousInstance() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
     }
 
-    public void testOAuthInstance() throws Exception {
+    @Test
+    void testOAuthInstance() throws Exception {
         String consumerSecret;
         String consumerKey;
         consumerSecret = p.getProperty("browser.oauth.consumerSecret");
@@ -65,7 +60,8 @@ public class AuthorizationTest extends TwitterTestBase {
         assertTrue(auth instanceof OAuthAuthorization);
     }
 
-    public void testOAuth2Instance() throws Exception {
+    @Test
+    void testOAuth2Instance() throws Exception {
         String consumerSecret = p.getProperty("browser.oauth.consumerSecret");
         String consumerKey = p.getProperty("browser.oauth.consumerSecret");
 

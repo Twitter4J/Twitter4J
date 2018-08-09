@@ -16,26 +16,19 @@
 
 package twitter4j.util;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public class CharacterUtilTest extends TestCase {
-    public CharacterUtilTest(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testCount() throws Exception {
+class CharacterUtilTest {
+    @Test
+    void testCount() throws Exception {
         String str;
         int expectedLength;
         str = "a quick brown fox jumped over the lazy dog.";

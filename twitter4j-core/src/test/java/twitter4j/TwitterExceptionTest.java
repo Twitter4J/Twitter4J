@@ -16,18 +16,21 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
-public class TwitterExceptionTest extends TestCase {
-    public TwitterExceptionTest(String name) {
-        super(name);
-    }
+public class TwitterExceptionTest {
 
-    public void testException() throws Exception {
+    @Test
+    void testException() throws Exception {
         TwitterException te1, te2, te3;
         te1 = new TwitterException("test");
         te2 = new TwitterException("test");
@@ -46,7 +49,8 @@ public class TwitterExceptionTest extends TestCase {
         new TwitterException("msg").toString();
     }
 
-    public void testEncodedMessage() throws Exception {
+    @Test
+    void testEncodedMessage() throws Exception {
         TwitterException te = new TwitterException("{\"errors\":[{\"message\":\"Sorry, that page does not exist\",\"code\":34}]}");
         assertTrue(-1 != te.getMessage().indexOf("Sorry, that page does not exist"));
         assertTrue(te.isErrorMessageAvailable());
@@ -58,7 +62,8 @@ public class TwitterExceptionTest extends TestCase {
 
     }
 
-    public void testGetLong() throws Exception {
+    @Test
+    void testGetLong() throws Exception {
         JSONObject json = new JSONObject("{\"value\":\"13857270119014401\"}");
         assertEquals(13857270119014401l, json.getLong("value"));
     }

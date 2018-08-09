@@ -15,7 +15,7 @@
  */
 package twitter4j.management;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import javax.management.AttributeList;
 import javax.management.MBeanAttributeInfo;
@@ -25,20 +25,20 @@ import javax.management.openmbean.TabularData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Unit tests for APIStatistics, MBeans
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
-public class MBeansTest extends TestCase {
-    public MBeansTest(String name) {
-        super(name);
-    }
+class MBeansTest {
 
     /**
      * Tests statistics calculation for a single method
      */
-    public void testInvocationStatisticsCalculator() throws Exception {
+    @Test
+    void testInvocationStatisticsCalculator() throws Exception {
         InvocationStatisticsCalculator calc = new InvocationStatisticsCalculator("foo", 5);
 
         assertEquals("foo", calc.getName());
@@ -75,7 +75,8 @@ public class MBeansTest extends TestCase {
     /**
      * Tests statistics calculation/aggregation for an entire API
      */
-    public void testAPIStatistics() throws Exception {
+    @Test
+    void testAPIStatistics() throws Exception {
         APIStatistics stats = new APIStatistics(5);
 
         checkCalculator(stats, 0, 0, 0, 0);
@@ -117,7 +118,8 @@ public class MBeansTest extends TestCase {
     /**
      * Tests exposure of API statistics via a dynamic MBean
      */
-    public void testAPIStatisticsOpenMBean() throws Exception {
+    @Test
+    void testAPIStatisticsOpenMBean() throws Exception {
         APIStatistics stats = new APIStatistics(5);
         APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(stats);
 

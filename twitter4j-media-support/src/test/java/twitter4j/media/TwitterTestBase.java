@@ -16,7 +16,8 @@
 
 package twitter4j.media;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
@@ -27,10 +28,9 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-public class TwitterTestBase extends TestCase {
-    public TwitterTestBase(String name) {
-        super(name);
-    }
+import static org.junit.jupiter.api.Assertions.fail;
+
+class TwitterTestBase {
 
     Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
@@ -127,8 +127,8 @@ public class TwitterTestBase extends TestCase {
         return props;
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    protected void beforeEach() throws Exception {
         p = getNextProperty();
 
         desktopConsumerSecret = p.getProperty("desktop.oauth.consumerSecret");
@@ -167,9 +167,5 @@ public class TwitterTestBase extends TestCase {
 
 
         readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 }

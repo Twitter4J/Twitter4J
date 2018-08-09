@@ -16,23 +16,25 @@
 package twitter4j;
 
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-public class GAETwitterTest extends TestCase {
-    public GAETwitterTest(String name) {
-        super(name);
-    }
+class GAETwitterTest {
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void before() throws Exception {
         new LocalServiceTestHelper().setUp();
     }
 
-    public void testGAETwitter() throws Exception {
+    @Test
+    void testGAETwitter() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
         assertTrue(twitter instanceof AppEngineTwitterImpl);
         try {

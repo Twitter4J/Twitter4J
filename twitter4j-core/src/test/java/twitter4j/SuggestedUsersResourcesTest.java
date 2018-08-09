@@ -1,19 +1,17 @@
 package twitter4j;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.0
  */
-public class SuggestedUsersResourcesTest extends TwitterTestBase {
-    public SuggestedUsersResourcesTest(String name) {
-        super(name);
-    }
+class SuggestedUsersResourcesTest extends TwitterTestBase {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testSuggestion() throws Exception {
+    @Test
+    void testSuggestion() throws Exception {
         ResponseList<Category> categories = twitter1.getSuggestedUserCategories();
         assertTrue(categories.size() > 0);
         assertNotNull(TwitterObjectFactory.getRawJSON(categories));

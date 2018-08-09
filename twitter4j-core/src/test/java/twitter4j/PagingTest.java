@@ -16,15 +16,15 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
 
-public class PagingTest extends TestCase {
+import org.junit.jupiter.api.Test;
 
-    public PagingTest(String name) {
-        super(name);
-    }
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-    public void testPaging() throws Exception {
+class PagingTest {
+    @Test
+    void testPaging() throws Exception {
         java.util.List<HttpParameter> params;
         Paging paging = new Paging();
         params = paging.asPostParameterList();
