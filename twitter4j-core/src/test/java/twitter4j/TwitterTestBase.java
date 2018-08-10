@@ -16,11 +16,12 @@
 
 package twitter4j;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -73,14 +74,23 @@ public class TwitterTestBase {
 
     static {
         // set properties in test.properties to System property
-        InputStream resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        InputStream resource;
+        try {
+            resource = new FileInputStream("test.properties");
+        } catch (FileNotFoundException fnfe) {
+            try {
+                resource = new FileInputStream("../test.properties");
+            }catch (FileNotFoundException fnfe2) {
+                resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
+            }
+        }
+
         if (resource != null) {
             Properties properties = new Properties();
             try {
                 properties.load(resource);
                 resource.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignore) {
             }
             for (String propertyName : properties.stringPropertyNames()) {
                 System.setProperty(propertyName, properties.getProperty(propertyName));

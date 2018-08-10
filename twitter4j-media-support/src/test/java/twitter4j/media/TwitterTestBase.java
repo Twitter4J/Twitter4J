@@ -16,13 +16,14 @@
 
 package twitter4j.media;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.PropertyConfiguration;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-class TwitterTestBase {
+public class TwitterTestBase {
 
     Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
@@ -72,16 +73,26 @@ class TwitterTestBase {
 
     private static int currentIndex;
     private static int maxTestPropertyIndex = -1;
+
     static {
         // set properties in test.properties to System property
-        InputStream resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
+        InputStream resource;
+        try {
+            resource = new FileInputStream("test.properties");
+        } catch (FileNotFoundException fnfe) {
+            try {
+                resource = new FileInputStream("../test.properties");
+            }catch (FileNotFoundException fnfe2) {
+                resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
+            }
+        }
+
         if (resource != null) {
             Properties properties = new Properties();
             try {
                 properties.load(resource);
                 resource.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignore) {
             }
             for (String propertyName : properties.stringPropertyNames()) {
                 System.setProperty(propertyName, properties.getProperty(propertyName));
@@ -102,6 +113,7 @@ class TwitterTestBase {
 
     /**
      * rotate test property file
+     *
      * @return test[index].properties as InputStream
      */
     private static Properties getNextProperty() {

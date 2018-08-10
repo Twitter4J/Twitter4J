@@ -29,11 +29,15 @@ import java.lang.reflect.Method;
 public abstract class Logger {
     private static final LoggerFactory LOGGER_FACTORY;
     private static final String LOGGER_FACTORY_IMPLEMENTATION = "twitter4j.loggerFactory";
+    private static final String LOGGER_FACTORY_IMPLEMENTATION_ENV = "twitter4j_loggerFactory";
 
     static {
         LoggerFactory loggerFactory = null;
         // -Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.StdOutLoggerFactory
         String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
+        if (loggerFactoryImpl == null) {
+            loggerFactoryImpl = System.getenv(LOGGER_FACTORY_IMPLEMENTATION_ENV);
+        }
         if (loggerFactoryImpl != null) {
             loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
         }
