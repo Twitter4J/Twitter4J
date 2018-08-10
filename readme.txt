@@ -69,6 +69,7 @@ Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it> @sardinej
+Mathias Kahl <mathias.kahl at gmail.com> @Bunkerbewohner1
 Matteo Nicoletti <matteo at kaosmos.it> @kaosmos
 Matteo Villa @mttvll
 Max Penet <m at qbits.cc> @mpenet
