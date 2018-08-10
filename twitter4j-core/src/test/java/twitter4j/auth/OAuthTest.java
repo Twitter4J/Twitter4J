@@ -18,6 +18,7 @@ package twitter4j.auth;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -69,6 +70,7 @@ class OAuthTest extends TwitterTestBase {
         twitter.verifyCredentials();
     }
 
+    @Disabled
     @Test
     void testDesktopClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
