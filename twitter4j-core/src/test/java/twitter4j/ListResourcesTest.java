@@ -330,6 +330,7 @@ class ListResourcesTest extends TwitterTestBase {
         if (list == null) {
             list = twitter1.createUserList("testpoint1", true, "description1");
         }
+        Thread.sleep(5000);
         return list;
     }
 
