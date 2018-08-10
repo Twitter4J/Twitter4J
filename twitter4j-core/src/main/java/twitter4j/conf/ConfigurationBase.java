@@ -73,7 +73,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean includeEntitiesEnabled = true;
     private boolean trimUserEnabled = false;
     private boolean includeExtAltTextEnabled = true;
-    private boolean tweetModeExtended = false;
+    private boolean tweetModeExtended = true;
     private boolean includeEmailEnabled = false;
 
     private boolean jsonStoreEnabled = false;
