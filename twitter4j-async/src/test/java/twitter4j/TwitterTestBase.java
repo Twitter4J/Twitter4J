@@ -47,7 +47,7 @@ public class TwitterTestBase {
         public final String accessTokenSecret;
 
         TestUserInfo(String screenName) {
-            System.out.println("Composing test TestUserInfo for:" + screenName);
+
             this.screenName = p.getProperty(screenName + ".user");
             this.password = p.getProperty(screenName + ".password");
             Long id = -1L;
