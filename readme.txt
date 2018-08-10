@@ -112,6 +112,7 @@ Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
 Tomoaki Takezoe <sumito3478 at gmail.com> @sumito3478
 Tomohisa Igarashi <tm.igarashi at gmail.com>
 Tyler MacLeod
+Venil Noronha <venil.noronha at gmail.com> @venilnoronha
 Will Glozer <will at glozer.net> @ar3te
 William Morgan <william at twitter.com> @wm
 William O'Hanley <william at wohanley.com> @wohanley
