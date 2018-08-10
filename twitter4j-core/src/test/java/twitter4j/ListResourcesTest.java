@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -164,6 +165,7 @@ class ListResourcesTest extends TwitterTestBase {
         assertEquals(0, userLists.size());
     }
 
+    @Disabled
     @Test
     void testRemoveListMembers() throws Exception {
 
@@ -219,6 +221,7 @@ class ListResourcesTest extends TwitterTestBase {
         twitter1.showUserList(userList.getId());
     }
 
+    @Disabled
     @Test
     void testListSubscribersMethods() throws Exception {
         PagableResponseList<UserList> userLists;
