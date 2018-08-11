@@ -24,6 +24,7 @@ Alan Gutierrez <alan at blogometer.com>
 Alessandro Bahgat <ale.bahgat at gmail.com> @abahgat
 Alex Kira <alex.kira at gmail.com> @alexkira
 Amine Bezzarga <abezzarg at gmail.com> @Go_Mino
+Aniket Divekar
 Anton Novopashin <antonevane at gmail.com> @anton_evane
 Andy Boothe <andy.boothe at gmail.com> @sigpwned
 Blake Barnes <blake.barnes at gmail.com>

@@ -137,7 +137,7 @@ public interface TweetsResources {
      * @return the original Tweet with retweet details embedded
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/unretweet/:id">POST statuses/unretweet/:id | Twitter Developers</a>
-     * @since Twitter4J 2.0.10
+     * @since Twitter4J 4.0.7
      */
     Status unRetweetStatus(long statusId) throws TwitterException;
 
