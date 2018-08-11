@@ -357,7 +357,7 @@ public final class Query implements java.io.Serializable {
      *
      * @param location geo location
      * @param radius   radius
-     * @param unit     Query.MILES or Query.KILOMETERS
+     * @param unit     Use "mi" for miles or "km" for kilometers
      * @deprecated use {@link #setGeoCode(GeoLocation, double, twitter4j.Query.Unit)} instead
      */
     public void setGeoCode(GeoLocation location, double radius
@@ -372,7 +372,22 @@ public final class Query implements java.io.Serializable {
      * @param radius   radius
      * @param unit     Query.MILES or Query.KILOMETERS
      * @return the instance
+     */
+    public Query geoCode(GeoLocation location, double radius
+            , Unit unit) {
+        setGeoCode(location, radius, unit);
+        return this;
+    }
+
+    /**
+     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+     *
+     * @param location geo location
+     * @param radius   radius
+     * @param unit     Use "mi" for miles or "km" for kilometers
+     * @return the instance
      * @since Twitter4J 2.1.0
+     * @deprecated use {@link #geoCode(GeoLocation, double, twitter4j.Query.Unit)} instead
      */
     public Query geoCode(GeoLocation location, double radius
             , String unit) {
