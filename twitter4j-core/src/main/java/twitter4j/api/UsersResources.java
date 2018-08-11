@@ -72,8 +72,9 @@ public interface UsersResources {
      * <br>This method calls https://api.twitter.com/1.1/account/settings.json
      * <br>This method requires whitelisting from Twitter: https://twittercommunity.com/t/api-updates-for-direct-messages-rules/36061
      *
-    * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
-    * @return the current trend, geo and sleep time information for the authenticating user.
+     * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
+     * @return the current trend, geo and sleep time information for the authenticating user.
+     * @since Twitter4J 4.0.7
     */
     AccountSettings updateAllowDmsFrom(String allowDmsFrom) throws TwitterException;
 

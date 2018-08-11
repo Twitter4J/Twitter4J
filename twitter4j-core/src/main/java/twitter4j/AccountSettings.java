@@ -96,6 +96,7 @@ public interface AccountSettings extends TwitterResponse, java.io.Serializable {
      * Returns if the user can accept DMs from anyone
      *
      * @return all if allowed by anyone, followers if friends only
+     * @since Twitter4J 4.0.7
      */
     String getAllowDmsFrom();
 }
