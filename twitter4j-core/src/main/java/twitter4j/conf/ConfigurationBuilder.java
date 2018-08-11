@@ -204,6 +204,12 @@ public final class ConfigurationBuilder {
         return this;
     }
 
+    public ConfigurationBuilder setUploadBaseURL(String uploadBaseURL) {
+        checkNotBuilt();
+        configurationBean.setUploadBaseURL(uploadBaseURL);
+        return this;
+    }
+
     public ConfigurationBuilder setStreamBaseURL(String streamBaseURL) {
         checkNotBuilt();
         configurationBean.setStreamBaseURL(streamBaseURL);
