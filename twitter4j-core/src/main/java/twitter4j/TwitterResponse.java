@@ -17,7 +17,7 @@
 package twitter4j;
 
 /**
- * Super interface of Twitter Response data interfaces which indicates that rate limit status is avaialble.
+ * Super interface of Twitter Response data interfaces which indicates that rate limit status is available.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see twitter4j.DirectMessage

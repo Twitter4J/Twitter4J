@@ -141,7 +141,7 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
         async2.destroyFavorite(status.getId());
         waitForResponse();
         if (te != null && te.getStatusCode() == 404) {
-            // sometimes destorying favorite fails with 404
+            // sometimes destroying favorite fails with 404
         } else {
             assertEquals(status, this.status);
         }

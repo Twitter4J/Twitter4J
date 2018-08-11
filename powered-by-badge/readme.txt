@@ -1,4 +1,4 @@
-Any service, aplication using Twitter4J can embed the following BSD licensed "powered by" logo. It is suggested to link the badge to "http://twitter4j.org/" without "en/".
+Any service, application using Twitter4J can embed the following BSD licensed "powered by" logo. It is suggested to link the badge to "http://twitter4j.org/" without "en/".
 
 HTML code snippets:
 PNG:

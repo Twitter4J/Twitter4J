@@ -130,7 +130,7 @@ public interface UsersResources {
         throws TwitterException;
 
     /**
-     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexidecimal value, and may be either three or six characters (ex: #fff or #ffffff).
+     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexadecimal value, and may be either three or six characters (ex: #fff or #ffffff).
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_colors.json
      *
      * @param profileBackgroundColor    optional, can be null

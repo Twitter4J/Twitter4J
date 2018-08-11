@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test case for HttpCient
- * The fllowing argument is requred to run this test case:
+ * The fllowing argument is required to run this test case:
  * -Xbootclasspath/p:~/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.12.v20180117/alpn-boot-8.1.12.v20180117.jar
  *
  * @author Hiroaki Takeuchi - takke30 at gmail.com
