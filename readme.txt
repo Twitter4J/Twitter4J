@@ -43,6 +43,7 @@ Dong Wang <dong at twitter.com> @dongwang218
 Eli Israel <eli at meshfire.com> @eliasisrael
 Eric Jensen <ej at twitter.com> @ej
 Fiaz Hossain <fiaz at twitter.com> @fiazhossain
+Fran Garcia <fgarciarico at gmail.com> @frangarcia
 Gabriel Zanetti @pupi1985
 George Ludwig <georgeludwig at gmail.com> @georgeludwig
 Gonçalo Silva <goncalossilva at gmail.com> @goncalossilva
