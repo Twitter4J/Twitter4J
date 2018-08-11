@@ -69,6 +69,7 @@ Kevin Huang
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
 Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
+Lynn Walton
 marr-masaaki <marr fiveflavors at gmail.com> @marr
 matsumo <matsumo at ce.ns0.it> @sardinej
 Mathias Kahl <mathias.kahl at gmail.com> @Bunkerbewohner1
