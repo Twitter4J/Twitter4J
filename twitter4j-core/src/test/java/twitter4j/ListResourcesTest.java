@@ -92,6 +92,7 @@ class ListResourcesTest extends TwitterTestBase {
         assertEquals("description3", userList.getDescription());
     }
 
+    @Disabled
     @Test
     void testListMemberMethods() throws Exception {
         PagableResponseList<UserList> userLists;
