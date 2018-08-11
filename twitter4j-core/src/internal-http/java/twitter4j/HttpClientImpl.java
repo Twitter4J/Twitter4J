@@ -241,8 +241,8 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                     }
                 });
             }
-            final Proxy proxy = new Proxy(Proxy.Type.HTTP, InetSocketAddress
-                    .createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
+            final Proxy proxy = new Proxy(CONF.isHttpProxySocks() ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                    InetSocketAddress.createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
             if (logger.isDebugEnabled()) {
                 logger.debug("Opening proxied connection(" + CONF.getHttpProxyHost() + ":" + CONF.getHttpProxyPort() + ")");
             }

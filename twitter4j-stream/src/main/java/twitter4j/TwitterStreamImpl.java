@@ -766,6 +766,11 @@ class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
     }
 
     @Override
+    public boolean isHttpProxySocks() {
+        return nestedConf.getHttpClientConfiguration().isHttpProxySocks();
+    }
+
+    @Override
     public String getHttpProxyUser() {
         return nestedConf.getHttpClientConfiguration().getHttpProxyUser();
     }

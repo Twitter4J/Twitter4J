@@ -29,6 +29,8 @@ public interface HttpClientConfiguration {
 
     String getHttpProxyPassword();
 
+    boolean isHttpProxySocks();
+
     int getHttpConnectionTimeout();
 
     int getHttpReadTimeout();
