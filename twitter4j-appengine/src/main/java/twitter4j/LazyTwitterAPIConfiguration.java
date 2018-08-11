@@ -69,7 +69,7 @@ final class LazyTwitterAPIConfiguration implements twitter4j.TwitterAPIConfigura
 
     @Override
     public int getDmTextCharacterLimit() {
-        return getTarget().getCharactersReservedPerMedia();
+        return getTarget().getDmTextCharacterLimit();
     }
 
 
