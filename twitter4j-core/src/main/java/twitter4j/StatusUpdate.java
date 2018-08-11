@@ -181,7 +181,7 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * 
      * @return autoPopulateReplyMetadata
-     * @since Customize version 0.1 adobe.corp
+     * @since Twitter4J 4.0.7
      */
     public boolean isAutoPopulateReplyMetadata() {
         return autoPopulateReplyMetadata;
@@ -190,7 +190,7 @@ public final class StatusUpdate implements java.io.Serializable {
     /**
      * 
      * @param autoPopulateReplyMetadata
-     * @since Customize version 0.1 adobe.corp
+     * @since Twitter4J 4.0.7
      */
     public void setAutoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
         this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
@@ -200,7 +200,7 @@ public final class StatusUpdate implements java.io.Serializable {
      * 
      * @param autoPopulateReplyMetadata
      * @return this instance
-     * @since Customize version 0.1 adobe.corp
+     * @since Twitter4J 4.0.7
      */
     public StatusUpdate autoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
         setAutoPopulateReplyMetadata(autoPopulateReplyMetadata);
