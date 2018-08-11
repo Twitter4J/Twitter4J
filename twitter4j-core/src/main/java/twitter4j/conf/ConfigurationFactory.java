@@ -31,7 +31,7 @@ public interface ConfigurationFactory {
      * returns the configuration specified by the path
      *
      * @param configTreePath the path
-     * @return the configuratoin
+     * @return the configuration
      */
     Configuration getInstance(String configTreePath);
 

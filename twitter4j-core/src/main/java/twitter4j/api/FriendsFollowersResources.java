@@ -38,7 +38,7 @@ public interface FriendsFollowersResources {
      * Returns an array of numeric IDs for every user the authenticating user is following.
      * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the authenticating user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -52,7 +52,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the friends list.
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -66,7 +66,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the friends list.
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @param count  Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. The value of count is best thought of as a limit to the number of results to return.<br>
      *               When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection.<br>
@@ -83,7 +83,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/friends/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
-     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return an array of numeric IDs for every user the specified user is following
      * @throws TwitterException when Twitter service or network is unavailable
@@ -97,7 +97,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls http://api.twitter.com/1.1/friends/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the friends list.
-     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @param count      Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. The value of count is best thought of as a limit to the number of results to return.<br>
      *                   When using the count parameter with this method, it is wise to use a consistent count value across all requests to the same user's collection.<br>
@@ -113,7 +113,7 @@ public interface FriendsFollowersResources {
      * Returns an array of numeric IDs for every user the specified user is followed by.
      * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
      *
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -127,7 +127,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the followers list.
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -141,7 +141,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
      *
      * @param userId Specifies the ID of the user for whom to return the followers list.
-     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *               To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @param count  Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. <br>
      *               The value of count is best thought of as a limit to the number of results to return. <br>
@@ -158,7 +158,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/followers/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the followers list.
-     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @return The ID or screen_name of the user to retrieve the friends ID list for.
      * @throws TwitterException when Twitter service or network is unavailable
@@ -172,7 +172,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls http://api.twitter.com/1.1/followers/ids.json
      *
      * @param screenName Specifies the screen name of the user for whom to return the followers list.
-     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filterd out after connections are queried. <br>
+     * @param cursor     Causes the list of connections to be broken into pages of no more than 5000 IDs at a time. The number of IDs returned is not guaranteed to be 5000 as suspended users are filtered out after connections are queried. <br>
      *                   To begin paging provide a value of -1 as the cursor. The response from the API will include a previous_cursor and next_cursor to allow paging back and forth.
      * @param count      Specifies the number of IDs attempt retrieval of, up to a maximum of 5,000 per distinct request. <br>
      *                   The value of count is best thought of as a limit to the number of results to return. <br>
