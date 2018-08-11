@@ -268,6 +268,27 @@ final class SiteStreamsImpl extends StatusStreamBase {
     }
 
     @Override
+    void onQuotedTweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
+       for (StreamListener listener : listeners) {
+            ((SiteStreamsListener) listener).onQuotedTweet(asUser(source), asUser(target), asStatus(targetObject));
+       }
+    }
+
+    @Override
+    void onMute(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener: listeners) {
+            ((SiteStreamsListener) listener).onMute(forUser.get(), asUser(source), asUser(target));
+        }
+    }
+
+    @Override
+    void onUnmute(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+        for (StreamListener listener: listeners) {
+            ((SiteStreamsListener) listener).onUnmute(forUser.get(), asUser(source), asUser(target));
+        }
+    }
+
+    @Override
     public void onException(final Exception ex, StreamListener[] listeners) {
         for (StreamListener listener : listeners) {
             listener.onException(ex);

@@ -182,6 +182,12 @@ abstract class StatusStreamBase implements StatusStream {
                                     case DISCONNECTION:
                                         onDisconnectionNotice(line, listeners);
                                         break;
+                                    case MUTE:
+                                        onMute(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
+                                    case UNMUTE:
+                                        onUnmute(json.getJSONObject("source"), json.getJSONObject("target"), listeners);
+                                        break;
                                     case UNKNOWN:
                                     default:
                                         logger.warn("Received unknown event:", CONF.getHttpClientConfiguration().isPrettyDebugEnabled() ? json.toString(1) : json.toString());
@@ -317,6 +323,14 @@ abstract class StatusStreamBase implements StatusStream {
 
     void onQuotedTweet(JSONObject source, JSONObject target, JSONObject targetObject,StreamListener[] listeners) throws TwitterException {
         logger.warn("Unhandled event: onQuotedTweet");
+    }
+
+    void onMute(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onMute");
+    }
+
+    void onUnmute(JSONObject source, JSONObject target, StreamListener[] listeners) throws TwitterException {
+        logger.warn("Unhandled event: onUnmute");
     }
 
     void onDisconnectionNotice(String line, StreamListener[] listeners) {

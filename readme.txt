@@ -75,6 +75,7 @@ Mathias Kahl <mathias.kahl at gmail.com> @Bunkerbewohner1
 Matteo Nicoletti <matteo at kaosmos.it> @kaosmos
 Matteo Villa @mttvll
 Max Penet <m at qbits.cc> @mpenet
+Michael Templeman
 Mike Champion <mike at graysky.org> @graysky
 Mocel <docel77 at gmail.com> @Mocel
 MortyChoi <soapsign at gmail.com> @Soapsign

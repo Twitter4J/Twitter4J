@@ -50,6 +50,8 @@ public final class JSONObjectType {
         RETWEETED_RETWEET,
         FAVORITED_RETWEET,
         QUOTED_TWEET,
+        MUTE,
+        UNMUTE,
         UNKNOWN
     }
 
@@ -130,6 +132,10 @@ public final class JSONObjectType {
                     return Type.FAVORITED_RETWEET;
                 } else if("quoted_tweet".equals(event)){
                     return Type.QUOTED_TWEET;
+                } else if("mute".equals(event)) {
+                    return Type.MUTE;
+                } else if("unmute".equals(event)) {
+                    return Type.UNMUTE;
                 }
 
             } catch (JSONException jsone) {
