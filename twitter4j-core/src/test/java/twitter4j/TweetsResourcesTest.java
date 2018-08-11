@@ -171,6 +171,29 @@ class TweetsResourcesTest extends TwitterTestBase {
 
     }
 
+    // kept ignored since should setup a tweet with video for whatever user you have in test.properties id1.*
+    // and plug that id in below.
+    void testOEmbedWithWidgetType() throws TwitterException {
+        // to use this as a test for new widget type do the following: put a status id that represents a tweet with
+        // video for the user account configured as id1 in test.properties
+        long REPLACE_ME_WITH_VALID_STATUS_ID_FOR_TWEET_WITH_VIDEO = 0;
+        OEmbedRequest req = new OEmbedRequest(REPLACE_ME_WITH_VALID_STATUS_ID_FOR_TWEET_WITH_VIDEO, "");
+        req.setWidgetType(OEmbedRequest.WidgetType.VIDEO);
+        // use this if want to see impact:
+        // req.setHideTweet(true);
+
+        OEmbed oembed = twitter1.getOEmbed(req);
+
+        assertNotNull(TwitterObjectFactory.getRawJSON(oembed));
+        assertEquals(oembed, TwitterObjectFactory.createOEmbed(TwitterObjectFactory.getRawJSON(oembed)));
+
+        assertNotNull(oembed.getHtml());
+        assertTrue(oembed.getHtml().contains("<blockquote class=\"twitter-video\""));
+        // use this assert if include req.setHideTweet(true)
+        // assertTrue(oembed.getHtml().contains("<blockquote class=\"twitter-video\" data-status=\"hidden\""));
+
+    }
+
     @Test
     void testLookup() throws TwitterException {
         // from "Example Result" of https://dev.twitter.com/docs/api/1.1/get/statuses/lookup
