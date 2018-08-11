@@ -17,19 +17,18 @@
 
 package twitter4j;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Fran Garcia - fgarciarico at gmail.com
  */
-public class GeoQueryTest extends TestCase {
-    public GeoQueryTest(String name) {super(name);}
+class GeoQueryTest {
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    public void testConstructors() throws Exception {
+    @Test
+    void testConstructors() {
         GeoQuery geoQuery = new GeoQuery("query", "4.5.3.2", new GeoLocation(38.2622, -0.7011));
         assertEquals(geoQuery.getQuery(), "query");
         assertEquals(geoQuery.getIp(), "4.5.3.2");
@@ -37,7 +36,8 @@ public class GeoQueryTest extends TestCase {
         assertEquals(geoQuery.getLocation().getLongitude(), -0.7011);
     }
 
-    public void testEmptyConstructors() throws Exception {
+    @Test
+    void testEmptyConstructors() {
         GeoQuery geoQuery = new GeoQuery(null, null, null);
         assertNull(geoQuery.getQuery());
         assertNull(geoQuery.getIp());
