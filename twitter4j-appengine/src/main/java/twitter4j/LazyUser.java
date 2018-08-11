@@ -343,6 +343,21 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getProfileBannerMobileRetinaURL();
     }
 
+    @Override
+    public String getProfileBanner300x100URL() {
+        return getTarget().getProfileBanner300x100URL();
+    }
+
+    @Override
+    public String getProfileBanner600x200URL() {
+        return getTarget().getProfileBanner600x200URL();
+    }
+
+    @Override
+    public String getProfileBanner1500x500URL() {
+        return getTarget().getProfileBanner1500x500URL();
+    }
+
     public boolean isProfileBackgroundTiled() {
         return getTarget().isProfileBackgroundTiled();
     }

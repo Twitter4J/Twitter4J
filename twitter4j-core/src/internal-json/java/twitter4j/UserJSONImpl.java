@@ -428,6 +428,21 @@ import java.util.Date;
     }
 
     @Override
+    public String getProfileBanner300x100URL() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/300x100" : null;
+    }
+
+    @Override
+    public String getProfileBanner600x200URL() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/600x200" : null;
+    }
+
+    @Override
+    public String getProfileBanner1500x500URL() {
+        return profileBannerImageUrl != null ? profileBannerImageUrl + "/1500x500" : null;
+    }
+
+    @Override
     public boolean isProfileBackgroundTiled() {
         return profileBackgroundTiled;
     }

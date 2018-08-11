@@ -68,6 +68,7 @@ Keiichi Hirano <hirano.kei1 at gmail.com> @haushinka2dx
 Kenji Yoshida <6b656e6a69 at gmail.com> @xuwei_k
 Kevin Huang
 Komiya Atsushi <komiya.atsushi at gmail.com> @komiya_atsushi
+Koutaro Mori <koutaro.mo at gmail.com> @moko256
 Linker Lin <linker.lin at live.com>
 Ludovico Fischer @ludovicofischer
 Lynn Walton
