@@ -47,17 +47,9 @@ final class DispatcherFactory {
         try {
             return (Dispatcher) Class.forName(dispatcherImpl)
                     .getConstructor(Configuration.class).newInstance(conf);
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        } catch (ClassNotFoundException e) {
-            throw new AssertionError(e);
-        } catch (ClassCastException e) {
-            throw new AssertionError(e);
-        } catch (NoSuchMethodException e) {
-            throw new AssertionError(e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | 
+                ClassNotFoundException | ClassCastException | 
+                NoSuchMethodException | InvocationTargetException e) {
             throw new AssertionError(e);
         }
     }
