@@ -372,6 +372,7 @@ public final class Query implements java.io.Serializable {
      * @param radius   radius
      * @param unit     Query.MILES or Query.KILOMETERS
      * @return the instance
+     * @since Twitter4J 4.0.7
      */
     public Query geoCode(GeoLocation location, double radius
             , Unit unit) {
