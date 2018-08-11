@@ -167,6 +167,11 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getOriginalProfileImageURL();
     }
 
+    @Override
+    public String get400x400ProfileImageURL() {
+        return getTarget().get400x400ProfileImageURL();
+    }
+
     /**
      * Returns the profile image url of the user, served over SSL
      *
@@ -189,6 +194,11 @@ final class LazyUser implements twitter4j.User {
     @Override
     public String getOriginalProfileImageURLHttps() {
         return getTarget().getOriginalProfileImageURLHttps();
+    }
+
+    @Override
+    public String get400x400ProfileImageURLHttps() {
+        return getTarget().get400x400ProfileImageURLHttps();
     }
 
     @Override
