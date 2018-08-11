@@ -87,6 +87,9 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getOriginalProfileImageURL();
 
+    /**
+     * @since Twitter4J 4.0.7
+     */
     String get400x400ProfileImageURL();
 
     String getProfileImageURLHttps();
@@ -97,6 +100,9 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
 
     String getOriginalProfileImageURLHttps();
 
+    /**
+     * @since Twitter4J 4.0.7
+     */
     String get400x400ProfileImageURLHttps();
 
     /**
