@@ -147,6 +147,11 @@ final class LazyAccountSettings implements twitter4j.AccountSettings {
         return getTarget().getScreenName();
     }
 
+    @Override
+    public String getAllowDmsFrom() {
+        return getTarget().getAllowDmsFrom();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }
