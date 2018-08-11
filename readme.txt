@@ -109,6 +109,7 @@ Takao Nakaguchi <takao.nakaguchi at gmail.com> @takawitter
 Takatoshi Murakami
 Takuro Yamane <alalwww at awairo.net> @alalwww
 Ted Dunning <tdunning at apache.org> @ted_dunning
+Tom Zellman <tzellman at gmail.com> @tzellman
 Tomasz Nurkiewicz @tnurkiewicz
 Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
 Tomoaki Takezoe <sumito3478 at gmail.com> @sumito3478
