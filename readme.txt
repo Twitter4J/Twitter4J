@@ -38,6 +38,7 @@ Dan Checkoway <dcheckoway at gmail.com>
 Danaja Maldeniya <danajamkdt at gmail.com> @DanajaT
 Daniel Huckaby <handlerexploit at gmail.com> @HandlerExploit
 Denis Bardadym <bardadymchik at gmail.com> @bardadymchik
+Dimitry Kudryavtsev <dk8996 at gmail.com> @dk8996
 Dong Wang <dong at twitter.com> @dongwang218
 Eli Israel <eli at meshfire.com> @eliasisrael
 Eric Jensen <ej at twitter.com> @ej
