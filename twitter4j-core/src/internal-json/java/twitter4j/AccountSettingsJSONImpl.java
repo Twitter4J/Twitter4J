@@ -34,6 +34,7 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     private final boolean ALWAYS_USE_HTTPS;
     private final boolean DISCOVERABLE_BY_EMAIL;
     private final String SCREEN_NAME;
+    private final String ALLOW_DMS_FROM;
 
     private AccountSettingsJSONImpl(HttpResponse res, JSONObject json) throws TwitterException {
         super(res);
@@ -62,6 +63,7 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
                 TIMEZONE = new TimeZoneJSONImpl(json.getJSONObject("time_zone"));
             }
             SCREEN_NAME = json.getString("screen_name");
+            ALLOW_DMS_FROM = json.getString("allow_dms_from");
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
@@ -127,5 +129,10 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
     @Override
     public TimeZone getTimeZone() {
         return TIMEZONE;
+    }
+
+    @Override
+    public String getAllowDmsFrom() {
+        return ALLOW_DMS_FROM;
     }
 }

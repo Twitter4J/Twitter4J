@@ -767,6 +767,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
+    public AccountSettings updateAllowDmsFrom(String allowDmsFrom) throws TwitterException {
+        return factory.createAccountSettings(post(conf.getRestBaseURL() + "account/settings.json?allow_dms_from=" + allowDmsFrom));
+    }
+
+    @Override
     public User updateProfile(String name, String url
             , String location, String description) throws TwitterException {
         List<HttpParameter> profile = new ArrayList<HttpParameter>(4);

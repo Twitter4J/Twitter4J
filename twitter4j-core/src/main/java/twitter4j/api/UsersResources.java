@@ -66,6 +66,17 @@ public interface UsersResources {
      */
     AccountSettings updateAccountSettings(Integer trendLocationWoeid, Boolean sleepTimeEnabled, String startSleepTime, String endSleepTime, String timeZone, String lang) throws TwitterException;
 
+    /**
+     * Updates the allowDmsFrom settings for the authenticating user.
+     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
+     * <br>This method calls https://api.twitter.com/1.1/account/settings.json
+     * <br>This method requires whitelisting from Twitter: https://twittercommunity.com/t/api-updates-for-direct-messages-rules/36061
+     *
+    * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
+    * @return the current trend, geo and sleep time information for the authenticating user.
+    */
+    AccountSettings updateAllowDmsFrom(String allowDmsFrom) throws TwitterException;
+
     // update delivery device
 
     /**
