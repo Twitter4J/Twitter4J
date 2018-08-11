@@ -21,6 +21,9 @@ package twitter4j.util;
  * @since Twitter4J 2.1.2
  */
 public final class CharacterUtil {
+
+    public static final int MAX_TWEET_LENGTH = 280;
+
     private CharacterUtil() {
         throw new AssertionError();
     }
@@ -42,6 +45,6 @@ public final class CharacterUtil {
      * @return if the length of the string is exceeding length limitation
      */
     public static boolean isExceedingLengthLimitation(String text) {
-        return count(text) > 140;
+        return count(text) > MAX_TWEET_LENGTH;
     }
 }
