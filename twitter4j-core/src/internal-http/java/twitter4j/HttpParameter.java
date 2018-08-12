@@ -33,12 +33,17 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
     private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
+    private JSONObject jsonObject = null;
     private File file = null;
     private InputStream fileBody = null;
 
     public HttpParameter(String name, String value) {
         this.name = name;
         this.value = value;
+    }
+
+    public HttpParameter(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
     }
 
     public HttpParameter(String name, File file) {
@@ -80,6 +85,10 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         return value;
     }
 
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
     public File getFile() {
         return file;
     }
@@ -90,6 +99,10 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     public boolean isFile() {
         return file != null;
+    }
+
+    public boolean isJson() {
+        return jsonObject != null;
     }
 
     public boolean hasFileBody() {
@@ -142,19 +155,20 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HttpParameter)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         HttpParameter that = (HttpParameter) o;
 
-        if (file != null ? !file.equals(that.file) : that.file != null)
-            return false;
-        if (fileBody != null ? !fileBody.equals(that.fileBody) : that.fileBody != null)
-            return false;
-        if (!name.equals(that.name)) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null)
-            return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
+        if (jsonObject != null ? !jsonObject.equals(that.jsonObject) : that.jsonObject != null) return false;
+        if (file != null ? !file.equals(that.file) : that.file != null) return false;
+        return fileBody != null ? fileBody.equals(that.fileBody) : that.fileBody == null;
 
-        return true;
+    }
+
+    public static boolean containsJson(HttpParameter[] params) {
+        return params.length == 1 && params[0].isJson();
     }
 
     public static boolean containsFile(HttpParameter[] params) {
@@ -204,8 +218,9 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
+        result = 31 * result + (jsonObject != null ? jsonObject.hashCode() : 0);
         result = 31 * result + (file != null ? file.hashCode() : 0);
         result = 31 * result + (fileBody != null ? fileBody.hashCode() : 0);
         return result;
@@ -213,9 +228,10 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     @Override
     public String toString() {
-        return "PostParameter{" +
+        return "HttpParameter{" +
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
+                ", jsonObject=" + jsonObject +
                 ", file=" + file +
                 ", fileBody=" + fileBody +
                 '}';
@@ -223,10 +239,14 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
     @Override
     public int compareTo(HttpParameter o) {
-        int compared;
-        compared = name.compareTo(o.name);
+        int compared = 0;
+        if (name != null) {
+            compared = name.compareTo(o.name);
+        }
         if (0 == compared) {
-            compared = value.compareTo(o.value);
+            if (value != null) {
+                compared = value.compareTo(o.value);
+            }
         }
         return compared;
     }

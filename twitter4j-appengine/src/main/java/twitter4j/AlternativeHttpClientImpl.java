@@ -85,11 +85,21 @@ class AlternativeHttpClientImpl extends HttpClientBase {
                     write(out, boundary + "--\r\n");
                     write(out, "\r\n");
                 } else {
-                    request.setHeader(new HTTPHeader(
-                            "Content-Type",
-                            "application/x-www-form-urlencoded"
-                    ));
-                    String postParam = HttpParameter.encodeParameters(req.getParameters());
+
+                    String postParam;
+                    if (HttpParameter.containsJson(req.getParameters())) {
+                        request.setHeader(new HTTPHeader(
+                                "Content-Type",
+                                "application/json"
+                        ));
+                        postParam = req.getParameters()[0].getJsonObject().toString();
+                    } else {
+                        request.setHeader(new HTTPHeader(
+                                "Content-Type",
+                                "application/x-www-form-urlencoded"
+                        ));
+                        postParam = HttpParameter.encodeParameters(req.getParameters());
+                    }
                     logger.debug("Post Params: ", postParam);
                     byte[] bytes = postParam.getBytes("UTF-8");
                     request.setHeader(new HTTPHeader("Content-Length",

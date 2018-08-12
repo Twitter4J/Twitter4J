@@ -16,34 +16,40 @@
 
 package twitter4j.examples.directmessage;
 
-import twitter4j.*;
-
-import java.util.List;
+import twitter4j.DirectMessage;
+import twitter4j.DirectMessageList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 /**
- * Example application that gets all direct messages sent to the specified account in twitter4j.properties.<br>
+ * Example application that gets all direct messages via event api.<br>
  *
- * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  */
-public class GetDirectMessages {
+public class GetDirectMessageEvents {
     /**
-     * Usage: java twitter4j.examples.directmessage.GetDirectMessages
+     * Usage: java twitter4j.examples.directmessage.GetDirectMessageEvents
      *
      * @param args String[]
      */
     public static void main(String[] args) {
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            Paging paging = new Paging(1);
-            List<DirectMessage> messages;
+            String cursor = null;
+            int count = 20;
+            DirectMessageList messages;
             do {
-                messages = twitter.getDirectMessages(paging);
+                System.out.println("* cursor:" + cursor);
+                messages = cursor == null ? twitter.getDirectMessages(count) : twitter.getDirectMessages(count, cursor);
                 for (DirectMessage message : messages) {
-                    System.out.println("From: @" + message.getSenderScreenName() + " id:" + message.getId() + " - "
-                            + message.getText());
+                    System.out.println("From: " + message.getSenderId() + " id:" + message.getId()
+                            + " [" + message.getCreatedAt() + "]"
+                            + " - " + message.getText());
+                    System.out.println("raw[" + message + "]");
                 }
-                paging.setPage(paging.getPage() + 1);
-            } while (messages.size() > 0 && paging.getPage() < 10);
+                cursor = messages.getNextCursor();
+            } while (messages.size() > 0 && cursor != null);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {

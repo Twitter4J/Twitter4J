@@ -193,6 +193,16 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
+    public DirectMessageEvent createDirectMessageEvent(HttpResponse res) throws TwitterException {
+        return new DirectMessageEventJSONImpl(res, conf);
+    }
+
+    @Override
+    public DirectMessageEventList createDirectMessageEventList(HttpResponse res) throws TwitterException {
+        return DirectMessageJSONImpl.createDirectMessageEventList(res, conf);
+    }
+
+    @Override
     public Relationship createRelationship(HttpResponse res) throws TwitterException {
         return new RelationshipJSONImpl(res, conf);
     }
