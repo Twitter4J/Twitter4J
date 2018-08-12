@@ -20,18 +20,22 @@ package twitter4j;
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  * @since Twitter4J 4.0.7
  */
-class DirectMessageEventListImpl extends ResponseListImpl<DirectMessage> implements DirectMessageEventList {
+class DirectMessageListImpl extends ResponseListImpl<DirectMessage> implements DirectMessageList {
     private static final long serialVersionUID = 8150060768287194508L;
     private final String nextCursor;
 
-    DirectMessageEventListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
+    DirectMessageListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
         super(rateLimitStatus, accessLevel);
         nextCursor = null;
     }
 
-    DirectMessageEventListImpl(int size, JSONObject json, HttpResponse res) {
+    DirectMessageListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);
         this.nextCursor = ParseUtil.getRawString("next_cursor", json);
+    }
+    DirectMessageListImpl(int size, HttpResponse res) {
+        super(size, res);
+        this.nextCursor = null;
     }
 
     @Override

@@ -8,7 +8,7 @@ package twitter4j;
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  * @since Twitter4J 4.0.7
  */
-public interface DirectMessageEventList extends ResponseList<DirectMessage> {
+public interface DirectMessageList extends ResponseList<DirectMessage> {
 
     String getNextCursor();
 }

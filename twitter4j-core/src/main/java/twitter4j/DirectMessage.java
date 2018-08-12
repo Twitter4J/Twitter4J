@@ -39,14 +39,31 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
      */
     Date getCreatedAt();
 
+    /**
+     *
+     * @deprecated use {@link #getSenderId()} instead
+     */
     String getSenderScreenName();
 
+    /**
+     *
+     * @deprecated use {@link #getRecipientId()} instead
+     */
     String getRecipientScreenName();
 
 
+    /**
+     *
+     * @deprecated use {@link #getSenderId()} instead
+     */
     User getSender();
 
 
+    /**
+     *
+     * @deprecated use {@link #getRecipientId()} instead
+     */
     User getRecipient();
 
+    // currently type is always "message_create". So we're not providing a getter for that.
 }

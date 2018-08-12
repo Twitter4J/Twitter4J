@@ -27,9 +27,9 @@ import twitter4j.TwitterFactory;
  *
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  */
-public class GetDirectMessageEvents {
+public class GetDirectMessages {
     /**
-     * Usage: java twitter4j.examples.directmessage.GetDirectMessageEvents
+     * Usage: java twitter4j.examples.directmessage.GetDirectMessages
      *
      * @param args String[]
      */

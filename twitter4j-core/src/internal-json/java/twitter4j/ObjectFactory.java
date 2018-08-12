@@ -63,11 +63,7 @@ interface ObjectFactory extends java.io.Serializable {
 
     DirectMessage createDirectMessage(HttpResponse res) throws TwitterException;
 
-    ResponseList<DirectMessage> createDirectMessageList(HttpResponse res) throws TwitterException;
-
-    DirectMessageEvent createDirectMessageEvent(HttpResponse res) throws TwitterException;
-
-    DirectMessageEventList createDirectMessageEventList(HttpResponse res) throws TwitterException;
+    DirectMessageList createDirectMessageList(HttpResponse res) throws TwitterException;
 
     Relationship createRelationship(HttpResponse res) throws TwitterException;
 

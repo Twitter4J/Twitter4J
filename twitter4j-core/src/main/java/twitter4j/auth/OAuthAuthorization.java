@@ -379,6 +379,9 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         for (HttpParameter param : httpParams) {
             if (!param.isFile() && !param.isJson()) {
                 if (buf.length() != 0) {
+                    if (quot) {
+                        buf.append("\"");
+                    }
                     buf.append(splitter);
                 }
                 buf.append(HttpParameter.encode(param.getName())).append("=");
@@ -386,9 +389,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
                     buf.append("\"");
                 }
                 buf.append(HttpParameter.encode(param.getValue()));
-                if (quot) {
-                    buf.append("\"");
-                }
             }
         }
         if (buf.length() != 0) {

@@ -187,25 +187,7 @@ class LazyJSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public ResponseList<DirectMessage> createDirectMessageList(final HttpResponse res) throws TwitterException {
-        return new LazyResponseList<DirectMessage>() {
-            private static final long serialVersionUID = -4033757208726428299L;
-
-            @Override
-            protected ResponseList<DirectMessage> createActualResponseList() throws TwitterException {
-                return DirectMessageJSONImpl.createDirectMessageList(res, conf);
-            }
-        };
-    }
-
-    @Override
-    public DirectMessageEvent createDirectMessageEvent(HttpResponse res) throws TwitterException {
-//        return new LazyDirectMessageEvent(res, factory);
-        throw new TwitterException("Not Implemented");
-    }
-
-    @Override
-    public DirectMessageEventList createDirectMessageEventList(final HttpResponse res) throws TwitterException {
+    public DirectMessageList createDirectMessageList(final HttpResponse res) throws TwitterException {
         throw new TwitterException("Not Implemented");
     }
 

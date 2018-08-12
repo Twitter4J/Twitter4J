@@ -16,15 +16,13 @@
 
 package twitter4j.examples.directmessage;
 
-import twitter4j.DirectMessage;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 
 /**
  * Example application that sends a message to specified Twitter-er from specified account.<br>
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
+ * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  */
 public final class SendDirectMessage {
     /**
@@ -34,13 +32,14 @@ public final class SendDirectMessage {
      */
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("Usage: java twitter4j.examples.directmessage.SendDirectMessage [recipient screen name] [message]");
+            System.out.println("Usage: java twitter4j.examples.directmessage.SendDirectMessage [recipient id] [message]");
             System.exit(-1);
         }
         Twitter twitter = new TwitterFactory().getInstance();
         try {
-            DirectMessage message = twitter.sendDirectMessage(args[0], args[1]);
-            System.out.println("Direct message successfully sent to " + message.getRecipientScreenName());
+            DirectMessage message = twitter.sendDirectMessage(Long.parseLong(args[0]), args[1]);
+            System.out.println("Direct message successfully sent to " + message.getId());
+            System.out.println(" details:" + message.toString());
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

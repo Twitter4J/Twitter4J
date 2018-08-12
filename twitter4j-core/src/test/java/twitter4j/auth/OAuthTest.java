@@ -123,6 +123,7 @@ class OAuthTest extends TwitterTestBase {
         }
     }
 
+    @Disabled
     @Test
     void testSigninWithTwitter() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();

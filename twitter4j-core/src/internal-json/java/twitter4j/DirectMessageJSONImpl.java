@@ -1,3 +1,19 @@
+/*
+ * Copyright 2007 Yusuke Yamamoto
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package twitter4j;
 
 import twitter4j.conf.Configuration;
@@ -6,25 +22,25 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
+ * A data class representing sent/received direct message.
+ *
+ * @author Yusuke Yamamoto - yusuke at mac.com
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
- * @since Twitter4J 4.0.7
  */
-/*package*/ final class DirectMessageEventJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
-    private static final long serialVersionUID = -7387326608536231792L;
-    private String type;
+/*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
+    private static final long serialVersionUID = 7092906238192790921L;
     private long id;
-    private Date createdTimestamp;
-    private long recipientId;
-    private long senderId;
     private String text;
+    private long senderId;
+    private long recipientId;
+    private Date createdAt;
     private UserMentionEntity[] userMentionEntities;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
     private SymbolEntity[] symbolEntities;
 
-
-    /*package*/DirectMessageEventJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/DirectMessageJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         try {
@@ -39,24 +55,29 @@ import java.util.Date;
         }
     }
 
-    /*package*/DirectMessageEventJSONImpl(JSONObject json) throws TwitterException {
+    /*package*/DirectMessageJSONImpl(JSONObject json) throws TwitterException {
         init(json);
     }
 
-    private void init(JSONObject event) throws TwitterException {
-
+    private void init(JSONObject json) throws TwitterException {
         try {
-            type = ParseUtil.getUnescapedString("type", event);
-            id = ParseUtil.getLong("id", event);
-            createdTimestamp = new Date(event.getLong("created_timestamp"));
+            id = ParseUtil.getLong("id", json);
+            JSONObject messageCreate;
+            final JSONObject messageData;
+            if (!json.isNull("created_timestamp")) {
+                createdAt = new Date(json.getLong("created_timestamp"));
+                messageCreate = json.getJSONObject("message_create");
+                recipientId = ParseUtil.getLong("recipient_id", messageCreate.getJSONObject("target"));
+                senderId = ParseUtil.getLong("sender_id", messageCreate);
+                messageData = messageCreate.getJSONObject("message_data");
 
-            final JSONObject messageCreate = event.getJSONObject("message_create");
-            recipientId = ParseUtil.getLong("recipient_id", messageCreate.getJSONObject("target"));
-            senderId = ParseUtil.getLong("sender_id", messageCreate);
-
-            final JSONObject messageData = messageCreate.getJSONObject("message_data");
-            text = ParseUtil.getUnescapedString("text", messageData);
-
+            }else{
+                // raw JSON data from Twitter4J 4.0.6 or before
+                createdAt = ParseUtil.getDate("created_at", json);;
+                senderId = ParseUtil.getLong("sender_id", json);
+                recipientId = ParseUtil.getLong("recipient_id", json);
+                messageData = json;
+            }
             if (!messageData.isNull("entities")) {
                 JSONObject entities = messageData.getJSONObject("entities");
                 userMentionEntities = EntitiesParseUtil.getUserMentions(entities);
@@ -78,7 +99,6 @@ import java.util.Date;
                 }
             }
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
-
             text = HTMLEntity.unescapeAndSlideEntityIncdices(messageData.getString("text"), userMentionEntities,
                     urlEntities, hashtagEntities, mediaEntities);
         } catch (JSONException jsone) {
@@ -86,34 +106,43 @@ import java.util.Date;
         }
     }
 
-    static DirectMessageEventList createDirectMessageEventList(HttpResponse res, Configuration conf) throws TwitterException {
+    static DirectMessageList createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
-            JSONObject jsonObject = res.asJSONObject();
-            JSONArray list = jsonObject.getJSONArray("events");
-            int size = list.length();
-            DirectMessageEventList directMessages = new DirectMessageEventListImpl(size, jsonObject, res);
-            for (int i = 0; i < size; i++) {
-                JSONObject json = list.getJSONObject(i);
-                DirectMessage directMessage = new DirectMessageEventJSONImpl(json);
-                directMessages.add(directMessage);
-                if (conf.isJSONStoreEnabled()) {
-                    TwitterObjectFactory.registerJSONObject(directMessage, json);
+            JSONArray list;
+            DirectMessageList directMessages;
+            try {
+                JSONObject jsonObject = res.asJSONObject();
+                list = jsonObject.getJSONArray("events");
+                directMessages = new DirectMessageListImpl(list.length(), jsonObject, res);
+            }catch(TwitterException te){
+                if (te.getCause() != null && te.getCause() instanceof JSONException) {
+                    // serialized form from Twitter4J 4.0.6 or before
+                    list = res.asJSONArray();
+                    int size = list.length();
+                    directMessages = new DirectMessageListImpl(size, res);
+
+                }else{
+                  throw  te;
                 }
             }
-            if (conf.isJSONStoreEnabled()) {
-                TwitterObjectFactory.registerJSONObject(directMessages, list);
-            }
-            return directMessages;
+            for (int i = 0; i < list.length(); i++) {
+                    JSONObject json = list.getJSONObject(i);
+                    DirectMessage directMessage = new DirectMessageJSONImpl(json);
+                    directMessages.add(directMessage);
+                    if (conf.isJSONStoreEnabled()) {
+                        TwitterObjectFactory.registerJSONObject(directMessage, json);
+                    }
+                }
+                if (conf.isJSONStoreEnabled()) {
+                    TwitterObjectFactory.registerJSONObject(directMessages, list);
+                }
+                return directMessages;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
-    }
-    @Override
-    public String getType() {
-        return type;
     }
 
     @Override
@@ -123,7 +152,7 @@ import java.util.Date;
 
     @Override
     public Date getCreatedAt() {
-        return createdTimestamp;
+        return createdAt;
     }
 
     @Override
@@ -171,15 +200,13 @@ import java.util.Date;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DirectMessageEventJSONImpl that = (DirectMessageEventJSONImpl) o;
+        DirectMessageJSONImpl that = (DirectMessageJSONImpl) o;
 
         if (id != that.id) return false;
-        if (recipientId != that.recipientId) return false;
         if (senderId != that.senderId) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (createdTimestamp != null ? !createdTimestamp.equals(that.createdTimestamp) : that.createdTimestamp != null)
-            return false;
+        if (recipientId != that.recipientId) return false;
         if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(userMentionEntities, that.userMentionEntities)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
@@ -190,17 +217,15 @@ import java.util.Date;
         if (!Arrays.equals(mediaEntities, that.mediaEntities)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(symbolEntities, that.symbolEntities);
-
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (int) (id ^ (id >>> 32));
-        result = 31 * result + (createdTimestamp != null ? createdTimestamp.hashCode() : 0);
-        result = 31 * result + (int) (recipientId ^ (recipientId >>> 32));
-        result = 31 * result + (int) (senderId ^ (senderId >>> 32));
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (int) (senderId ^ (senderId >>> 32));
+        result = 31 * result + (int) (recipientId ^ (recipientId >>> 32));
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(userMentionEntities);
         result = 31 * result + Arrays.hashCode(urlEntities);
         result = 31 * result + Arrays.hashCode(hashtagEntities);
@@ -211,13 +236,12 @@ import java.util.Date;
 
     @Override
     public String toString() {
-        return "DirectMessageEventJSONImpl{" +
-                "type='" + type + '\'' +
-                ", id=" + id +
-                ", createdTimestamp=" + createdTimestamp +
-                ", recipientId=" + recipientId +
-                ", senderId=" + senderId +
+        return "DirectMessageJSONImpl{" +
+                "id=" + id +
                 ", text='" + text + '\'' +
+                ", senderId=" + senderId +
+                ", recipientId=" + recipientId +
+                ", createdAt=" + createdAt +
                 ", userMentionEntities=" + Arrays.toString(userMentionEntities) +
                 ", urlEntities=" + Arrays.toString(urlEntities) +
                 ", hashtagEntities=" + Arrays.toString(hashtagEntities) +
@@ -226,35 +250,24 @@ import java.util.Date;
                 '}';
     }
 
-    Twitter twitter;
     @Override
     public String getSenderScreenName() {
-        return getSender().getScreenName();
+        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
     }
 
     @Override
     public String getRecipientScreenName() {
-        return getRecipient().getScreenName();
+        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
     }
 
     @Override
     public User getSender() {
-        try {
-            return twitter.showUser(senderId);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-            return null;
-        }
+        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
     }
 
     @Override
     public User getRecipient() {
-        try {
-            return twitter.showUser(recipientId);
-        } catch (TwitterException e) {
-            e.printStackTrace();
-            return null;
-        }
+        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
     }
 
 }

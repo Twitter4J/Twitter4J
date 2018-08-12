@@ -17,9 +17,7 @@
 package twitter4j.api;
 
 import twitter4j.DirectMessage;
-import twitter4j.DirectMessageEvent;
-import twitter4j.DirectMessageEventList;
-import twitter4j.MessageData;
+import twitter4j.DirectMessageList;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.TwitterException;
@@ -37,7 +35,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
+     * @deprecated use {@link #getDirectMessages(int)} instead
      */
     ResponseList<DirectMessage> getDirectMessages()
         throws TwitterException;
@@ -50,7 +48,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
+     * @deprecated use {@link #getDirectMessages(int)} instead
      */
     ResponseList<DirectMessage> getDirectMessages(Paging paging)
         throws TwitterException;
@@ -62,7 +60,7 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
+     * @deprecated use {@link #getDirectMessages(int)} instead
      */
     ResponseList<DirectMessage> getSentDirectMessages()
         throws TwitterException;
@@ -76,7 +74,7 @@ public interface DirectMessagesResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
      * @since Twitter4J 2.0.1
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
+     * @deprecated use {@link #getDirectMessages(int)} instead
      */
     ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
         throws TwitterException;
@@ -89,8 +87,9 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html">GET direct_messages/events/list — Twitter Developers</a>
+     * @since Twitter4J 4.0.7
      */
-    DirectMessageEventList getDirectMessageEvents(int count)
+    DirectMessageList getDirectMessages(int count)
             throws TwitterException;
 
     /**
@@ -102,23 +101,10 @@ public interface DirectMessagesResources {
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html">GET direct_messages/events/list — Twitter Developers</a>
+     * @since Twitter4J 4.0.7
      */
-    DirectMessageEventList getDirectMessageEvents(int count, String cursor)
+    DirectMessageList getDirectMessages(int count, String cursor)
             throws TwitterException;
-
-    /**
-     * Returns a single direct message, specified by an id parameter.
-     * <br>This method has not been finalized and the interface is subject to change in incompatible ways.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/show/:id.json
-     *
-     * @param id message id
-     * @return DirectMessage
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
-     * @since Twitter4J 2.1.9
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
-     */
-    DirectMessage showDirectMessage(long id) throws TwitterException;
 
     /**
      * Returns a single Direct Message event by the given id.
@@ -126,26 +112,12 @@ public interface DirectMessagesResources {
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/show.json
      *
      * @param id message id
-     * @return DirectMessageEvent
+     * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/get-event.html">GET direct_messages/events/show — Twitter Developers</a>
-     * @since Twitter4J 4.0.x
+     * @see <a href="http://groups.google.com/group/twitter-api-announce/msg/34909da7c399169e">#newtwitter and the API - Twitter API Announcements | Google Group</a>
+     * @since Twitter4J 2.1.9
      */
-    DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException;
-
-    /**
-     * Destroys the direct message specified in the required ID parameter.  The authenticating user must be the recipient of the specified direct message.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/destroy
-     *
-     * @param id the ID of the direct message to destroy
-     * @return the deleted direct message
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/destroy/:id">POST direct_messages/destroy/:id | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
-     */
-    DirectMessage destroyDirectMessage(long id)
-        throws TwitterException;
+    DirectMessage showDirectMessage(long id) throws TwitterException;
 
     /**
      * Deletes the direct message specified in the required ID parameter.
@@ -154,40 +126,42 @@ public interface DirectMessagesResources {
      * @param id The id of the Direct Message event that should be deleted.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/delete-message-event.html">DELETE direct_messages/events/destroy — Twitter Developers</a>
-     * @since Twitter4J 4.0.x
+     * @return a dummy DirectMessage object. Starting from Twitter4J 4.0.7, all getters will throw IllegalStateException due to the API limitation. The return value will be changed to void in the furure release.
+     * @since Twitter4J 2.0.1
      */
-    void destroyDirectMessageEvent(long id)
-            throws TwitterException;
+    DirectMessage destroyDirectMessage(long id)
+        throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
-     *
-     * @param messageData The Message Data Object defining the content to deliver to the reciepient.
-     * @return DirectMessageEvent
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/rest/reference/post/direct_messages/events/new">POST direct_messages/events/new (message_create) — Twitter Developers</a>
-     * @since Twitter4j 4.0.7
-     */
-    DirectMessageEvent createMessage(MessageData messageData)
-            throws TwitterException;
-
-    /**
-     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
-     * The text will be trimmed if the length of the text is exceeding 140 characters.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/new
+     * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
      *
      * @param userId the user id of the user to whom send the direct message
      * @param text   The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event">POST direct_messages/events/new (message_create) — Twitter Developers</a>
      * @since Twitter4j 2.1.0
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
      */
     DirectMessage sendDirectMessage(long userId, String text)
         throws TwitterException;
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
+     * The text will be trimmed if the length of the text is exceeding 140 characters.
+     * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
+     *
+     * @param userId the user id of the user to whom send the direct message
+     * @param text   The text of your direct message.
+     * @param mediaId id of media attachment
+     * @return DirectMessage
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event">POST direct_messages/events/new (message_create) — Twitter Developers</a>
+     * @since Twitter4J 4.0.7
+     */
+    DirectMessage sendDirectMessage(long userId, String text, long mediaId)
+            throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
@@ -198,8 +172,7 @@ public interface DirectMessagesResources {
      * @param text       The text of your direct message.
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/direct_messages/new">POST direct_messages/new | Twitter Developers</a>
-     * @deprecated This endpoint will be deprecated and non-functional on June 19, 2018.
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event">POST direct_messages/events/new (message_create) — Twitter Developers</a>
      */
     DirectMessage sendDirectMessage(String screenName, String text)
         throws TwitterException;

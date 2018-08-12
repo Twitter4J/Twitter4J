@@ -127,14 +127,8 @@ public abstract class HttpResponse {
      */
     public JSONObject asJSONObject() throws TwitterException {
         if (json == null) {
-            Reader reader = null;
             try {
-                if (responseAsString == null) {
-                    reader = asReader();
-                    json = new JSONObject(new JSONTokener(reader));
-                } else {
-                    json = new JSONObject(responseAsString);
-                }
+                json = new JSONObject(asString());
                 if (CONF.isPrettyDebugEnabled()) {
                     logger.debug(json.toString(1));
                 } else {
@@ -148,12 +142,6 @@ public abstract class HttpResponse {
                     throw new TwitterException(jsone.getMessage() + ":" + this.responseAsString, jsone);
                 }
             } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException ignore) {
-                    }
-                }
                 disconnectForcibly();
             }
         }
@@ -171,14 +159,8 @@ public abstract class HttpResponse {
      */
     public JSONArray asJSONArray() throws TwitterException {
         if (jsonArray == null) {
-            Reader reader = null;
             try {
-                if (responseAsString == null) {
-                    reader = asReader();
-                    jsonArray = new JSONArray(new JSONTokener(reader));
-                } else {
-                    jsonArray = new JSONArray(responseAsString);
-                }
+                jsonArray = new JSONArray(asString());
                 if (CONF.isPrettyDebugEnabled()) {
                     logger.debug(jsonArray.toString(1));
                 } else {
@@ -192,12 +174,6 @@ public abstract class HttpResponse {
                     throw new TwitterException(jsone.getMessage(), jsone);
                 }
             } finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException ignore) {
-                    }
-                }
                 disconnectForcibly();
             }
         }

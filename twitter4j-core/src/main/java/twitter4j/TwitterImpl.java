@@ -23,11 +23,7 @@ import twitter4j.conf.Configuration;
 
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static twitter4j.HttpParameter.getParameterArray;
@@ -419,91 +415,178 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
-        return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages.json?full_text=true"));
+        return getDirectMessages(100);
     }
 
     @Override
     public ResponseList<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
-        return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages.json"
-            , mergeParameters(paging.asPostParameterArray(), new HttpParameter("full_text", true))));
+        return getDirectMessages(paging.getCount());
     }
 
     @Override
-    public DirectMessageEventList getDirectMessageEvents(int count) throws TwitterException {
-        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+    public DirectMessageList getDirectMessages(int count) throws TwitterException {
+        return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
                 , new HttpParameter("count", count) ));
     }
 
     @Override
-    public DirectMessageEventList getDirectMessageEvents(int count, String cursor) throws TwitterException {
-        return factory.createDirectMessageEventList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
+    public DirectMessageList getDirectMessages(int count, String cursor) throws TwitterException {
+        return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/events/list.json"
                 , new HttpParameter("count", count)
                 , new HttpParameter("cursor", cursor)));
     }
 
     @Override
     public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
-        return factory.createDirectMessageList(get(conf.getRestBaseURL() + "direct_messages/sent.json?full_text=true"));
+        return getDirectMessages(100);
     }
 
     @Override
     public ResponseList<DirectMessage> getSentDirectMessages(Paging paging) throws TwitterException {
-        return factory.createDirectMessageList(get(conf.getRestBaseURL() +
-            "direct_messages/sent.json"
-            , mergeParameters(paging.asPostParameterArray(), new HttpParameter("full_text", true))));
+        return getDirectMessages(paging.getCount());
     }
 
     @Override
     public DirectMessage showDirectMessage(long id) throws TwitterException {
-        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/show.json?id=" + id
-            + "&full_text=true"));
-    }
-
-    @Override
-    public DirectMessageEvent showDirectMessageEvent(long id) throws TwitterException {
-        return factory.createDirectMessageEvent(get(conf.getRestBaseURL() + "direct_messages/events/show.json?id=" + id));
+        return factory.createDirectMessage(get(conf.getRestBaseURL() + "direct_messages/events/show.json?id=" + id));
     }
 
     @Override
     public DirectMessage destroyDirectMessage(long id) throws TwitterException {
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/destroy.json?id=" + id
-            + "&full_text=true"));
-    }
-
-    @Override
-    public void destroyDirectMessageEvent(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         http.delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
+        return new DirectMessage() {
+            @Override
+            public long getId() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public String getText() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public long getSenderId() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public long getRecipientId() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public Date getCreatedAt() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public String getSenderScreenName() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public String getRecipientScreenName() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public User getSender() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public User getRecipient() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public UserMentionEntity[] getUserMentionEntities() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public URLEntity[] getURLEntities() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public HashtagEntity[] getHashtagEntities() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public MediaEntity[] getMediaEntities() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public SymbolEntity[] getSymbolEntities() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public RateLimitStatus getRateLimitStatus() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+
+            @Override
+            public int getAccessLevel() {
+                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
+            }
+        };
     }
 
     @Override
-    public DirectMessageEvent createMessage(MessageData messageData)
+    public DirectMessage sendDirectMessage(long recipientId, String text, long messageId)
             throws TwitterException {
         try {
             final JSONObject json = new JSONObject();
             final JSONObject event = new JSONObject();
             event.put("type", "message_create");
-            event.put("message_create", messageData.createMessageCreateJsonObject());
+            event.put("message_create", createMessageCreateJsonObject(recipientId, text, messageId));
             json.put("event", event);
-            return factory.createDirectMessageEvent(post(conf.getRestBaseURL() + "direct_messages/events/new.json", json));
+            return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/events/new.json", json));
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
     }
+    private static JSONObject createMessageCreateJsonObject(long recipientId, String text, long mediaId) throws JSONException {
+        String type = mediaId == -1 ? null : "media";
+
+        final JSONObject json = new JSONObject();
+
+        final JSONObject target = new JSONObject();
+        target.put("recipient_id", recipientId);
+        json.put("target", target);
+
+        final JSONObject messageData = new JSONObject();
+        messageData.put("text", text);
+        if (type != null && mediaId != -1) {
+            final JSONObject attachment = new JSONObject();
+            attachment.put("type", type);
+            if (type.equals("media")) {
+                final JSONObject media = new JSONObject();
+                media.put("id", mediaId);
+                attachment.put("media", media);
+            }
+            messageData.put("attachment", attachment);
+        }
+        json.put("message_data", messageData);
+
+        return json;
+    }
 
     @Override
-    public DirectMessage sendDirectMessage(long userId, String text)
+    public DirectMessage sendDirectMessage(long recipientId, String text)
         throws TwitterException {
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/new.json"
-            , new HttpParameter("user_id", userId), new HttpParameter("text", text)
-            , new HttpParameter("full_text", true)));
+        return this.sendDirectMessage(recipientId, text, -1L);
     }
 
     @Override
     public DirectMessage sendDirectMessage(String screenName, String text) throws TwitterException {
-        return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/new.json"
-            , new HttpParameter("screen_name", screenName), new HttpParameter("text", text)
-            , new HttpParameter("full_text", true)));
+        return this.sendDirectMessage(showUser(screenName).getId(), text);
     }
 
     @Override
