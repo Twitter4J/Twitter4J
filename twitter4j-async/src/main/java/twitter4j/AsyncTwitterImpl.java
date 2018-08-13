@@ -66,7 +66,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMentions(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -82,7 +83,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMentions(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -100,7 +102,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -117,7 +120,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -134,7 +138,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -160,7 +165,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -176,7 +182,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotHomeTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -192,7 +199,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotHomeTimeline(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -208,7 +216,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweetsOfMe(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -224,7 +233,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweetsOfMe(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -242,7 +252,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRetweets(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -258,7 +269,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowStatus(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -274,7 +286,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedStatus(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -290,7 +303,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedStatus(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -306,7 +320,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedStatus(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -322,7 +337,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.retweetedStatus(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -338,7 +354,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOEmbed(oembed);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -354,7 +371,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedup(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -372,7 +390,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.searched(result);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -390,7 +409,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotDirectMessages(directMessages);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -406,7 +426,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotDirectMessages(directMessages);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -422,7 +443,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSentDirectMessages(directMessages);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -438,7 +460,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSentDirectMessages(directMessages);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -454,7 +477,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotDirectMessage(directMessage);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -470,7 +494,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedDirectMessage(directMessage);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -486,7 +511,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.sentDirectMessage(directMessage);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -502,7 +528,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.sentDirectMessage(directMessage);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -521,7 +548,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -537,7 +565,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -554,7 +583,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -570,7 +600,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -586,7 +617,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -602,7 +634,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -619,7 +652,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedUpFriendships(friendships);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -635,7 +669,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedUpFriendships(friendships);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -651,7 +686,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotIncomingFriendships(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -667,7 +703,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOutgoingFriendships(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -683,7 +720,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -699,7 +737,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -715,7 +754,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -731,7 +771,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -747,7 +788,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -763,7 +805,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedFriendship(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -781,7 +824,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -799,7 +843,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedFriendship(relationship);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -815,7 +860,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowFriendship(relationship);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -831,7 +877,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowFriendship(relationship);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -847,7 +894,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -863,7 +911,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -879,7 +928,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -895,7 +945,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -913,7 +964,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotAccountSettings(accountSettings);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -929,7 +981,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.verifiedCredentials(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -945,7 +998,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedAccountSettings(accountSettings);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -962,7 +1016,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfile(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -981,7 +1036,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileBackgroundImage(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1000,7 +1056,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileBackgroundImage(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1026,7 +1083,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileImage(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1044,7 +1102,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileImage(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1060,7 +1119,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotBlocksList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1076,7 +1136,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotBlocksList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1092,7 +1153,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotBlockIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1108,7 +1170,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotBlockIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1124,7 +1187,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdBlock(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1140,7 +1204,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdBlock(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1156,7 +1221,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedBlock(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1172,7 +1238,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedBlock(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1188,7 +1255,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMutesList(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1204,7 +1272,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMuteIDs(ids);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1220,7 +1289,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdMute(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1236,7 +1306,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdMute(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1252,7 +1323,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedMute(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1268,7 +1340,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedMute(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1284,7 +1357,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedupUsers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1300,7 +1374,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.lookedupUsers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1316,7 +1391,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserDetail(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1332,7 +1408,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserDetail(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1348,7 +1425,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.searchedUser(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1364,7 +1442,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotContributees(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1380,7 +1459,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotContributees(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1396,7 +1476,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotContributors(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1412,7 +1493,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotContributors(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1428,7 +1510,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.removedProfileBanner();
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1444,7 +1527,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileBanner();
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1460,7 +1544,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedProfileBanner();
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1478,7 +1563,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserSuggestions(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1494,7 +1580,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSuggestedUserCategories(categories);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1510,7 +1597,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotMemberSuggestions(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1528,7 +1616,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1544,7 +1633,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1560,7 +1650,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1576,7 +1667,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1592,7 +1684,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1608,7 +1701,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFavorites(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1624,7 +1718,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedFavorite(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1640,7 +1735,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdFavorite(status);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1658,7 +1754,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserLists(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1674,7 +1771,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserLists(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1690,7 +1788,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListStatuses(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1706,7 +1805,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListStatuses(statuses);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1722,7 +1822,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedUserListMember(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1738,7 +1839,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedUserListMember(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1754,7 +1856,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1780,7 +1883,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1796,7 +1900,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1812,7 +1917,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscribers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1828,7 +1934,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscribers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1844,7 +1951,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.subscribedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1860,7 +1968,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.subscribedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1876,7 +1985,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListSubscription(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1892,7 +2002,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListSubscription(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1908,7 +2019,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.unsubscribedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1924,7 +2036,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.unsubscribedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1941,7 +2054,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMembers(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1957,7 +2071,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMembers(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1973,7 +2088,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMembers(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1989,7 +2105,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMembers(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2005,7 +2122,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListMembership(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2021,7 +2139,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.checkedUserListMembership(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2037,7 +2156,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMembers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2053,7 +2173,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMembers(users);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2069,7 +2190,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMember(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2085,7 +2207,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserListMember(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2101,7 +2224,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2117,7 +2241,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2133,7 +2258,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2149,7 +2275,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.updatedUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2165,7 +2292,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2181,7 +2309,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2197,7 +2326,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotShowUserList(list);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2214,7 +2344,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscriptions(lists);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2234,7 +2365,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSavedSearches(savedSearches);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2250,7 +2382,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSavedSearch(savedSearch);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2266,7 +2399,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.createdSavedSearch(savedSearch);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2282,7 +2416,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.destroyedSavedSearch(savedSearch);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2300,7 +2435,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotGeoDetails(place);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2316,7 +2452,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotReverseGeoCode(places);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2332,7 +2469,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.searchedPlaces(places);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2349,7 +2487,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotSimilarPlaces(similarPlaces);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2367,7 +2506,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotPlaceTrends(trends);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2383,7 +2523,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotAvailableTrends(locations);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2399,7 +2540,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotClosestTrends(locations);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2417,7 +2559,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.reportedSpam(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2433,7 +2576,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.reportedSpam(user);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2451,7 +2595,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotAPIConfiguration(apiConf);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2467,7 +2612,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotLanguages(languages);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2483,7 +2629,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotPrivacyPolicy(privacyPolicy);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2499,7 +2646,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotTermsOfService(tos);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2515,7 +2663,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRateLimitStatus(rateLimitStatus);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2531,7 +2680,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotRateLimitStatus(rateLimitStatus);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2549,7 +2699,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthRequestToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2565,7 +2716,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthRequestToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2581,7 +2733,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthRequestToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2597,7 +2750,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthRequestToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2613,7 +2767,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthAccessToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2629,7 +2784,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthAccessToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2645,7 +2801,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthAccessToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2661,7 +2818,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthAccessToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2677,7 +2835,8 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuthAccessToken(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -2783,7 +2942,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotOAuth2Token(token);
-                    } catch (Exception ignore) {
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -2816,7 +2975,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                     for (TwitterListener listener : listeners) {
                         try {
                             listener.onException(te, method);
-                        } catch (Exception ignore) {
+                        } catch (Exception e) {
                         }
                     }
                 }
