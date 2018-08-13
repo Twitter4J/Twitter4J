@@ -62,6 +62,12 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         this.statusCode = statusCode;
     }
 
+    public TwitterException(String message, int errorCode) {
+        this(message);
+        this.errorMessage = message;
+        this.errorCode = errorCode;
+    }
+
     @Override
     public String getMessage() {
         StringBuilder value = new StringBuilder();

@@ -30,9 +30,16 @@ public final class UploadedMedia implements java.io.Serializable {
     private String imageType;
     private long mediaId;
     private long size;
+
+    // chunked uploading
     private String processingState;
     private int processingCheckAfterSecs;
     private int progressPercent;
+    private String processingErrorMessage;
+    private String processingErrorName;
+    private int processingErrorCode = -1;
+
+    private String videoType;
 
     /*package*/ UploadedMedia(JSONObject json) throws TwitterException {
         init(json);
@@ -59,15 +66,31 @@ public final class UploadedMedia implements java.io.Serializable {
     }
     
     public String getProcessingState() {
-    	return processingState;
+        return processingState;
     }
     
     public int getProcessingCheckAfterSecs() {
-    	return processingCheckAfterSecs;
+        return processingCheckAfterSecs;
     }
   
     public int getProgressPercent() {
-    	return progressPercent;
+        return progressPercent;
+    }
+
+    public String getProcessingErrorMessage() {
+        return processingErrorMessage;
+    }
+
+    public String getProcessingErrorName() {
+        return processingErrorName;
+    }
+
+    public int getProcessingErrorCode() {
+        return processingErrorCode;
+    }
+
+    public String getVideoType() {
+        return videoType;
     }
 
     private void init(JSONObject json) throws TwitterException {
@@ -80,13 +103,24 @@ public final class UploadedMedia implements java.io.Serializable {
                 imageHeight = ParseUtil.getInt("h", image);
                 imageType = ParseUtil.getUnescapedString("image_type", image);
             }
-            
+
+            if (!json.isNull("video")) {
+                JSONObject video = json.getJSONObject("video");
+                videoType = ParseUtil.getUnescapedString("video_type", video);
+            }
+
             if (!json.isNull("processing_info")) {
-            	JSONObject processingInfo = json.getJSONObject("processing_info");
-            	processingState = ParseUtil.getUnescapedString("state", processingInfo);
-            	processingCheckAfterSecs = ParseUtil.getInt("check_after_secs", processingInfo);
-            	progressPercent = ParseUtil.getInt("progress_percent", processingInfo);
-            	
+                JSONObject processingInfo = json.getJSONObject("processing_info");
+                processingState = ParseUtil.getUnescapedString("state", processingInfo);
+                processingCheckAfterSecs = ParseUtil.getInt("check_after_secs", processingInfo);
+                progressPercent = ParseUtil.getInt("progress_percent", processingInfo);
+
+                if (!processingInfo.isNull("error")) {
+                    JSONObject error = processingInfo.getJSONObject("error");
+                    processingErrorCode = ParseUtil.getInt("code", error);
+                    processingErrorName = error.getString("name");
+                    processingErrorMessage = error.getString("message");
+                }
             }
             
         } catch (JSONException jsone) {
@@ -103,31 +137,50 @@ public final class UploadedMedia implements java.io.Serializable {
 
         if (imageWidth != that.imageWidth) return false;
         if (imageHeight != that.imageHeight) return false;
-        if (imageType != that.imageType) return false;
         if (mediaId != that.mediaId) return false;
         if (size != that.size) return false;
-
-        return true;
+        if (processingCheckAfterSecs != that.processingCheckAfterSecs) return false;
+        if (progressPercent != that.progressPercent) return false;
+        if (processingErrorCode != that.processingErrorCode) return false;
+        if (imageType != null ? !imageType.equals(that.imageType) : that.imageType != null)
+            return false;
+        if (processingState != null ? !processingState.equals(that.processingState) : that.processingState != null)
+            return false;
+        if (processingErrorMessage != null ? !processingErrorMessage.equals(that.processingErrorMessage) : that.processingErrorMessage != null)
+            return false;
+        return processingErrorName != null ? processingErrorName.equals(that.processingErrorName) : that.processingErrorName == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (mediaId ^ (mediaId >>> 32));
-        result = 31 * result + imageWidth;
+        int result = imageWidth;
         result = 31 * result + imageHeight;
         result = 31 * result + (imageType != null ? imageType.hashCode() : 0);
-        result = 31 * result + (int)(size ^ (size >>> 32));
+        result = 31 * result + (int) (mediaId ^ (mediaId >>> 32));
+        result = 31 * result + (int) (size ^ (size >>> 32));
+        result = 31 * result + (processingState != null ? processingState.hashCode() : 0);
+        result = 31 * result + processingCheckAfterSecs;
+        result = 31 * result + progressPercent;
+        result = 31 * result + (processingErrorMessage != null ? processingErrorMessage.hashCode() : 0);
+        result = 31 * result + (processingErrorName != null ? processingErrorName.hashCode() : 0);
+        result = 31 * result + processingErrorCode;
         return result;
     }
 
     @Override
     public String toString() {
         return "UploadedMedia{" +
-                "mediaId=" + mediaId +
-                ", imageWidth=" + imageWidth + 
+                "imageWidth=" + imageWidth +
                 ", imageHeight=" + imageHeight +
                 ", imageType='" + imageType + '\'' +
+                ", mediaId=" + mediaId +
                 ", size=" + size +
+                ", processingState='" + processingState + '\'' +
+                ", processingCheckAfterSecs=" + processingCheckAfterSecs +
+                ", progressPercent=" + progressPercent +
+                ", processingErrorMessage='" + processingErrorMessage + '\'' +
+                ", processingErrorName='" + processingErrorName + '\'' +
+                ", processingErrorCode=" + processingErrorCode +
                 '}';
     }
 }
