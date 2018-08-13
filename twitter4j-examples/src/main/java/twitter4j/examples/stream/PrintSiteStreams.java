@@ -38,8 +38,8 @@ public final class PrintSiteStreams {
             System.exit(-1);
         }
 
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-        twitterStream.addListener(listener);
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance()
+                .addListener(listener);
 
         String[] split = args[0].split(",");
         long[] followArray = new long[split.length];
