@@ -1,0 +1,8 @@
+rootProject.name = 'twitter4j'
+include ':twitter4j-core'
+include ':twitter4j-async'
+include ':twitter4j-stream'
+include ':twitter4j-http2-support'
+include ':twitter4j-appengine'
+include ':twitter4j-examples'
+include ':twitter4j-media-support'

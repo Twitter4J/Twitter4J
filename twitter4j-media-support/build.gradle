@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':twitter4j-core')
+
+    testImplementation 'junit:junit:4.10'
+}
