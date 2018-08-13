@@ -98,6 +98,7 @@ Pierre Lanvin <pierre.lanvin@gmail.com> @planvin
 Pieter Meiresone @_MPieter
 Perry Sakkaris <psakkaris at gmail.com>
 Rajesh Koilpillai <rajesh.koilpillai at gmail.com> @rajeshkp
+Régis Jean-Gilles
 Roberto Estrada <robestradac at gmail.com>
 Robson Cassol <robsoncassol at gmail.com> @robsoncassol
 Roy Reshef <royreshef at gmail.com> @tsipo

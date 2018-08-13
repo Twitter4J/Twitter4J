@@ -989,7 +989,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         }
     }
 
-    // assures equality after deserializedation
+    // assures equality after deserialization
     protected Object readResolve() throws ObjectStreamException {
         return getInstance(this);
     }
