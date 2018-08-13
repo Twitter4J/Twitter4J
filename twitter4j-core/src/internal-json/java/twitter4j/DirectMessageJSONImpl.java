@@ -116,7 +116,7 @@ import java.util.List;
             }else{
                 quickReplies = new QuickReply[0];
             }
-            if (!messageData.isNull("quick_reply_response")) {
+            if (!messageData.isNull("quick_reply_response") && !messageData.getJSONObject("quick_reply_response").isNull("metadata")) {
                 quickReplyResponse = messageData.getJSONObject("quick_reply_response").getString("metadata");
             }
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
