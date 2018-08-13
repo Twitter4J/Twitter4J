@@ -16,6 +16,7 @@
 
 package twitter4j.media;
 
+import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 
 import java.io.File;
@@ -28,6 +29,8 @@ import java.io.InputStream;
  * @since Twitter4J 2.1.8
  */
 public interface ImageUpload {
+    String upload(File image, StatusUpdate forAttachment) throws TwitterException;
+
     String upload(File image, String message) throws TwitterException;
 
     String upload(File image) throws TwitterException;
@@ -35,4 +38,6 @@ public interface ImageUpload {
     String upload(String imageFileName, InputStream imageBody) throws TwitterException;
 
     String upload(String imageFileName, InputStream imageBody, String message) throws TwitterException;
+
+    String upload(String imageFileName, InputStream imageBody, StatusUpdate forAttachment) throws TwitterException;
 }
