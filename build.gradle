@@ -1,0 +1,65 @@
+ext {
+    groupId = 'org.twitter4j'
+    versionName = '4.0.7'
+}
+
+allprojects  {
+    apply plugin: 'maven'
+
+    group = groupId
+    version = versionName
+}
+
+// for build
+// $ ./gradlew clean build -x test
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+
+    [compileJava, compileTestJava, javadoc].each {
+        it.options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "http://repo.maven.apache.org/maven2" }
+    }
+}
+
+// for publish
+// $ ./gradlew publishToMavenLocal  # deploy to ~/.m2/repository/org/twitter4j/
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+
+    // custom tasks for creating source/javadoc jars
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    // add javadoc/source jar tasks as artifacts
+    artifacts {
+        archives sourcesJar, javadocJar
+    }
+
+    publishing {
+        publications {
+            MyPublication(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                groupId groupId
+                version versionName
+            }
+        }
+    }
+
+}

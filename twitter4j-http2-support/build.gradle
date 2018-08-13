@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':twitter4j-core')
+    implementation 'com.squareup.okhttp3:okhttp:3.0.1'
+
+    testImplementation 'junit:junit:4.10'
+    // this is just to install alpn-boot jar to local .m2 repository. to be used by maven-surefire-plugin and included in the bootclasspath
+    testImplementation 'org.mortbay.jetty.alpn:alpn-boot:8.1.7.v20160121'
+}

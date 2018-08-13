@@ -1,0 +1,11 @@
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    implementation project(':twitter4j-core')
+    implementation project(':twitter4j-async')
+    implementation project(':twitter4j-stream')
+    implementation project(':twitter4j-media-support')
+
+    testImplementation 'junit:junit:4.10'
+}
