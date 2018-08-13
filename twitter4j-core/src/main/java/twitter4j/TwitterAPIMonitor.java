@@ -37,7 +37,7 @@ public class TwitterAPIMonitor {
     // https?:\/\/[^\/]+\/[0-9.]*\/([a-zA-Z_\.]*).*
     // finds the "method" part a Twitter REST API url, ignoring member-specific resource names
     private static final Pattern pattern =
-            Pattern.compile("https?://[^/]+/[0-9.]*/([a-zA-Z_\\.]*).*");
+            Pattern.compile("https?://[^/]+/[0-9.]*/([a-zA-Z_.]*).*");
 
     private static final TwitterAPIMonitor SINGLETON = new TwitterAPIMonitor();
 

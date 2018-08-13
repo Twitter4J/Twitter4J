@@ -41,7 +41,7 @@ public final class PrintFilterStream {
             System.exit(-1);
         }
 
-        StatusListener listener = new StatusListener() {
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance().addListener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -71,10 +71,8 @@ public final class PrintFilterStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        };
+        });
 
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-        twitterStream.addListener(listener);
         ArrayList<Long> follow = new ArrayList<Long>();
         ArrayList<String> track = new ArrayList<String>();
         for (String arg : args) {

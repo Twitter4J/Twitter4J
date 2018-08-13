@@ -62,7 +62,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     /* Streaming API */
 
     @Override
-    public void firehose(final int count) {
+    public TwitterStream firehose(final int count) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -71,6 +71,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getFirehoseStream(count);
             }
         });
+        return this;
     }
 
     /**
@@ -89,7 +90,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public void links(final int count) {
+    public TwitterStream links(final int count) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -98,6 +99,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getLinksStream(count);
             }
         });
+        return this;
     }
 
     /**
@@ -127,7 +129,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public void retweet() {
+    public TwitterStream retweet() {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -136,6 +138,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getRetweetStream();
             }
         });
+        return this;
     }
 
     /**
@@ -158,7 +161,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public void sample() {
+    public TwitterStream sample() {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -167,10 +170,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getSampleStream();
             }
         });
+        return this;
     }
 
     @Override
-    public void sample(final String language) {
+    public TwitterStream sample(final String language) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -179,6 +183,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getSampleStream(language);
             }
         });
+        return this;
     }
 
     /**
@@ -222,12 +227,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public void user() {
+    public TwitterStream user() {
         user(null);
+        return this;
     }
 
     @Override
-    public void user(final String[] track) {
+    public TwitterStream user(final String[] track) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.user) {
@@ -236,6 +242,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getUserStream(track);
             }
         });
+        return this;
     }
 
     /**
@@ -314,7 +321,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public void filter(final FilterQuery query) {
+    public TwitterStream filter(final FilterQuery query) {
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
@@ -323,11 +330,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 return getFilterStream(query);
             }
         });
+        return this;
     }
 
     @Override
-    public void filter(final String... track) {
+    public TwitterStream filter(final String... track) {
         filter(new FilterQuery().track(track));
+        return this;
     }
 
     /**
@@ -381,15 +390,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized void cleanUp() {
+    public synchronized TwitterStream cleanUp() {
         if (handler != null) {
             handler.close();
             numberOfHandlers--;
         }
+        return this;
     }
 
     @Override
-    public synchronized void shutdown() {
+    public synchronized TwitterStream shutdown() {
         cleanUp();
         synchronized (TwitterStreamImpl.class) {
             if (0 == numberOfHandlers) {
@@ -399,19 +409,22 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 }
             }
         }
+        return this;
     }
 
     @Override
-    public void addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
+    public TwitterStream addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
         this.lifeCycleListeners.add(listener);
+        return this;
     }
 
     private final ArrayList<StreamListener> streamListeners = new ArrayList<StreamListener>(0);
 
     @Override
-    public synchronized void addListener(StreamListener listener) {
+    public synchronized TwitterStream addListener(StreamListener listener) {
         streamListeners.add(listener);
         updateListeners();
+        return this;
     }
 
     @Override
@@ -439,22 +452,25 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized void removeListener(StreamListener listener) {
+    public synchronized TwitterStream removeListener(StreamListener listener) {
         streamListeners.remove(listener);
         updateListeners();
+        return this;
     }
 
     @Override
-    public synchronized void clearListeners() {
+    public synchronized TwitterStream clearListeners() {
         streamListeners.clear();
         updateListeners();
+        return this;
     }
 
     @Override
-    public synchronized void replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded) {
+    public synchronized TwitterStream replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded) {
         streamListeners.remove(toBeRemoved);
         streamListeners.add(toBeAdded);
         updateListeners();
+        return this;
     }
 
     private synchronized void updateListeners() {
@@ -615,21 +631,12 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                             }
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                            } else if (0 == timeToSleep) {
+                            } else {
                                 timeToSleep = TCP_ERROR_INITIAL_WAIT;
                             }
                         }
                         if (te.getStatusCode() > 200 && timeToSleep < HTTP_ERROR_INITIAL_WAIT) {
                             timeToSleep = HTTP_ERROR_INITIAL_WAIT;
-                        }
-                        if (connected) {
-                            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
-                                try {
-                                    listener.onDisconnect();
-                                } catch (Exception e) {
-                                    logger.warn(e.getMessage());
-                                }
-                            }
                         }
                         for (StreamListener statusListener : streamListeners) {
                             statusListener.onException(te);
@@ -711,27 +718,24 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         if (handler != null ? !handler.equals(that.handler) : that.handler != null) return false;
         if (http != null ? !http.equals(that.http) : that.http != null) return false;
-        if (lifeCycleListeners != null ? !lifeCycleListeners.equals(that.lifeCycleListeners) : that.lifeCycleListeners != null)
+        if (!lifeCycleListeners.equals(that.lifeCycleListeners))
             return false;
         if (stallWarningsGetParam != null ? !stallWarningsGetParam.equals(that.stallWarningsGetParam) : that.stallWarningsGetParam != null)
             return false;
         if (stallWarningsParam != null ? !stallWarningsParam.equals(that.stallWarningsParam) : that.stallWarningsParam != null)
             return false;
-        if (streamListeners != null ? !streamListeners.equals(that.streamListeners) : that.streamListeners != null)
-            return false;
-
-        return true;
+        return streamListeners.equals(that.streamListeners);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (http != null ? http.hashCode() : 0);
-        result = 31 * result + (lifeCycleListeners != null ? lifeCycleListeners.hashCode() : 0);
+        result = 31 * result + lifeCycleListeners.hashCode();
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
         result = 31 * result + (stallWarningsGetParam != null ? stallWarningsGetParam.hashCode() : 0);
         result = 31 * result + (stallWarningsParam != null ? stallWarningsParam.hashCode() : 0);
-        result = 31 * result + (streamListeners != null ? streamListeners.hashCode() : 0);
+        result = 31 * result + streamListeners.hashCode();
         return result;
     }
 

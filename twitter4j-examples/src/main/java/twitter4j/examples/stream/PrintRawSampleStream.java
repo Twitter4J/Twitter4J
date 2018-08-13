@@ -35,8 +35,7 @@ public class PrintRawSampleStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-        RawStreamListener listener = new RawStreamListener() {
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance().addListener(new RawStreamListener() {
             @Override
             public void onMessage(String rawJSON) {
                 System.out.println(rawJSON);
@@ -46,8 +45,6 @@ public class PrintRawSampleStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        };
-        twitterStream.addListener(listener);
-        twitterStream.sample();
+        }).sample();
     }
 }

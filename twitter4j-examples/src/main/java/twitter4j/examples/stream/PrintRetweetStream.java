@@ -30,8 +30,7 @@ public class PrintRetweetStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
-        StatusListener listener = new StatusListener() {
+        TwitterStream twitterStream = new TwitterStreamFactory().getInstance().addListener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -61,8 +60,6 @@ public class PrintRetweetStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        };
-        twitterStream.addListener(listener);
-        twitterStream.retweet();
+        }).retweet();
     }
 }

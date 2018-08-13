@@ -61,8 +61,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testRawStreamListener() throws Exception {
-        TwitterStream twitterStream1 = new TwitterStreamFactory(bestFriend1Conf).getInstance();
-        twitterStream1.addListener(new RawStreamListener() {
+        TwitterStream twitterStream1 = new TwitterStreamFactory(bestFriend1Conf).getInstance().addListener(new RawStreamListener() {
             @Override
             public void onMessage(String rawString) {
                 received.add(rawString);
@@ -74,8 +73,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             @Override
             public void onException(Exception ex) {
             }
-        });
-        twitterStream1.sample();
+        }).sample();
         synchronized (lock) {
             lock.wait();
         }
@@ -123,11 +121,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             @Override
             public void onException(Exception ex) {
             }
-        });
-
-        twitterStream.sample();
-        twitterStream.cleanUp();
-        twitterStream.shutdown();
+        }).sample().cleanUp().shutdown();
     }
 
     @Test
@@ -198,9 +192,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testShutdownAndRestart() throws Exception {
-        TwitterStream twitterStream3 = new TwitterStreamFactory(conf3).getInstance();
-        twitterStream3.addListener(this);
-        twitterStream3.sample();
+        TwitterStream twitterStream3 = new TwitterStreamFactory(conf3).getInstance()
+                .addListener(this)
+                .sample();
         waitForStatus();
         twitterStream3.shutdown();
         twitterStream3.shutdown();
@@ -212,9 +206,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testFilterTrackPush() throws Exception {
-        TwitterStream twitterStream1 = new TwitterStreamFactory(conf2).getInstance();
-        twitterStream1.addListener(this);
-        twitterStream1.addConnectionLifeCycleListener(this);
+        TwitterStream twitterStream1 = new TwitterStreamFactory(conf2).getInstance()
+                .addListener(this)
+                .addConnectionLifeCycleListener(this);
         assertFalse(onConnectCalled);
         assertFalse(onDisconnectCalled);
         assertFalse(onCleanUpCalled);
