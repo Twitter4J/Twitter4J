@@ -415,12 +415,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
-        return getDirectMessages(100);
+        return removeDMsNotSentToMe(getDirectMessages(100));
     }
 
     @Override
     public ResponseList<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
-        return getDirectMessages(paging.getCount());
+        return removeDMsNotSentToMe(getDirectMessages(paging.getCount()));
     }
 
     @Override
@@ -438,12 +438,39 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
-        return getDirectMessages(100);
+        return removeDMsNotSentByMe(getDirectMessages(100));
     }
+
+    private long myId = -1;
 
     @Override
     public ResponseList<DirectMessage> getSentDirectMessages(Paging paging) throws TwitterException {
-        return getDirectMessages(paging.getCount());
+        return removeDMsNotSentByMe(getDirectMessages(paging.getCount()));
+    }
+    private DirectMessageList removeDMsNotSentToMe(DirectMessageList list) throws TwitterException {
+        if(myId == -1) {
+            myId = verifyCredentials().getId();
+        }
+        // filter direct messages not sent by me
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getRecipientId() != myId) {
+                list.remove(i);
+            }
+        }
+        return list;
+    }
+
+    private DirectMessageList removeDMsNotSentByMe(DirectMessageList list) throws TwitterException {
+        if(myId == -1) {
+            myId = verifyCredentials().getId();
+        }
+        // filter direct messages not sent by me
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).getSenderId() != myId) {
+                list.remove(i);
+            }
+        }
+        return list;
     }
 
     @Override
