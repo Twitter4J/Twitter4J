@@ -50,7 +50,7 @@ public final class UploadMovie {
 
             UploadedMedia media = twitter.uploadMediaChunked(
                     new ChunkedUploadConfiguration.Builder()
-                            .movie()
+                            .video()
                             .from(new File(movieFileName))
 //                            .segmentSizeBytes(512*1024)
 //                            .finalizeTimeout(120)

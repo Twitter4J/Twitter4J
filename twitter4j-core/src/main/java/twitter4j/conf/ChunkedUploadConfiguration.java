@@ -104,7 +104,7 @@ public final class ChunkedUploadConfiguration {
 
         private ChunkedUploadConfiguration conf = new ChunkedUploadConfiguration();
 
-        public Builder movie() {
+        public Builder video() {
             conf.mediaType = "video/mp4";
             conf.mediaCategory = "tweet_video";
             return this;
