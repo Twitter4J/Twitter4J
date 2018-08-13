@@ -134,6 +134,16 @@ final class LazyDirectMessage implements twitter4j.DirectMessage {
     }
 
     @Override
+    public QuickReply[] getQuickReplies() {
+        return getTarget().getQuickReplies();
+    }
+
+    @Override
+    public String getQuickReplyResponse() {
+        return getTarget().getQuickReplyResponse();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DirectMessage)) return false;
