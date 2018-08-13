@@ -52,6 +52,16 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
         DirectMessageList directMessages = rwPrivateMessage.getDirectMessages(100);
         assertTrue(directMessages.size() > 0);
 
+        // message with quick reply
+
+        DirectMessage directMessageWithQuickReplies = twitter1.sendDirectMessage(rwPrivate.id, "hello" + new Date(), new QuickReply("らべる１", "説明1", "めたでーた1")
+                , new QuickReply("label2", "description 2", "metadata 2")
+                , new QuickReply("label3", "description 3", null));
+        QuickReply[] quickReplies = directMessageWithQuickReplies.getQuickReplies();
+        assertEquals(3, quickReplies.length);
+        assertEquals(new QuickReply("らべる１", "説明1", "めたでーた1"), quickReplies[0]);
+        assertNull(quickReplies[2].getMetadata());
+
         rwPrivateMessage.destroyDirectMessage(received.getId());
     }
 

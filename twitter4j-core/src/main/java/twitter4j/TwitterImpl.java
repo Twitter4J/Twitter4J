@@ -440,27 +440,23 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public DirectMessage sendDirectMessage(long recipientId, String text, long messageId)
+    public DirectMessage sendDirectMessage(long recipientId, String text, QuickReply... quickReplies)
             throws TwitterException {
         try {
-            final JSONObject json = new JSONObject();
-            final JSONObject event = new JSONObject();
-            event.put("type", "message_create");
-            event.put("message_create", createMessageCreateJsonObject(recipientId, text, messageId));
-            json.put("event", event);
-            return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/events/new.json", json));
+            return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/events/new.json",
+                    createMessageCreateJsonObject(recipientId, text, -1L,  null, quickReplies)));
         } catch (JSONException e) {
             throw new TwitterException(e);
         }
     }
-    private static JSONObject createMessageCreateJsonObject(long recipientId, String text, long mediaId) throws JSONException {
+    private static JSONObject createMessageCreateJsonObject(long recipientId, String text, long mediaId, String quickReplyResponse, QuickReply... quickReplies) throws JSONException {
         String type = mediaId == -1 ? null : "media";
 
-        final JSONObject json = new JSONObject();
+        final JSONObject messageDataJSON = new JSONObject();
 
         final JSONObject target = new JSONObject();
         target.put("recipient_id", recipientId);
-        json.put("target", target);
+        messageDataJSON.put("target", target);
 
         final JSONObject messageData = new JSONObject();
         messageData.put("text", text);
@@ -474,9 +470,51 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             }
             messageData.put("attachment", attachment);
         }
-        json.put("message_data", messageData);
+        // https://developer.twitter.com/en/docs/direct-messages/quick-replies/api-reference/options
+        if (quickReplies.length > 0) {
+            JSONObject quickReplyJSON = new JSONObject();
+            quickReplyJSON.put("type", "options");
+            JSONArray jsonArray = new JSONArray();
+            for (QuickReply quickReply : quickReplies) {
+                JSONObject option = new JSONObject();
+                option.put("label", quickReply.getLabel());
+                if (quickReply.getDescription() != null) {
+                    option.put("description", quickReply.getDescription());
+                }
+                if (quickReply.getMetadata() != null) {
+                    option.put("metadata", quickReply.getMetadata());
+                }
+                jsonArray.put(option);
+            }
+            quickReplyJSON.put("options",jsonArray);
+            messageData.put("quick_reply", quickReplyJSON);
+        }
+        if (quickReplyResponse != null) {
+            JSONObject quickReplyResponseJSON = new JSONObject();
+            quickReplyResponseJSON.put("type","options");
+            quickReplyResponseJSON.put("metadata", quickReplyResponse);
+            messageData.put("quick_reply_response", quickReplyResponseJSON);
+        }
+        messageDataJSON.put("message_data", messageData);
+
+        final JSONObject json = new JSONObject();
+        final JSONObject event = new JSONObject();
+        event.put("type", "message_create");
+        event.put("message_create", messageDataJSON);
+        json.put("event", event);
 
         return json;
+    }
+
+    @Override
+    public DirectMessage sendDirectMessage(long recipientId, String text, long mediaId)
+            throws TwitterException {
+        try {
+            return factory.createDirectMessage(post(conf.getRestBaseURL() + "direct_messages/events/new.json",
+                    createMessageCreateJsonObject(recipientId, text, mediaId, null)));
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
     }
 
     @Override
