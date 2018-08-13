@@ -168,6 +168,12 @@ public abstract class Logger {
     public abstract void warn(String message, String message2);
 
     /**
+     * @param message  message
+     * @param th      throwable
+     */
+    public abstract void warn(String message, Throwable th);
+
+    /**
      * @param message message
      */
     public abstract void error(String message);

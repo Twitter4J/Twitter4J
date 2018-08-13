@@ -79,6 +79,11 @@ final class CommonsLoggingLogger extends Logger {
     }
 
     @Override
+    public void warn(String message, Throwable th) {
+        LOGGER.warn(message, th);
+    }
+
+    @Override
     public void error(String message) {
         LOGGER.error(message);
     }

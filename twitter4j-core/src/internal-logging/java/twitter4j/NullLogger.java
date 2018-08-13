@@ -66,6 +66,10 @@ final class NullLogger extends Logger {
     }
 
     @Override
+    public void warn(String message, Throwable th) {
+    }
+
+    @Override
     public void error(String message) {
     }
 

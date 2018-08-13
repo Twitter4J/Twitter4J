@@ -79,6 +79,11 @@ final class JULLogger extends Logger {
     }
 
     @Override
+    public void warn(String message, Throwable th) {
+        LOGGER.warning(message + th.getMessage());
+    }
+
+    @Override
     public void error(String message) {
         LOGGER.severe(message);
     }
