@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Test case for HttpCient
+ * Test case for HttpClient
  * The fllowing argument is required to run this test case:
  * -Xbootclasspath/p:~/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.12.v20180117/alpn-boot-8.1.12.v20180117.jar
  *
@@ -76,7 +76,7 @@ public class Http2ClientTest {
         }
 
         // http2
-        if (alpnBootJarFoundInBootClassPath) {
+        if (alpnBootJarFoundInBootClassPath && ellipticCurvesExtensionFoundInClassPath) {
             AlternativeHttpClientImpl.sPreferHttp2 = true;
             AlternativeHttpClientImpl http = callOembed();
 
@@ -106,7 +106,7 @@ public class Http2ClientTest {
 
     @Test
     void testUploadMediaFromStream() throws Exception {
-        if (alpnBootJarFoundInBootClassPath) {
+        if (alpnBootJarFoundInBootClassPath && ellipticCurvesExtensionFoundInClassPath) {
             Twitter twitter = TwitterFactory.getSingleton();
             UploadedMedia media2 = twitter.uploadMedia("fromInputStream",
                     Http2ClientTest.class.getResourceAsStream("/twitter4j.jpg"));
