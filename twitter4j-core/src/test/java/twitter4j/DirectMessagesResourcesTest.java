@@ -26,6 +26,25 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since Twitter4J 2.2.4
  */
 class DirectMessagesResourcesTest extends TwitterTestBase {
+    @Test
+    void testQuickResponse() throws Exception{
+        String message = "hello " + new Date().toString();
+        DirectMessage sent = rwPrivateMessage.sendDirectMessage(id1.id, message,
+                new QuickReply("label1", "description1","metadata1"),
+                new QuickReply("label2", "description2","metadata2"));
+        assertEquals(rwPrivate.id, sent.getSenderId());
+        assertEquals(id1.id, sent.getRecipientId());
+        assertEquals(2,    sent.getQuickReplies().length);
+
+        DirectMessage sent2 = twitter1.sendDirectMessage(rwPrivate.id, "label2",
+                "metadata2");
+        // https://twittercommunity.com/t/quick-reply-response-not-propagated/111006
+//        assertEquals("metadata2", sent2.getQuickReplyResponse());
+        assertEquals(rwPrivate.id, sent.getSenderId());
+        assertEquals(id1.id, sent.getRecipientId());
+
+
+    }
 
     @Test
     void testNewDMAPIs() throws Exception {
@@ -36,7 +55,7 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
         twitter1.destroyBlock(rwPrivate.id);
         rwPrivateMessage.createFriendship(id1.id);
         String message = "hello " + new Date().toString();
-        DirectMessage sent = twitter1.directMessages().sendDirectMessage(rwPrivate.id, message);
+        DirectMessage sent = twitter1.sendDirectMessage(rwPrivate.id, message);
         assertEquals(rwPrivate.id, sent.getRecipientId());
         assertEquals(id1.id, sent.getSenderId());
         assertEquals(message, sent.getText());

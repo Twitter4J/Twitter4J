@@ -101,6 +101,22 @@ public interface DirectMessagesResources {
      *
      * @param userId the user id of the user to whom send the direct message
      * @param text   The text of your direct message.
+     * @param quickReplyResponse Quick Reply response
+     * @return DirectMessage
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event">POST direct_messages/events/new (message_create) — Twitter Developers</a>
+     * @since Twitter4j 2.1.0
+     */
+    DirectMessage sendDirectMessage(long userId, String text, String quickReplyResponse)
+            throws TwitterException;
+
+    /**
+     * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
+     * The text will be trimmed if the length of the text is exceeding 140 characters.
+     * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
+     *
+     * @param userId the user id of the user to whom send the direct message
+     * @param text   The text of your direct message.
      * @param mediaId id of media attachment
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
