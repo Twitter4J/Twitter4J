@@ -32,6 +32,7 @@ public interface Trend extends java.io.Serializable {
 
     /**
      * The tweet volume for the last 24 hours if available, -1 otherwise.
+     * @return The tweet volume for the last 24 hours if available, -1 otherwise.
      */
     int getTweetVolume();
 }

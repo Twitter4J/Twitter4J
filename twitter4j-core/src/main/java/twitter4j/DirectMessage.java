@@ -42,12 +42,14 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
     /**
      *
      * @deprecated use {@link #getSenderId()} instead
+     * @return sender screen name
      */
     String getSenderScreenName();
 
     /**
      *
      * @deprecated use {@link #getRecipientId()} instead
+     * @return recipient screen name
      */
     String getRecipientScreenName();
 
@@ -55,6 +57,7 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
     /**
      *
      * @deprecated use {@link #getSenderId()} instead
+     * @return sender user
      */
     User getSender();
 
@@ -62,6 +65,7 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
     /**
      *
      * @deprecated use {@link #getRecipientId()} instead
+     * @return sender recipient
      */
     User getRecipient();
 

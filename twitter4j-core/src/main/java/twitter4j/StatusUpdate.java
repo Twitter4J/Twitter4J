@@ -140,12 +140,14 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      * @since Twitter4J 4.0.7
+     * @return attachment url
      */
     public String getAttachmentUrl() {
         return attachmentUrl;
     }
 
     /**
+     * @param attachmentUrl attachment url
      * @since Twitter4J 4.0.7
      */
     public void setAttachmentUrl(String attachmentUrl) {
@@ -153,6 +155,8 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
+     * @param attachmentUrl attachment url
+     * @return status update
      * @since Twitter4J 4.0.7
      */
     public StatusUpdate attachmentUrl(String attachmentUrl) {
@@ -212,7 +216,7 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      *
-     * @param autoPopulateReplyMetadata
+     * @param autoPopulateReplyMetadata auto reply meta data
      * @since Twitter4J 4.0.7
      */
     public void setAutoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
@@ -221,7 +225,7 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      *
-     * @param autoPopulateReplyMetadata
+     * @param autoPopulateReplyMetadata auto reply meta data
      * @return this instance
      * @since Twitter4J 4.0.7
      */

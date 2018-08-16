@@ -74,6 +74,7 @@ public interface UsersResources {
      *
      * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
      * @return the current trend, geo and sleep time information for the authenticating user.
+     * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 4.0.7
     */
     AccountSettings updateAllowDmsFrom(String allowDmsFrom) throws TwitterException;
