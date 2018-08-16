@@ -36,7 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class Http2ClientTest {
 
-    static boolean alpnBootJarFoundInBootClassPath;
+    private static final boolean alpnBootJarFoundInBootClassPath;
+    private static boolean ellipticCurvesExtensionFoundInClassPath;
 
     static {
 
@@ -46,12 +47,20 @@ public class Http2ClientTest {
         } else {
             System.out.println("alpn jar not found in boot classpath.");
         }
+
+        try {
+            Class.forName("sun.security.ssl.EllipticCurvesExtension");
+            ellipticCurvesExtensionFoundInClassPath = true;
+        } catch (ClassNotFoundException e) {
+            // this test case require 1.8.0u162 or later
+            ellipticCurvesExtensionFoundInClassPath = false;
+        }
     }
 
     @Test
     void testNoPreferOption() throws Exception {
         // no prefer option
-        if (alpnBootJarFoundInBootClassPath) {
+        if (alpnBootJarFoundInBootClassPath && ellipticCurvesExtensionFoundInClassPath) {
             AlternativeHttpClientImpl http = callOembed();
 
             // check HTTP/2.0
