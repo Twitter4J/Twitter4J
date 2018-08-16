@@ -124,42 +124,6 @@ public interface TwitterStream extends OAuthSupport, TwitterBase {
     TwitterStream sample(final String language);
 
     /**
-     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
-     *
-     * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
-     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
-     * @deprecated Since Twitter4J 4.0.7
-     */
-    TwitterStream user();
-
-    /**
-     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
-     *
-     * @param track keywords to track
-     * @throws IllegalStateException when non-UserStreamListener is set, or no listener is set
-     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
-     * @since Twitter4J 2.1.9
-     * @deprecated Since Twitter4J 4.0.7
-     */
-    TwitterStream user(final String... track);
-
-
-    /**
-     * Site Streams, a new feature on the Streaming API, is now available for beta testing. Site Streams allows services, such as web sites or mobile push services, to receive real-time updates for a large number of users without any of the hassles of managing REST API rate limits. The initial version delivers events created by, or directed to, users that have shared their OAuth token with your application. The following events are streamed immediately, and without rate limits: Home Timelines, Mentions Timelines, User Timelines, Direct Messages, Mentions, Follows, Favorites, Tweets, Retweets, Profile changes, and List changes.
-     * The following limitations must be respected during the beta period. These limitations may be changed with little advance notice. We intend to increase or remove these various limitations as we move from beta test into full production:<br>
-     * Limit the follow count to 100 users per stream. Clients must occasionally compact users onto a smaller number of connections to minimize the total number of connections outstanding.<br>
-     * Open no more than 25 new connections per second and exponentially back-off on errors.
-     *
-     * @param withFollowings whether to receive status updates from people following
-     * @param follow         an array of users to include in the stream
-     * @return controller to control the site stream
-     * @see <a href="https://dev.twitter.com/docs/streaming-api/site-streams">Site Streams | Twitter Developers</a>
-     * @since Twitter4J 2.1.8
-     * @deprecated Since Twitter4J 4.0.7
-     */
-    StreamController site(final boolean withFollowings, final long... follow);
-
-    /**
      * Start consuming public statuses that match one or more filter predicates. At least one predicate parameter, follow, locations, or track must be specified. Multiple parameters may be specified which allows most clients to use a single connection to the Streaming API. Placing long parameters in the URL may cause the request to be rejected for excessive URL length.<br>
      * The default access level allows up to 200 track keywords, 400 follow userids and 10 1-degree location boxes. Increased access levels allow 80,000 follow userids ("shadow" role), 400,000 follow userids ("birddog" role), 10,000 track keywords ("restricted track" role),  200,000 track keywords ("partner track" role), and 200 10-degree location boxes ("locRestricted" role). Increased track access levels also pass a higher proportion of statuses before limiting the stream.
      *

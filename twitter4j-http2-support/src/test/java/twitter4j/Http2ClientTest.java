@@ -68,7 +68,6 @@ public class Http2ClientTest {
 
         // http2
         if (alpnBootJarFoundInBootClassPath) {
-            AlternativeHttpClientImpl.sPreferSpdy = false;
             AlternativeHttpClientImpl.sPreferHttp2 = true;
             AlternativeHttpClientImpl http = callOembed();
 

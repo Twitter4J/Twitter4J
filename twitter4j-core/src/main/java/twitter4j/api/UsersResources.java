@@ -98,57 +98,6 @@ public interface UsersResources {
         throws TwitterException;
 
     /**
-     * Updates the authenticating user's profile background image.
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
-     *
-     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
-     * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @return the updated user
-     * @throws TwitterException when Twitter service or network is unavailable,
-     *                          or when the specified file is not found (FileNotFoundException will be nested),
-     *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     * @deprecated Since Twitter4J 4.0.7
-     */
-    User updateProfileBackgroundImage(File image, boolean tile)
-        throws TwitterException;
-
-    /**
-     * Updates the authenticating user's profile background image.
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
-     *
-     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forceably scaled down.
-     * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @return the updated user
-     * @throws TwitterException when Twitter service or network is unavailable,
-     *                          or when the specified file is not found (FileNotFoundException will be nested),
-     *                          or when the specified file object in not representing a file (IOException will be nested)
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
-     * @since Twitter4J 2.1.11
-     */
-    User updateProfileBackgroundImage(InputStream image, boolean tile)
-        throws TwitterException;
-
-    /**
-     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexadecimal value, and may be either three or six characters (ex: #fff or #ffffff).
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_colors.json
-     *
-     * @param profileBackgroundColor    optional, can be null
-     * @param profileTextColor          optional, can be null
-     * @param profileLinkColor          optional, can be null
-     * @param profileSidebarFillColor   optional, can be null
-     * @param profileSidebarBorderColor optional, can be null
-     * @return the updated user
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated Since Twitter4J 4.0.5
-     */
-    User updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor)
-        throws TwitterException;
-
-    /**
      * Updates the authenticating user's profile image.
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_image.json
      *

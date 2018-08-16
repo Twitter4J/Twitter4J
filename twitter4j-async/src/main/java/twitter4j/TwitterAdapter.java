@@ -97,7 +97,7 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void destroyedDirectMessage(DirectMessage message) {
+    public void destroyedDirectMessage(long id) {
     }
 
     @Override
@@ -165,14 +165,6 @@ public class TwitterAdapter implements TwitterListener {
     // updatedDeliveryDevice
     @Override
     public void updatedProfile(User user) {
-    }
-
-    @Override
-    public void updatedProfileBackgroundImage(User user) {
-    }
-
-    @Override
-    public void updatedProfileColors(User user) {
     }
 
     @Override

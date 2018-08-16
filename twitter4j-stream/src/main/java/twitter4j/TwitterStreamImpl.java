@@ -226,73 +226,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    @Override
-    public TwitterStream user() {
-        user(null);
-        return this;
-    }
-
-    @Override
-    public TwitterStream user(final String[] track) {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
-        startHandler(new TwitterStreamConsumer(Mode.user) {
-            @Override
-            public StatusStream getStream() throws TwitterException {
-                return getUserStream(track);
-            }
-        });
-        return this;
-    }
-
-    /**
-     * User Streams provides real-time updates of all data needed to update a desktop application display. Applications can request startup back-fill from the REST API and then transition to Streaming for nearly all subsequent reads. Rate limits and latency are practically eliminated. Desktop developers can stop managing rate limits and use this new data to create an entirely new user experience. On our end, we hope to reduce costs and increase site reliability.
-     *
-     * @param track keywords to track
-     * @return UserStream
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/streaming-api/user-streams">User Streams</a>
-     * @since Twitter4J 2.1.9
-     */
-    UserStream getUserStream(String[] track) throws TwitterException {
-        ensureAuthorizationEnabled();
-        try {
-            List<HttpParameter> params = new ArrayList<HttpParameter>();
-            params.add(stallWarningsParam);
-            if (conf.isUserStreamRepliesAllEnabled()) {
-                params.add(new HttpParameter("replies", "all"));
-            }
-            if (!conf.isUserStreamWithFollowingsEnabled()) {
-                params.add(new HttpParameter("with", "user"));
-            }
-            if (track != null) {
-                params.add(new HttpParameter("track", StringUtil.join(track)));
-            }
-            return new UserStreamImpl(getDispatcher(), http.post(conf.getUserStreamBaseURL() + "user.json"
-                    , params.toArray(new HttpParameter[params.size()])
-                    , auth, null), conf);
-        } catch (IOException e) {
-            throw new TwitterException(e);
-        }
-    }
-
-    @Override
-    public StreamController site(final boolean withFollowings, final long[] follow) {
-        ensureOAuthEnabled();
-        ensureSiteStreamsListenerIsSet();
-        final StreamController cs = new StreamController(http, auth);
-        startHandler(new TwitterStreamConsumer(Mode.site) {
-            @Override
-            public StatusStream getStream() throws TwitterException {
-                try {
-                    return new SiteStreamsImpl(getDispatcher(), getSiteStream(withFollowings, follow), conf, cs);
-                } catch (IOException e) {
-                    throw new TwitterException(e);
-                }
-            }
-        });
-        return cs;
-    }
 
     private Dispatcher getDispatcher() {
         if (null == TwitterStreamImpl.dispatcher) {
@@ -310,15 +243,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     private static transient volatile Dispatcher dispatcher;
 
-    InputStream getSiteStream(boolean withFollowings, long[] follow) throws TwitterException {
-        ensureOAuthEnabled();
-        return http.post(conf.getSiteStreamBaseURL() + "site.json",
-                new HttpParameter[]{
-                        new HttpParameter("with", withFollowings ? "followings" : "user")
-                        , new HttpParameter("follow", StringUtil.join(follow))
-                        , stallWarningsParam}, auth, null
-        ).asStream();
-    }
 
     @Override
     public TwitterStream filter(final FilterQuery query) {

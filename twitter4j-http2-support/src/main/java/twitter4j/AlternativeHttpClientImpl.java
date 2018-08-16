@@ -53,7 +53,6 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
     private OkHttpClient okHttpClient;
 
     //for test
-    public static boolean sPreferSpdy = true;
     public static boolean sPreferHttp2 = true;
     private Protocol lastRequestProtocol = null;
 
@@ -244,7 +243,6 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
             List<Protocol> protocols = new ArrayList<Protocol>();
             protocols.add(Protocol.HTTP_1_1);
             if (sPreferHttp2) protocols.add(Protocol.HTTP_2);
-            if (sPreferSpdy) protocols.add(Protocol.SPDY_3);
             builder.protocols(protocols);
 
             //connectionPool setup

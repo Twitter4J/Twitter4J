@@ -63,7 +63,7 @@ public interface TwitterListener {
 
     void gotDirectMessage(DirectMessage message);
 
-    void destroyedDirectMessage(DirectMessage message);
+    void destroyedDirectMessage(long id);
 
     void sentDirectMessage(DirectMessage message);
 
@@ -99,10 +99,6 @@ public interface TwitterListener {
 
     // updatedDeliveryDevice
     void updatedProfile(User user);
-
-    void updatedProfileBackgroundImage(User user);
-
-    void updatedProfileColors(User user);
 
     void updatedProfileImage(User user);
 

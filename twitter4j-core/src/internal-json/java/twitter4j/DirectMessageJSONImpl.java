@@ -249,25 +249,4 @@ import java.util.Date;
                 ", symbolEntities=" + Arrays.toString(symbolEntities) +
                 '}';
     }
-
-    @Override
-    public String getSenderScreenName() {
-        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
-    }
-
-    @Override
-    public String getRecipientScreenName() {
-        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
-    }
-
-    @Override
-    public User getSender() {
-        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
-    }
-
-    @Override
-    public User getRecipient() {
-        throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to use this method due to the API changes.");
-    }
-
 }

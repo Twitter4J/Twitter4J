@@ -413,15 +413,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     /* Direct Messages Resources */
 
-    @Override
-    public ResponseList<DirectMessage> getDirectMessages() throws TwitterException {
-        return removeDMsNotSentToMe(getDirectMessages(100));
-    }
-
-    @Override
-    public ResponseList<DirectMessage> getDirectMessages(Paging paging) throws TwitterException {
-        return removeDMsNotSentToMe(getDirectMessages(paging.getCount()));
-    }
 
     @Override
     public DirectMessageList getDirectMessages(int count) throws TwitterException {
@@ -436,42 +427,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("cursor", cursor)));
     }
 
-    @Override
-    public ResponseList<DirectMessage> getSentDirectMessages() throws TwitterException {
-        return removeDMsNotSentByMe(getDirectMessages(100));
-    }
-
-    private long myId = -1;
-
-    @Override
-    public ResponseList<DirectMessage> getSentDirectMessages(Paging paging) throws TwitterException {
-        return removeDMsNotSentByMe(getDirectMessages(paging.getCount()));
-    }
-    private DirectMessageList removeDMsNotSentToMe(DirectMessageList list) throws TwitterException {
-        if(myId == -1) {
-            myId = verifyCredentials().getId();
-        }
-        // filter direct messages not sent by me
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).getRecipientId() != myId) {
-                list.remove(i);
-            }
-        }
-        return list;
-    }
-
-    private DirectMessageList removeDMsNotSentByMe(DirectMessageList list) throws TwitterException {
-        if(myId == -1) {
-            myId = verifyCredentials().getId();
-        }
-        // filter direct messages not sent by me
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).getSenderId() != myId) {
-                list.remove(i);
-            }
-        }
-        return list;
-    }
 
     @Override
     public DirectMessage showDirectMessage(long id) throws TwitterException {
@@ -479,90 +434,9 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public DirectMessage destroyDirectMessage(long id) throws TwitterException {
+    public void destroyDirectMessage(long id) throws TwitterException {
         ensureAuthorizationEnabled();
         http.delete(conf.getRestBaseURL() + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
-        return new DirectMessage() {
-            @Override
-            public long getId() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public String getText() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public long getSenderId() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public long getRecipientId() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public Date getCreatedAt() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public String getSenderScreenName() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public String getRecipientScreenName() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public User getSender() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public User getRecipient() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public UserMentionEntity[] getUserMentionEntities() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public URLEntity[] getURLEntities() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public HashtagEntity[] getHashtagEntities() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public MediaEntity[] getMediaEntities() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public SymbolEntity[] getSymbolEntities() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public RateLimitStatus getRateLimitStatus() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-
-            @Override
-            public int getAccessLevel() {
-                throw new UnsupportedOperationException("Since Twitter4J 4.0.7, you are no longer able to access the return value from destroyDirectMessage(id) due to the API changes.");
-            }
-        };
     }
 
     @Override
@@ -931,31 +805,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , profile.toArray(new HttpParameter[profile.size()])));
     }
 
-    @Override
-    public User updateProfileBackgroundImage(File image, boolean tile)
-            throws TwitterException {
-        checkFileValidity(image);
-        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json",
-                new HttpParameter[]{new HttpParameter("image", image), new HttpParameter("tile", tile)}));
-    }
-
-    @Override
-    public User updateProfileBackgroundImage(InputStream image, boolean tile)
-            throws TwitterException {
-        return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile_background_image.json"
-                , new HttpParameter[]{new HttpParameter("image", "image", image), new HttpParameter("tile", tile)}));
-    }
-
-    @Override
-    public User updateProfileColors(
-            String profileBackgroundColor,
-            String profileTextColor,
-            String profileLinkColor,
-            String profileSidebarFillColor,
-            String profileSidebarBorderColor)
-            throws TwitterException {
-        throw new UnsupportedOperationException("this API is no longer supported. https://twittercommunity.com/t/deprecation-of-account-update-profile-colors/28692");
-    }
 
     private void addParameterToList(List<HttpParameter> colors,
                                     String paramName, String color) {

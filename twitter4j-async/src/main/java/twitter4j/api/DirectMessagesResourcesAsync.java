@@ -22,41 +22,6 @@ import twitter4j.Paging;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface DirectMessagesResourcesAsync {
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     */
-    void getDirectMessages();
-
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    void getDirectMessages(Paging paging);
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
-     *
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
-     */
-    void getSentDirectMessages();
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
-     *
-     * @param paging controls pagination
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     */
-    void getSentDirectMessages(Paging paging);
 
     /**
      * Returns a single direct message, specified by an id parameter.

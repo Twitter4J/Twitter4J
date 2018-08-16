@@ -402,74 +402,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     /* Direct Messages Resources */
 
     @Override
-    public void getDirectMessages() {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<DirectMessage> directMessages = twitter.getDirectMessages();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotDirectMessages(directMessages);
-                    } catch (Exception e) {
-                        logger.warn("Exception at getDirectMessages", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getDirectMessages(final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGES, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<DirectMessage> directMessages = twitter.getDirectMessages(paging);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotDirectMessages(directMessages);
-                    } catch (Exception e) {
-                        logger.warn("Exception at getDirectMessages", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getSentDirectMessages() {
-        getDispatcher().invokeLater(new AsyncTask(SENT_DIRECT_MESSAGES, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<DirectMessage> directMessages = twitter.getSentDirectMessages();
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotSentDirectMessages(directMessages);
-                    } catch (Exception e) {
-                        logger.warn("Exception at getSentDirectMessages", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getSentDirectMessages(final Paging paging) {
-        getDispatcher().invokeLater(new AsyncTask(SENT_DIRECT_MESSAGES, listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                ResponseList<DirectMessage> directMessages = twitter.getSentDirectMessages(paging);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.gotSentDirectMessages(directMessages);
-                    } catch (Exception e) {
-                        logger.warn("Exception at getSentDirectMessages", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
     public void showDirectMessage(final long id) {
         getDispatcher().invokeLater(new AsyncTask(DIRECT_MESSAGE, listeners) {
             @Override
@@ -491,10 +423,10 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(DESTROY_DIRECT_MESSAGE, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                DirectMessage directMessage = twitter.destroyDirectMessage(id);
+                twitter.destroyDirectMessage(id);
                 for (TwitterListener listener : listeners) {
                     try {
-                        listener.destroyedDirectMessage(directMessage);
+                        listener.destroyedDirectMessage(id);
                     } catch (Exception e) {
                         logger.warn("Exception at destroyDirectMessage", e);
                     }
@@ -1023,54 +955,6 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
                 }
             }
         });
-    }
-
-    @Override
-    public void updateProfileBackgroundImage(final File image
-            , final boolean tile) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BACKGROUND_IMAGE,
-                listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners)
-                    throws TwitterException {
-                User user = twitter.updateProfileBackgroundImage(image, tile);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedProfileBackgroundImage(user);
-                    } catch (Exception e) {
-                        logger.warn("Exception at updateProfileBackgroundImage", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void updateProfileBackgroundImage(final InputStream image
-            , final boolean tile) {
-        getDispatcher().invokeLater(new AsyncTask(UPDATE_PROFILE_BACKGROUND_IMAGE,
-                listeners) {
-            @Override
-            public void invoke(List<TwitterListener> listeners)
-                    throws TwitterException {
-                User user = twitter.updateProfileBackgroundImage(image, tile);
-                for (TwitterListener listener : listeners) {
-                    try {
-                        listener.updatedProfileBackgroundImage(user);
-                    } catch (Exception e) {
-                        logger.warn("Exception at updateProfileBackgroundImage", e);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void updateProfileColors(
-            final String profileBackgroundColor, final String profileTextColor,
-            final String profileLinkColor, final String profileSidebarFillColor,
-            final String profileSidebarBorderColor) {
-        throw new UnsupportedOperationException("this API is no longer supported. https://twittercommunity.com/t/deprecation-of-account-update-profile-colors/28692");
     }
 
     @Override

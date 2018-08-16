@@ -28,56 +28,7 @@ import java.io.InputStream;
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface DirectMessagesResources {
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages
-     *
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     * @deprecated use {@link #getDirectMessages(int)} instead
-     */
-    ResponseList<DirectMessage> getDirectMessages()
-        throws TwitterException;
 
-    /**
-     * Returns a list of the direct messages sent to the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages
-     *
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages">GET direct_messages | Twitter Developers</a>
-     * @deprecated use {@link #getDirectMessages(int)} instead
-     */
-    ResponseList<DirectMessage> getDirectMessages(Paging paging)
-        throws TwitterException;
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
-     *
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
-     * @deprecated use {@link #getDirectMessages(int)} instead
-     */
-    ResponseList<DirectMessage> getSentDirectMessages()
-        throws TwitterException;
-
-    /**
-     * Returns a list of the direct messages sent by the authenticating user.
-     * <br>This method calls https://api.twitter.com/1.1/direct_messages/sent
-     *
-     * @param paging controls pagination. Supports since_id, max_id, count and page parameters.
-     * @return List
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/direct_messages/sent">GET direct_messages/sent | Twitter Developers</a>
-     * @since Twitter4J 2.0.1
-     * @deprecated use {@link #getDirectMessages(int)} instead
-     */
-    ResponseList<DirectMessage> getSentDirectMessages(Paging paging)
-        throws TwitterException;
 
     /**
      * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
@@ -126,10 +77,9 @@ public interface DirectMessagesResources {
      * @param id The id of the Direct Message event that should be deleted.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/delete-message-event.html">DELETE direct_messages/events/destroy — Twitter Developers</a>
-     * @return a dummy DirectMessage object. Starting from Twitter4J 4.0.7, all getters will throw IllegalStateException due to the API limitation. The return value will be changed to void in the furure release.
      * @since Twitter4J 2.0.1
      */
-    DirectMessage destroyDirectMessage(long id)
+    void destroyDirectMessage(long id)
         throws TwitterException;
 
     /**

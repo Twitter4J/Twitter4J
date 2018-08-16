@@ -55,6 +55,7 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     private OEmbed oembed;
 
     private long twit4jblockID = 39771963L;
+    private long id;
 
     @BeforeEach
     protected void beforeEach() throws Exception {
@@ -761,8 +762,8 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     }
 
     @Override
-    public void destroyedDirectMessage(DirectMessage message) {
-        this.message = message;
+    public void destroyedDirectMessage(long id) {
+        this.id = id;
         notifyResponse();
     }
 
@@ -865,12 +866,6 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     }
 
     @Override
-    public void updatedProfileColors(User user) {
-        this.user = user;
-        notifyResponse();
-    }
-
-    @Override
     public void gotAccountSettings(AccountSettings settings) {
         this.settings = settings;
         notifyResponse();
@@ -891,15 +886,6 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
         notifyResponse();
     }
 
-    /**
-     * @since Twitter4J 2.1.0
-     */
-    @Override
-    public void updatedProfileBackgroundImage(User user) {
-        this.user = user;
-        notifyResponse();
-
-    }
 
     @Override
     public void updatedProfile(User user) {

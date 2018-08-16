@@ -98,11 +98,6 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         } catch (IllegalStateException ignored) {
         }
         try {
-            twitterStream.user();
-            fail("expecting IllegalStateException");
-        } catch (IllegalStateException ignored) {
-        }
-        try {
             twitterStream.firehose(0);
             fail("expecting IllegalStateException");
         } catch (IllegalStateException ignored) {

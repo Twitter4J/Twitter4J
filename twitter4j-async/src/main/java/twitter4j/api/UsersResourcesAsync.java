@@ -71,43 +71,6 @@ public interface UsersResourcesAsync {
     void updateProfile(String name, String url, String location, String description);
 
     /**
-     * Updates the authenticating user's profile background image.
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
-     *
-     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
-     * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
-     * @since Twitter4J 2.1.0
-     */
-    void updateProfileBackgroundImage(File image, boolean tile);
-
-    /**
-     * Updates the authenticating user's profile background image.
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_background_image.json
-     *
-     * @param image Must be a valid GIF, JPG, or PNG image of less than 800 kilobytes in size.  Images with width larger than 2048 pixels will be forcibly scaled down.
-     * @param tile  If set to true the background image will be displayed tiled. The image will not be tiled otherwise.
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_background_image">POST account/update_profile_background_image | Twitter Developers</a>
-     * @since Twitter4J 2.1.11
-     */
-    void updateProfileBackgroundImage(InputStream image, boolean tile);
-
-    /**
-     * Sets one or more hex values that control the color scheme of the authenticating user's profile page on twitter.com. Each parameter's value must be a valid hexadecimal value, and may be either three or six characters (ex: #fff or #ffffff).
-     * <br>This method calls https://api.twitter.com/1.1/account/update_profile_colors
-     *
-     * @param profileBackgroundColor    optional, can be null
-     * @param profileTextColor          optional, can be null
-     * @param profileLinkColor          optional, can be null
-     * @param profileSidebarFillColor   optional, can be null
-     * @param profileSidebarBorderColor optional, can be null
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/update_profile_colors">POST account/update_profile_colors | Twitter Developers</a>
-     * @since Twitter4J 2.0.0
-     * @deprecated Since Twitter4J 4.0.5
-     */
-    void updateProfileColors(String profileBackgroundColor, String profileTextColor, String profileLinkColor, String profileSidebarFillColor, String profileSidebarBorderColor);
-
-    /**
      * Updates the authenticating user's profile image.
      * <br>This method calls https://api.twitter.com/1.1/account/update_profile_image.json
      *
