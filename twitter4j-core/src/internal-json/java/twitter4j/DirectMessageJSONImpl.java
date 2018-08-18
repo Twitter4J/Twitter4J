@@ -18,8 +18,10 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A data class representing sent/received direct message.
@@ -39,6 +41,8 @@ import java.util.Date;
     private HashtagEntity[] hashtagEntities;
     private MediaEntity[] mediaEntities;
     private SymbolEntity[] symbolEntities;
+    private QuickReply[] quickReplies;
+    private String quickReplyResponse;
 
     /*package*/DirectMessageJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -97,6 +101,23 @@ import java.util.Date;
                     mediaEntities = new MediaEntity[1];
                     mediaEntities[0] = new MediaEntityJSONImpl(attachment.getJSONObject("media"));
                 }
+            }
+            if (!messageData.isNull("quick_reply")) {
+                // dm with quick reply options
+                JSONArray options = messageData.getJSONObject("quick_reply").getJSONArray("options");
+                List<QuickReply> quickReplyList = new ArrayList<QuickReply>();
+                for (int i = 0; i < options.length(); i++) {
+                    JSONObject option = options.getJSONObject(i);
+                    String description = option.isNull("description") ? null :option.getString("description");
+                    String metadata = option.isNull("metadata") ? null :option.getString("metadata");
+                    quickReplyList.add(new QuickReply(option.getString("label"), description, metadata));
+                }
+                quickReplies = quickReplyList.toArray(new QuickReply[quickReplyList.size()]);
+            }else{
+                quickReplies = new QuickReply[0];
+            }
+            if (!messageData.isNull("quick_reply_response") && !messageData.getJSONObject("quick_reply_response").isNull("metadata")) {
+                quickReplyResponse = messageData.getJSONObject("quick_reply_response").getString("metadata");
             }
             mediaEntities = mediaEntities == null ? new MediaEntity[0] : mediaEntities;
             text = HTMLEntity.unescapeAndSlideEntityIncdices(messageData.getString("text"), userMentionEntities,
@@ -196,6 +217,16 @@ import java.util.Date;
     }
 
     @Override
+    public QuickReply[] getQuickReplies() {
+        return quickReplies;
+    }
+
+    @Override
+    public String getQuickReplyResponse() {
+        return quickReplyResponse;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -216,7 +247,10 @@ import java.util.Date;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(mediaEntities, that.mediaEntities)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(symbolEntities, that.symbolEntities);
+        if (!Arrays.equals(symbolEntities, that.symbolEntities)) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(quickReplies, that.quickReplies)) return false;
+        return quickReplyResponse != null ? quickReplyResponse.equals(that.quickReplyResponse) : that.quickReplyResponse == null;
     }
 
     @Override
@@ -231,6 +265,8 @@ import java.util.Date;
         result = 31 * result + Arrays.hashCode(hashtagEntities);
         result = 31 * result + Arrays.hashCode(mediaEntities);
         result = 31 * result + Arrays.hashCode(symbolEntities);
+        result = 31 * result + Arrays.hashCode(quickReplies);
+        result = 31 * result + (quickReplyResponse != null ? quickReplyResponse.hashCode() : 0);
         return result;
     }
 
@@ -247,6 +283,8 @@ import java.util.Date;
                 ", hashtagEntities=" + Arrays.toString(hashtagEntities) +
                 ", mediaEntities=" + Arrays.toString(mediaEntities) +
                 ", symbolEntities=" + Arrays.toString(symbolEntities) +
+                ", quickReplies=" + Arrays.toString(quickReplies) +
+                ", quickReplyResponse='" + quickReplyResponse + '\'' +
                 '}';
     }
 }
