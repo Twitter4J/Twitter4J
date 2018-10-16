@@ -1,15 +1,22 @@
-Twitter4J is a Twitter API binding library for the Java language licensed under Apache License 2.0.
+Twitter4J
+=========
 
-LICENSE.txt - the terms of license of this software
-pom.xml - maven parent pom
-powered-by-badge - badge
-readme.txt - this file
-twitter4j-core - core component : support REST and Search API
-twitter4j-apache-httpclient-support - optional component adds Apache HttpClient support
-twitter4j-examples - examples
-twitter4j-async - Async API support : depending on twitter4j-core
-twitter4j-stream - Streaming API support : depending on twitter4j-core and twitter4j-async
-twitter4j-http2-support - HTTP/2 support : adds HTTP/2 support, boosts Twitter4J performance, reduce packets, save the earth
+[![Maven Central](https://img.shields.io/maven-central/v/org.twitter4j/twitter4j.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22org.twitter4j%22%20AND%20a:%22twitter4j%22)
+[![Javadocs](https://www.javadoc.io/badge/org.twitter4j/twitter4j.svg)](https://www.javadoc.io/doc/org.twitter4j/twitter4j)
+![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
+
+Twitter4J is a Twitter API binding library for the Java language licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+- LICENSE.txt - the terms of license of this software
+- pom.xml - maven parent pom
+- powered-by-badge - badge
+- readme.txt - this file
+- twitter4j-core - core component : support REST and Search API
+- twitter4j-apache-httpclient-support - optional component adds Apache HttpClient support
+- twitter4j-examples - examples
+- twitter4j-async - Async API support : depending on twitter4j-core
+- twitter4j-stream - Streaming API support : depending on twitter4j-core and twitter4j-async
+- twitter4j-http2-support - HTTP/2 support : adds HTTP/2 support, boosts Twitter4J performance, reduce packets, save the earth
 
 Contributors
 ------------
