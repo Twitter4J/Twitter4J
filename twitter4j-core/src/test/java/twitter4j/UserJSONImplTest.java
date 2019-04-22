@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserJSONImplTest {
 
@@ -97,5 +99,90 @@ class UserJSONImplTest {
         String[] withheldInCountries = userWithheldInCountry.getWithheldInCountries();
         assertEquals(1, withheldInCountries.length);
         assertEquals("RU", withheldInCountries[0]);
+    }
+
+    @Test
+    void testAfter20190520Changes() throws TwitterException {
+        // https://twittercommunity.com/t/upcoming-changes-to-user-object-and-get-users-suggestions-endpoints/124732
+
+        // Settings values (these will only be available via GET account/settings)
+        // - lang
+        // - geo_enabled
+
+        // Follow relationship values (available only via GET friendships/lookup)
+        // - follow_request_sent
+
+        // Obsolete values
+        // - profile_location
+        // - is_translation_enabled
+        // - translator_type
+        // - has_extended_profile
+        // - profile_background_color
+        // - profile_background_image_url
+        // - profile_background_image_url_https
+        // - profile_background_tile
+        // - profile_image_url
+        // - profile_link_color
+        // - profile_sidebar_border_color
+        // - profile_sidebar_fill_color
+        // - profile_text_color
+        // - profile_use_background_image
+
+        // before changes
+        // - has settings values
+        // - has follow_request_sent
+        // - has obsolete values
+        {
+            //language=JSON
+            String rawJson = "{\"id\":72297675,\"id_str\":\"72297675\",\"name\":\"Tw\\u00edtter4J\",\"screen_name\":\"t4j_news\",\"location\":\"timeline\",\"profile_location\":null,\"description\":\"Award winning library - Twitter4J\",\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"entities\":{\"url\":{\"urls\":[{\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"expanded_url\":\"http:\\/\\/twitter4j.org\\/\",\"display_url\":\"twitter4j.org\",\"indices\":[0,23]}]},\"description\":{\"urls\":[]}},\"protected\":false,\"followers_count\":1912,\"friends_count\":19,\"listed_count\":137,\"created_at\":\"Mon Sep 07 14:50:12 +0000 2009\",\"favourites_count\":3,\"utc_offset\":null,\"time_zone\":null,\"geo_enabled\":true,\"verified\":false,\"statuses_count\":980,\"lang\":\"en\",\"status\":{\"created_at\":\"Thu Dec 13 14:29:06 +0000 2018\",\"id\":1073223291995734020,\"id_str\":\"1073223291995734020\",\"text\":\"RT @cscheerleader: I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder time do\\u2026\",\"truncated\":false,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"cscheerleader\",\"name\":\"Ria Galanos\",\"id\":1250080500,\"id_str\":\"1250080500\",\"indices\":[3,17]},{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[37,45]}],\"urls\":[]},\"source\":\"\\u003ca href=\\\"http:\\/\\/sites.google.com\\/site\\/yorufukurou\\/\\\" rel=\\\"nofollow\\\"\\u003eYoruFukurou\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"retweeted_status\":{\"created_at\":\"Thu Dec 13 14:23:18 +0000 2018\",\"id\":1073221831715360768,\"id_str\":\"1073221831715360768\",\"text\":\"I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder ti\\u2026 https:\\/\\/t.co\\/5N603Vh6mP\",\"truncated\":true,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[18,26]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/5N603Vh6mP\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/1073221831715360768\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/1\\u2026\",\"indices\":[117,140]}]},\"source\":\"\\u003ca href=\\\"https:\\/\\/about.twitter.com\\/products\\/tweetdeck\\\" rel=\\\"nofollow\\\"\\u003eTweetDeck\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":6,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"contributors_enabled\":false,\"is_translator\":false,\"is_translation_enabled\":false,\"profile_background_color\":\"C0DEED\",\"profile_background_image_url\":\"http:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_image_url_https\":\"https:\\/\\/abs.twimg.com\\/images\\/themes\\/theme1\\/bg.png\",\"profile_background_tile\":false,\"profile_image_url\":\"http:\\/\\/pbs.twimg.com\\/profile_images\\/708189314073501696\\/jjNlTEQk_normal.jpg\",\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/708189314073501696\\/jjNlTEQk_normal.jpg\",\"profile_banner_url\":\"https:\\/\\/pbs.twimg.com\\/profile_banners\\/72297675\\/1540491420\",\"profile_link_color\":\"1DA1F2\",\"profile_sidebar_border_color\":\"C0DEED\",\"profile_sidebar_fill_color\":\"DDEEF6\",\"profile_text_color\":\"333333\",\"profile_use_background_image\":true,\"has_extended_profile\":false,\"default_profile\":true,\"default_profile_image\":false,\"following\":true,\"follow_request_sent\":false,\"notifications\":false,\"translator_type\":\"none\"}";
+            JSONObject json = new JSONObject(rawJson);
+            UserJSONImpl user = new UserJSONImpl(json);
+            assertEquals("t4j_news", user.getScreenName());
+            assertEquals("en", user.getLang());
+            assertTrue(user.isGeoEnabled());
+            assertFalse(user.isFollowRequestSent());
+        }
+
+        // user object via GET account/settings:
+        // - has settings values
+        // - without follow_request_sent
+        // - without obsolete values
+        {
+            //language=JSON
+            String rawJson = "{\"id\":72297675,\"id_str\":\"72297675\",\"name\":\"Tw\\u00edtter4J\",\"screen_name\":\"t4j_news\",\"location\":\"timeline\",\"description\":\"Award winning library - Twitter4J\",\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"entities\":{\"url\":{\"urls\":[{\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"expanded_url\":\"http:\\/\\/twitter4j.org\\/\",\"display_url\":\"twitter4j.org\",\"indices\":[0,23]}]},\"description\":{\"urls\":[]}},\"protected\":false,\"followers_count\":1912,\"friends_count\":19,\"listed_count\":137,\"created_at\":\"Mon Sep 07 14:50:12 +0000 2009\",\"favourites_count\":3,\"utc_offset\":null,\"time_zone\":null,\"geo_enabled\":true,\"verified\":false,\"statuses_count\":980,\"lang\":\"en\",\"status\":{\"created_at\":\"Thu Dec 13 14:29:06 +0000 2018\",\"id\":1073223291995734020,\"id_str\":\"1073223291995734020\",\"text\":\"RT @cscheerleader: I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder time do\\u2026\",\"truncated\":false,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"cscheerleader\",\"name\":\"Ria Galanos\",\"id\":1250080500,\"id_str\":\"1250080500\",\"indices\":[3,17]},{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[37,45]}],\"urls\":[]},\"source\":\"\\u003ca href=\\\"http:\\/\\/sites.google.com\\/site\\/yorufukurou\\/\\\" rel=\\\"nofollow\\\"\\u003eYoruFukurou\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"retweeted_status\":{\"created_at\":\"Thu Dec 13 14:23:18 +0000 2018\",\"id\":1073221831715360768,\"id_str\":\"1073221831715360768\",\"text\":\"I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder ti\\u2026 https:\\/\\/t.co\\/5N603Vh6mP\",\"truncated\":true,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[18,26]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/5N603Vh6mP\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/1073221831715360768\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/1\\u2026\",\"indices\":[117,140]}]},\"source\":\"\\u003ca href=\\\"https:\\/\\/about.twitter.com\\/products\\/tweetdeck\\\" rel=\\\"nofollow\\\"\\u003eTweetDeck\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":6,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"contributors_enabled\":false,\"is_translator\":false,\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/708189314073501696\\/jjNlTEQk_normal.jpg\",\"profile_banner_url\":\"https:\\/\\/pbs.twimg.com\\/profile_banners\\/72297675\\/1540491420\",\"default_profile\":true,\"default_profile_image\":false,\"following\":true,\"notifications\":false}";
+            UserJSONImpl user = new UserJSONImpl(new JSONObject(rawJson));
+            assertEquals("t4j_news", user.getScreenName());
+            assertEquals("en", user.getLang());
+            assertTrue(user.isGeoEnabled());
+            assertFalse(user.isFollowRequestSent());
+        }
+
+        // user object via GET friendships/lookup
+        // - without settings values
+        // - has follow_request_sent
+        // - without obsolete values
+        {
+            //language=JSON
+            String rawJson = "{\"id\":72297675,\"id_str\":\"72297675\",\"name\":\"Tw\\u00edtter4J\",\"screen_name\":\"t4j_news\",\"location\":\"timeline\",\"description\":\"Award winning library - Twitter4J\",\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"entities\":{\"url\":{\"urls\":[{\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"expanded_url\":\"http:\\/\\/twitter4j.org\\/\",\"display_url\":\"twitter4j.org\",\"indices\":[0,23]}]},\"description\":{\"urls\":[]}},\"protected\":false,\"followers_count\":1912,\"friends_count\":19,\"listed_count\":137,\"created_at\":\"Mon Sep 07 14:50:12 +0000 2009\",\"favourites_count\":3,\"utc_offset\":null,\"time_zone\":null,\"verified\":false,\"statuses_count\":980,\"status\":{\"created_at\":\"Thu Dec 13 14:29:06 +0000 2018\",\"id\":1073223291995734020,\"id_str\":\"1073223291995734020\",\"text\":\"RT @cscheerleader: I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder time do\\u2026\",\"truncated\":false,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"cscheerleader\",\"name\":\"Ria Galanos\",\"id\":1250080500,\"id_str\":\"1250080500\",\"indices\":[3,17]},{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[37,45]}],\"urls\":[]},\"source\":\"\\u003ca href=\\\"http:\\/\\/sites.google.com\\/site\\/yorufukurou\\/\\\" rel=\\\"nofollow\\\"\\u003eYoruFukurou\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"retweeted_status\":{\"created_at\":\"Thu Dec 13 14:23:18 +0000 2018\",\"id\":1073221831715360768,\"id_str\":\"1073221831715360768\",\"text\":\"I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder ti\\u2026 https:\\/\\/t.co\\/5N603Vh6mP\",\"truncated\":true,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[18,26]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/5N603Vh6mP\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/1073221831715360768\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/1\\u2026\",\"indices\":[117,140]}]},\"source\":\"\\u003ca href=\\\"https:\\/\\/about.twitter.com\\/products\\/tweetdeck\\\" rel=\\\"nofollow\\\"\\u003eTweetDeck\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":6,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"contributors_enabled\":false,\"is_translator\":false,\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/708189314073501696\\/jjNlTEQk_normal.jpg\",\"profile_banner_url\":\"https:\\/\\/pbs.twimg.com\\/profile_banners\\/72297675\\/1540491420\",\"default_profile\":true,\"default_profile_image\":false,\"following\":true,\"follow_request_sent\":false,\"notifications\":false}";
+            UserJSONImpl user = new UserJSONImpl(new JSONObject(rawJson));
+            assertEquals("t4j_news", user.getScreenName());
+            assertNull(user.getLang());
+            assertFalse(user.isGeoEnabled());
+            assertFalse(user.isFollowRequestSent());
+        }
+
+        // user object via the other endpoints
+        // - without settings values
+        // - without follow_request_sent
+        // - without obsolete values
+        {
+            //language=JSON
+            String rawJson = "{\"id\":72297675,\"id_str\":\"72297675\",\"name\":\"Tw\\u00edtter4J\",\"screen_name\":\"t4j_news\",\"location\":\"timeline\",\"description\":\"Award winning library - Twitter4J\",\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"entities\":{\"url\":{\"urls\":[{\"url\":\"https:\\/\\/t.co\\/j1dV74W2db\",\"expanded_url\":\"http:\\/\\/twitter4j.org\\/\",\"display_url\":\"twitter4j.org\",\"indices\":[0,23]}]},\"description\":{\"urls\":[]}},\"protected\":false,\"followers_count\":1912,\"friends_count\":19,\"listed_count\":137,\"created_at\":\"Mon Sep 07 14:50:12 +0000 2009\",\"favourites_count\":3,\"utc_offset\":null,\"time_zone\":null,\"verified\":false,\"statuses_count\":980,\"status\":{\"created_at\":\"Thu Dec 13 14:29:06 +0000 2018\",\"id\":1073223291995734020,\"id_str\":\"1073223291995734020\",\"text\":\"RT @cscheerleader: I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder time do\\u2026\",\"truncated\":false,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"cscheerleader\",\"name\":\"Ria Galanos\",\"id\":1250080500,\"id_str\":\"1250080500\",\"indices\":[3,17]},{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[37,45]}],\"urls\":[]},\"source\":\"\\u003ca href=\\\"http:\\/\\/sites.google.com\\/site\\/yorufukurou\\/\\\" rel=\\\"nofollow\\\"\\u003eYoruFukurou\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"retweeted_status\":{\"created_at\":\"Thu Dec 13 14:23:18 +0000 2018\",\"id\":1073221831715360768,\"id_str\":\"1073221831715360768\",\"text\":\"I appreciate that @twitter is cracking down on spam bots, but the result is that my students are having a harder ti\\u2026 https:\\/\\/t.co\\/5N603Vh6mP\",\"truncated\":true,\"entities\":{\"hashtags\":[],\"symbols\":[],\"user_mentions\":[{\"screen_name\":\"Twitter\",\"name\":\"Twitter\",\"id\":783214,\"id_str\":\"783214\",\"indices\":[18,26]}],\"urls\":[{\"url\":\"https:\\/\\/t.co\\/5N603Vh6mP\",\"expanded_url\":\"https:\\/\\/twitter.com\\/i\\/web\\/status\\/1073221831715360768\",\"display_url\":\"twitter.com\\/i\\/web\\/status\\/1\\u2026\",\"indices\":[117,140]}]},\"source\":\"\\u003ca href=\\\"https:\\/\\/about.twitter.com\\/products\\/tweetdeck\\\" rel=\\\"nofollow\\\"\\u003eTweetDeck\\u003c\\/a\\u003e\",\"in_reply_to_status_id\":null,\"in_reply_to_status_id_str\":null,\"in_reply_to_user_id\":null,\"in_reply_to_user_id_str\":null,\"in_reply_to_screen_name\":null,\"geo\":null,\"coordinates\":null,\"place\":null,\"contributors\":null,\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":6,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"is_quote_status\":false,\"retweet_count\":2,\"favorite_count\":0,\"favorited\":false,\"retweeted\":false,\"lang\":\"en\"},\"contributors_enabled\":false,\"is_translator\":false,\"profile_image_url_https\":\"https:\\/\\/pbs.twimg.com\\/profile_images\\/708189314073501696\\/jjNlTEQk_normal.jpg\",\"profile_banner_url\":\"https:\\/\\/pbs.twimg.com\\/profile_banners\\/72297675\\/1540491420\",\"default_profile\":true,\"default_profile_image\":false,\"following\":true,\"notifications\":false}";
+            UserJSONImpl user = new UserJSONImpl(new JSONObject(rawJson));
+            assertEquals("t4j_news", user.getScreenName());
+            assertNull(user.getLang());
+            assertFalse(user.isGeoEnabled());
+            assertFalse(user.isFollowRequestSent());
+        }
     }
 }
