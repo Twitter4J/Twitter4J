@@ -79,20 +79,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return the profile image url of the user
      */
-    String getProfileImageURL();
-
-    String getBiggerProfileImageURL();
-
-    String getMiniProfileImageURL();
-
-    String getOriginalProfileImageURL();
-
-    /**
-     * @since Twitter4J 4.0.7
-     * @return profile image url
-     */
-    String get400x400ProfileImageURL();
-
     String getProfileImageURLHttps();
 
     String getBiggerProfileImageURLHttps();
@@ -145,18 +131,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     Status getStatus();
 
-    String getProfileBackgroundColor();
-
-    String getProfileTextColor();
-
-    String getProfileLinkColor();
-
-    String getProfileSidebarFillColor();
-
-    String getProfileSidebarBorderColor();
-
-    boolean isProfileUseBackgroundImage();
-
     /**
      * Tests if the user has not altered the theme or background
      *
@@ -180,10 +154,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     int getUtcOffset();
 
     String getTimeZone();
-
-    String getProfileBackgroundImageURL();
-
-    String getProfileBackgroundImageUrlHttps();
 
     /**
      * @since Twitter4J 3.0.0
@@ -238,8 +208,6 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return profile banner 1500x500 URL
      */
     String getProfileBanner1500x500URL();
-
-    boolean isProfileBackgroundTiled();
 
     /**
      * Returns the preferred language of the user

@@ -38,7 +38,6 @@ import java.util.Date;
     private URLEntity[] descriptionURLEntities;
     private URLEntity urlEntity;
     private boolean isContributorsEnabled;
-    private String profileImageUrl;
     private String profileImageUrlHttps;
     private boolean isDefaultProfileImage;
     private String url;
@@ -47,12 +46,6 @@ import java.util.Date;
 
     private Status status;
 
-    private String profileBackgroundColor;
-    private String profileTextColor;
-    private String profileLinkColor;
-    private String profileSidebarFillColor;
-    private String profileSidebarBorderColor;
-    private boolean profileUseBackgroundImage;
     private boolean isDefaultProfile;
     private boolean showAllInlineMedia;
     private int friendsCount;
@@ -60,10 +53,7 @@ import java.util.Date;
     private int favouritesCount;
     private int utcOffset;
     private String timeZone;
-    private String profileBackgroundImageUrl;
-    private String profileBackgroundImageUrlHttps;
     private String profileBannerImageUrl;
-    private boolean profileBackgroundTiled;
     private String lang;
     private int statusesCount;
     private boolean isGeoEnabled;
@@ -119,7 +109,6 @@ import java.util.Date;
             }
 
             isContributorsEnabled = ParseUtil.getBoolean("contributors_enabled", json);
-            profileImageUrl = ParseUtil.getRawString("profile_image_url", json);
             profileImageUrlHttps = ParseUtil.getRawString("profile_image_url_https", json);
             isDefaultProfileImage = ParseUtil.getBoolean("default_profile_image", json);
             url = ParseUtil.getRawString("url", json);
@@ -129,12 +118,6 @@ import java.util.Date;
             translator = ParseUtil.getBoolean("is_translator", json);
             followersCount = ParseUtil.getInt("followers_count", json);
 
-            profileBackgroundColor = ParseUtil.getRawString("profile_background_color", json);
-            profileTextColor = ParseUtil.getRawString("profile_text_color", json);
-            profileLinkColor = ParseUtil.getRawString("profile_link_color", json);
-            profileSidebarFillColor = ParseUtil.getRawString("profile_sidebar_fill_color", json);
-            profileSidebarBorderColor = ParseUtil.getRawString("profile_sidebar_border_color", json);
-            profileUseBackgroundImage = ParseUtil.getBoolean("profile_use_background_image", json);
             isDefaultProfile = ParseUtil.getBoolean("default_profile", json);
             showAllInlineMedia = ParseUtil.getBoolean("show_all_inline_media", json);
             friendsCount = ParseUtil.getInt("friends_count", json);
@@ -142,10 +125,7 @@ import java.util.Date;
             favouritesCount = ParseUtil.getInt("favourites_count", json);
             utcOffset = ParseUtil.getInt("utc_offset", json);
             timeZone = ParseUtil.getRawString("time_zone", json);
-            profileBackgroundImageUrl = ParseUtil.getRawString("profile_background_image_url", json);
-            profileBackgroundImageUrlHttps = ParseUtil.getRawString("profile_background_image_url_https", json);
             profileBannerImageUrl = ParseUtil.getRawString("profile_banner_url", json);
-            profileBackgroundTiled = ParseUtil.getBoolean("profile_background_tile", json);
             lang = ParseUtil.getRawString("lang", json);
             statusesCount = ParseUtil.getInt("statuses_count", json);
             listedCount = ParseUtil.getInt("listed_count", json);
@@ -236,31 +216,6 @@ import java.util.Date;
         return isContributorsEnabled;
     }
 
-    @Override
-    public String getProfileImageURL() {
-        return profileImageUrl;
-    }
-
-    @Override
-    public String getBiggerProfileImageURL() {
-        return toResizedURL(profileImageUrl, "_bigger");
-    }
-
-    @Override
-    public String getMiniProfileImageURL() {
-        return toResizedURL(profileImageUrl, "_mini");
-    }
-
-    @Override
-    public String getOriginalProfileImageURL() {
-        return toResizedURL(profileImageUrl, "");
-    }
-
-    @Override
-    public String get400x400ProfileImageURL() {
-        return toResizedURL(profileImageUrl, "_400x400");
-    }
-
     private String toResizedURL(String originalURL, String sizeSuffix) {
         if (null != originalURL && originalURL.length() >= 1) {
             int index = originalURL.lastIndexOf("_");
@@ -324,36 +279,6 @@ import java.util.Date;
     }
 
     @Override
-    public String getProfileBackgroundColor() {
-        return profileBackgroundColor;
-    }
-
-    @Override
-    public String getProfileTextColor() {
-        return profileTextColor;
-    }
-
-    @Override
-    public String getProfileLinkColor() {
-        return profileLinkColor;
-    }
-
-    @Override
-    public String getProfileSidebarFillColor() {
-        return profileSidebarFillColor;
-    }
-
-    @Override
-    public String getProfileSidebarBorderColor() {
-        return profileSidebarBorderColor;
-    }
-
-    @Override
-    public boolean isProfileUseBackgroundImage() {
-        return profileUseBackgroundImage;
-    }
-
-    @Override
     public boolean isDefaultProfile() {
         return isDefaultProfile;
     }
@@ -395,16 +320,6 @@ import java.util.Date;
     @Override
     public String getTimeZone() {
         return timeZone;
-    }
-
-    @Override
-    public String getProfileBackgroundImageURL() {
-        return profileBackgroundImageUrl;
-    }
-
-    @Override
-    public String getProfileBackgroundImageUrlHttps() {
-        return profileBackgroundImageUrlHttps;
     }
 
     @Override
@@ -450,11 +365,6 @@ import java.util.Date;
     @Override
     public String getProfileBanner1500x500URL() {
         return profileBannerImageUrl != null ? profileBannerImageUrl + "/1500x500" : null;
-    }
-
-    @Override
-    public boolean isProfileBackgroundTiled() {
-        return profileBackgroundTiled;
     }
 
     @Override
@@ -596,19 +506,12 @@ import java.util.Date;
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", isContributorsEnabled=" + isContributorsEnabled +
-                ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", profileImageUrlHttps='" + profileImageUrlHttps + '\'' +
                 ", isDefaultProfileImage=" + isDefaultProfileImage +
                 ", url='" + url + '\'' +
                 ", isProtected=" + isProtected +
                 ", followersCount=" + followersCount +
                 ", status=" + status +
-                ", profileBackgroundColor='" + profileBackgroundColor + '\'' +
-                ", profileTextColor='" + profileTextColor + '\'' +
-                ", profileLinkColor='" + profileLinkColor + '\'' +
-                ", profileSidebarFillColor='" + profileSidebarFillColor + '\'' +
-                ", profileSidebarBorderColor='" + profileSidebarBorderColor + '\'' +
-                ", profileUseBackgroundImage=" + profileUseBackgroundImage +
                 ", isDefaultProfile=" + isDefaultProfile +
                 ", showAllInlineMedia=" + showAllInlineMedia +
                 ", friendsCount=" + friendsCount +
@@ -616,9 +519,6 @@ import java.util.Date;
                 ", favouritesCount=" + favouritesCount +
                 ", utcOffset=" + utcOffset +
                 ", timeZone='" + timeZone + '\'' +
-                ", profileBackgroundImageUrl='" + profileBackgroundImageUrl + '\'' +
-                ", profileBackgroundImageUrlHttps='" + profileBackgroundImageUrlHttps + '\'' +
-                ", profileBackgroundTiled=" + profileBackgroundTiled +
                 ", lang='" + lang + '\'' +
                 ", statusesCount=" + statusesCount +
                 ", isGeoEnabled=" + isGeoEnabled +
