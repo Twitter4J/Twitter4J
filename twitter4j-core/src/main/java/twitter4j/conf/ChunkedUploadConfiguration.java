@@ -25,7 +25,7 @@ import twitter4j.TwitterException;
  * Specification for {@link twitter4j.api.TweetsResources}.uploadMediaChunked
  *
  * @author Hiroaki Takeuchi - takke30 at gmail.com
- * @since Twitter4J 4.1.0-beta4
+ * @since Twitter4J 4.0.7
  */
 public final class ChunkedUploadConfiguration {
 
@@ -104,15 +104,27 @@ public final class ChunkedUploadConfiguration {
 
         private ChunkedUploadConfiguration conf = new ChunkedUploadConfiguration();
 
-        public Builder video() {
+        public Builder tweetVideo() {
             conf.mediaType = "video/mp4";
             conf.mediaCategory = "tweet_video";
             return this;
         }
 
-        public Builder gif() {
+        public Builder tweetGif() {
             conf.mediaType = "video/gif";
             conf.mediaCategory = "tweet_gif";
+            return this;
+        }
+
+        public Builder dmVideo() {
+            conf.mediaType = "video/mp4";
+            conf.mediaCategory = "dm_video";
+            return this;
+        }
+
+        public Builder dmGif() {
+            conf.mediaType = "video/gif";
+            conf.mediaCategory = "dm_gif";
             return this;
         }
 
