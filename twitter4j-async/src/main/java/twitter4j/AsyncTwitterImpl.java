@@ -2835,6 +2835,11 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
+    public synchronized void invalidateOAuthToken() throws TwitterException {
+        twitter.invalidateOAuthToken();
+    }
+
+    @Override
     public synchronized void invalidateOAuth2Token() throws TwitterException {
         twitter.invalidateOAuth2Token();
     }

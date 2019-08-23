@@ -166,4 +166,11 @@ public interface OAuthSupport {
      * @since Twitter4J 2.0.0
      */
     void setOAuthAccessToken(AccessToken accessToken);
+
+    /**
+     * Invalidates the OAuth token
+     *
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     */
+    void invalidateOAuthToken() throws TwitterException;
 }

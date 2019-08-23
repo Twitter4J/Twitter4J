@@ -54,6 +54,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
     private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
     private String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
+    private String oAuthInvalidateTokenURL = "https://api.twitter.com/1.1/oauth/invalidate_token";
     private String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
     private String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
 
@@ -589,6 +590,15 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     protected final void setOAuth2TokenURL(String oAuth2TokenURL) {
         this.oAuth2TokenURL = oAuth2TokenURL;
+    }
+
+    @Override
+    public String getOAuthInvalidateTokenURL() {
+        return oAuthInvalidateTokenURL;
+    }
+
+    protected final void setOAuthInvalidateTokenURL(String oAuthInvalidateTokenURL) {
+        this.oAuthInvalidateTokenURL = oAuthInvalidateTokenURL;
     }
 
     @Override
