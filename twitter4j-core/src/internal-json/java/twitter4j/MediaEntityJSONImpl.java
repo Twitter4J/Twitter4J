@@ -84,7 +84,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             }
 
             if (json.has("ext_alt_text")) {
-                extAltText = json.getString("ext_alt_text");
+                this.extAltText = json.getString("ext_alt_text");
             }
 
         } catch (JSONException jsone) {
