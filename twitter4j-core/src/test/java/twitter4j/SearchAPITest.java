@@ -73,7 +73,7 @@ class SearchAPITest extends TwitterTestBase {
         assertNotNull(tweets.get(0).getCreatedAt());
         assertNotNull(tweets.get(0).getUser(), "user");
         assertTrue(-1 != tweets.get(0).getId());
-        assertNotNull(tweets.get(0).getUser().getProfileImageURL());
+        assertNotNull(tweets.get(0).getUser().getProfileImageURLHttps());
         String source = tweets.get(0).getSource();
         assertTrue(source.contains("<a href=\"") || "web".equals(source) || "API".equals(source));
 
