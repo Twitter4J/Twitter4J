@@ -105,7 +105,7 @@ public class UnwoundJSONImpl implements Unwound {
 
     @Override
     public String toString() {
-        return "URLEntityJSONImpl{" +
+        return "UnwoundJSONImpl{" +
                 "url='" + url + '\'' +
                 ", status=" + status  +
                 ", title='" + title + '\'' +
