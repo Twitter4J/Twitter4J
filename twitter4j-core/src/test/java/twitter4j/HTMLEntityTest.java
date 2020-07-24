@@ -33,7 +33,7 @@ class HTMLEntityTest {
 
         HashtagEntityJSONImpl test = new HashtagEntityJSONImpl(11, 16, "test");
         URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
-                , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
+                , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026", null);
         UserMentionEntityJSONImpl t4j_news = new UserMentionEntityJSONImpl(32, 41, "t4j_news", "t4j_news", 11);
         UserMentionEntityJSONImpl nil = new UserMentionEntityJSONImpl(0, 5, "null", "null", 10);
         MediaEntityJSONImpl media = new MediaEntityJSONImpl(new JSONObject("{\"id\":268294645535096832,\"id_str\":\"268294645535096832\",\"indices\":[70,90],\"media_url\":\"http:\\/\\/pbs.twimg.com\\/media\\/A7ksjwJCQAAyvx5.jpg\",\"media_url_https\":\"https:\\/\\/pbs.twimg.com\\/media\\/A7ksjwJCQAAyvx5.jpg\",\"url\":\"http:\\/\\/t.co\\/d4G7MQ62\",\"display_url\":\"pic.twitter.com\\/d4G7MQ62\",\"expanded_url\":\"http:\\/\\/twitter.com\\/yusuke\\/status\\/268294645526708226\\/photo\\/1\",\"type\":\"photo\",\"sizes\":{\"medium\":{\"w\":600,\"h\":450,\"resize\":\"fit\"},\"thumb\":{\"w\":150,\"h\":150,\"resize\":\"crop\"},\"small\":{\"w\":340,\"h\":255,\"resize\":\"fit\"},\"large\":{\"w\":640,\"h\":480,\"resize\":\"fit\"}}}]}"));
@@ -67,7 +67,7 @@ class HTMLEntityTest {
     @Test
     void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() throws Exception {
         URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
-                , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
+                , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026", null);
 
         String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
         JSONObject json = new JSONObject(rawJSON);
@@ -170,7 +170,7 @@ class HTMLEntityTest {
 		UserMentionEntity[] userMentionEntities =
 				{ new UserMentionEntityJSONImpl(129, 138, "WHO South-East Asia", "WHOSEARO", 1545915336L) };
 		URLEntity[] urlEntities = { new URLEntityJSONImpl(101, 124, "https://t.co/ywbgldKm1A",
-				"http://bit.ly/MeaslesBTNMDV", "bit.ly/MeaslesBTNMDV") };
+				"http://bit.ly/MeaslesBTNMDV", "bit.ly/MeaslesBTNMDV", new UnwoundJSONImpl("https://www.who.int/southeastasia", 200, "WHO South-East Asia | World Health Organization", "Promote health.  Save lives.  Serve the vulnerable.  ")) };
 		HashtagEntityJSONImpl maldivesHashtag = new HashtagEntityJSONImpl(28, 37, "Maldives");
 		HashtagEntityJSONImpl measlesHashtag = new HashtagEntityJSONImpl(51, 59, "measles");
 		HashtagEntity[] hashtagEntities =

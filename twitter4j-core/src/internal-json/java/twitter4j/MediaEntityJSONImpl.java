@@ -134,6 +134,12 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     @Override
+    public Unwound getUnwound() {
+        //unwound does not exist on MediaEntity
+        return null;
+    }
+
+    @Override
     public String getExpandedURL() {
         return expandedURL;
     }

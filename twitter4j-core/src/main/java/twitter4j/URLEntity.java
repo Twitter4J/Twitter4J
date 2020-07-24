@@ -55,6 +55,13 @@ public interface URLEntity extends TweetEntity, java.io.Serializable {
     String getDisplayURL();
 
     /**
+     * Returns the unwound of the URL (only available for paying user)
+     *
+     * @return the unwound of the URL (only available for paying user)
+     */
+    Unwound getUnwound();
+
+    /**
      * Returns the index of the start character of the URL mentioned in the tweet.
      *
      * @return the index of the start character of the URL mentioned in the tweet
