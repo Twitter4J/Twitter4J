@@ -74,7 +74,7 @@ import java.util.Iterator;
             this.asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             this.location = extractLocation(json, storeJSON);
             JSONArray array = json.getJSONArray("trends");
-            this.trendAt = asOf;
+            this.trendAt = ParseUtil.parseTrendsDate(json.getString("created_at"));
             this.trends = jsonArrayToTrendArray(array, storeJSON);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage(), jsone);
