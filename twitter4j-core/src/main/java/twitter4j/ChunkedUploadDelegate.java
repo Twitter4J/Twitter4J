@@ -105,6 +105,11 @@ import twitter4j.conf.ChunkedUploadConfiguration;
             lastProgressPercent = currentProgressPercent;
 
             String state = uploadedMedia.getProcessingState();
+            if (state == null) {
+                // uploaded jpeg or png
+                onProgress("Finalized", mediaLength, mediaLength, state, uploadedMedia.getProgressPercent());
+                return uploadedMedia;
+            }
             if (state.equals("failed")) {
                 if (uploadedMedia.getProcessingErrorMessage() != null) {
                     throw new TwitterException(

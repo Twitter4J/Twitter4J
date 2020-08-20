@@ -116,6 +116,18 @@ public final class ChunkedUploadConfiguration {
             return this;
         }
 
+        public Builder tweetJpeg() {
+            conf.mediaType = "video/jpeg";
+            conf.mediaCategory = "tweet_image";
+            return this;
+        }
+
+        public Builder tweetPng() {
+            conf.mediaType = "video/png";
+            conf.mediaCategory = "tweet_image";
+            return this;
+        }
+
         public Builder dmVideo() {
             conf.mediaType = "video/mp4";
             conf.mediaCategory = "dm_video";
