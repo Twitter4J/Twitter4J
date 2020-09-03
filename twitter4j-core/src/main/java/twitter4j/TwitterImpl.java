@@ -269,9 +269,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         return new UploadedMedia(post(conf.getUploadBaseURL() + "media/upload.json"
                 , new HttpParameter("media", fileName, image)).asJSONObject());
     }
-
+  
+  @Override
+  public UploadedMedia uploadMediaChunked(String fileName, InputStream media) 
+      throws TwitterException {
+      return this.uploadMediaChunked(fileName, media, "mp4", "tweet_video");
+  }
+  
 	@Override
-	public UploadedMedia uploadMediaChunked(String fileName, InputStream media) throws TwitterException {
+	public UploadedMedia uploadMediaChunked(String fileName, InputStream media, String extension,
+      String category) throws TwitterException {
 		//If the InputStream is remote, this is will download it into memory speeding up the chunked upload process 
 		byte[] dataBytes = null;
 		try {
@@ -293,7 +300,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 		
 		try {
 
-			UploadedMedia uploadedMedia = uploadMediaChunkedInit(dataBytes.length);
+			UploadedMedia uploadedMedia = uploadMediaChunkedInit(dataBytes.length, extension, category);
 			//no need to close ByteArrayInputStream
 			ByteArrayInputStream dataInputStream = new ByteArrayInputStream(dataBytes);
 			
@@ -320,12 +327,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 	// twurl -H upload.twitter.com "/1.1/media/upload.json" -d
 	// "command=INIT&media_type=video/mp4&total_bytes=4430752"
     
-    private UploadedMedia uploadMediaChunkedInit(long size) throws TwitterException {
+    private UploadedMedia uploadMediaChunkedInit(long size, String extension, String category) 
+        throws TwitterException {
 		return new UploadedMedia(post(
 				conf.getUploadBaseURL() + "media/upload.json",
 				new HttpParameter[] { new HttpParameter("command", CHUNKED_INIT),
-						new HttpParameter("media_type", "video/mp4"), 
-						new HttpParameter("media_category", "tweet_video"),
+						new HttpParameter("media_type", "video/" + extension), 
+						new HttpParameter("media_category", category),
 						new HttpParameter("total_bytes", size) })
 				.asJSONObject());
 	}
