@@ -93,7 +93,7 @@ public interface TweetsResources {
     Status destroyStatus(long statusId) throws TwitterException;
 
     /**
-     * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
+     * Updates the authenticating user's status. A status update with text identical to the authenticating user's current status will be ignored to prevent duplicates.
      * <br>This method calls https://api.twitter.com/1.1/statuses/update
      *
      * @param status the text of your status update
@@ -105,7 +105,7 @@ public interface TweetsResources {
     Status updateStatus(String status) throws TwitterException;
 
     /**
-     * Updates the authenticating user's status. A status update with text identical to the authenticating user's text identical to the authenticating user's current status will be ignored to prevent duplicates.
+     * Updates the authenticating user's status. A status update with text identical to the authenticating user's current status will be ignored to prevent duplicates.
      * <br>This method calls https://api.twitter.com/1.1/statuses/update or<br>
      * This method calls https://upload.twitter.com/1/statuses/update_with_media
      *
