@@ -4,3 +4,6 @@ jdk:
 cache:
   directories:
   - $HOME/.m2
+
+git:
+  depth: 1
