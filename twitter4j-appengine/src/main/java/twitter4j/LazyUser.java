@@ -142,36 +142,6 @@ final class LazyUser implements twitter4j.User {
         return getTarget().isContributorsEnabled();
     }
 
-
-    /**
-     * Returns the profile image url of the user
-     *
-     * @return the profile image url of the user
-     */
-    public String getProfileImageURL() {
-        return getTarget().getProfileImageURL();
-    }
-
-    @Override
-    public String getBiggerProfileImageURL() {
-        return getTarget().getBiggerProfileImageURL();
-    }
-
-    @Override
-    public String getMiniProfileImageURL() {
-        return getTarget().getMiniProfileImageURL();
-    }
-
-    @Override
-    public String getOriginalProfileImageURL() {
-        return getTarget().getOriginalProfileImageURL();
-    }
-
-    @Override
-    public String get400x400ProfileImageURL() {
-        return getTarget().get400x400ProfileImageURL();
-    }
-
     /**
      * Returns the profile image url of the user, served over SSL
      *
@@ -248,36 +218,6 @@ final class LazyUser implements twitter4j.User {
     }
 
     @Override
-    public String getProfileBackgroundColor() {
-        return getTarget().getProfileBackgroundColor();
-    }
-
-    @Override
-    public String getProfileTextColor() {
-        return getTarget().getProfileTextColor();
-    }
-
-    @Override
-    public String getProfileLinkColor() {
-        return getTarget().getProfileLinkColor();
-    }
-
-    @Override
-    public String getProfileSidebarFillColor() {
-        return getTarget().getProfileSidebarFillColor();
-    }
-
-    @Override
-    public String getProfileSidebarBorderColor() {
-        return getTarget().getProfileSidebarBorderColor();
-    }
-
-    @Override
-    public boolean isProfileUseBackgroundImage() {
-        return getTarget().isProfileUseBackgroundImage();
-    }
-
-    @Override
     public boolean isDefaultProfile() {
         return getTarget().isDefaultProfile();
     }
@@ -310,17 +250,6 @@ final class LazyUser implements twitter4j.User {
     @Override
     public String getTimeZone() {
         return getTarget().getTimeZone();
-    }
-
-    @Override
-    public String getProfileBackgroundImageURL() {
-        return getTarget().getProfileBackgroundImageURL();
-    }
-
-
-    @Override
-    public String getProfileBackgroundImageUrlHttps() {
-        return getTarget().getProfileBackgroundImageUrlHttps();
     }
 
     @Override
@@ -366,10 +295,6 @@ final class LazyUser implements twitter4j.User {
     @Override
     public String getProfileBanner1500x500URL() {
         return getTarget().getProfileBanner1500x500URL();
-    }
-
-    public boolean isProfileBackgroundTiled() {
-        return getTarget().isProfileBackgroundTiled();
     }
 
 

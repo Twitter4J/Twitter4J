@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,10 +36,6 @@ class UsersResourcesTest extends TwitterTestBase {
         assertEquals("yusuke", user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
-        assertNotNull(user.getProfileImageURL());
-        assertNotNull(user.getBiggerProfileImageURL());
-        assertNotNull(user.getMiniProfileImageURL());
-        assertNotNull(user.getOriginalProfileImageURL());
 
         assertNotNull(user.getProfileImageURLHttps());
         assertNotNull(user.getBiggerProfileImageURLHttps());
@@ -64,15 +59,8 @@ class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(user.getCreatedAt());
         // timezone can be
 //        assertNotNull(user.getTimeZone());
-        assertNotNull(user.getProfileBackgroundImageURL());
 
         assertTrue(0 <= user.getStatusesCount());
-        assertNotNull(user.getProfileBackgroundColor());
-        assertNotNull(user.getProfileTextColor());
-        assertNotNull(user.getProfileLinkColor());
-        assertNotNull(user.getProfileSidebarBorderColor());
-        assertNotNull(user.getProfileSidebarFillColor());
-        assertNotNull(user.getProfileTextColor());
 
         assertTrue(1 < user.getFollowersCount());
         if (user.getStatus() != null) {

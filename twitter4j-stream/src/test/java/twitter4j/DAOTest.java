@@ -519,7 +519,6 @@ class DAOTest extends TwitterTestBase {
         assertNotNull(user.getScreenName(), id1.screenName);
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());
-        assertNotNull(user.getProfileImageURL());
         assertNotNull(user.getURL());
         assertFalse(user.isProtected());
 
@@ -528,15 +527,8 @@ class DAOTest extends TwitterTestBase {
         assertTrue(0 <= user.getFriendsCount());
         assertNotNull(user.getCreatedAt());
         assertNotNull(user.getTimeZone());
-        assertNotNull(user.getProfileBackgroundImageURL());
 
         assertTrue(0 <= user.getStatusesCount());
-        assertNotNull(user.getProfileBackgroundColor());
-        assertNotNull(user.getProfileTextColor());
-        assertNotNull(user.getProfileLinkColor());
-        assertNotNull(user.getProfileSidebarBorderColor());
-        assertNotNull(user.getProfileSidebarFillColor());
-        assertNotNull(user.getProfileTextColor());
 
         assertTrue(1 < user.getFollowersCount());
         assertNotNull(user.getStatus().getCreatedAt());
