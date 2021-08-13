@@ -209,4 +209,16 @@ public interface TweetsResources {
      * @since Twitter4J 4.0.7
      */
     UploadedMedia uploadMediaChunked(String fileName, InputStream media) throws TwitterException;
+
+    /**
+     * Creates metadata to the uploaded media image
+     * <br>This method calls https://api.twitter.com/1.1/media/metadata/create.json
+     *
+     * @param mediaId media id
+     * @param altText alt text
+     * @return 200 (success), 4xx (Bad Request), 5xx (server error)
+     * @throws TwitterException when Twitter service or network is unavailable
+     * @since Twitter4J 4.0.x
+     */
+    int createMediaMetadata(long mediaId, String altText) throws TwitterException;
 }

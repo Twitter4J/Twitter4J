@@ -397,7 +397,19 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 		logger.debug("Status response:" + json);
 		return new UploadedMedia(json);
 	}
-    
+
+    @Override
+    public int createMediaMetadata(long mediaId, String altText) throws TwitterException {
+        try {
+            JSONObject json = new JSONObject()
+                    .put("media_id", ""+mediaId)
+                    .put("alt_text", new JSONObject().put("text", altText));
+            return post(conf.getUploadBaseURL() + "media/metadata/create.json", json).getStatusCode();
+        } catch (JSONException e) {
+            throw new TwitterException(e);
+        }
+    }
+
     /* Search Resources */
 
     @Override
