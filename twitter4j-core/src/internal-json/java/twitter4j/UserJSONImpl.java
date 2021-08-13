@@ -72,6 +72,7 @@ import java.util.Date;
     private int listedCount;
     private boolean isFollowRequestSent;
     private String[] withheldInCountries;
+    private Derived derived;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
@@ -161,6 +162,9 @@ import java.util.Date;
                 for (int i = 0 ; i < length; i ++) {
                     withheldInCountries[i] = withheld_in_countries.getString(i);
                 }
+            }
+            if (!json.isNull("derived")) {
+                derived = new DerivedJSONImpl(json.getJSONObject("derived"));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
@@ -511,6 +515,11 @@ import java.util.Date;
         return withheldInCountries;
     }
 
+    @Override
+    public Derived getDerived() {
+        return derived;
+    }
+
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
@@ -627,6 +636,7 @@ import java.util.Date;
                 ", listedCount=" + listedCount +
                 ", isFollowRequestSent=" + isFollowRequestSent +
                 ", withheldInCountries=" + Arrays.toString(withheldInCountries) +
+                ", derived=" + derived +
                 '}';
     }
 

@@ -443,6 +443,11 @@ final class LazyUser implements twitter4j.User {
         return getTarget().getWithheldInCountries();
     }
 
+
+    public Derived getDerived() {
+        return getTarget().getDerived();
+    }
+
     public RateLimitStatus getRateLimitStatus() {
         return getTarget().getRateLimitStatus();
     }

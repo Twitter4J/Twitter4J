@@ -311,4 +311,12 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     String[] getWithheldInCountries();
 
+    /**
+     * Return a list of derived locations
+     *
+     * @return a list of derived locations
+     * @since Twitter4j 4.0.7
+     */
+    Derived getDerived();
+
 }
