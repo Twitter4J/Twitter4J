@@ -292,8 +292,8 @@ class JSONImplFactory implements ObjectFactory {
      * @return url entity
      * @since Twitter4J 2.2.6
      */
-    public static URLEntity createUrlEntity(int start, int end, String url, String expandedURL, String displayURL) {
-        return new URLEntityJSONImpl(start, end, url, expandedURL, displayURL);
+    public static URLEntity createUrlEntity(int start, int end, String url, String expandedURL, String displayURL, Unwound unwound) {
+        return new URLEntityJSONImpl(start, end, url, expandedURL, displayURL, unwound);
     }
 
     @Override

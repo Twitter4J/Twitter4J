@@ -28,6 +28,7 @@ package twitter4j;
     private String url;
     private String expandedURL;
     private String displayURL;
+    private Unwound unwound;
 
     /* package */ QuotedStatusPermalinkJSONImpl(JSONObject json) throws TwitterException {
         super();
@@ -55,6 +56,10 @@ package twitter4j;
             } else {
                 this.displayURL = url;
             }
+
+            if (!json.isNull("unwound")) {
+                this.unwound = new UnwoundJSONImpl(json.getJSONObject("unwound"));
+            }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -81,6 +86,11 @@ package twitter4j;
     }
 
     @Override
+    public Unwound getUnwound() {
+        return unwound;
+    }
+
+    @Override
     public int getStart() {
         return super.getStart();
     }
@@ -99,6 +109,7 @@ package twitter4j;
 
         if (url != null ? !url.equals(that.url) : that.url != null) return false;
         if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null) return false;
+        if (unwound != null ? !unwound.equals(that.unwound) : that.unwound != null) return false;
         return displayURL != null ? displayURL.equals(that.displayURL) : that.displayURL == null;
     }
 
@@ -107,6 +118,7 @@ package twitter4j;
         int result = url != null ? url.hashCode() : 0;
         result = 31 * result + (expandedURL != null ? expandedURL.hashCode() : 0);
         result = 31 * result + (displayURL != null ? displayURL.hashCode() : 0);
+        result = 31 * result + (unwound != null ? unwound.hashCode()  : 0);
         return result;
     }
 
@@ -116,6 +128,7 @@ package twitter4j;
                 "url='" + url + '\'' +
                 ", expandedURL='" + expandedURL + '\'' +
                 ", displayURL='" + displayURL + '\'' +
+                ", unwound=" + unwound +
                 '}';
     }
 }

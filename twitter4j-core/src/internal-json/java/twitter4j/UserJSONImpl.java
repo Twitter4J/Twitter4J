@@ -501,7 +501,7 @@ import java.util.Date;
     public URLEntity getURLEntity() {
         if (urlEntity == null) {
             String plainURL = url == null ? "" : url;
-            urlEntity = new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL);
+            urlEntity = new URLEntityJSONImpl(0, plainURL.length(), plainURL, plainURL, plainURL, null);
         }
         return urlEntity;
     }
