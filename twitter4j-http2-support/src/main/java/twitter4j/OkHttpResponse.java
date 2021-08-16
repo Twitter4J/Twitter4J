@@ -58,12 +58,12 @@ public class OkHttpResponse extends HttpResponse {
 			headerFields.put(name,headers.values(name));
 		}
 		this.headerFields = headerFields;
-
-		is = response.body().byteStream();
-		if(is!=null && "gzip".equals(response.header("Content-Encoding"))){
-			is = new StreamingGZIPInputStream(is);
+		if(response.body() != null) {
+			is = response.body().byteStream();
+			if (is != null && "gzip".equals(response.header("Content-Encoding"))) {
+				is = new StreamingGZIPInputStream(is);
+			}
 		}
-
 		statusCode = response.code();
 	}
 
