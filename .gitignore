@@ -1,18 +1,21 @@
-statuses/*
-target
+~$ } 
+$_
+*
+# - vi_voi_vi=VI<statuses/
+# - VI < target
 /twitter4j.properties
 .DS_Store
-~$*
+~$
 .classpath
 .project
 .settings
-reports/*
+reports/
 atlassian-ide-plugin.xml
-*.iml
-*.ipr
-*.iws
-*.ids
-.idea/*
+.iml
+.ipr
+.iws
+.ids
+.idea/
 /bin
 test.properties
 test0.properties
