@@ -1,0 +1,7 @@
+# - vi_vi_vi=VI<
+<language: java
+<jdk:
+# - vi_vi_vi=VI< oraclejdk8
+<cache:
+  <directories:
+# - vi_vi_vi=VI< ~$_*HOME/.m2
