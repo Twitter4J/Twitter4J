@@ -1,11 +1,11 @@
-#!/bin/sh
-LANG=C
-export LATEST_VERSION=$1
-export DEPLOY=$2
-
-#export HASH=`git log|head -n 1|sed "s/^commit //g"`
-packageZip(){
-
+# - vi_vi_vi=VI< /bin/sh
+<LANG=C
+<export LATEST_VERSION=$1
+<export DEPLOY=$2
+<
+# - vi_vi_vi=VI<export HASH=`git log|head -n 1|sed "s/^commit //g"`
+<packageZip(){
+# - vi_vi_vi=VI<
 DIR=twitter4j-$LATEST_VERSION
 mkdir $DIR
 mkdir $DIR/twitter4j-core
