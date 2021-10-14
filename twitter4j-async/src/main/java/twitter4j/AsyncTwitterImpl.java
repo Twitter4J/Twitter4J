@@ -2814,7 +2814,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
     }
 
     @Override
-    public void setOAuth2Token(OAuth2Token oauth2Token) {
+    public synchronized void setOAuth2Token(OAuth2Token oauth2Token) {
         twitter.setOAuth2Token(oauth2Token);
     }
 

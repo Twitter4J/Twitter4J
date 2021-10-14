@@ -391,7 +391,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
-    public void setOAuth2Token(OAuth2Token oauth2Token) {
+    public synchronized void setOAuth2Token(OAuth2Token oauth2Token) {
         getOAuth2().setOAuth2Token(oauth2Token);
     }
 
