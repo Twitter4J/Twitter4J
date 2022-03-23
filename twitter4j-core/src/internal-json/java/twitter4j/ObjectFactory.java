@@ -51,11 +51,11 @@ interface ObjectFactory extends java.io.Serializable {
 
     IDs createIDs(HttpResponse res) throws TwitterException;
 
-    PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException;
+    PageableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException;
 
     UserList createAUserList(HttpResponse res) throws TwitterException;
 
-    PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException;
+    PageableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException;
 
     ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException;
 

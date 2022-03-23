@@ -158,7 +158,7 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
+    public PageableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
         return UserJSONImpl.createPagableUserList(res, conf);
     }
 
@@ -168,7 +168,7 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
+    public PageableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
         return UserListJSONImpl.createPagableUserListList(res, conf);
     }
 

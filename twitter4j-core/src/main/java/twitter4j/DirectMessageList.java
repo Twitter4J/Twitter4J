@@ -3,7 +3,7 @@ package twitter4j;
 /**
  * List of {@link DirectMessage}
  *
- * like string cursor version of {@link PagableResponseList}
+ * like string cursor version of {@link PageableResponseList}
  *
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  * @since Twitter4J 4.0.7

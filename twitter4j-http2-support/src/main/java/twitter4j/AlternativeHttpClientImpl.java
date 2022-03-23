@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  * @author Yuuto Uehara - muemi.himazin at gmail.com
  * @since Twitter4J 3.0.6
  */
-public class AlternativeHttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
+public class AlternativeHttpClientImpl extends HttpClientResponseBase implements java.io.Serializable {
     private static final long serialVersionUID = 1757413669925424213L;
     private static final Logger logger = Logger.getLogger(AlternativeHttpClientImpl.class);
 
@@ -105,27 +105,9 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("Response: ");
-                    Map<String, List<String>> responseHeaders = res.getResponseHeaderFields();
-                    for (String key : responseHeaders.keySet()) {
-                        List<String> values = responseHeaders.get(key);
-                        for (String value : values) {
-                            if (key != null) {
-                                logger.debug(key + ": " + value);
-                            } else {
-                                logger.debug(value);
-                            }
-                        }
-                    }
+                    logResponseHeaders(res.getResponseHeaderFields());
                 }
-                if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
-                    if (responseCode == ENHANCE_YOUR_CLAIM ||
-                            responseCode == BAD_REQUEST ||
-                            responseCode < INTERNAL_SERVER_ERROR ||
-                            retriedCount == CONF.getHttpRetryCount()) {
-
-                        throw new TwitterException(res.asString(), res);
-                    }
-                } else {
+                if (!isValidaResponseCode(responseCode, retriedCount, res)) {
                     break;
                 }
 
@@ -253,25 +235,7 @@ public class AlternativeHttpClientImpl extends HttpClientBase implements HttpRes
 
             //for proxy
             if (isProxyConfigured()) {
-                if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                        logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
-                    }
-
-                    Authenticator.setDefault(new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication
-                        getPasswordAuthentication() {
-                            if (getRequestorType().equals(RequestorType.PROXY)) {
-                                return new PasswordAuthentication(CONF.getHttpProxyUser(),
-                                        CONF.getHttpProxyPassword().toCharArray());
-                            } else {
-                                return null;
-                            }
-                        }
-                    });
-                }
+                setProxyAuthentication();
                 final Proxy proxy = new Proxy(Proxy.Type.HTTP, InetSocketAddress
                         .createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
                 if (logger.isDebugEnabled()) {

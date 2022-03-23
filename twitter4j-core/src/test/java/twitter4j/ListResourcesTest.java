@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ListResourcesTest extends TwitterTestBase {
 
+    @Disabled
     @Test
     void testListMethods() throws Exception {
         ResponseList<UserList> userLists;
@@ -95,7 +96,7 @@ class ListResourcesTest extends TwitterTestBase {
     @Disabled
     @Test
     void testListMemberMethods() throws Exception {
-        PagableResponseList<UserList> userLists;
+        PageableResponseList<UserList> userLists;
 
         UserList userList;
         userList = prepareListTest();
@@ -112,7 +113,7 @@ class ListResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
 
-        PagableResponseList<User> users = twitter1.getUserListMembers(userList.getId(), -1);
+        PageableResponseList<User> users = twitter1.getUserListMembers(userList.getId(), -1);
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertNull(TwitterObjectFactory.getRawJSON(userList));
@@ -178,7 +179,7 @@ class ListResourcesTest extends TwitterTestBase {
             assertEquals(404, te.getStatusCode());
         }
 
-        PagableResponseList<User> users = twitter1.getUserListMembers(userList.getId(), -1);
+        PageableResponseList<User> users = twitter1.getUserListMembers(userList.getId(), -1);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
 
         // Add user by id
@@ -225,12 +226,12 @@ class ListResourcesTest extends TwitterTestBase {
     @Disabled
     @Test
     void testListSubscribersMethods() throws Exception {
-        PagableResponseList<UserList> userLists;
+        PageableResponseList<UserList> userLists;
         UserList userList;
         userList = prepareListTest();
 
         /*List Subscribers Methods*/
-        PagableResponseList<User> users;
+        PageableResponseList<User> users;
 
         users = twitter1.getUserListSubscribers(twitter1.getId(), userList.getSlug(), -1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
@@ -305,8 +306,9 @@ class ListResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testUserListsOwnerships() throws Exception {
-        PagableResponseList<UserList> lists;
+        PageableResponseList<UserList> lists;
         lists = twitter1.getUserListsOwnerships("yusuke", 3, -1);
         assertTrue(lists.size() > 0);
         lists = twitter1.getUserListsOwnerships(4933401L, 3, -1);

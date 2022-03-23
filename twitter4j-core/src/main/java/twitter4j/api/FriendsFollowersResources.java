@@ -395,7 +395,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    PagableResponseList<User> getFriendsList(long userId, long cursor) throws TwitterException;
+    PageableResponseList<User> getFriendsList(long userId, long cursor) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
@@ -409,7 +409,7 @@ public interface FriendsFollowersResources {
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      */
-    PagableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException;
+    PageableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
@@ -423,7 +423,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    PagableResponseList<User> getFriendsList(String screenName, long cursor) throws TwitterException;
+    PageableResponseList<User> getFriendsList(String screenName, long cursor) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
@@ -438,7 +438,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException;
+    PageableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
@@ -455,8 +455,8 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getFriendsList(long userId, long cursor, int count,
-                                             boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+    PageableResponseList<User> getFriendsList(long userId, long cursor, int count,
+                                              boolean skipStatus, boolean includeUserEntities) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for every user the specified user is following (otherwise known as their "friends").<br>
@@ -473,8 +473,8 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getFriendsList(String screenName, long cursor, int count,
-                                             boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+    PageableResponseList<User> getFriendsList(String screenName, long cursor, int count,
+                                              boolean skipStatus, boolean includeUserEntities) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -488,7 +488,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    PagableResponseList<User> getFollowersList(long userId, long cursor) throws TwitterException;
+    PageableResponseList<User> getFollowersList(long userId, long cursor) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -502,7 +502,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 3.0.2
      */
-    PagableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException;
+    PageableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -517,7 +517,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
-    PagableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException;
+    PageableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -532,7 +532,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 3.0.6
      */
-    PagableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException;
+    PageableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -549,8 +549,8 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getFollowersList(long userId, long cursor, int count,
-                                               boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+    PageableResponseList<User> getFollowersList(long userId, long cursor, int count,
+                                                boolean skipStatus, boolean includeUserEntities) throws TwitterException;
 
     /**
      * Returns a cursored collection of user objects for users following the specified user.<br>
@@ -567,6 +567,6 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getFollowersList(String screenName, long cursor, int count,
-                                               boolean skipStatus, boolean includeUserEntities) throws TwitterException;
+    PageableResponseList<User> getFollowersList(String screenName, long cursor, int count,
+                                                boolean skipStatus, boolean includeUserEntities) throws TwitterException;
 }

@@ -15,11 +15,11 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +32,7 @@ class UsersResourcesTest extends TwitterTestBase {
 
 
     @Test
+    @Disabled
     void testShowUser() throws Exception {
         User user = twitter1.showUser("yusuke");
         assertEquals("yusuke", user.getScreenName());
@@ -156,6 +157,7 @@ class UsersResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testAccountMethods() throws Exception {
         AccountSettings foobar = twitter1.updateAccountSettings(1 /* GLOBAL */, true,
                 "23", "08", "Rome", "en");
@@ -244,6 +246,7 @@ class UsersResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testBlockMethods() throws Exception {
         twitter1.createBlock(twit4jblockID);
         twitter2.createBlock(twit4jblockID);
@@ -262,7 +265,7 @@ class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
 
-        PagableResponseList<User> users = twitter1.getBlocksList();
+        PageableResponseList<User> users = twitter1.getBlocksList();
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertTrue(users.size() >= 1);
@@ -279,6 +282,7 @@ class UsersResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testMuteMethods() throws Exception {
         User user1 = twitter2.createMute(id1.screenName);
         assertNotNull(TwitterObjectFactory.getRawJSON(user1));
@@ -301,7 +305,7 @@ class UsersResourcesTest extends TwitterTestBase {
         }
 
         twitter1.createMute(twit4jblockID);
-        PagableResponseList<User> users = twitter1.getMutesList(-1L);
+        PageableResponseList<User> users = twitter1.getMutesList(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());

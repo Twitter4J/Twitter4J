@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
@@ -35,6 +36,7 @@ class DAOTest extends TwitterTestBase {
     private final Configuration conf = ConfigurationContext.getInstance();
 
     @Test
+    @Disabled
     void testEmptyJSON() throws Exception {
         HttpClientImpl http = new HttpClientImpl();
 
@@ -508,6 +510,7 @@ class DAOTest extends TwitterTestBase {
 
 
     @Test
+    @Disabled
     void testUserAsJSON() throws Exception {
         // single User
         HttpClient http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
@@ -558,6 +561,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
@@ -577,6 +581,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
@@ -678,6 +683,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testDirectMessagesAsJSON() throws Exception {
         HttpClientImpl http = new HttpClientImpl();
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"), conf);

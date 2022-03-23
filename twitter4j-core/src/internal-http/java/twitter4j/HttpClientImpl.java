@@ -28,7 +28,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
+class HttpClientImpl extends HttpClientResponseBase implements java.io.Serializable {
     private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
 
 
@@ -150,29 +150,13 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                     responseCode = con.getResponseCode();
                     if (logger.isDebugEnabled()) {
                         logger.debug("Response: ");
-                        Map<String, List<String>> responseHeaders = con.getHeaderFields();
-                        for (String key : responseHeaders.keySet()) {
-                            List<String> values = responseHeaders.get(key);
-                            for (String value : values) {
-                                if (key != null) {
-                                    logger.debug(key + ": " + value);
-                                } else {
-                                    logger.debug(value);
-                                }
-                            }
-                        }
+                        logResponseHeaders(con.getHeaderFields());
                     }
-                    if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
-                        if (responseCode == ENHANCE_YOUR_CLAIM ||
-                                responseCode == BAD_REQUEST ||
-                                responseCode < INTERNAL_SERVER_ERROR ||
-                                retriedCount == CONF.getHttpRetryCount()) {
-                            throw new TwitterException(res.asString(), res);
-                        }
-                        // will retry if the status code is INTERNAL_SERVER_ERROR
-                    } else {
+
+                    if (!isValidaResponseCode(responseCode, retriedCount, res)) {
                         break;
                     }
+
                 } finally {
                     try {
                         os.close();
@@ -228,25 +212,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
     HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con;
         if (isProxyConfigured()) {
-            if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
-                    logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
-                }
-                Authenticator.setDefault(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication
-                    getPasswordAuthentication() {
-                        //respond only to proxy auth requests
-                        if (getRequestorType().equals(RequestorType.PROXY)) {
-                            return new PasswordAuthentication(CONF.getHttpProxyUser(),
-                                    CONF.getHttpProxyPassword().toCharArray());
-                        } else {
-                            return null;
-                        }
-                    }
-                });
-            }
+            setProxyAuthentication();
             final Proxy proxy = new Proxy(CONF.isHttpProxySocks() ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
                     InetSocketAddress.createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
             if (logger.isDebugEnabled()) {

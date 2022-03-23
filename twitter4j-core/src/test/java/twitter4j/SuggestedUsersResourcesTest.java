@@ -1,5 +1,6 @@
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.0
  */
+@Disabled
 class SuggestedUsersResourcesTest extends TwitterTestBase {
 
     @Test

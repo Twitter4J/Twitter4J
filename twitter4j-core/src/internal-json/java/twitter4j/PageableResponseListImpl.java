@@ -20,18 +20,18 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
-class PagableResponseListImpl<T extends TwitterResponse> extends ResponseListImpl<T> implements PagableResponseList<T> {
+class PageableResponseListImpl<T extends TwitterResponse> extends ResponseListImpl<T> implements PageableResponseList<T> {
     private static final long serialVersionUID = -8603601553967559275L;
     private final long previousCursor;
     private final long nextCursor;
 
-    PagableResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
+    PageableResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
         super(rateLimitStatus, accessLevel);
         previousCursor = 0;
         nextCursor = 0;
     }
 
-    PagableResponseListImpl(int size, JSONObject json, HttpResponse res) {
+    PageableResponseListImpl(int size, JSONObject json, HttpResponse res) {
         super(size, res);
         this.previousCursor = ParseUtil.getLong("previous_cursor", json);
         this.nextCursor = ParseUtil.getLong("next_cursor", json);

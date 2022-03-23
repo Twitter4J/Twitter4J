@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Disabled
 class DirectMessagesResourcesTest extends TwitterTestBase {
     @Test
     void testQuickResponse() throws Exception{

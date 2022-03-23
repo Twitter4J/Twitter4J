@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
+@Disabled
 class MBeansIntegrationTest extends TwitterTestBase {
 
     @Test

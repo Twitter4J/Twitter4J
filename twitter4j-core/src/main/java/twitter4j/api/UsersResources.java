@@ -134,7 +134,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
-    PagableResponseList<User> getBlocksList() throws TwitterException;
+    PageableResponseList<User> getBlocksList() throws TwitterException;
 
     /**
      * Returns a list of user objects that the authenticating user is blocking.
@@ -146,7 +146,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/blocks/blocking">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 2.0.4
      */
-    PagableResponseList<User> getBlocksList(long cursor) throws TwitterException;
+    PageableResponseList<User> getBlocksList(long cursor) throws TwitterException;
 
     /**
      * Returns an array of numeric user ids the authenticating user is blocking.
@@ -229,7 +229,7 @@ public interface UsersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/mutes/users/list">GET blocks/blocking | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    PagableResponseList<User> getMutesList(long cursor) throws TwitterException;
+    PageableResponseList<User> getMutesList(long cursor) throws TwitterException;
 
     /**
      * Returns an array of numeric user ids the authenticating user is muting.

@@ -158,7 +158,7 @@ import java.util.Date;
     }
 
     /*package*/
-    static PagableResponseList<UserList> createPagableUserListList(HttpResponse res, Configuration conf) throws TwitterException {
+    static PageableResponseList<UserList> createPagableUserListList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();
@@ -166,8 +166,8 @@ import java.util.Date;
             JSONObject json = res.asJSONObject();
             JSONArray list = json.getJSONArray("lists");
             int size = list.length();
-            PagableResponseList<UserList> users =
-                    new PagableResponseListImpl<UserList>(size, json, res);
+            PageableResponseList<UserList> users =
+                    new PageableResponseListImpl<UserList>(size, json, res);
             for (int i = 0; i < size; i++) {
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);

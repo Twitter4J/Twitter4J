@@ -459,7 +459,7 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     private User user = null;
     private boolean test;
     private UserList userList;
-    private PagableResponseList<UserList> pagableUserLists;
+    private PageableResponseList<UserList> pagableUserLists;
     private Relationship relationship;
     private DirectMessage message = null;
     private TwitterException te = null;
@@ -657,13 +657,13 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     }
 
     @Override
-    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
+    public void gotUserListMemberships(PageableResponseList<UserList> userLists) {
         this.pagableUserLists = userLists;
         notifyResponse();
     }
 
     @Override
-    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+    public void gotUserListSubscriptions(PageableResponseList<UserList> userLists) {
         this.pagableUserLists = userLists;
         notifyResponse();
     }
@@ -671,7 +671,7 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     /*List Members Methods*/
 
     @Override
-    public void gotUserListMembers(PagableResponseList<User> users) {
+    public void gotUserListMembers(PageableResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
@@ -723,7 +723,7 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     /*List Subscribers Methods*/
 
     @Override
-    public void gotUserListSubscribers(PagableResponseList<User> users) {
+    public void gotUserListSubscribers(PageableResponseList<User> users) {
         this.users = users;
     }
 
@@ -796,13 +796,13 @@ class AsyncTwitterTest extends TwitterTestBase implements TwitterListener {
     }
 
     @Override
-    public void gotFriendsList(PagableResponseList<User> users) {
+    public void gotFriendsList(PageableResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }
 
     @Override
-    public void gotFollowersList(PagableResponseList<User> users) {
+    public void gotFollowersList(PageableResponseList<User> users) {
         this.users = users;
         notifyResponse();
     }

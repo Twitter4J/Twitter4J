@@ -55,11 +55,11 @@ final class AppEngineHttpResponseImpl extends HttpResponse implements HttpRespon
     @Override
     public Map<String, List<String>> getResponseHeaderFields() {
         ensureResponseEvaluated();
-        Map<String, List<String>> ret = new TreeMap<String, List<String>>();
+        Map<String, List<String>> headerListTreeMap = new TreeMap<String, List<String>>();
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            ret.put(entry.getKey(), Arrays.asList(entry.getValue()));
+            headerListTreeMap.put(entry.getKey(), Arrays.asList(entry.getValue()));
         }
-        return ret;
+        return headerListTreeMap;
     }
 
     @Override

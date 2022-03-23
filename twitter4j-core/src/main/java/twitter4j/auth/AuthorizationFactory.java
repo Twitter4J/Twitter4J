@@ -67,4 +67,13 @@ public final class AuthorizationFactory {
         }
         return auth;
     }
+
+    public static OAuthAuthorization getOAuthAuthorizationInstance(Configuration conf, AccessToken accessToken) {
+        if (null == conf.getOAuthConsumerKey() && null == conf.getOAuthConsumerSecret()) {
+            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
+        }
+        OAuthAuthorization oauth = new OAuthAuthorization(conf);
+        oauth.setOAuthAccessToken(accessToken);
+        return oauth;
+    }
 }

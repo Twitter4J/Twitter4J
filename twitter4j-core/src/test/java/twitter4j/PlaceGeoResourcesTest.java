@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PlaceGeoResourcesTest extends TwitterTestBase {
     @Test
+    @Disabled
     void testGeoMethods() throws Exception {
         GeoQuery query;
         ResponseList<Place> places;

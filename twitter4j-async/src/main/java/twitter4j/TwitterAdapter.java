@@ -142,11 +142,11 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotFriendsList(PagableResponseList<User> users) {
+    public void gotFriendsList(PageableResponseList<User> users) {
     }
 
     @Override
-    public void gotFollowersList(PagableResponseList<User> users) {
+    public void gotFollowersList(PageableResponseList<User> users) {
     }
 
     /* Users Resources */
@@ -271,11 +271,11 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotUserListMemberships(PagableResponseList<UserList> userLists) {
+    public void gotUserListMemberships(PageableResponseList<UserList> userLists) {
     }
 
     @Override
-    public void gotUserListSubscribers(PagableResponseList<User> users) {
+    public void gotUserListSubscribers(PageableResponseList<User> users) {
     }
 
     @Override
@@ -319,11 +319,11 @@ public class TwitterAdapter implements TwitterListener {
     }
 
     @Override
-    public void gotUserListSubscriptions(PagableResponseList<UserList> userLists) {
+    public void gotUserListSubscriptions(PageableResponseList<UserList> userLists) {
     }
 
     @Override
-    public void gotUserListMembers(PagableResponseList<User> users) {
+    public void gotUserListMembers(PageableResponseList<User> users) {
     }
 
     /* Saved Searches Resources */

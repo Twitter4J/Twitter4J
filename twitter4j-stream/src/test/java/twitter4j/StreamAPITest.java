@@ -17,6 +17,7 @@
 package twitter4j;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import twitter4j.auth.AccessToken;
 
@@ -60,6 +61,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     final Object lock = new Object();
 
     @Test
+    @Disabled
     void testRawStreamListener() throws Exception {
         TwitterStream twitterStream1 = new TwitterStreamFactory(bestFriend1Conf).getInstance().addListener(new RawStreamListener() {
             @Override
@@ -161,6 +163,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
+    @Disabled
     void testSample() throws Exception {
         TwitterStream twitterStream2 = new TwitterStreamFactory(conf3).getInstance();
         twitterStream2.addListener(this);
@@ -200,6 +203,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
+    @Disabled
     void testFilterTrackPush() throws Exception {
         TwitterStream twitterStream1 = new TwitterStreamFactory(conf2).getInstance()
                 .addListener(this)
@@ -231,6 +235,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
+    @Disabled
     void testFilterIncludesEntities() throws Exception {
         this.ex = null;
 

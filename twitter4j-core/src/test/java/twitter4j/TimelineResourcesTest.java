@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -88,6 +89,7 @@ class TimelineResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testGetMentions() throws Exception {
         Status status = twitter2.updateStatus("@" + id1.screenName + " reply to id1 " + new java.util.Date());
         assertNotNull(TwitterObjectFactory.getRawJSON(status));

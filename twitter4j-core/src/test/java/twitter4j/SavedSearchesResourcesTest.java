@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class SavedSearchesResourcesTest extends TwitterTestBase {
 
     /* Saved Searches Methods */
+    @Disabled
     @Test
     void testSavedSearches() throws Exception {
         List<SavedSearch> list = twitter1.getSavedSearches();

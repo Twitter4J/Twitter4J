@@ -15,6 +15,7 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -61,6 +62,7 @@ class TweetsResourcesTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testStatusMethods() throws Exception {
         String dateStr = new java.util.Date().toString();
         String date = dateStr + "test mytweet @" + id2.screenName + " #twitter4jtest";

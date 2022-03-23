@@ -17,6 +17,7 @@
 package twitter4j.auth;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -67,7 +68,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         } catch (TwitterException e) {
             assertEquals(403, e.getStatusCode());
             assertEquals(220, e.getErrorCode());
-            assertEquals("Your credentials do not allow access to this resource", e.getErrorMessage());
+            assertEquals("Your credentials do not allow access to this resource.", e.getErrorMessage());
         }
     }
 
@@ -131,6 +132,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testInvalidation() throws Exception {
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);

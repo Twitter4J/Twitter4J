@@ -19,7 +19,6 @@ package twitter4j;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.AuthorizationFactory;
-import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
@@ -86,14 +85,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
      * @return an instance
      */
     public TwitterStream getInstance(AccessToken accessToken) {
-        String consumerKey = conf.getOAuthConsumerKey();
-        String consumerSecret = conf.getOAuthConsumerSecret();
-        if (null == consumerKey && null == consumerSecret) {
-            throw new IllegalStateException("Consumer key and Consumer secret not supplied.");
-        }
-        OAuthAuthorization oauth = new OAuthAuthorization(conf);
-        oauth.setOAuthAccessToken(accessToken);
-        return getInstance(conf, oauth);
+        return getInstance(conf, AuthorizationFactory.getOAuthAuthorizationInstance(conf, accessToken));
     }
 
     /**

@@ -17,6 +17,7 @@ package twitter4j;
 
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Disabled
 class GAETwitterTest extends TwitterTestBase {
 
     @BeforeEach

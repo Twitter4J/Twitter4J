@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -43,6 +44,7 @@ class TwitterTest extends TwitterTestBase {
 
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     @Test
+    @Disabled
     void testRateLimitStatus() throws Exception {
         Map<String, RateLimitStatus> rateLimitStatus = twitter1.getRateLimitStatus();
         assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
@@ -96,6 +98,7 @@ class TwitterTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testGetAccessLevel() throws Exception {
         TwitterResponse response;
         response = twitter1.verifyCredentials();

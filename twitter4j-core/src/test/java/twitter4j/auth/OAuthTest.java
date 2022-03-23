@@ -138,6 +138,7 @@ class OAuthTest extends TwitterTestBase {
 
     }
 
+    @Disabled
     @Test
     void testBrowserClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
@@ -294,6 +295,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testXAuth() throws Exception {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey(desktopConsumerKey);

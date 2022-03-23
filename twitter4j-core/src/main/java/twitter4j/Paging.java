@@ -76,11 +76,7 @@ public final class Paging implements java.io.Serializable {
      * @return list of PostParameter
      */
     /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
-        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
+        List<HttpParameter> pagingParams = getPagingParams(supportedParams, perPageParamName);
         if (pagingParams.size() == 0) {
             return NULL_PARAMETER_LIST;
         } else {
@@ -98,16 +94,25 @@ public final class Paging implements java.io.Serializable {
      * @return list of PostParameter
      */
     /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
-        java.util.List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
+        List<HttpParameter> pagingParams = getPagingParams(supportedParams, perPageParamName);
         if (pagingParams.size() == 0) {
             return NULL_PARAMETER_ARRAY;
         } else {
             return pagingParams.toArray(new HttpParameter[pagingParams.size()]);
         }
+    }
+
+    private List<HttpParameter> getPagingParams(char[] supportedParams, String perPageParamName) {
+        List<HttpParameter> pagingParams = new ArrayList<HttpParameter>(supportedParams.length);
+        addSupportedPagingParams(supportedParams, perPageParamName, pagingParams);
+        return pagingParams;
+    }
+
+    private void addSupportedPagingParams(char[] supportedParams, String perPageParamName, List<HttpParameter> pagingParams) {
+        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
+        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
     }
 
     private void addPostParameter(char[] supportedParams, char paramKey

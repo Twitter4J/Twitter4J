@@ -16,6 +16,8 @@
 
 package twitter4j.util;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
@@ -67,6 +69,7 @@ class TimeSpanConverterTest {
         assertTimeSpanString("18 dic 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
+    @Disabled
     @Test
     void testSpanish() throws Exception {
         Locale[] locales = Locale.getAvailableLocales();
@@ -111,6 +114,7 @@ class TimeSpanConverterTest {
         assertTimeSpanString("18 déc. 09", getSpecificLocalDateInMillis(2009, 11, 18));
     }
 
+    @Disabled
     @Test
     void testGerman() throws Exception {
         converter = new TimeSpanConverter(Locale.GERMAN);

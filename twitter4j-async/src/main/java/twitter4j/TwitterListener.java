@@ -86,9 +86,9 @@ public interface TwitterListener {
 
     void gotShowFriendship(Relationship relationship);
 
-    void gotFriendsList(PagableResponseList<User> users);
+    void gotFriendsList(PageableResponseList<User> users);
 
-    void gotFollowersList(PagableResponseList<User> users);
+    void gotFollowersList(PageableResponseList<User> users);
 
     /* Users Resources */
     void gotAccountSettings(AccountSettings settings);
@@ -153,9 +153,9 @@ public interface TwitterListener {
 
     void destroyedUserListMember(UserList userList);
 
-    void gotUserListMemberships(PagableResponseList<UserList> userLists);
+    void gotUserListMemberships(PageableResponseList<UserList> userLists);
 
-    void gotUserListSubscribers(PagableResponseList<User> users);
+    void gotUserListSubscribers(PageableResponseList<User> users);
 
     void subscribedUserList(UserList userList);
 
@@ -177,9 +177,9 @@ public interface TwitterListener {
 
     void gotShowUserList(UserList userList);
 
-    void gotUserListSubscriptions(PagableResponseList<UserList> userLists);
+    void gotUserListSubscriptions(PageableResponseList<UserList> userLists);
 
-    void gotUserListMembers(PagableResponseList<User> users);
+    void gotUserListMembers(PageableResponseList<User> users);
 
     /* Saved Searches Resources */
     void gotSavedSearches(ResponseList<SavedSearch> savedSearches);

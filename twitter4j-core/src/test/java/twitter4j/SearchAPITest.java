@@ -17,6 +17,7 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +53,7 @@ class SearchAPITest extends TwitterTestBase {
     }
 
     @Test
+    @Disabled
     void testSearch() throws Exception {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
