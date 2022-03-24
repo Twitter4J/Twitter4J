@@ -19,23 +19,23 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
-abstract class LazyPageableResponseList<T extends TwitterResponse> extends LazyResponseList<T> implements PageableResponseList<T> {
+abstract class LazyPagableResponseList<T extends TwitterResponse> extends LazyResponseList<T> implements PagableResponseList<T> {
     private static final long serialVersionUID = -3478264948215362741L;
 
     public boolean hasPrevious() {
-        return ((PageableResponseList<T>) getTarget()).hasPrevious();
+        return ((PagableResponseList<T>) getTarget()).hasPrevious();
     }
 
     public long getPreviousCursor() {
-        return ((PageableResponseList<T>) getTarget()).getPreviousCursor();
+        return ((PagableResponseList<T>) getTarget()).getPreviousCursor();
     }
 
     public boolean hasNext() {
-        return ((PageableResponseList<T>) getTarget()).hasNext();
+        return ((PagableResponseList<T>) getTarget()).hasNext();
     }
 
     public long getNextCursor() {
-        return ((PageableResponseList<T>) getTarget()).getNextCursor();
+        return ((PagableResponseList<T>) getTarget()).getNextCursor();
     }
 
 }

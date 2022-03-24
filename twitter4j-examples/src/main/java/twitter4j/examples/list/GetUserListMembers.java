@@ -37,7 +37,7 @@ public final class GetUserListMembers {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             long cursor = -1;
-            PageableResponseList<User> usres;
+            PagableResponseList<User> usres;
             do {
                 usres = twitter.getUserListMembers(Integer.parseInt(args[0]), cursor);
                 for (User list : usres) {

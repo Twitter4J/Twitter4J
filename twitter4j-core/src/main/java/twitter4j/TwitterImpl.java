@@ -711,23 +711,23 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(long userId, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(long userId, long cursor) throws TwitterException {
         return getFriendsList(userId, cursor, 20);
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(long userId, long cursor, int count) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "friends/list.json?user_id=" + userId
                 + "&cursor=" + cursor + "&count=" + count));
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(String screenName, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(String screenName, long cursor) throws TwitterException {
         return getFriendsList(screenName, cursor, 20);
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(String screenName, long cursor, int count) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "friends/list.json",
                 new HttpParameter("screen_name", screenName),
                 new HttpParameter("cursor", cursor),
@@ -735,15 +735,15 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(long userId, long cursor, int count, boolean skipStatus, boolean includeUserEntities) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(long userId, long cursor, int count, boolean skipStatus, boolean includeUserEntities) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "friends/list.json?user_id=" + userId
                 + "&cursor=" + cursor + "&count=" + count
                 + "&skip_status=" + skipStatus + "&include_user_entities=" + includeUserEntities));
     }
 
     @Override
-    public PageableResponseList<User> getFriendsList(String screenName, long cursor, int count,
-                                                     boolean skipStatus, boolean includeUserEntities) throws TwitterException {
+    public PagableResponseList<User> getFriendsList(String screenName, long cursor, int count,
+                                                    boolean skipStatus, boolean includeUserEntities) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "friends/list.json",
                 new HttpParameter("screen_name", screenName),
                 new HttpParameter("cursor", cursor),
@@ -753,23 +753,23 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(long userId, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(long userId, long cursor) throws TwitterException {
         return getFollowersList(userId, cursor, 20);
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(String screenName, long cursor) throws TwitterException {
         return getFollowersList(screenName, cursor, 20);
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(long userId, long cursor, int count) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json?user_id=" + userId
                 + "&cursor=" + cursor + "&count=" + count));
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(String screenName, long cursor, int count) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json",
                 new HttpParameter("screen_name", screenName),
                 new HttpParameter("cursor", cursor),
@@ -777,16 +777,16 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(long userId, long cursor, int count,
-                                                       boolean skipStatus, boolean includeUserEntities) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(long userId, long cursor, int count,
+                                                      boolean skipStatus, boolean includeUserEntities) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json?user_id=" + userId
                 + "&cursor=" + cursor + "&count=" + count
                 + "&skip_status=" + skipStatus + "&include_user_entities=" + includeUserEntities));
     }
 
     @Override
-    public PageableResponseList<User> getFollowersList(String screenName, long cursor, int count,
-                                                       boolean skipStatus, boolean includeUserEntities) throws TwitterException {
+    public PagableResponseList<User> getFollowersList(String screenName, long cursor, int count,
+                                                      boolean skipStatus, boolean includeUserEntities) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "followers/list.json",
                 new HttpParameter("screen_name", screenName),
                 new HttpParameter("cursor", cursor),
@@ -896,13 +896,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getBlocksList() throws
+    public PagableResponseList<User> getBlocksList() throws
             TwitterException {
         return getBlocksList(-1L);
     }
 
     @Override
-    public PageableResponseList<User> getBlocksList(long cursor) throws
+    public PagableResponseList<User> getBlocksList(long cursor) throws
             TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "blocks/list.json?cursor=" + cursor));
     }
@@ -947,7 +947,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
 
     @Override
-    public PageableResponseList<User> getMutesList(long cursor) throws
+    public PagableResponseList<User> getMutesList(long cursor) throws
             TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "mutes/users/list.json?cursor=" + cursor));
     }
@@ -1242,34 +1242,34 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long cursor) throws TwitterException {
         return getUserListMemberships(20, cursor);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(int count, long cursor) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/memberships.json",
           new HttpParameter("cursor", cursor),
           new HttpParameter("count", count)));
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberScreenName, cursor, false);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberScreenName, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return getUserListMemberships(listMemberScreenName, 20, cursor, filterToOwnedLists);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL()
                 + "lists/memberships.json",
           new HttpParameter("screen_name", listMemberScreenName),
@@ -1279,22 +1279,22 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberId, cursor, false);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor) throws TwitterException {
         return getUserListMemberships(listMemberId, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return getUserListMemberships(listMemberId, 20, cursor, filterToOwnedLists);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
+    public PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor, boolean filterToOwnedLists) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL()
                 + "lists/memberships.json",
                 new HttpParameter("user_id", listMemberId),
@@ -1304,17 +1304,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long listId, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long listId, long cursor) throws TwitterException {
         return getUserListSubscribers(listId, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long listId, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor) throws TwitterException {
         return getUserListSubscribers(listId, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json",
           new HttpParameter("list_id", listId),
           new HttpParameter("count", count),
@@ -1323,17 +1323,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long ownerId, String slug, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, long cursor) throws TwitterException {
         return getUserListSubscribers(ownerId, slug, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor) throws TwitterException {
         return getUserListSubscribers(ownerId, slug, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json",
           new HttpParameter("owner_id", ownerId),
           new HttpParameter("slug", slug),
@@ -1343,17 +1343,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, long cursor) throws TwitterException {
         return getUserListSubscribers(ownerScreenName, slug, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListSubscribers(String ownerScreenName, String slug, int count, long cursor) throws TwitterException {
         return getUserListSubscribers(ownerScreenName, slug, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListSubscribers(
+    public PagableResponseList<User> getUserListSubscribers(
             String ownerScreenName, String slug, int count, long cursor, boolean skipStatus)
             throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/subscribers.json",
@@ -1510,18 +1510,18 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long listId
+    public PagableResponseList<User> getUserListMembers(long listId
             , long cursor) throws TwitterException {
         return getUserListMembers(listId, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long listId, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(long listId, int count, long cursor) throws TwitterException {
         return getUserListMembers(listId, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skipStatus) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() + "lists/members.json",
           new HttpParameter("list_id", listId),
           new HttpParameter("count", count),
@@ -1530,17 +1530,17 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor) throws TwitterException {
         return getUserListMembers(ownerId, slug, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor) throws TwitterException {
         return getUserListMembers(ownerId, slug, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() +
                 "lists/members.json",
           new HttpParameter("owner_id", ownerId),
@@ -1551,18 +1551,18 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor) throws TwitterException {
       return getUserListMembers(ownerScreenName, slug, 20, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor) throws TwitterException {
       return getUserListMembers(ownerScreenName, slug, count, cursor, false);
     }
 
     @Override
-    public PageableResponseList<User> getUserListMembers(String ownerScreenName,
-                                                         String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
+    public PagableResponseList<User> getUserListMembers(String ownerScreenName,
+                                                        String slug, int count, long cursor, boolean skipStatus) throws TwitterException {
         return factory.createPagableUserList(get(conf.getRestBaseURL() +
                 "lists/members.json",
                 new HttpParameter("owner_screen_name", ownerScreenName),
@@ -1684,12 +1684,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor) throws TwitterException {
         return getUserListSubscriptions(listSubscriberScreenName, 20, cursor);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json",
                           new HttpParameter("screen_name", listSubscriberScreenName)
                         , new HttpParameter("count", count)
@@ -1697,24 +1697,24 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor) throws TwitterException {
         return getUserListSubscriptions(listSubscriberId, 20, cursor);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/subscriptions.json",
                           new HttpParameter("user_id", listSubscriberId),
                           new HttpParameter("count", count),
                           new HttpParameter("cursor", cursor)));
     }
 
-    public PageableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor) throws TwitterException {
       return getUserListsOwnerships(listOwnerScreenName, 20, cursor);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/ownerships.json",
                 new HttpParameter("screen_name", listOwnerScreenName)
                 , new HttpParameter("count", count)
@@ -1722,12 +1722,12 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor) throws TwitterException {
       return getUserListsOwnerships(listOwnerId, 20, cursor);
     }
 
     @Override
-    public PageableResponseList<UserList> getUserListsOwnerships(long listOwnerId, int count, long cursor) throws TwitterException {
+    public PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, int count, long cursor) throws TwitterException {
         return factory.createPagableUserListList(get(conf.getRestBaseURL() + "lists/ownerships.json",
                 new HttpParameter("user_id", listOwnerId)
                 , new HttpParameter("count", count)

@@ -92,7 +92,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<User> createUserListFromJSONArray(final HttpResponse res) throws TwitterException {
-        return new LazyPageableResponseList<User>() {
+        return new LazyPagableResponseList<User>() {
             private static final long serialVersionUID = -4560012795625599671L;
 
             @Override
@@ -104,7 +104,7 @@ class LazyJSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<User> createUserListFromJSONArray_Users(final HttpResponse res) throws TwitterException {
-        return new LazyPageableResponseList<User>() {
+        return new LazyPagableResponseList<User>() {
             private static final long serialVersionUID = 3138828209116873524L;
 
             @Override
@@ -129,8 +129,8 @@ class LazyJSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public PageableResponseList<User> createPagableUserList(final HttpResponse res) throws TwitterException {
-        return new LazyPageableResponseList<User>() {
+    public PagableResponseList<User> createPagableUserList(final HttpResponse res) throws TwitterException {
+        return new LazyPagableResponseList<User>() {
             private static final long serialVersionUID = 5621780922424425436L;
 
             @Override
@@ -146,12 +146,12 @@ class LazyJSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public PageableResponseList<UserList> createPagableUserListList(final HttpResponse res) throws TwitterException {
-        return new LazyPageableResponseList<UserList>() {
+    public PagableResponseList<UserList> createPagableUserListList(final HttpResponse res) throws TwitterException {
+        return new LazyPagableResponseList<UserList>() {
             private static final long serialVersionUID = -1744513840306430678L;
 
             @Override
-            protected PageableResponseList<UserList> createActualResponseList() throws TwitterException {
+            protected PagableResponseList<UserList> createActualResponseList() throws TwitterException {
                 return UserListJSONImpl.createPagableUserListList(res, conf);
             }
         };

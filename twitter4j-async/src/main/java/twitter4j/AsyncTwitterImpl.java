@@ -823,7 +823,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getFriendsList(userId, cursor);
+                PagableResponseList<User> users = twitter.getFriendsList(userId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsList(users);
@@ -840,7 +840,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(FRIENDS_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getFriendsList(screenName, cursor);
+                PagableResponseList<User> users = twitter.getFriendsList(screenName, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFriendsList(users);
@@ -857,7 +857,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getFollowersList(userId, cursor);
+                PagableResponseList<User> users = twitter.getFollowersList(userId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersList(users);
@@ -874,7 +874,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(FOLLOWERS_LIST, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getFollowersList(screenName, cursor);
+                PagableResponseList<User> users = twitter.getFollowersList(screenName, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotFollowersList(users);
@@ -1737,7 +1737,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<UserList> lists = twitter.getUserListMemberships(cursor);
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
@@ -1764,7 +1764,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberScreenName, cursor, filterToOwnedLists);
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberScreenName, cursor, filterToOwnedLists);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
@@ -1781,7 +1781,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_MEMBERSHIPS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberId, cursor, filterToOwnedLists);
+                PagableResponseList<UserList> lists = twitter.getUserListMemberships(listMemberId, cursor, filterToOwnedLists);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMemberships(lists);
@@ -1798,7 +1798,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getUserListSubscribers(listId, cursor);
+                PagableResponseList<User> users = twitter.getUserListSubscribers(listId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscribers(users);
@@ -1815,7 +1815,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(LIST_SUBSCRIBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getUserListSubscribers(ownerId, slug, cursor);
+                PagableResponseList<User> users = twitter.getUserListSubscribers(ownerId, slug, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscribers(users);
@@ -2037,7 +2037,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getUserListMembers(listId, cursor);
+                PagableResponseList<User> users = twitter.getUserListMembers(listId, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMembers(users);
@@ -2054,7 +2054,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(LIST_MEMBERS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<User> users = twitter.getUserListMembers(ownerId, slug, cursor);
+                PagableResponseList<User> users = twitter.getUserListMembers(ownerId, slug, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListMembers(users);
@@ -2225,7 +2225,7 @@ class AsyncTwitterImpl extends TwitterBaseImpl implements AsyncTwitter {
         getDispatcher().invokeLater(new AsyncTask(USER_LIST_SUBSCRIPTIONS, listeners) {
             @Override
             public void invoke(List<TwitterListener> listeners) throws TwitterException {
-                PageableResponseList<UserList> lists = twitter.getUserListSubscriptions(listOwnerScreenName, cursor);
+                PagableResponseList<UserList> lists = twitter.getUserListSubscriptions(listOwnerScreenName, cursor);
                 for (TwitterListener listener : listeners) {
                     try {
                         listener.gotUserListSubscriptions(lists);

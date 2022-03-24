@@ -37,7 +37,7 @@ public final class GetUserListSubscriptions {
         try {
             Twitter twitter = new TwitterFactory().getInstance();
             long cursor = -1;
-            PageableResponseList<UserList> lists;
+            PagableResponseList<UserList> lists;
             do {
                 lists = twitter.getUserListSubscriptions(args[0], cursor);
                 for (UserList list : lists) {

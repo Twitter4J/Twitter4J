@@ -265,7 +265,7 @@ class UsersResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(user2));
         assertEquals(user2, TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(user2)));
 
-        PageableResponseList<User> users = twitter1.getBlocksList();
+        PagableResponseList<User> users = twitter1.getBlocksList();
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertTrue(users.size() >= 1);
@@ -305,7 +305,7 @@ class UsersResourcesTest extends TwitterTestBase {
         }
 
         twitter1.createMute(twit4jblockID);
-        PageableResponseList<User> users = twitter1.getMutesList(-1L);
+        PagableResponseList<User> users = twitter1.getMutesList(-1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         assertEquals(users.get(0), TwitterObjectFactory.createUser(TwitterObjectFactory.getRawJSON(users.get(0))));
         assertEquals(1, users.size());
