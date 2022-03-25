@@ -28,7 +28,7 @@ import static twitter4j.ParseUtil.getDate;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
+/*package*/ final class StatusJSONImpl extends ExtractCountries implements Status, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
     private static final long serialVersionUID = -6461195536943679985L;
 
@@ -182,14 +182,7 @@ import static twitter4j.ParseUtil.getDate;
                     scopes = new ScopesImpl(placeIds);
                 }
             }
-            if (!json.isNull("withheld_in_countries")){
-                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
-                int length = withheld_in_countries.length();
-                withheldInCountries = new String[length];
-                for (int i = 0 ; i < length; i ++) {
-                    withheldInCountries[i] = withheld_in_countries.getString(i);
-                }
-            }
+            withheldInCountries = getWithHeldInCountries(json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

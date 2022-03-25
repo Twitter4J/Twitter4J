@@ -26,7 +26,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-/*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
+/*package*/ final class UserJSONImpl extends ExtractCountries implements User, java.io.Serializable {
 
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
@@ -154,14 +154,7 @@ import java.util.Date;
                 JSONObject statusJSON = json.getJSONObject("status");
                 status = new StatusJSONImpl(statusJSON);
             }
-            if (!json.isNull("withheld_in_countries")) {
-                JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
-                int length = withheld_in_countries.length();
-                withheldInCountries = new String[length];
-                for (int i = 0 ; i < length; i ++) {
-                    withheldInCountries[i] = withheld_in_countries.getString(i);
-                }
-            }
+            withheldInCountries = getWithHeldInCountries(json);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
         }
