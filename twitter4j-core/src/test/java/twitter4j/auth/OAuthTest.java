@@ -293,37 +293,6 @@ class OAuthTest extends TwitterTestBase {
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com/resource?id=123"));
     }
 
-    @Test
-    void testXAuth() throws Exception {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(desktopConsumerKey);
-        builder.setOAuthConsumerSecret(desktopConsumerSecret);
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
-        try {
-            twitter.getOAuthAccessToken(id1.screenName, id2.password);
-            fail("expecting TwitterException");
-        } catch (TwitterException te) {
-            // id1 doesn't have access to xAuth
-            assertEquals(403, te.getStatusCode());
-        }
-        InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
-        if (null == is) {
-            System.out.println("xauth-test.properties not found. skipping xAuth test.");
-        } else {
-            Properties props = new Properties();
-            props.load(is);
-            Configuration conf = new PropertyConfiguration(props);
-            twitter = new TwitterFactory(conf).getInstance();
-            twitter.getOAuthAccessToken(id1.screenName, id1.password);
-            twitter.updateStatus(new Date() + ": xAuth test.");
-
-            twitter = new TwitterFactory().getInstance();
-            twitter.setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-            twitter.getOAuthAccessToken(id1.screenName, id1.password);
-        }
-
-    }
-
     private void trySerializable(Object obj) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new ByteArrayOutputStream());
         oos.writeObject(obj);
