@@ -62,21 +62,4 @@ public interface PlacesGeoResources {
      * @since Twitter4J 2.1.7
      */
     ResponseList<Place> searchPlaces(GeoQuery query) throws TwitterException;
-
-    /**
-     * Locates places near the given coordinates which are similar in name.
-     * <br>Conceptually you would use this method to get a list of known places to choose from first. Then, if the desired place doesn't exist, make a request to post/geo/place to create a new one.
-     * <br>The token contained in the response is the token needed to be able to create a new place.
-     * <br>This method calls https://api.twitter.com/1.1/geo/similar_places.json
-     *
-     * @param location        The latitude and longitude to search around.
-     * @param name            The name a place is known as.
-     * @param containedWithin optional: the place_id which you would like to restrict the search results to. Setting this value means only places within the given place_id will be found.
-     * @param streetAddress   optional: This parameter searches for places which have this given street address. There are other well-known, and application specific attributes available. Custom attributes are also permitted. Learn more about Place Attributes.
-     * @return places (cities and neighborhoods) that can be attached to a statuses/update
-     * @throws TwitterException when Twitter service or network is unavailable
-     * @since Twitter4J 2.1.7
-     */
-    ResponseList<Place> getSimilarPlaces(GeoLocation location, String name, String containedWithin, String streetAddress) throws TwitterException;
-
 }
