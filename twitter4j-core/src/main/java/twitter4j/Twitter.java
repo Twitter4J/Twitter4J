@@ -33,7 +33,6 @@ public interface Twitter extends java.io.Serializable,
     DirectMessagesResources,
     FriendsFollowersResources,
     UsersResources,
-    SuggestedUsersResources,
     FavoritesResources,
     ListsResources,
     SavedSearchesResources,
@@ -77,12 +76,6 @@ public interface Twitter extends java.io.Serializable,
      * @since Twitter4J 3.0.4
      */
     UsersResources users();
-
-    /**
-     * @return {@link twitter4j.api.SuggestedUsersResources}
-     * @since Twitter4J 3.0.4
-     */
-    SuggestedUsersResources suggestedUsers();
 
     /**
      * @return {@link twitter4j.api.FavoritesResources}

@@ -1061,35 +1061,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 , new HttpParameter("banner", "banner", image));
     }
 
-    /* Suggested Users Resources */
-
-    @Override
-    public ResponseList<User> getUserSuggestions(String categorySlug) throws TwitterException {
-        HttpResponse res;
-        try {
-            res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + ".json");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        return factory.createUserListFromJSONArray_Users(res);
-    }
-
-    @Override
-    public ResponseList<Category> getSuggestedUserCategories() throws TwitterException {
-        return factory.createCategoryList(get(conf.getRestBaseURL() + "users/suggestions.json"));
-    }
-
-    @Override
-    public ResponseList<User> getMemberSuggestions(String categorySlug) throws TwitterException {
-        HttpResponse res;
-        try {
-            res = get(conf.getRestBaseURL() + "users/suggestions/" + URLEncoder.encode(categorySlug, "UTF-8") + "/members.json");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        return factory.createUserListFromJSONArray(res);
-    }
-
     /* Favorites Resources */
 
     @Override
@@ -1869,11 +1840,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public UsersResources users() {
-        return this;
-    }
-
-    @Override
-    public SuggestedUsersResources suggestedUsers() {
         return this;
     }
 
