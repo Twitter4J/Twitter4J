@@ -98,10 +98,8 @@ class TwitterTest extends TwitterTestBase {
     @Test
     void testGetAccessLevel() throws Exception {
         TwitterResponse response;
-        response = twitter1.verifyCredentials();
-        assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
         response = rwPrivateMessage.verifyCredentials();
-        assertEquals(TwitterResponse.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
+        assertEquals(TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
     }
 
     public static Object assertDeserializedFormIsNotEqual(Object obj) throws Exception {

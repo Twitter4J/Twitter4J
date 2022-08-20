@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import static twitter4j.TwitterResponse.AccessLevel.NONE;
+
 /**
  * Super interface of Twitter Response data interfaces which indicates that rate limit status is available.
  *
@@ -29,7 +31,7 @@ package twitter4j;
 
     private static final long serialVersionUID = 7422171124869859808L;
     private transient RateLimitStatus rateLimitStatus = null;
-    private final transient int accessLevel;
+    private final transient AccessLevel accessLevel;
 
     public TwitterResponseImpl() {
         accessLevel = NONE;
@@ -46,7 +48,7 @@ package twitter4j;
     }
 
     @Override
-    public int getAccessLevel() {
+    public AccessLevel getAccessLevel() {
         return accessLevel;
     }
 }

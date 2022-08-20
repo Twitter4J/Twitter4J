@@ -25,7 +25,7 @@ import java.util.ArrayList;
 class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     private static final long serialVersionUID = 9105950888010803544L;
     private transient RateLimitStatus rateLimitStatus = null;
-    private transient int accessLevel;
+    private transient AccessLevel accessLevel;
 
     ResponseListImpl(HttpResponse res) {
         super();
@@ -37,7 +37,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
         init(res);
     }
 
-    ResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
+    ResponseListImpl(RateLimitStatus rateLimitStatus, AccessLevel accessLevel) {
         super();
         this.rateLimitStatus = rateLimitStatus;
         this.accessLevel = accessLevel;
@@ -54,7 +54,7 @@ class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
     }
 
     @Override
-    public int getAccessLevel() {
+    public AccessLevel getAccessLevel() {
         return accessLevel;
     }
 }

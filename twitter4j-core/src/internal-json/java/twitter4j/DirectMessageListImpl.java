@@ -24,7 +24,7 @@ class DirectMessageListImpl extends ResponseListImpl<DirectMessage> implements D
     private static final long serialVersionUID = 8150060768287194508L;
     private final String nextCursor;
 
-    DirectMessageListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
+    DirectMessageListImpl(RateLimitStatus rateLimitStatus, AccessLevel accessLevel) {
         super(rateLimitStatus, accessLevel);
         nextCursor = null;
     }

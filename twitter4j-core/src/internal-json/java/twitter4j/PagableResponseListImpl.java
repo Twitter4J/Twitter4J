@@ -25,7 +25,7 @@ class PagableResponseListImpl<T extends TwitterResponse> extends ResponseListImp
     private final long previousCursor;
     private final long nextCursor;
 
-    PagableResponseListImpl(RateLimitStatus rateLimitStatus, int accessLevel) {
+    PagableResponseListImpl(RateLimitStatus rateLimitStatus, AccessLevel accessLevel) {
         super(rateLimitStatus, accessLevel);
         previousCursor = 0;
         nextCursor = 0;

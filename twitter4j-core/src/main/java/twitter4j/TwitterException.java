@@ -122,7 +122,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     @Override
-    public int getAccessLevel() {
+    public AccessLevel getAccessLevel() {
         return ParseUtil.toAccessLevel(response);
     }
 

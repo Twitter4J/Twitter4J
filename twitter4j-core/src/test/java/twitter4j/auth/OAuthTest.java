@@ -111,7 +111,7 @@ class OAuthTest extends TwitterTestBase {
         AccessToken at1 = twitter.getOAuthAccessToken();
         assertEquals(at, at1);
         TwitterResponse res = twitter.getLanguages();
-        assertEquals(TwitterResponse.READ, res.getAccessLevel());
+        assertEquals(TwitterResponse.AccessLevel.READ, res.getAccessLevel());
     }
 
     @Test
