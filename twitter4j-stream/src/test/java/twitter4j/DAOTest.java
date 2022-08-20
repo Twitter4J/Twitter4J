@@ -690,12 +690,6 @@ class DAOTest extends TwitterTestBase {
         assertDeserializedFormIsEqual(directMessages);
     }
 
-    @Test
-    void testTwitterMethod() throws Exception {
-        assertDeserializedFormIsSingleton(TwitterMethod.CREATE_LIST_MEMBER);
-        assertDeserializedFormIsSingleton(TwitterMethod.BLOCK_LIST);
-    }
-
     /**
      * @param obj the object to be asserted
      * @return the deserialized object

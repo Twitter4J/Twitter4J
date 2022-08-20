@@ -49,33 +49,6 @@ class SpringCompatibilityTest {
         deleteFile("./twitter4j.properties");
     }
 
-    @Test
-    void testFactoryInstantiation() throws Exception {
-        TwitterFactory twitterFactory = (TwitterFactory) beanFactory.getBean("twitterFactory");
-        Twitter twitter = twitterFactory.getInstance();
-        assertTrue(twitter instanceof Twitter);
-
-        AsyncTwitterFactory asyncTwitterFactory = (AsyncTwitterFactory) beanFactory.getBean("asyncTwitterFactory");
-        AsyncTwitter asyncTwitter = asyncTwitterFactory.getInstance();
-        assertTrue(asyncTwitter instanceof AsyncTwitter);
-
-        TwitterStreamFactory twitterStreamFactory = (TwitterStreamFactory) beanFactory.getBean("twitterStreamFactory");
-        TwitterStream twitterStream = twitterStreamFactory.getInstance();
-        assertTrue(twitterStream instanceof TwitterStream);
-    }
-
-    @Test
-    void testTwitterInstantiation() throws Exception {
-        Twitter twitter = (Twitter) beanFactory.getBean("twitter");
-        assertTrue(twitter instanceof Twitter);
-
-        AsyncTwitter asyncTwitter = (AsyncTwitter) beanFactory.getBean("asyncTwitter");
-        assertTrue(asyncTwitter instanceof AsyncTwitter);
-
-        TwitterStream twitterStream = (TwitterStream) beanFactory.getBean("twitterStream");
-        assertTrue(twitterStream instanceof TwitterStream);
-    }
-
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
         file.delete();
