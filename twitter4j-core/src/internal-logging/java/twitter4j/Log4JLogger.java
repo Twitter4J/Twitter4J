@@ -21,9 +21,9 @@ package twitter4j;
  * @since Twitter4J 2.1.1
  */
 final class Log4JLogger extends Logger {
-    private final org.apache.log4j.Logger LOGGER;
+    private final org.apache.logging.log4j.Logger LOGGER;
 
-    Log4JLogger(org.apache.log4j.Logger logger) {
+    Log4JLogger(org.apache.logging.log4j.Logger logger) {
         LOGGER = logger;
     }
 
@@ -39,12 +39,12 @@ final class Log4JLogger extends Logger {
 
     @Override
     public boolean isWarnEnabled() {
-        return LOGGER.isEnabledFor(org.apache.log4j.Level.WARN);
+        return LOGGER.isEnabled(org.apache.logging.log4j.Level.WARN);
     }
 
     @Override
     public boolean isErrorEnabled() {
-        return LOGGER.isEnabledFor(org.apache.log4j.Level.WARN);
+        return LOGGER.isEnabled(org.apache.logging.log4j.Level.WARN);
     }
 
     @Override
