@@ -106,6 +106,7 @@ Shintaro Watanabe <shintaro.watanabe1226@gmail.com> @shin_taro_1226
 Simone Aiello <aiello.simone103 at gmail.com> @saiello103
 Steve Lhomme <slhomme at matroska.org> @robux4
 Steven Liu <steven at twitter.com> @steven
+Thomas Leplus <thomasleplus at users.noreply.github.com> @thomasleplus
 Q.P.Liu <qpliu at yahoo.com>
 Rémy Rakic <remy.rakic at gmail.com> @lqd
 Talal Ahmed <talal at venexel.ca>
