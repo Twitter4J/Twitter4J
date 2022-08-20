@@ -246,11 +246,6 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {
-        return new TwitterAPIConfigurationJSONImpl(res, conf);
-    }
-
-    @Override
     public ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException {
         return LanguageJSONImpl.createLanguageList(res, conf);
     }

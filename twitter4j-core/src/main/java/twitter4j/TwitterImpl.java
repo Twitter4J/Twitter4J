@@ -1844,31 +1844,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     /* Help Resources */
 
     @Override
-    public TwitterAPIConfiguration getAPIConfiguration() throws TwitterException {
-        return factory.createTwitterAPIConfiguration(get(conf.getRestBaseURL() + "help/configuration.json"));
-    }
-
-    @Override
     public ResponseList<Language> getLanguages() throws TwitterException {
         return factory.createLanguageList(get(conf.getRestBaseURL() + "help/languages.json"));
-    }
-
-    @Override
-    public String getPrivacyPolicy() throws TwitterException {
-        try {
-            return get(conf.getRestBaseURL() + "help/privacy.json").asJSONObject().getString("privacy");
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
-    }
-
-    @Override
-    public String getTermsOfService() throws TwitterException {
-        try {
-            return get(conf.getRestBaseURL() + "help/tos.json").asJSONObject().getString("tos");
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
     }
 
     @Override

@@ -35,20 +35,5 @@ class HelpResoursesTest extends TwitterTestBase {
         assertNotNull(language.getCode());
         assertNotNull(language.getName());
         assertNotNull(language.getStatus());
-
-        TwitterAPIConfiguration conf = twitter1.getAPIConfiguration();
-        assertEquals(3145728, conf.getPhotoSizeLimit());
-        assertEquals(24, conf.getCharactersReservedPerMedia());
-        assertEquals(23, conf.getShortURLLength());
-        assertEquals(23, conf.getShortURLLengthHttps());
-        assertEquals(4, conf.getPhotoSizes().size());
-        assertTrue(20 < conf.getNonUsernamePaths().length);
-        assertEquals(1, conf.getMaxMediaPerUpload());
-    }
-
-    @Test
-    void testLegalResources() throws Exception {
-        assertNotNull(twitter1.getTermsOfService());
-        assertNotNull(twitter1.getPrivacyPolicy());
     }
 }
