@@ -50,12 +50,12 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertTrue(0 < statuses.size(), "size");
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertEquals(9737332, statuses.get(0).getUser().getId());
-            statuses = twitter1.getUserTimeline(1000);
-            assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
-            assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
-            assertTrue(0 < statuses.size(), "size");
-            assertEquals(1000, statuses.get(0).getUser().getId());
-
+            try {
+                twitter1.getUserTimeline(1000);
+            }catch(TwitterException te){
+                // id 1000 / @percep2al is now protected
+                assertEquals(401, te.getStatusCode());
+            }
             statuses = twitter1.getUserTimeline(id1.screenName, new Paging().count(10));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
