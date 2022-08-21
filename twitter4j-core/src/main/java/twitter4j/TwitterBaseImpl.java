@@ -18,7 +18,7 @@ package twitter4j;
 
 import twitter4j.auth.*;
 import twitter4j.conf.Configuration;
-import twitter4j.util.function.Consumer;
+import java.util.function.Consumer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

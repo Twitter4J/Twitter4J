@@ -16,7 +16,7 @@
 package twitter4j;
 
 import twitter4j.auth.OAuthSupport;
-import twitter4j.util.function.Consumer;
+import java.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
