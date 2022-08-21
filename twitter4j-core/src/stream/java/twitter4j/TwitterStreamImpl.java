@@ -301,12 +301,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
     }
 
-    private void ensureSiteStreamsListenerIsSet() {
-        if (getSiteStreamsListeners().length == 0 && getRawStreamListeners().length == 0) {
-            throw new IllegalStateException("SiteStreamsListener is not set.");
-        }
-    }
-
     private static int numberOfHandlers = 0;
 
     private synchronized void startHandler(TwitterStreamConsumer handler) {
@@ -416,16 +410,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return rawStreamListeners.toArray(new RawStreamListener[rawStreamListeners.size()]);
     }
 
-    private SiteStreamsListener[] getSiteStreamsListeners() {
-        ArrayList<SiteStreamsListener> siteStreamsListeners = new ArrayList<>();
-        for (StreamListener streamListener : streamListeners) {
-            if (streamListener instanceof SiteStreamsListener) {
-                siteStreamsListeners.add((SiteStreamsListener) streamListener);
-            }
-        }
-        return siteStreamsListeners.toArray(new SiteStreamsListener[siteStreamsListeners.size()]);
-    }
-
     private StatusListener[] getStatusListeners() {
         ArrayList<StatusListener> statusListeners = new ArrayList<>();
         for (StreamListener streamListener : streamListeners) {
@@ -453,7 +437,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private static int count = 0;
 
     enum Mode {
-        user, status, site
+        user, status
     }
 
     abstract class TwitterStreamConsumer extends Thread {
@@ -473,11 +457,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
 
         void updateListeners() {
-            if (mode == Mode.site) {
-                this.streamListeners = getSiteStreamsListeners();
-            } else {
-                this.streamListeners = getStatusListeners();
-            }
+            this.streamListeners = getStatusListeners();
             this.rawStreamListeners = getRawStreamListeners();
         }
 
