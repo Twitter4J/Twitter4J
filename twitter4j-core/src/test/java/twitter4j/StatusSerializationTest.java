@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -44,7 +44,7 @@ class StatusSerializationTest {
         Status status = new StatusJSONImpl(json);
         // confirm the test json actually created some place ids
         String s = status.getScopes().getPlaceIds()[0];
-        assertEquals(true, s.equals("place one"));
+        assertTrue(s.equals("place one"));
         // serialize to outputstream
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -56,7 +56,7 @@ class StatusSerializationTest {
         Status statusTwo = (Status) ois.readObject();
         // confirm the place id is the same
         s = statusTwo.getScopes().getPlaceIds()[0];
-        assertEquals(true, s.equals("place one"));
+        assertTrue(s.equals("place one"));
     }
 
 }

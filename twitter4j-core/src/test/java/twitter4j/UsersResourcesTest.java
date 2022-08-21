@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @since Twitter4J 2.2.4
  */
 class UsersResourcesTest extends TwitterTestBase {
-    private long twit4jblockID = 39771963L;
+    private final long twit4jblockID = 39771963L;
 
 
     @Test

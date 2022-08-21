@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * A data class representing permalink of the quoted status
  *
@@ -24,6 +27,7 @@ package twitter4j;
  */
 /* package */ final class QuotedStatusPermalinkJSONImpl extends EntityIndex implements URLEntity {
 
+    @Serial
     private static final long serialVersionUID = -9029983811168784541L;
     private String url;
     private String expandedURL;
@@ -97,9 +101,9 @@ package twitter4j;
 
         QuotedStatusPermalinkJSONImpl that = (QuotedStatusPermalinkJSONImpl) o;
 
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null) return false;
-        return displayURL != null ? displayURL.equals(that.displayURL) : that.displayURL == null;
+        if (!Objects.equals(url, that.url)) return false;
+        if (!Objects.equals(expandedURL, that.expandedURL)) return false;
+        return Objects.equals(displayURL, that.displayURL);
     }
 
     @Override

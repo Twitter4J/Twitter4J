@@ -20,8 +20,10 @@ import twitter4j.auth.Authorization;
 import twitter4j.auth.AuthorizationFactory;
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static twitter4j.ParseUtil.*;
 
@@ -108,6 +110,7 @@ public class StreamController {
     }
 
     public final class FriendsIDs implements CursorSupport, Serializable {
+        @Serial
         private static final long serialVersionUID = -7393320878760329794L;
         private long[] ids;
         private long previousCursor = -1;
@@ -176,9 +179,7 @@ public class StreamController {
             if (nextCursor != that.nextCursor) return false;
             if (previousCursor != that.previousCursor) return false;
             if (!Arrays.equals(ids, that.ids)) return false;
-            if (user != null ? !user.equals(that.user) : that.user != null) return false;
-
-            return true;
+            return Objects.equals(user, that.user);
         }
 
         @Override
@@ -206,6 +207,7 @@ public class StreamController {
     }
 
     public final class User implements Serializable {
+        @Serial
         private static final long serialVersionUID = -8741743249755418730L;
         private final long id;
         private final String name;
@@ -238,9 +240,7 @@ public class StreamController {
 
             if (dm != user.dm) return false;
             if (id != user.id) return false;
-            if (name != null ? !name.equals(user.name) : user.name != null) return false;
-
-            return true;
+            return Objects.equals(name, user.name);
         }
 
         @Override

@@ -23,6 +23,7 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
+import java.io.Serial;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -38,6 +39,7 @@ public class TwitterFactory implements java.io.Serializable {
     /*AsyncTwitterFactory and TWitterStream will access this field*/
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
     private static final Twitter SINGLETON;
+    @Serial
     private static final long serialVersionUID = -563983536986910054L;
     private final Configuration conf;
 

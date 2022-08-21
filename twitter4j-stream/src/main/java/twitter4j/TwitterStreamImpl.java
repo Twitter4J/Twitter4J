@@ -17,10 +17,12 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
+
+import java.io.Serial;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  * @since Twitter4J 2.0.4
  */
 class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
+    @Serial
     private static final long serialVersionUID = 5621090317737561048L;
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
@@ -241,7 +244,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return TwitterStreamImpl.dispatcher;
     }
 
-    private static transient volatile Dispatcher dispatcher;
+    private static volatile Dispatcher dispatcher;
 
 
     @Override
@@ -470,13 +473,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         }
 
         void updateListeners() {
-            switch (mode) {
-                case site:
-                    this.streamListeners = getSiteStreamsListeners();
-                    break;
-                default:
-                    this.streamListeners = getStatusListeners();
-                    break;
+            if (mode == Mode.site) {
+                this.streamListeners = getSiteStreamsListeners();
+            } else {
+                this.streamListeners = getStatusListeners();
             }
             this.rawStreamListeners = getRawStreamListeners();
         }
@@ -640,13 +640,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
         TwitterStreamImpl that = (TwitterStreamImpl) o;
 
-        if (handler != null ? !handler.equals(that.handler) : that.handler != null) return false;
-        if (http != null ? !http.equals(that.http) : that.http != null) return false;
+        if (!Objects.equals(handler, that.handler)) return false;
+        if (!Objects.equals(http, that.http)) return false;
         if (!lifeCycleListeners.equals(that.lifeCycleListeners))
             return false;
-        if (stallWarningsGetParam != null ? !stallWarningsGetParam.equals(that.stallWarningsGetParam) : that.stallWarningsGetParam != null)
+        if (!Objects.equals(stallWarningsGetParam, that.stallWarningsGetParam))
             return false;
-        if (stallWarningsParam != null ? !stallWarningsParam.equals(that.stallWarningsParam) : that.stallWarningsParam != null)
+        if (!Objects.equals(stallWarningsParam, that.stallWarningsParam))
             return false;
         return streamListeners.equals(that.streamListeners);
     }

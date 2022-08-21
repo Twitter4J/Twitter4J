@@ -21,8 +21,9 @@ import twitter4j.conf.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
+import java.io.Serial;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -32,9 +33,10 @@ import java.util.*;
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
 public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
+    @Serial
     private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
-    private transient static HttpClient http;
+    private static HttpClient http;
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
@@ -222,23 +224,20 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
             String[] queryStrs = url.substring(queryStart + 1).split("&");
-            try {
-                for (String query : queryStrs) {
-                    String[] split = query.split("=");
-                    if (split.length == 2) {
-                        signatureBaseParams.add(
-                                new HttpParameter(URLDecoder.decode(split[0],
-                                        "UTF-8"), URLDecoder.decode(split[1],
-                                        "UTF-8"))
-                        );
-                    } else {
-                        signatureBaseParams.add(
-                                new HttpParameter(URLDecoder.decode(split[0],
-                                        "UTF-8"), "")
-                        );
-                    }
+            for (String query : queryStrs) {
+                String[] split = query.split("=");
+                if (split.length == 2) {
+                    signatureBaseParams.add(
+                            new HttpParameter(URLDecoder.decode(split[0],
+                                    StandardCharsets.UTF_8), URLDecoder.decode(split[1],
+                                    StandardCharsets.UTF_8))
+                    );
+                } else {
+                    signatureBaseParams.add(
+                            new HttpParameter(URLDecoder.decode(split[0],
+                                    StandardCharsets.UTF_8), "")
+                    );
                 }
-            } catch (UnsupportedEncodingException ignore) {
             }
 
         }
@@ -450,14 +449,11 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
         OAuthAuthorization that = (OAuthAuthorization) o;
 
-        if (consumerKey != null ? !consumerKey.equals(that.consumerKey) : that.consumerKey != null)
+        if (!Objects.equals(consumerKey, that.consumerKey))
             return false;
-        if (consumerSecret != null ? !consumerSecret.equals(that.consumerSecret) : that.consumerSecret != null)
+        if (!Objects.equals(consumerSecret, that.consumerSecret))
             return false;
-        if (oauthToken != null ? !oauthToken.equals(that.oauthToken) : that.oauthToken != null)
-            return false;
-
-        return true;
+        return Objects.equals(oauthToken, that.oauthToken);
     }
 
     @Override
@@ -472,7 +468,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     public String toString() {
         return "OAuthAuthorization{" +
                 "consumerKey='" + consumerKey + '\'' +
-                ", consumerSecret='******************************************\'" +
+                ", consumerSecret='******************************************'" +
                 ", oauthToken=" + oauthToken +
                 '}';
     }

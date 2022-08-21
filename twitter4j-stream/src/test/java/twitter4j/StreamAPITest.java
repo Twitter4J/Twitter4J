@@ -93,7 +93,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         } catch (IllegalStateException ignored) {
         }
         try {
-            twitterStream.filter(new FilterQuery().track(new String[]{"twitter"}));
+            twitterStream.filter(new FilterQuery().track("twitter"));
             fail("expecting IllegalStateException");
         } catch (IllegalStateException ignored) {
         }
@@ -125,7 +125,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         StatusStream stream = new StatusStreamImpl(new DispatcherFactory().getInstance(), is, conf1);
         stream.next(this);
         waitForNotification();
-        assertEquals(6832057002l, deletionNotice.getStatusId());
+        assertEquals(6832057002L, deletionNotice.getStatusId());
         assertEquals(18378841, deletionNotice.getUserId());
         stream.next(this);
         waitForNotification();
@@ -142,7 +142,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         stream.next(this);
         waitForNotification();
         assertEquals(14090452, userId);
-        assertEquals(23260136625l, upToStatusId);
+        assertEquals(23260136625L, upToStatusId);
         try {
             stream.next(this);
             waitForNotification();
@@ -217,7 +217,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || status.getSource().contains("<a href=\""));
         this.ex = null;
-        twitterStream1.filter(new FilterQuery(0, null).track(new String[]{"twitter4j java", "ipad"}));
+        twitterStream1.filter(new FilterQuery(0, null).track("twitter4j java", "ipad"));
         waitForStatus();
         assertNull(ex);
 

@@ -60,7 +60,7 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertTrue(0 < statuses.size(), "size");
-            statuses = twitter1.getUserTimeline(id1.screenName, new Paging(999383469l));
+            statuses = twitter1.getUserTimeline(id1.screenName, new Paging(999383469L));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertTrue(0 < statuses.size(), "size");
@@ -69,11 +69,11 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertEquals(400, te.getStatusCode());
         }
 
-        statuses = twitter1.getUserTimeline(new Paging(999383469l));
+        statuses = twitter1.getUserTimeline(new Paging(999383469L));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(0 < statuses.size(), "size");
-        statuses = twitter1.getUserTimeline(new Paging(999383469l).count(15));
+        statuses = twitter1.getUserTimeline(new Paging(999383469L).count(15));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertTrue(0 < statuses.size(), "size");
@@ -106,11 +106,11 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue(statuses.size() > 0);
-            statuses = twitter1.getMentionsTimeline(new Paging(1, 1l));
+            statuses = twitter1.getMentionsTimeline(new Paging(1, 1L));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue(statuses.size() > 0);
-            statuses = twitter1.getMentionsTimeline(new Paging(1l));
+            statuses = twitter1.getMentionsTimeline(new Paging(1L));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue(statuses.size() > 0);

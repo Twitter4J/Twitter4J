@@ -112,7 +112,7 @@ class TwitterTest extends TwitterTestBase {
         Object that = ois.readObject();
         byteInputStream.close();
         ois.close();
-        assertFalse(obj.equals(that));
+        assertNotEquals(obj, that);
         return that;
     }
 }

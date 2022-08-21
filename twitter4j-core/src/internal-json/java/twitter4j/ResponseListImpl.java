@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +24,7 @@ import java.util.ArrayList;
  * @since Twitter4J 2.1.3
  */
 class ResponseListImpl<T> extends ArrayList<T> implements ResponseList<T> {
+    @Serial
     private static final long serialVersionUID = 9105950888010803544L;
     private transient RateLimitStatus rateLimitStatus = null;
     private transient AccessLevel accessLevel;

@@ -25,9 +25,9 @@ import java.util.Map;
  * @see APIStatisticsOpenMBean for a dynamic version of this mbean with tabular representation
  */
 public interface APIStatisticsMBean extends InvocationStatistics {
-    public Map<String, String> getMethodLevelSummariesAsString();
+    Map<String, String> getMethodLevelSummariesAsString();
 
-    public String getMethodLevelSummary(String methodName);
+    String getMethodLevelSummary(String methodName);
 
-    public Iterable<? extends InvocationStatistics> getInvocationStatistics();
+    Iterable<? extends InvocationStatistics> getInvocationStatistics();
 }

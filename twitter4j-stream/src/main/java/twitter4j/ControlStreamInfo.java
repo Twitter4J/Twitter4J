@@ -17,8 +17,10 @@
 
 package twitter4j;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 
 import static twitter4j.ParseUtil.getBoolean;
 import static twitter4j.ParseUtil.getRawString;
@@ -28,6 +30,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 2.2.6
  */
 public final class ControlStreamInfo implements Serializable {
+    @Serial
     private static final long serialVersionUID = 5182091913786509723L;
     private final StreamController.User[] users;
     private final boolean includeFollowingsActivity;
@@ -84,11 +87,9 @@ public final class ControlStreamInfo implements Serializable {
 
         if (includeFollowingsActivity != that.includeFollowingsActivity) return false;
         if (includeUserChanges != that.includeUserChanges) return false;
-        if (replies != null ? !replies.equals(that.replies) : that.replies != null) return false;
+        if (!Objects.equals(replies, that.replies)) return false;
         if (!Arrays.equals(users, that.users)) return false;
-        if (with != null ? !with.equals(that.with) : that.with != null) return false;
-
-        return true;
+        return Objects.equals(with, that.with);
     }
 
     @Override

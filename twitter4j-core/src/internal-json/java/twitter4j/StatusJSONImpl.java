@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -30,6 +31,7 @@ import static twitter4j.ParseUtil.getDate;
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
     private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
+    @Serial
     private static final long serialVersionUID = -6461195536943679985L;
 
     private Date createdAt;

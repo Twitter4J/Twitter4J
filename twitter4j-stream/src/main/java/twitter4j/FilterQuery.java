@@ -16,14 +16,17 @@
 
 package twitter4j;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
 public final class FilterQuery implements java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = -142808200594318258L;
     private int count;
     private long[] follow;
@@ -241,10 +244,7 @@ public final class FilterQuery implements java.io.Serializable {
         if (!Arrays.equals(follow, that.follow)) return false;
         if (!Arrays.equals(track, that.track)) return false;
         if (!Arrays.equals(language, that.language)) return false;
-        if (!(filterLevel == null ? that.filterLevel == null :
-            filterLevel.equals(that.filterLevel))) return false;
-
-        return true;
+        return Objects.equals(filterLevel, that.filterLevel);
     }
 
     @Override

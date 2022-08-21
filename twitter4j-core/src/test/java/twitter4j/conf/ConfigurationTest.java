@@ -83,7 +83,7 @@ public class ConfigurationTest {
 
         System.getProperties().remove("twitter4j.http.proxyHost");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyHost());
+        assertNull(conf.getHttpClientConfiguration().getHttpProxyHost());
 
         System.setProperty("twitter4j.http.proxyHost", override);
         conf = new PropertyConfiguration();
@@ -102,7 +102,7 @@ public class ConfigurationTest {
 
         System.getProperties().remove("twitter4j.http.proxyUser");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyUser());
+        assertNull(conf.getHttpClientConfiguration().getHttpProxyUser());
 
         System.setProperty("twitter4j.http.proxyUser", override);
         conf = new PropertyConfiguration();
@@ -112,7 +112,7 @@ public class ConfigurationTest {
 
         System.getProperties().remove("twitter4j.http.proxyPassword");
         conf = new PropertyConfiguration();
-        assertEquals(null, conf.getHttpClientConfiguration().getHttpProxyPassword());
+        assertNull(conf.getHttpClientConfiguration().getHttpProxyPassword());
 
         System.setProperty("twitter4j.http.proxyPassword", override);
         conf = new PropertyConfiguration();
@@ -265,31 +265,31 @@ public class ConfigurationTest {
 
         Configuration t = (Configuration) serializeDeserialize(conf);
 
-        assertEquals(conf, (Configuration) serializeDeserialize(conf));
+        assertEquals(conf, serializeDeserialize(conf));
 
-        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
         builder.setOAuthConsumerKey("key");
         builder.setOAuthConsumerSecret("secret");
         conf = builder.build();
-        assertTrue(0 == conf.getRestBaseURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAuthorizationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAuthorizationURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         RequestToken rt = new RequestToken("key", "secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
-        assertTrue(0 == rt.getAuthenticationURL().indexOf("https://"));
-        assertTrue(0 == rt.getAuthorizationURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertTrue(0 == conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, rt.getAuthenticationURL().indexOf("https://"));
+        assertEquals(0, rt.getAuthorizationURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
+        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         // disable SSL
         writeFile("./twitter4j.properties", "twitter4j.restBaseURL=http://somewhere.com/"

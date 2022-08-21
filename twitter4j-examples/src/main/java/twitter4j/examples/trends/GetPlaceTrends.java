@@ -22,7 +22,7 @@ public final class GetPlaceTrends {
             System.out.println("Showing trends for " + trends.getLocation().getName());
 
             for (Trend trend : trends.getTrends()) {
-                System.out.println(String.format("%s (tweet_volume: %d)", trend.getName(), trend.getTweetVolume()));
+                System.out.printf("%s (tweet_volume: %d)%n", trend.getName(), trend.getTweetVolume());
             }
 
             System.out.println("done.");

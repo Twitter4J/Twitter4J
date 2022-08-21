@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * A data class representing one single URL entity.
  *
@@ -24,6 +27,7 @@ package twitter4j;
  */
 /* package */ final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
+    @Serial
     private static final long serialVersionUID = 7333552738058031524L;
     private String url;
     private String expandedURL;
@@ -115,11 +119,9 @@ package twitter4j;
 
         URLEntityJSONImpl that = (URLEntityJSONImpl) o;
 
-        if (displayURL != null ? !displayURL.equals(that.displayURL) : that.displayURL != null) return false;
-        if (expandedURL != null ? !expandedURL.equals(that.expandedURL) : that.expandedURL != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-
-        return true;
+        if (!Objects.equals(displayURL, that.displayURL)) return false;
+        if (!Objects.equals(expandedURL, that.expandedURL)) return false;
+        return Objects.equals(url, that.url);
     }
 
     @Override

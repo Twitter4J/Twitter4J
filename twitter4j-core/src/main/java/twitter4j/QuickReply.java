@@ -15,7 +15,11 @@
  */
 package twitter4j;
 
+import java.io.Serial;
+import java.util.Objects;
+
 public final class QuickReply implements java.io.Serializable{
+    @Serial
     private static final long serialVersionUID = 2928983476392757806L;
     private final String label;
     private final String description;
@@ -51,9 +55,9 @@ public final class QuickReply implements java.io.Serializable{
 
         QuickReply that = (QuickReply) o;
 
-        if (label != null ? !label.equals(that.label) : that.label != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        return metadata != null ? metadata.equals(that.metadata) : that.metadata == null;
+        if (!Objects.equals(label, that.label)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        return Objects.equals(metadata, that.metadata);
     }
 
     @Override

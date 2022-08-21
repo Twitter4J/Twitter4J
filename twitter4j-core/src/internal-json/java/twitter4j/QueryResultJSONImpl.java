@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +29,15 @@ import java.util.List;
  */
 /*package*/ final class QueryResultJSONImpl extends TwitterResponseImpl implements QueryResult, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5359566235429947156L;
-    private long sinceId;
+    private final long sinceId;
     private long maxId;
     private String refreshUrl;
-    private int count;
+    private final int count;
     private double completedIn;
     private String query;
-    private List<Status> tweets;
+    private final List<Status> tweets;
     private String nextResults;
 
     /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
@@ -61,7 +63,7 @@ import java.util.List;
                 tweets.add(new StatusJSONImpl(tweet, conf));
             }
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + json, jsone);
         }
     }
 
@@ -135,10 +137,7 @@ import java.util.List;
         if (!query.equals(that.getQuery())) return false;
         if (refreshUrl != null ? !refreshUrl.equals(that.getRefreshURL()) : that.getRefreshURL() != null)
             return false;
-        if (tweets != null ? !tweets.equals(that.getTweets()) : that.getTweets() != null)
-            return false;
-
-        return true;
+        return tweets != null ? tweets.equals(that.getTweets()) : that.getTweets() == null;
     }
 
     @Override

@@ -15,16 +15,19 @@
  */
 package twitter4j;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.2
  */
 public final class OEmbedRequest implements Serializable {
+    @Serial
     private static final long serialVersionUID = 7454130135274547901L;
     private final long statusId;
     private final String url;
@@ -184,13 +187,11 @@ public final class OEmbedRequest implements Serializable {
         if (omitScript != that.omitScript) return false;
         if (statusId != that.statusId) return false;
         if (align != that.align) return false;
-        if (lang != null ? !lang.equals(that.lang) : that.lang != null) return false;
+        if (!Objects.equals(lang, that.lang)) return false;
         if (!Arrays.equals(related, that.related)) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
+        if (!Objects.equals(url, that.url)) return false;
         if (widgetType != that.widgetType) return false;
-        if (hideTweet != that.hideTweet) return false;
-
-        return true;
+        return hideTweet == that.hideTweet;
     }
 
     @Override

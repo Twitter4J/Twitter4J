@@ -29,7 +29,7 @@ public class TwitterStreamLambda {
     public static void main(String... args) {
         // Twitter4j 4.0.4+
         TwitterStreamFactory.getSingleton()
-                .onStatus(e -> System.out.println(String.format("@%s %s", e.getUser().getScreenName(), e.getText())))
+                .onStatus(e -> System.out.printf("@%s %s%n", e.getUser().getScreenName(), e.getText()))
                 .onException(e -> e.printStackTrace())
                 .filter("twitter4j", "#twitter4j");
 
@@ -49,6 +49,6 @@ public class TwitterStreamLambda {
                 ex.printStackTrace();
             }
         });
-        stream.filter(new FilterQuery(new String[]{"twitter4j", "#twitter4j"}));
+        stream.filter(new FilterQuery("twitter4j", "#twitter4j"));
     }
 }

@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import java.io.Serial;
+
 import static twitter4j.TwitterResponse.AccessLevel.NONE;
 
 /**
@@ -29,6 +31,7 @@ import static twitter4j.TwitterResponse.AccessLevel.NONE;
  */
 /*package*/ abstract class TwitterResponseImpl implements TwitterResponse, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7422171124869859808L;
     private transient RateLimitStatus rateLimitStatus = null;
     private final transient AccessLevel accessLevel;

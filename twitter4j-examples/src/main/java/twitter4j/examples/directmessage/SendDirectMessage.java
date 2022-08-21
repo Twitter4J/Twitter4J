@@ -39,7 +39,7 @@ public final class SendDirectMessage {
         try {
             DirectMessage message = twitter.sendDirectMessage(Long.parseLong(args[0]), args[1]);
             System.out.println("Direct message successfully sent to " + message.getId());
-            System.out.println(" details:" + message.toString());
+            System.out.println(" details:" + message);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

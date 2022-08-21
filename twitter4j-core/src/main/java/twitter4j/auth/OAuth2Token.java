@@ -21,25 +21,25 @@ import twitter4j.JSONException;
 import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 
-import java.io.UnsupportedEncodingException;
+import java.io.Serial;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 
 public class OAuth2Token implements java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = -8985359441959903216L;
-    private String tokenType;
+    private final String tokenType;
 
     private String accessToken;
 
     OAuth2Token(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         tokenType = getRawString("token_type", json);
-        try {
-            accessToken = URLDecoder.decode(getRawString("access_token", json), "UTF-8");
-        } catch (UnsupportedEncodingException ignore) {
-        }
+        accessToken = URLDecoder.decode(getRawString("access_token", json), StandardCharsets.UTF_8);
     }
 
     public OAuth2Token(String tokenType, String accessToken) {
@@ -57,28 +57,20 @@ public class OAuth2Token implements java.io.Serializable {
 
     /*package*/ String generateAuthorizationHeader() {
         String encoded = "";
-        try {
-            encoded = URLEncoder.encode(accessToken, "UTF-8");
-        } catch (UnsupportedEncodingException ignore) {
-        }
+        encoded = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
         return "Bearer " + encoded;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof OAuth2Token)) {
+        if (obj == null || !(obj instanceof OAuth2Token that)) {
             return false;
         }
 
-        OAuth2Token that = (OAuth2Token) obj;
-        if (tokenType != null ? !tokenType.equals(that.tokenType) : that.tokenType != null) {
+        if (!Objects.equals(tokenType, that.tokenType)) {
             return false;
         }
-        if (accessToken != null ? !accessToken.equals(that.accessToken) : that.accessToken != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(accessToken, that.accessToken);
     }
 
     @Override

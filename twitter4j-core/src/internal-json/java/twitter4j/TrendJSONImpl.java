@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import java.io.Serial;
+
 /**
  * A data class representing Trend.
  *
@@ -23,6 +25,7 @@ package twitter4j;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendJSONImpl implements Trend, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = -4353426776065521132L;
     private final String name;
     private String url = null;
@@ -66,19 +69,14 @@ package twitter4j;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Trend)) return false;
-
-        Trend trend = (Trend) o;
+        if (!(o instanceof Trend trend)) return false;
 
         if (!name.equals(trend.getName())) return false;
         if (query != null ? !query.equals(trend.getQuery()) : trend.getQuery() != null)
             return false;
         if (url != null ? !url.equals(trend.getURL()) : trend.getURL() != null)
             return false;
-        if (tweetVolume != trend.getTweetVolume())
-            return false;
-
-        return true;
+        return tweetVolume == trend.getTweetVolume();
     }
 
     @Override

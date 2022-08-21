@@ -26,7 +26,7 @@ public interface RateLimitStatusListener {
      *
      * @param event rate limit status event.
      */
-    public void onRateLimitStatus(RateLimitStatusEvent event);
+    void onRateLimitStatus(RateLimitStatusEvent event);
 
     /**
      * Called when the account or IP address is hitting the rate limit.<br>
@@ -34,5 +34,5 @@ public interface RateLimitStatusListener {
      *
      * @param event rate limit status event.
      */
-    public void onRateLimitReached(RateLimitStatusEvent event);
+    void onRateLimitReached(RateLimitStatusEvent event);
 }

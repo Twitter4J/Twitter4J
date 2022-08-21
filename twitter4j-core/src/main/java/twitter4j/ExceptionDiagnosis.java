@@ -16,11 +16,14 @@
 
 package twitter4j;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
 final class ExceptionDiagnosis implements java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 8501009773274399369L;
     private int stackLineHash;
     private int lineNumberHash;
@@ -77,7 +80,7 @@ final class ExceptionDiagnosis implements java.io.Serializable {
 
     private String toHexString(int value) {
         String str = "0000000" + Integer.toHexString(value);
-        return str.substring(str.length() - 8, str.length());
+        return str.substring(str.length() - 8);
     }
 
     @Override
@@ -88,9 +91,7 @@ final class ExceptionDiagnosis implements java.io.Serializable {
         ExceptionDiagnosis that = (ExceptionDiagnosis) o;
 
         if (lineNumberHash != that.lineNumberHash) return false;
-        if (stackLineHash != that.stackLineHash) return false;
-
-        return true;
+        return stackLineHash == that.stackLineHash;
     }
 
     @Override

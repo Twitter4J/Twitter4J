@@ -1,7 +1,6 @@
 package twitter4j;
 
 import com.esotericsoftware.kryo.Kryo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

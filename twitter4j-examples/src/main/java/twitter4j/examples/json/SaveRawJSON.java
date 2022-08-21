@@ -19,6 +19,7 @@ package twitter4j.examples.json;
 import twitter4j.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public final class SaveRawJSON {
         BufferedWriter bw = null;
         try {
             fos = new FileOutputStream(fileName);
-            osw = new OutputStreamWriter(fos, "UTF-8");
+            osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
             bw = new BufferedWriter(osw);
             bw.write(rawJSON);
             bw.flush();

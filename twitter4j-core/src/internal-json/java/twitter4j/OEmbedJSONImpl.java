@@ -17,11 +17,15 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.2
  */
 public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = -2207801480251709819L;
     private String html;
     private String authorName;
@@ -109,13 +113,11 @@ public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.
 
         if (cacheAge != that.cacheAge) return false;
         if (width != that.width) return false;
-        if (authorName != null ? !authorName.equals(that.authorName) : that.authorName != null) return false;
-        if (authorURL != null ? !authorURL.equals(that.authorURL) : that.authorURL != null) return false;
-        if (html != null ? !html.equals(that.html) : that.html != null) return false;
-        if (url != null ? !url.equals(that.url) : that.url != null) return false;
-        if (version != null ? !version.equals(that.version) : that.version != null) return false;
-
-        return true;
+        if (!Objects.equals(authorName, that.authorName)) return false;
+        if (!Objects.equals(authorURL, that.authorURL)) return false;
+        if (!Objects.equals(html, that.html)) return false;
+        if (!Objects.equals(url, that.url)) return false;
+        return Objects.equals(version, that.version);
     }
 
     @Override

@@ -18,13 +18,11 @@ package twitter4j;
 
 // Note: this class was written without inspecting the non-free org.json sourcecode.
 
-import twitter4j.util.CharacterUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Parses a JSON (<a href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>)
@@ -110,7 +108,7 @@ public class JSONTokener {
     }
 
     public JSONTokener(InputStream is) {
-        this(new InputStreamReader(is, Charset.forName("UTF8")));
+        this(new InputStreamReader(is, StandardCharsets.UTF_8));
     }
 
     /**

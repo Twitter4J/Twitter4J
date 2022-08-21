@@ -19,9 +19,7 @@ package twitter4j;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -36,7 +34,7 @@ public class TwitterExceptionTest {
         te2 = new TwitterException("test");
         te3 = new TwitterException(te1);
 
-        assertFalse(te1.getExceptionCode().equals(te2.getExceptionCode()));
+        assertNotEquals(te1.getExceptionCode(), te2.getExceptionCode());
         assertEquals(17, te1.getExceptionCode().length());
 
         String code1 = te1.getExceptionCode();
@@ -45,7 +43,7 @@ public class TwitterExceptionTest {
 
         assertEquals(35, te3.getExceptionCode().length());
 
-        assertFalse(code1.equals(code2));
+        assertNotEquals(code1, code2);
         new TwitterException("msg").toString();
     }
 
@@ -65,7 +63,7 @@ public class TwitterExceptionTest {
     @Test
     void testGetLong() throws Exception {
         JSONObject json = new JSONObject("{\"value\":\"13857270119014401\"}");
-        assertEquals(13857270119014401l, json.getLong("value"));
+        assertEquals(13857270119014401L, json.getLong("value"));
     }
 
 

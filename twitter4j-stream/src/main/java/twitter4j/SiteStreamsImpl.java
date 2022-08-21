@@ -295,7 +295,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
         }
     }
 
-    protected static final RawStreamListener[] EMPTY = new RawStreamListener[0];
+    private static final RawStreamListener[] EMPTY = new RawStreamListener[0];
 
     @Override
     public void next(StatusListener listener) throws TwitterException {

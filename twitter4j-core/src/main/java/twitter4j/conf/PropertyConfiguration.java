@@ -88,6 +88,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String MEDIA_PROVIDER = "media.provider";
     private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
+    @Serial
     private static final long serialVersionUID = -7262615247923693252L;
 
 
@@ -432,6 +433,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     // assures equality after deserialization
+    @Serial
     @Override
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();

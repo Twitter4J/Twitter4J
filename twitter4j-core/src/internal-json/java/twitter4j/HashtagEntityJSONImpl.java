@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * A data class representing one single Hashtag entity.
  *
@@ -23,6 +26,7 @@ package twitter4j;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
+    @Serial
     private static final long serialVersionUID = -5317828991902848906L;
     private String text;
 
@@ -80,9 +84,7 @@ package twitter4j;
 
         HashtagEntityJSONImpl that = (HashtagEntityJSONImpl) o;
 
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
-
-        return true;
+        return Objects.equals(text, that.text);
     }
 
     @Override

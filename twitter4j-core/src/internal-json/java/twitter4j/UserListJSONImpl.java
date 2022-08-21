@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -29,6 +30,7 @@ import java.util.Date;
  */
 /*package*/ class UserListJSONImpl extends TwitterResponseImpl implements UserList, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 449418980060197008L;
     private long id;
     private String name;
@@ -78,7 +80,7 @@ import java.util.Date;
                 user = new UserJSONImpl(json.getJSONObject("user"));
             }
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + json, jsone);
         }
     }
 

@@ -16,10 +16,8 @@
 
 package twitter4j;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.Serial;
+import java.util.*;
 
 /**
  * A data class represents search query.<br>
@@ -31,11 +29,12 @@ import java.util.Map;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 7196404519192910019L;
     private String query = null;
     private String lang = null;
     private String locale = null;
-    private long maxId = -1l;
+    private long maxId = -1L;
     private int count = -1;
     private String since = null;
     private long sinceId = -1;
@@ -56,7 +55,7 @@ public final class Query implements java.io.Serializable {
         query.nextPageQuery = nextPageQuery;
         
         if(nextPageQuery != null) {
-            String nextPageParameters=nextPageQuery.substring(1, nextPageQuery.length());
+            String nextPageParameters=nextPageQuery.substring(1);
             
             Map<String,String> params=new LinkedHashMap<String,String>();
             for(HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
@@ -495,17 +494,15 @@ public final class Query implements java.io.Serializable {
         if (maxId != query1.maxId) return false;
         if (count != query1.count) return false;
         if (sinceId != query1.sinceId) return false;
-        if (geocode != null ? !geocode.equals(query1.geocode) : query1.geocode != null) return false;
-        if (lang != null ? !lang.equals(query1.lang) : query1.lang != null) return false;
-        if (locale != null ? !locale.equals(query1.locale) : query1.locale != null) return false;
-        if (nextPageQuery != null ? !nextPageQuery.equals(query1.nextPageQuery) : query1.nextPageQuery != null)
+        if (!Objects.equals(geocode, query1.geocode)) return false;
+        if (!Objects.equals(lang, query1.lang)) return false;
+        if (!Objects.equals(locale, query1.locale)) return false;
+        if (!Objects.equals(nextPageQuery, query1.nextPageQuery))
             return false;
-        if (query != null ? !query.equals(query1.query) : query1.query != null) return false;
-        if (resultType != null ? !resultType.equals(query1.resultType) : query1.resultType != null) return false;
-        if (since != null ? !since.equals(query1.since) : query1.since != null) return false;
-        if (until != null ? !until.equals(query1.until) : query1.until != null) return false;
-
-        return true;
+        if (!Objects.equals(query, query1.query)) return false;
+        if (!Objects.equals(resultType, query1.resultType)) return false;
+        if (!Objects.equals(since, query1.since)) return false;
+        return Objects.equals(until, query1.until);
     }
 
     @Override

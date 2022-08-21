@@ -16,7 +16,9 @@
  */
 package twitter4j;
 
+import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 import static twitter4j.ParseUtil.getInt;
 import static twitter4j.ParseUtil.getRawString;
@@ -26,6 +28,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 3.0.0
  */
 public final class StallWarning implements Serializable {
+    @Serial
     private static final long serialVersionUID = -4294628635422470314L;
     private final String code;
     private final String message;
@@ -59,10 +62,8 @@ public final class StallWarning implements Serializable {
         StallWarning that = (StallWarning) o;
 
         if (percentFull != that.percentFull) return false;
-        if (code != null ? !code.equals(that.code) : that.code != null) return false;
-        if (message != null ? !message.equals(that.message) : that.message != null) return false;
-
-        return true;
+        if (!Objects.equals(code, that.code)) return false;
+        return Objects.equals(message, that.message);
     }
 
     @Override

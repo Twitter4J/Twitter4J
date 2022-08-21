@@ -41,10 +41,10 @@ class FavoritesResourcesTest extends TwitterTestBase {
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
         assertTrue(twitter2.getFavorites().size() > 0);
         assertTrue(twitter2.getFavorites("t4j_news").size() > 0);
-        assertTrue(twitter2.getFavorites("t4j_news", new Paging().count(1)).size() == 1);
+        assertEquals(1, twitter2.getFavorites("t4j_news", new Paging().count(1)).size());
         long t4j_news_user_id = 72297675;
         assertTrue(twitter2.getFavorites(t4j_news_user_id).size() > 0);
-        assertTrue(twitter2.getFavorites(t4j_news_user_id, new Paging().count(1)).size() == 1);
+        assertEquals(1, twitter2.getFavorites(t4j_news_user_id, new Paging().count(1)).size());
         try {
             twitter2.destroyFavorite(status.getId());
         } catch (TwitterException te) {

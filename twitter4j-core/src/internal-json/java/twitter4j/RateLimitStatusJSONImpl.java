@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,6 +32,7 @@ import java.util.Map;
  */
 /*package*/ final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7790337632915862445L;
     private int remaining;
     private int limit;
@@ -146,9 +148,7 @@ import java.util.Map;
         if (limit != that.limit) return false;
         if (remaining != that.remaining) return false;
         if (resetTimeInSeconds != that.resetTimeInSeconds) return false;
-        if (secondsUntilReset != that.secondsUntilReset) return false;
-
-        return true;
+        return secondsUntilReset == that.secondsUntilReset;
     }
 
     @Override

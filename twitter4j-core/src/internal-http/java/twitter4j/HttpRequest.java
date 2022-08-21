@@ -18,8 +18,10 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * HTTP Request parameter object
@@ -28,6 +30,7 @@ import java.util.Map;
  */
 public final class HttpRequest implements java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3365496352032493020L;
     private final RequestMethod method;
 
@@ -90,17 +93,14 @@ public final class HttpRequest implements java.io.Serializable {
 
         HttpRequest that = (HttpRequest) o;
 
-        if (authorization != null ? !authorization.equals(that.authorization) : that.authorization != null)
+        if (!Objects.equals(authorization, that.authorization))
             return false;
         if (!Arrays.equals(parameters, that.parameters)) return false;
-        if (requestHeaders != null ? !requestHeaders.equals(that.requestHeaders) : that.requestHeaders != null)
+        if (!Objects.equals(requestHeaders, that.requestHeaders))
             return false;
-        if (method != null ? !method.equals(that.method) : that.method != null)
+        if (!Objects.equals(method, that.method))
             return false;
-        if (url != null ? !url.equals(that.url) : that.url != null)
-            return false;
-
-        return true;
+        return Objects.equals(url, that.url);
     }
 
     @Override

@@ -16,10 +16,13 @@
 
 package twitter4j;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 abstract class EntityIndex implements Comparable<EntityIndex>, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 3757474748266170719L;
     private int start = -1;
     private int end = -1;

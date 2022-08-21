@@ -18,6 +18,9 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * A data class that has detailed information about a relationship between two users
  *
@@ -27,6 +30,7 @@ import twitter4j.conf.Configuration;
  */
 /*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = -2001484553401916448L;
     private final long targetUserId;
     private final String targetUserScreenName;
@@ -38,7 +42,7 @@ import twitter4j.conf.Configuration;
     private final boolean sourceMutingTarget;
     private final long sourceUserId;
     private final String sourceUserScreenName;
-    private boolean wantRetweets;
+    private final boolean wantRetweets;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
@@ -70,7 +74,7 @@ import twitter4j.conf.Configuration;
             sourceNotificationsEnabled = ParseUtil.getBoolean("notifications_enabled", sourceJson);
             wantRetweets = ParseUtil.getBoolean("want_retweets", sourceJson);
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + json, jsone);
         }
     }
 
@@ -182,12 +186,9 @@ import twitter4j.conf.Configuration;
         if (sourceUserId != that.sourceUserId) return false;
         if (targetUserId != that.targetUserId) return false;
         if (wantRetweets != that.wantRetweets) return false;
-        if (sourceUserScreenName != null ? !sourceUserScreenName.equals(that.sourceUserScreenName) : that.sourceUserScreenName != null)
+        if (!Objects.equals(sourceUserScreenName, that.sourceUserScreenName))
             return false;
-        if (targetUserScreenName != null ? !targetUserScreenName.equals(that.targetUserScreenName) : that.targetUserScreenName != null)
-            return false;
-
-        return true;
+        return Objects.equals(targetUserScreenName, that.targetUserScreenName);
     }
 
     @Override

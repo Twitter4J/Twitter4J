@@ -18,12 +18,16 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
 final class CategoryJSONImpl implements Category, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 3811335888122469876L;
     private String name;
     private String slug;
@@ -94,12 +98,9 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
         CategoryJSONImpl that = (CategoryJSONImpl) o;
 
         if (size != that.size) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null)
+        if (!Objects.equals(name, that.name))
             return false;
-        if (slug != null ? !slug.equals(that.slug) : that.slug != null)
-            return false;
-
-        return true;
+        return Objects.equals(slug, that.slug);
     }
 
     @Override

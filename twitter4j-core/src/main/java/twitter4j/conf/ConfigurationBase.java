@@ -20,11 +20,13 @@ import twitter4j.HttpClientConfiguration;
 import twitter4j.Logger;
 
 import java.io.ObjectStreamException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -33,6 +35,7 @@ import java.util.Properties;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 6175546394599249696L;
     private boolean debug = false;
     private String user = null;
@@ -108,6 +111,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     class MyHttpClientConfiguration implements HttpClientConfiguration, Serializable {
+        @Serial
         private static final long serialVersionUID = 8226866124868861058L;
         private String httpProxyHost = null;
         private String httpProxyUser = null;
@@ -200,14 +204,11 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             if (httpProxySocks != that.httpProxySocks) return false;
             if (httpReadTimeout != that.httpReadTimeout) return false;
             if (prettyDebug != that.prettyDebug) return false;
-            if (httpProxyHost != null ? !httpProxyHost.equals(that.httpProxyHost) : that.httpProxyHost != null)
+            if (!Objects.equals(httpProxyHost, that.httpProxyHost))
                 return false;
-            if (httpProxyPassword != null ? !httpProxyPassword.equals(that.httpProxyPassword) : that.httpProxyPassword != null)
+            if (!Objects.equals(httpProxyPassword, that.httpProxyPassword))
                 return false;
-            if (httpProxyUser != null ? !httpProxyUser.equals(that.httpProxyUser) : that.httpProxyUser != null)
-                return false;
-
-            return true;
+            return Objects.equals(httpProxyUser, that.httpProxyUser);
         }
 
         @Override
@@ -813,54 +814,54 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (daemonEnabled != that.daemonEnabled) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (httpConf != null ? !httpConf.equals(that.httpConf) : that.httpConf != null) return false;
-        if (oAuthConsumerKey != null ? !oAuthConsumerKey.equals(that.oAuthConsumerKey) : that.oAuthConsumerKey != null)
+        if (!Objects.equals(user, that.user)) return false;
+        if (!Objects.equals(password, that.password)) return false;
+        if (!Objects.equals(httpConf, that.httpConf)) return false;
+        if (!Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey))
             return false;
-        if (oAuthConsumerSecret != null ? !oAuthConsumerSecret.equals(that.oAuthConsumerSecret) : that.oAuthConsumerSecret != null)
+        if (!Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret))
             return false;
-        if (oAuthAccessToken != null ? !oAuthAccessToken.equals(that.oAuthAccessToken) : that.oAuthAccessToken != null)
+        if (!Objects.equals(oAuthAccessToken, that.oAuthAccessToken))
             return false;
-        if (oAuthAccessTokenSecret != null ? !oAuthAccessTokenSecret.equals(that.oAuthAccessTokenSecret) : that.oAuthAccessTokenSecret != null)
+        if (!Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret))
             return false;
-        if (oAuth2TokenType != null ? !oAuth2TokenType.equals(that.oAuth2TokenType) : that.oAuth2TokenType != null)
+        if (!Objects.equals(oAuth2TokenType, that.oAuth2TokenType))
             return false;
-        if (oAuth2AccessToken != null ? !oAuth2AccessToken.equals(that.oAuth2AccessToken) : that.oAuth2AccessToken != null)
+        if (!Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken))
             return false;
-        if (oAuth2Scope != null ? !oAuth2Scope.equals(that.oAuth2Scope) : that.oAuth2Scope != null) return false;
-        if (oAuthRequestTokenURL != null ? !oAuthRequestTokenURL.equals(that.oAuthRequestTokenURL) : that.oAuthRequestTokenURL != null)
+        if (!Objects.equals(oAuth2Scope, that.oAuth2Scope)) return false;
+        if (!Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL))
             return false;
-        if (oAuthAuthorizationURL != null ? !oAuthAuthorizationURL.equals(that.oAuthAuthorizationURL) : that.oAuthAuthorizationURL != null)
+        if (!Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL))
             return false;
-        if (oAuthAccessTokenURL != null ? !oAuthAccessTokenURL.equals(that.oAuthAccessTokenURL) : that.oAuthAccessTokenURL != null)
+        if (!Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL))
             return false;
-        if (oAuthAuthenticationURL != null ? !oAuthAuthenticationURL.equals(that.oAuthAuthenticationURL) : that.oAuthAuthenticationURL != null)
+        if (!Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL))
             return false;
-        if (oAuth2TokenURL != null ? !oAuth2TokenURL.equals(that.oAuth2TokenURL) : that.oAuth2TokenURL != null)
+        if (!Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL))
             return false;
-        if (oAuth2InvalidateTokenURL != null ? !oAuth2InvalidateTokenURL.equals(that.oAuth2InvalidateTokenURL) : that.oAuth2InvalidateTokenURL != null)
+        if (!Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL))
             return false;
-        if (restBaseURL != null ? !restBaseURL.equals(that.restBaseURL) : that.restBaseURL != null) return false;
-        if (streamBaseURL != null ? !streamBaseURL.equals(that.streamBaseURL) : that.streamBaseURL != null)
+        if (!Objects.equals(restBaseURL, that.restBaseURL)) return false;
+        if (!Objects.equals(streamBaseURL, that.streamBaseURL))
             return false;
-        if (userStreamBaseURL != null ? !userStreamBaseURL.equals(that.userStreamBaseURL) : that.userStreamBaseURL != null)
+        if (!Objects.equals(userStreamBaseURL, that.userStreamBaseURL))
             return false;
-        if (siteStreamBaseURL != null ? !siteStreamBaseURL.equals(that.siteStreamBaseURL) : that.siteStreamBaseURL != null)
+        if (!Objects.equals(siteStreamBaseURL, that.siteStreamBaseURL))
             return false;
-        if (uploadBaseURL != null ? !uploadBaseURL.equals(that.uploadBaseURL) : that.uploadBaseURL != null)
+        if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
-        if (dispatcherImpl != null ? !dispatcherImpl.equals(that.dispatcherImpl) : that.dispatcherImpl != null)
+        if (!Objects.equals(dispatcherImpl, that.dispatcherImpl))
             return false;
-        if (loggerFactory != null ? !loggerFactory.equals(that.loggerFactory) : that.loggerFactory != null)
+        if (!Objects.equals(loggerFactory, that.loggerFactory))
             return false;
-        if (mediaProvider != null ? !mediaProvider.equals(that.mediaProvider) : that.mediaProvider != null)
+        if (!Objects.equals(mediaProvider, that.mediaProvider))
             return false;
-        if (mediaProviderAPIKey != null ? !mediaProviderAPIKey.equals(that.mediaProviderAPIKey) : that.mediaProviderAPIKey != null)
+        if (!Objects.equals(mediaProviderAPIKey, that.mediaProviderAPIKey))
             return false;
-        if (mediaProviderParameters != null ? !mediaProviderParameters.equals(that.mediaProviderParameters) : that.mediaProviderParameters != null)
+        if (!Objects.equals(mediaProviderParameters, that.mediaProviderParameters))
             return false;
-        return streamThreadName != null ? streamThreadName.equals(that.streamThreadName) : that.streamThreadName == null;
+        return Objects.equals(streamThreadName, that.streamThreadName);
 
     }
 
@@ -990,6 +991,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     // assures equality after deserializedation
+    @Serial
     protected Object readResolve() throws ObjectStreamException {
         return getInstance(this);
     }

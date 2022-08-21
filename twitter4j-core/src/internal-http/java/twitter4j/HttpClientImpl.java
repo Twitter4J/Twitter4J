@@ -20,6 +20,7 @@ import twitter4j.conf.ConfigurationContext;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         }
     }
 
+    @Serial
     private static final long serialVersionUID = -403500272719330534L;
 
     public HttpClientImpl() {
@@ -118,7 +120,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"\r\n");
                                     write(out, "Content-Type: text/plain; charset=UTF-8\r\n\r\n");
                                     logger.debug(param.getValue());
-                                    out.write(param.getValue().getBytes("UTF-8"));
+                                    out.write(param.getValue().getBytes(StandardCharsets.UTF_8));
                                     write(out, "\r\n");
                                 }
                             }
@@ -136,7 +138,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                                 postParam = HttpParameter.encodeParameters(req.getParameters());
                             }
                             logger.debug("Post Params: ", postParam);
-                            byte[] bytes = postParam.getBytes("UTF-8");
+                            byte[] bytes = postParam.getBytes(StandardCharsets.UTF_8);
                             con.setRequestProperty("Content-Length",
                                     Integer.toString(bytes.length));
                             con.setDoOutput(true);
@@ -190,7 +192,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                     res.asString();
                 }
                 logger.debug("Sleeping " + CONF.getHttpRetryIntervalSeconds() + " seconds until the next retry.");
-                Thread.sleep(CONF.getHttpRetryIntervalSeconds() * 1000);
+                Thread.sleep(CONF.getHttpRetryIntervalSeconds() * 1000L);
             } catch (InterruptedException ignore) {
                 //nothing to do
             }

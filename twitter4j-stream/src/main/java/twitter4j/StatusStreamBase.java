@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -31,18 +32,18 @@ abstract class StatusStreamBase implements StatusStream {
     static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
 
     private boolean streamAlive = true;
-    private BufferedReader br;
-    private InputStream is;
+    private final BufferedReader br;
+    private final InputStream is;
     private HttpResponse response;
     private final Dispatcher dispatcher;
     final Configuration CONF;
-    private ObjectFactory factory;
+    private final ObjectFactory factory;
 
     /*package*/
 
     StatusStreamBase(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
         this.is = stream;
-        this.br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+        this.br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         this.dispatcher = dispatcher;
         this.CONF = conf;
         this.factory = new JSONImplFactory(conf);

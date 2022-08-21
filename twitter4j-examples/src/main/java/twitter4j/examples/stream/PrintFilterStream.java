@@ -95,7 +95,7 @@ public final class PrintFilterStream {
     }
 
     private static boolean isNumericalArgument(String argument) {
-        String args[] = argument.split(",");
+        String[] args = argument.split(",");
         boolean isNumericalArgument = true;
         for (String arg : args) {
             try {

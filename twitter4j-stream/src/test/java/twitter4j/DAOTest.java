@@ -40,22 +40,22 @@ class DAOTest extends TwitterTestBase {
 
         // empty User list
         List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        assertTrue(users.size() == 0);
+        assertEquals(0, users.size());
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        assertTrue(statuses.size() == 0);
+        assertEquals(0, statuses.size());
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
-        assertTrue(directMessages.size() == 0);
+        assertEquals(0, directMessages.size());
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
         List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"), conf.isJSONStoreEnabled());
-        assertTrue(trends.size() == 0);
+        assertEquals(0, trends.size());
         assertDeserializedFormIsEqual(trends);
     }
 
@@ -563,10 +563,10 @@ class DAOTest extends TwitterTestBase {
         HttpClientImpl http = new HttpClientImpl();
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
-        assertEquals(new Date(1259041785000l), status.getCreatedAt());
-        assertEquals(6000554383l, status.getId());
+        assertEquals(new Date(1259041785000L), status.getCreatedAt());
+        assertEquals(6000554383L, status.getId());
         assertEquals("G_Shock22", status.getInReplyToScreenName());
-        assertEquals(6000444309l, status.getInReplyToStatusId());
+        assertEquals(6000444309L, status.getInReplyToStatusId());
         assertEquals(20159829, status.getInReplyToUserId());
         assertNull(status.getGeoLocation());
         assertEquals("web", status.getSource());
@@ -581,10 +581,10 @@ class DAOTest extends TwitterTestBase {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
         Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"), conf);
-        assertEquals(new Date(1259078050000l), status.getCreatedAt());
-        assertEquals(6011259778l, status.getId());
-        assertEquals(null, status.getInReplyToScreenName());
-        assertEquals(-1l, status.getInReplyToStatusId());
+        assertEquals(new Date(1259078050000L), status.getCreatedAt());
+        assertEquals(6011259778L, status.getId());
+        assertNull(status.getInReplyToScreenName());
+        assertEquals(-1L, status.getInReplyToStatusId());
         assertEquals(-1, status.getInReplyToUserId());
         assertNull(status.getGeoLocation());
         assertEquals("<a href=\"http://apiwiki.twitter.com/\" rel=\"nofollow\">API</a>", status.getSource());
@@ -682,7 +682,7 @@ class DAOTest extends TwitterTestBase {
         HttpClientImpl http = new HttpClientImpl();
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
-        assertEquals(new java.util.Date(1248177356000l), dm.getCreatedAt());
+        assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());
         assertEquals(6358482, dm.getRecipientId());
         assertEquals(6377362, dm.getSenderId());
@@ -717,7 +717,7 @@ class DAOTest extends TwitterTestBase {
      */
     private static Object assertDeserializedFormIsSingleton(Object obj) throws Exception {
         Object that = assertDeserializedFormIsEqual(obj);
-        assertTrue(obj == that);
+        assertSame(obj, that);
         return that;
     }
 

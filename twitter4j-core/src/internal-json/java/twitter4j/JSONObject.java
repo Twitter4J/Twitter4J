@@ -340,8 +340,7 @@ public class JSONObject {
             return put(name, value);
         }
 
-        if (current instanceof JSONArray) {
-            JSONArray array = (JSONArray) current;
+        if (current instanceof JSONArray array) {
             array.checkedPut(value);
         } else {
             JSONArray array = new JSONArray();

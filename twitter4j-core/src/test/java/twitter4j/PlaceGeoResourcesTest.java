@@ -73,7 +73,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
         final double LATITUDE = 12.3456;
         final double LONGITUDE = -34.5678;
 
-        Status withgeo = twitter1.updateStatus(new StatusUpdate(new java.util.Date().toString() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)));
+        Status withgeo = twitter1.updateStatus(new StatusUpdate(new java.util.Date() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)));
         assertNotNull(TwitterObjectFactory.getRawJSON(withgeo));
         assertEquals(withgeo, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(withgeo)));
         assertTrue(withgeo.getUser().isGeoEnabled());

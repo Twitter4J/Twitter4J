@@ -18,10 +18,13 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class LocationJSONImpl implements Location {
+    @Serial
     private static final long serialVersionUID = -1312752311160422264L;
     private final int woeid;
     private final String countryName;
@@ -120,13 +123,9 @@ import twitter4j.conf.Configuration;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LocationJSONImpl)) return false;
+        if (!(o instanceof LocationJSONImpl that)) return false;
 
-        LocationJSONImpl that = (LocationJSONImpl) o;
-
-        if (woeid != that.woeid) return false;
-
-        return true;
+        return woeid == that.woeid;
     }
 
     @Override

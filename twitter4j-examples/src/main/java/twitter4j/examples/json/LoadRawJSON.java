@@ -21,6 +21,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Example application that load raw JSON forms from statuses/ directory and dump status texts.
@@ -63,7 +64,7 @@ public final class LoadRawJSON {
         BufferedReader br = null;
         try {
             fis = new FileInputStream(fileName);
-            isr = new InputStreamReader(fis, "UTF-8");
+            isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
             br = new BufferedReader(isr);
             return br.readLine();
         } finally {

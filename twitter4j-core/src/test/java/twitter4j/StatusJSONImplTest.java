@@ -2,9 +2,7 @@ package twitter4j;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Cedric Meury - cedric at meury.com
@@ -30,7 +28,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(true, status.isRetweeted());
+        assertTrue(status.isRetweeted());
     }
 
     @Test
@@ -39,7 +37,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(false, status.isRetweeted());
+        assertFalse(status.isRetweeted());
     }
 
     @Test
@@ -48,7 +46,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(false, status.isRetweeted());
+        assertFalse(status.isRetweeted());
     }
 
     @Test
@@ -147,7 +145,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(true, status.isTruncated());
+        assertTrue(status.isTruncated());
         assertEquals(140, status.getText().length());
         assertEquals(-1, status.getDisplayTextRangeStart());
         assertEquals(-1, status.getDisplayTextRangeEnd());
@@ -162,7 +160,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(true, status.isTruncated());
+        assertTrue(status.isTruncated());
         assertEquals(149, status.getText().length());
 
         assertEquals(13, status.getDisplayTextRangeStart());
@@ -183,7 +181,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(true, status.isTruncated());
+        assertTrue(status.isTruncated());
         assertEquals(164, status.getText().length());
 
         assertEquals(0, status.getDisplayTextRangeStart());
@@ -211,7 +209,7 @@ public class StatusJSONImplTest {
         JSONObject json = new JSONObject(rawJson);
         StatusJSONImpl status = new StatusJSONImpl(json);
 
-        assertEquals(false, status.isTruncated());
+        assertFalse(status.isTruncated());
         assertEquals(149, status.getText().length());
         assertEquals(13, status.getDisplayTextRangeStart());
         assertEquals(125, status.getDisplayTextRangeEnd());
