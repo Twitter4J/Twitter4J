@@ -3,9 +3,9 @@ module twitter4j {
     requires java.logging;
     requires org.slf4j;
     requires org.apache.logging.log4j;
-    opens twitter4j;
-    opens twitter4j.api;
-    opens twitter4j.auth;
-    opens twitter4j.conf;
-    opens twitter4j.util;
+    exports twitter4j;
+    exports twitter4j.api;
+    exports twitter4j.auth;
+    exports twitter4j.conf;
+    exports twitter4j.util;
 }

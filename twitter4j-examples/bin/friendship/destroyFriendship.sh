@@ -2,6 +2,6 @@
 cd ..
 . ./setEnv.sh
 
-RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.friendship.DestroyFriendship"
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH examples..friendship.DestroyFriendship"
 echo $RUN_CMD ${1+"$@"}
 exec $RUN_CMD ${1+"$@"}

@@ -127,6 +127,12 @@
             <version>LATEST</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>2.5.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
@@ -155,6 +161,7 @@
                                 <source>src/internal-json/java</source>
                                 <source>src/internal-logging/java</source>
                                 <source>src/internal-util/java</source>
+                                <source>src/stream/java</source>
                             </sources>
                         </configuration>
                     </execution>
