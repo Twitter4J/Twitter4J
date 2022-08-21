@@ -75,7 +75,7 @@ public class LanguageJSONImpl implements HelpResources.Language {
         try {
             int size = list.length();
             ResponseList<HelpResources.Language> languages =
-                    new ResponseListImpl<HelpResources.Language>(size, res);
+                    new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 HelpResources.Language language = new LanguageJSONImpl(json);

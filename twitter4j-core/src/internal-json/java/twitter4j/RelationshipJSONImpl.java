@@ -86,7 +86,7 @@ import java.util.Objects;
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Relationship> relationships = new ResponseListImpl<Relationship>(size, res);
+            ResponseList<Relationship> relationships = new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Relationship relationship = new RelationshipJSONImpl(json);

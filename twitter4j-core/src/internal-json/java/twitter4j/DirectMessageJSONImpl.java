@@ -104,7 +104,7 @@ import java.util.*;
             if (!messageData.isNull("quick_reply")) {
                 // dm with quick reply options
                 JSONArray options = messageData.getJSONObject("quick_reply").getJSONArray("options");
-                List<QuickReply> quickReplyList = new ArrayList<QuickReply>();
+                List<QuickReply> quickReplyList = new ArrayList<>();
                 for (int i = 0; i < options.length(); i++) {
                     JSONObject option = options.getJSONObject(i);
                     String description = option.isNull("description") ? null :option.getString("description");

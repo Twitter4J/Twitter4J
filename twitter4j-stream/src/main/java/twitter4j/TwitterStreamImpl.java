@@ -43,7 +43,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
 
-    private final List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<ConnectionLifeCycleListener>(0);
+    private final List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<>(0);
     private TwitterStreamConsumer handler = null;
 
     private final String stallWarningsGetParam;
@@ -345,7 +345,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return this;
     }
 
-    private final ArrayList<StreamListener> streamListeners = new ArrayList<StreamListener>(0);
+    private final ArrayList<StreamListener> streamListeners = new ArrayList<>(0);
 
     @Override
     public synchronized TwitterStream addListener(StreamListener listener) {
@@ -407,7 +407,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     private RawStreamListener[] getRawStreamListeners() {
-        ArrayList<RawStreamListener> rawStreamListeners = new ArrayList<RawStreamListener>();
+        ArrayList<RawStreamListener> rawStreamListeners = new ArrayList<>();
         for (StreamListener streamListener : streamListeners) {
             if (streamListener instanceof RawStreamListener) {
                 rawStreamListeners.add((RawStreamListener) streamListener);
@@ -417,7 +417,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     private SiteStreamsListener[] getSiteStreamsListeners() {
-        ArrayList<SiteStreamsListener> siteStreamsListeners = new ArrayList<SiteStreamsListener>();
+        ArrayList<SiteStreamsListener> siteStreamsListeners = new ArrayList<>();
         for (StreamListener streamListener : streamListeners) {
             if (streamListener instanceof SiteStreamsListener) {
                 siteStreamsListeners.add((SiteStreamsListener) streamListener);
@@ -427,7 +427,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     private StatusListener[] getStatusListeners() {
-        ArrayList<StatusListener> statusListeners = new ArrayList<StatusListener>();
+        ArrayList<StatusListener> statusListeners = new ArrayList<>();
         for (StreamListener streamListener : streamListeners) {
             if (streamListener instanceof StatusListener) {
                 statusListeners.add((StatusListener) streamListener);

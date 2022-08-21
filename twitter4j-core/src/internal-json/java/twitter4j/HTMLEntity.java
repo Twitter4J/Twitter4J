@@ -176,8 +176,8 @@ final class HTMLEntity {
         return unescaped.toString();
     }
 
-    private static final Map<String, String> entityEscapeMap = new HashMap<String, String>();
-    private static final Map<String, String> escapeEntityMap = new HashMap<String, String>();
+    private static final Map<String, String> entityEscapeMap = new HashMap<>();
+    private static final Map<String, String> escapeEntityMap = new HashMap<>();
 
     static {
         String[][] entities =

@@ -82,7 +82,7 @@ final class SiteStreamsImpl extends StatusStreamBase {
     }
 
     private static final ThreadLocal<Long> forUser =
-            new ThreadLocal<Long>() {
+            new ThreadLocal<>() {
                 @Override
                 protected Long initialValue() {
                     return 0L;

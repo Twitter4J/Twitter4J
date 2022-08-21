@@ -241,7 +241,7 @@ class JSONImplFactory implements ObjectFactory {
             return PlaceJSONImpl.createPlaceList(res, conf);
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
-                return new ResponseListImpl<Place>(0, null);
+                return new ResponseListImpl<>(0, null);
             } else {
                 throw te;
             }
@@ -255,7 +255,7 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public <T> ResponseList<T> createEmptyResponseList() {
-        return new ResponseListImpl<T>(0, null);
+        return new ResponseListImpl<>(0, null);
     }
 
     @Override

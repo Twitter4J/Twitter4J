@@ -57,7 +57,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         super(conf);
     }
 
-    private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<HttpClientConfiguration, HttpClient>(1);
+    private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<>(1);
 
     public static HttpClient getInstance(HttpClientConfiguration conf) {
         HttpClient client = instanceMap.get(conf);

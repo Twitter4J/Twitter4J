@@ -141,7 +141,7 @@ public final class OEmbedRequest implements Serializable {
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>(12);
+        ArrayList<HttpParameter> params = new ArrayList<>(12);
         appendParameter("id", statusId, params);
         appendParameter("url", url, params);
         appendParameter("maxwidth", maxWidth, params);

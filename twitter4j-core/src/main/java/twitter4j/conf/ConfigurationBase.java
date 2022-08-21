@@ -968,7 +968,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 '}';
     }
 
-    private static final List<ConfigurationBase> instances = new ArrayList<ConfigurationBase>();
+    private static final List<ConfigurationBase> instances = new ArrayList<>();
 
     private static void cacheInstance(ConfigurationBase conf) {
         if (!instances.contains(conf)) {

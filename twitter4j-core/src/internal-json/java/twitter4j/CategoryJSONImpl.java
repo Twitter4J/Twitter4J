@@ -53,7 +53,7 @@ final class CategoryJSONImpl implements Category, java.io.Serializable {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             ResponseList<Category> categories =
-                    new ResponseListImpl<Category>(array.length(), res);
+                    new ResponseListImpl<>(array.length(), res);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject json = array.getJSONObject(i);
                 Category category = new CategoryJSONImpl(json);

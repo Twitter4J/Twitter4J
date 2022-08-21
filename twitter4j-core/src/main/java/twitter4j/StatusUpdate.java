@@ -238,7 +238,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
+        ArrayList<HttpParameter> params = new ArrayList<>();
         appendParameter("status", status, params);
         if (-1 != inReplyToStatusId) {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);

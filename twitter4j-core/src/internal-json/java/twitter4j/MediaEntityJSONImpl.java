@@ -55,7 +55,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             this.displayURL = json.getString("display_url");
 
             JSONObject sizes = json.getJSONObject("sizes");
-            this.sizes = new HashMap<Integer, MediaEntity.Size>(4);
+            this.sizes = new HashMap<>(4);
             // thumbworkarounding API side issue
             addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.LARGE, "large");
             addMediaEntitySizeIfNotNull(this.sizes, sizes, MediaEntity.Size.MEDIUM, "medium");

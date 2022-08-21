@@ -128,7 +128,7 @@ class MBeansTest {
         assertEquals(5, info.getAttributes().length);
         assertEquals(1, info.getOperations().length);
 
-        List<String> attrNames = new ArrayList<String>();
+        List<String> attrNames = new ArrayList<>();
         for (MBeanAttributeInfo attr : info.getAttributes()) {
             assertNotNull(openMBean.getAttribute(attr.getName()));
             attrNames.add(attr.getName());

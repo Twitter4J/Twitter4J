@@ -48,7 +48,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testEquality() throws Exception {
-        Map<TwitterStream, String> map = new HashMap<TwitterStream, String>();
+        Map<TwitterStream, String> map = new HashMap<>();
         TwitterStream twitterStream1 = new TwitterStreamFactory().getInstance();
         TwitterStream twitterStream2 = new TwitterStreamFactory().getInstance();
         map.put(twitterStream1, "value");
@@ -56,7 +56,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertEquals(2, map.size());
     }
 
-    final List<String> received = new ArrayList<String>();
+    final List<String> received = new ArrayList<>();
     final Object lock = new Object();
 
     @Test
@@ -167,7 +167,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         twitterStream2.sample();
         waitForStatus();
         assertTrue(status != null || deletionNotice != null);
-        final List<Status> statuses = new ArrayList<Status>();
+        final List<Status> statuses = new ArrayList<>();
         StatusListener listener = new StatusAdapter() {
             @Override
             public synchronized void onStatus(Status status) {

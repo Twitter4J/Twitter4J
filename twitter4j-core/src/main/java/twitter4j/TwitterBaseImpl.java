@@ -45,7 +45,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     private transient long id = 0;
 
     transient HttpClient http;
-    private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
+    private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<>(0);
 
     ObjectFactory factory;
 
@@ -240,7 +240,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
         out.writeObject(conf);
         out.writeObject(auth);
-        List<RateLimitStatusListener> serializableRateLimitStatusListeners = new ArrayList<RateLimitStatusListener>(0);
+        List<RateLimitStatusListener> serializableRateLimitStatusListeners = new ArrayList<>(0);
         for (RateLimitStatusListener listener : rateLimitStatusListeners) {
             if (listener instanceof java.io.Serializable) {
                 serializableRateLimitStatusListeners.add(listener);

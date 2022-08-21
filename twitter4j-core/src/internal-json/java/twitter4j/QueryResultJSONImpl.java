@@ -54,7 +54,7 @@ import java.util.List;
             sinceId = ParseUtil.getLong("since_id", searchMetaData);
 
             JSONArray array = json.getJSONArray("statuses");
-            tweets = new ArrayList<Status>(array.length());
+            tweets = new ArrayList<>(array.length());
             if (conf.isJSONStoreEnabled()) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
@@ -71,7 +71,7 @@ import java.util.List;
         super();
         sinceId = query.getSinceId();
         count = query.getCount();
-        tweets = new ArrayList<Status>(0);
+        tweets = new ArrayList<>(0);
     }
 
     @Override

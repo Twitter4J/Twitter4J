@@ -12,7 +12,7 @@ public final class TwitterObjectFactory {
         throw new AssertionError("not intended to be instantiated.");
     }
 
-    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<Map>() {
+    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<>() {
         @Override
         protected Map initialValue() {
             return new HashMap();

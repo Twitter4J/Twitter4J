@@ -60,7 +60,7 @@ public final class HttpClientFactory {
         }
     }
 
-    private final static ConcurrentHashMap<HttpClientConfiguration, HttpClient> confClientMap = new ConcurrentHashMap<HttpClientConfiguration, HttpClient>();
+    private final static ConcurrentHashMap<HttpClientConfiguration, HttpClient> confClientMap = new ConcurrentHashMap<>();
 
     public static HttpClient getInstance() {
         return getInstance(ConfigurationContext.getInstance().getHttpClientConfiguration());

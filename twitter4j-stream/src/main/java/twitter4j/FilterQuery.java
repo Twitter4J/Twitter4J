@@ -197,7 +197,7 @@ public final class FilterQuery implements java.io.Serializable {
 
 
     /*package*/ HttpParameter[] asHttpParameterArray(HttpParameter stallWarningsParam) {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
+        ArrayList<HttpParameter> params = new ArrayList<>();
 
         params.add(new HttpParameter("count", count));
         if (follow != null && follow.length > 0) {

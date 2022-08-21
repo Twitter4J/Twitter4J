@@ -104,7 +104,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
         }
-        List<HttpParameter> params = new ArrayList<HttpParameter>();
+        List<HttpParameter> params = new ArrayList<>();
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
         }
@@ -188,7 +188,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (null == params) {
             params = new HttpParameter[0];
         }
-        List<HttpParameter> oauthHeaderParams = new ArrayList<HttpParameter>(5);
+        List<HttpParameter> oauthHeaderParams = new ArrayList<>(5);
         oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
         oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
@@ -197,7 +197,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (otoken != null) {
             oauthHeaderParams.add(new HttpParameter("oauth_token", otoken.getToken()));
         }
-        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size() + params.length);
+        List<HttpParameter> signatureBaseParams = new ArrayList<>(oauthHeaderParams.size() + params.length);
         signatureBaseParams.addAll(oauthHeaderParams);
         if (!HttpParameter.containsFile(params)) {
             signatureBaseParams.addAll(toParamList(params));
@@ -260,7 +260,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         long timestamp = System.currentTimeMillis() / 1000;
         long nonce = timestamp + RAND.nextInt();
 
-        List<HttpParameter> oauthHeaderParams = new ArrayList<HttpParameter>(5);
+        List<HttpParameter> oauthHeaderParams = new ArrayList<>(5);
         oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
         oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
         oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
@@ -270,7 +270,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
             oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
         }
 
-        List<HttpParameter> signatureBaseParams = new ArrayList<HttpParameter>(oauthHeaderParams.size());
+        List<HttpParameter> signatureBaseParams = new ArrayList<>(oauthHeaderParams.size());
         signatureBaseParams.addAll(oauthHeaderParams);
         parseGetParameters(url, signatureBaseParams);
 
@@ -358,7 +358,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     }
 
     private static List<HttpParameter> toParamList(HttpParameter[] params) {
-        List<HttpParameter> paramList = new ArrayList<HttpParameter>(params.length);
+        List<HttpParameter> paramList = new ArrayList<>(params.length);
         paramList.addAll(Arrays.asList(params));
         return paramList;
     }

@@ -189,7 +189,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void normalize(Properties props) {
-        ArrayList<String> toBeNormalized = new ArrayList<String>(10);
+        ArrayList<String> toBeNormalized = new ArrayList<>(10);
         for (Object key : props.keySet()) {
             String keyStr = (String) key;
             if (-1 != (keyStr.indexOf("twitter4j."))) {

@@ -523,7 +523,7 @@ import java.util.Date;
             JSONArray list = json.getJSONArray("users");
             int size = list.length();
             PagableResponseList<User> users =
-                    new PagableResponseListImpl<User>(size, json, res);
+                    new PagableResponseListImpl<>(size, json, res);
             for (int i = 0; i < size; i++) {
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
@@ -554,7 +554,7 @@ import java.util.Date;
             }
             int size = list.length();
             ResponseList<User> users =
-                    new ResponseListImpl<User>(size, res);
+                    new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 User user = new UserJSONImpl(json);

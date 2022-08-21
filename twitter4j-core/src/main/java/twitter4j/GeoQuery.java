@@ -141,7 +141,7 @@ public final class GeoQuery implements java.io.Serializable {
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
+        ArrayList<HttpParameter> params = new ArrayList<>();
         if (location != null) {
             appendParameter("lat", location.getLatitude(), params);
             appendParameter("long", location.getLongitude(), params);

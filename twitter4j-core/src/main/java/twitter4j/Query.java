@@ -57,7 +57,7 @@ public final class Query implements java.io.Serializable {
         if(nextPageQuery != null) {
             String nextPageParameters=nextPageQuery.substring(1);
             
-            Map<String,String> params=new LinkedHashMap<String,String>();
+            Map<String,String> params= new LinkedHashMap<>();
             for(HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
                 // Yes, we'll overwrite duplicate parameters, but we should not
                 // get duplicate parameters from this endpoint.
@@ -450,7 +450,7 @@ public final class Query implements java.io.Serializable {
     private static final HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>(12);
+        ArrayList<HttpParameter> params = new ArrayList<>(12);
         appendParameter("q", query, params);
         appendParameter("lang", lang, params);
         appendParameter("locale", locale, params);

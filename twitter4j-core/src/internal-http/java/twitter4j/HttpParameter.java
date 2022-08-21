@@ -326,7 +326,7 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
      * @return decoded parameters
      */
     public static List<HttpParameter> decodeParameters(String queryParameters) {
-        List<HttpParameter> result=new ArrayList<HttpParameter>();
+        List<HttpParameter> result= new ArrayList<>();
         for (String pair : queryParameters.split("&")) {
             String[] parts=pair.split("=", 2);
             if(parts.length == 2) {

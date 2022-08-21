@@ -61,7 +61,7 @@ import java.util.Date;
         JSONArray json = res.asJSONArray();
         ResponseList<SavedSearch> savedSearches;
         try {
-            savedSearches = new ResponseListImpl<SavedSearch>(json.length(), res);
+            savedSearches = new ResponseListImpl<>(json.length(), res);
             for (int i = 0; i < json.length(); i++) {
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);

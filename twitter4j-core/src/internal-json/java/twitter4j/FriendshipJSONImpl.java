@@ -61,7 +61,7 @@ class FriendshipJSONImpl implements Friendship {
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Friendship> friendshipList = new ResponseListImpl<Friendship>(size, res);
+            ResponseList<Friendship> friendshipList = new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Friendship friendship = new FriendshipJSONImpl(json);

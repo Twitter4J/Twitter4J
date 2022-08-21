@@ -73,8 +73,8 @@ public final class PrintFilterStream {
             }
         });
 
-        ArrayList<Long> follow = new ArrayList<Long>();
-        ArrayList<String> track = new ArrayList<String>();
+        ArrayList<Long> follow = new ArrayList<>();
+        ArrayList<String> track = new ArrayList<>();
         for (String arg : args) {
             if (isNumericalArgument(arg)) {
                 for (String id : arg.split(",")) {

@@ -67,7 +67,7 @@ import java.io.Serial;
         try {
             int size = list.length();
             ResponseList<Location> locations =
-                    new ResponseListImpl<Location>(size, null);
+                    new ResponseListImpl<>(size, null);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Location location = new LocationJSONImpl(json);

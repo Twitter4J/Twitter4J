@@ -50,7 +50,7 @@ import java.util.Map;
     }
 
     static Map<String, RateLimitStatus> createRateLimitStatuses(JSONObject json) throws TwitterException {
-        Map<String, RateLimitStatus> map = new HashMap<String, RateLimitStatus>();
+        Map<String, RateLimitStatus> map = new HashMap<>();
         try {
             JSONObject resources = json.getJSONObject("resources");
             Iterator resourceKeys = resources.keys();

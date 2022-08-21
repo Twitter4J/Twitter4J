@@ -342,8 +342,8 @@ class DAOTest extends TwitterTestBase {
 
     private static JSONObject validateJSONObjectSchema(JSONObject json, String[] knownNames) throws JSONException {
         boolean debug = false;
-        Map<String, String[]> schemaMap = new HashMap<String, String[]>();
-        List<String> names = new ArrayList<String>();
+        Map<String, String[]> schemaMap = new HashMap<>();
+        List<String> names = new ArrayList<>();
         if (debug) {
             System.out.println("validating:" + json);
         }

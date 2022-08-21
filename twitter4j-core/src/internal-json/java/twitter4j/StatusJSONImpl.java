@@ -442,7 +442,7 @@ import static twitter4j.ParseUtil.getDate;
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
+            ResponseList<Status> statuses = new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);

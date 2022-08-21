@@ -92,13 +92,12 @@ final class ParseUtil {
         }
     }
 
-    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<String,
-            LinkedBlockingQueue<SimpleDateFormat>>();
+    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<>();
 
     public static Date getDate(String dateString, String format) throws TwitterException {
         LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
         if (simpleDateFormats == null) {
-            simpleDateFormats = new LinkedBlockingQueue<SimpleDateFormat>();
+            simpleDateFormats = new LinkedBlockingQueue<>();
             formatMapQueue.put(format, simpleDateFormats);
         }
         SimpleDateFormat sdf = simpleDateFormats.poll();

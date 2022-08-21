@@ -19,7 +19,7 @@ public abstract class HttpClientBase implements HttpClient, Serializable {
 
     public HttpClientBase(HttpClientConfiguration conf) {
         this.CONF = conf;
-        requestHeaders = new HashMap<String, String>();
+        requestHeaders = new HashMap<>();
         requestHeaders.put("X-Twitter-Client-Version", Version.getVersion());
         requestHeaders.put("X-Twitter-Client-URL", "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         requestHeaders.put("X-Twitter-Client", "Twitter4J");

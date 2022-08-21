@@ -52,8 +52,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 	private final int MAX_VIDEO_SIZE = 512 * MB; // 512MB is a constraint  imposed by Twitter for video files
 	private final int CHUNK_SIZE = 2 * MB; // max chunk size
 
-    private static final ConcurrentHashMap<Configuration, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<Configuration, HttpParameter[]>();
-    private static final ConcurrentHashMap<Configuration, String> implicitParamsStrMap = new ConcurrentHashMap<Configuration, String>();
+    private static final ConcurrentHashMap<Configuration, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Configuration, String> implicitParamsStrMap = new ConcurrentHashMap<>();
 
     /*package*/
     TwitterImpl(Configuration conf, Authorization auth) {
@@ -79,7 +79,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 implicitParamsStr += "tweet_mode=extended";
             }
 
-            List<HttpParameter> params = new ArrayList<HttpParameter>(3);
+            List<HttpParameter> params = new ArrayList<>(3);
             if (conf.isIncludeEntitiesEnabled()) {
                 params.add(new HttpParameter("include_entities", "true"));
             }
@@ -801,7 +801,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                                                  Boolean sleep_timeEnabled, String start_sleepTime,
                                                  String end_sleepTime, String time_zone, String lang)
             throws TwitterException {
-        List<HttpParameter> profile = new ArrayList<HttpParameter>(6);
+        List<HttpParameter> profile = new ArrayList<>(6);
         if (trend_locationWoeid != null) {
             profile.add(new HttpParameter("trend_location_woeid", trend_locationWoeid));
         }
@@ -833,7 +833,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public User updateProfile(String name, String url
             , String location, String description) throws TwitterException {
-        List<HttpParameter> profile = new ArrayList<HttpParameter>(4);
+        List<HttpParameter> profile = new ArrayList<>(4);
         addParameterToList(profile, "name", name);
         addParameterToList(profile, "url", url);
         addParameterToList(profile, "location", location);
@@ -1565,7 +1565,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     }
 
     private UserList updateUserList(String newListName, boolean isPublicList, String newDescription, HttpParameter... params) throws TwitterException {
-        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
+        List<HttpParameter> httpParams = new ArrayList<>();
         Collections.addAll(httpParams, params);
         if (newListName != null) {
             httpParams.add(new HttpParameter("name", newListName));
@@ -1579,7 +1579,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public UserList createUserList(String listName, boolean isPublicList, String description) throws TwitterException {
-        List<HttpParameter> httpParams = new ArrayList<HttpParameter>();
+        List<HttpParameter> httpParams = new ArrayList<>();
         httpParams.add(new HttpParameter("name", listName));
         httpParams.add(new HttpParameter("mode", isPublicList ? "public" : "private"));
         if (description != null) {

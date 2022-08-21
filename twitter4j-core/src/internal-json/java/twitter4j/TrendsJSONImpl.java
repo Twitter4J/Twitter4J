@@ -100,7 +100,7 @@ import java.util.Iterator;
             Date asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
-            trends = new ResponseListImpl<Trends>(trendsJson.length(), res);
+            trends = new ResponseListImpl<>(trendsJson.length(), res);
             Iterator ite = trendsJson.keys();
             while (ite.hasNext()) {
                 String key = (String) ite.next();
