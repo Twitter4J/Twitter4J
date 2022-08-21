@@ -29,11 +29,12 @@ public interface DirectMessagesResources {
     /**
      * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/list.json
+     * <br>Requests / 15-min window (user auth)	15/user
      *
      * @param count Max number of events to be returned. 20 default. 50 max.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events.html">GET direct_messages/events/list — Twitter Developers</a>
+     * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/list-events">GET direct_messages/events/list — Twitter Developers</a>
      * @since Twitter4J 4.0.7
      */
     DirectMessageList getDirectMessages(int count)
