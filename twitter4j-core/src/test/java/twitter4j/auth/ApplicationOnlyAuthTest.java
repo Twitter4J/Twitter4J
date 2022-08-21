@@ -26,9 +26,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
@@ -67,7 +65,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         } catch (TwitterException e) {
             assertEquals(403, e.getStatusCode());
             assertEquals(220, e.getErrorCode());
-            assertEquals("Your credentials do not allow access to this resource", e.getErrorMessage());
+            assertTrue(e.getErrorMessage().contains("Your credentials do not allow access to this resource"));
         }
     }
 

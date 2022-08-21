@@ -42,15 +42,11 @@ class AuthorizationTest extends TwitterTestBase {
 
     @Test
     void testOAuthInstance() throws Exception {
-        String consumerSecret;
-        String consumerKey;
-        consumerSecret = p.getProperty("browser.oauth.consumerSecret");
-        consumerKey = p.getProperty("browser.oauth.consumerSecret");
 
         Twitter twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(browserConsumerKey , browserConsumerSecret);
         try {
-            twitter.setOAuthConsumer(consumerSecret, consumerKey);
+            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey );
             fail("should throw IllegalStateException");
         } catch (IllegalStateException ignore) {
 
@@ -62,16 +58,14 @@ class AuthorizationTest extends TwitterTestBase {
 
     @Test
     void testOAuth2Instance() throws Exception {
-        String consumerSecret = p.getProperty("browser.oauth.consumerSecret");
-        String consumerKey = p.getProperty("browser.oauth.consumerSecret");
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setApplicationOnlyAuthEnabled(true);
 
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         try {
-            twitter.setOAuthConsumer(consumerSecret, consumerKey);
+            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey);
             fail("should throw IllegalStateException");
         } catch (IllegalStateException ignore) {
         }
