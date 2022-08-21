@@ -121,8 +121,8 @@ public class TwitterTestBase {
         }
         Properties props = new Properties();
 
-        String prefix = String.valueOf(currentIndex) + ".";
-        String envPrefix = "t4j" + String.valueOf(currentIndex) + "_";
+        String prefix = currentIndex + ".";
+        String envPrefix = "t4j" + currentIndex + "_";
         Map<String, String> map = System.getenv();
         for (String key : map.keySet()) {
             if (key.startsWith(envPrefix)) {
