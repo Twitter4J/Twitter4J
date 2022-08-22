@@ -1,0 +1,98 @@
+plugins {
+    id 'java'
+    id 'signing'
+    id 'maven-publish'
+}
+
+group 'org.twitter4j'
+version '4.0.8-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDir 'src/internal-async/java'
+            srcDir 'src/internal-http/java'
+            srcDir 'src/jmx/java'
+            srcDir 'src/internal-json/java'
+            srcDir 'src/internal-logging/java'
+            srcDir 'src/internal-util/java'
+            srcDir 'src/stream/java'
+            srcDir 'src/main/java'
+        }
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+compileJava   {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
+dependencies {
+    compileOnly 'org.slf4j:slf4j-api:1.7.36'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
+    implementation 'com.intellij:annotations:12.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0'
+    testImplementation 'com.googlecode:kryo:1.04'
+    testImplementation 'org.springframework:spring:2.5.6'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'twitter4j-core'
+            from components.java
+            pom {
+                name = 'twitter4j-core'
+                description = 'twitter4j'
+                url = 'https://github.com/Twitter4J/Twitter4J'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'yusuke'
+                        name = 'Yusuke Yamamoto'
+                        email = 'yusuke@mac.com'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/Twitter4J/Twitter4J/'
+                    connection = 'scm:git:git://github.com/Twitter4J/Twitter4J.git'
+                    developerConnection = 'scm:git:git@github.com:Twitter4J/Twitter4J.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = project.properties['SONATYPE_USERNAME'] ?: "none"
+                password = project.properties['SONATYPE_PASSWORD'] ?: "none"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}

@@ -1,7 +1,6 @@
 Twitter4J is a Twitter API binding library for the Java language licensed under Apache License 2.0.
 
 LICENSE.txt - the terms of license of this software
-pom.xml - maven parent pom
 powered-by-badge - badge
 readme.txt - this file
 twitter4j-core - core component : support REST and Search API

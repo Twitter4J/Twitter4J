@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+    id 'signing'
+    id 'maven-publish'
+}
+
+group 'org.twitter4j'
+version '4.0.8-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':twitter4j-core')
+}

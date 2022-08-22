@@ -1,0 +1,3 @@
+rootProject.name = 'twitter4j'
+include 'twitter4j-examples'
+include 'twitter4j-core'
