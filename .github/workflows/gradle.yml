@@ -24,7 +24,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'liberica'
+    - name: Update .env file
+      run: |
+          echo "${{secrets.T4J_TEST_PROPS}}" | base64 --decode > test.properties
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --stacktrace
