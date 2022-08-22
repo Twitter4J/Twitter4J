@@ -45,6 +45,7 @@ dependencies {
     testImplementation 'com.googlecode:kryo:1.04'
     testImplementation 'org.springframework:spring:2.5.6'
 }
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
 test {
     useJUnitPlatform()
