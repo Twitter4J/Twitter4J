@@ -25,11 +25,16 @@ sourceSets {
     }
 }
 
+task sourcesJar(type: Jar) {
+    duplicatesStrategy = 'include'
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
 }
-
 compileJava   {
     sourceCompatibility = '17'
     targetCompatibility = '17'
