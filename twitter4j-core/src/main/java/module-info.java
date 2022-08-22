@@ -1,8 +1,8 @@
 module twitter4j {
     requires java.management;
     requires java.logging;
-    requires org.slf4j;
-    requires org.apache.logging.log4j;
+    requires static org.slf4j;
+    requires static org.apache.logging.log4j;
     exports twitter4j;
     exports twitter4j.api;
     exports twitter4j.auth;
