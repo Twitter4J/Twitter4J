@@ -19,6 +19,8 @@ package twitter4j.auth;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import twitter4j.*;
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class OAuthTest extends TwitterTestBase {
 
     @Test

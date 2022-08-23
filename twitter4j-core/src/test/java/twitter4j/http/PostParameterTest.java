@@ -17,6 +17,8 @@
 package twitter4j.http;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.HttpParameter;
 
 import java.io.File;
@@ -26,16 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class PostParameterTest {
 
     @Test
-    void testBooleanParameter() throws Exception {
+    void testBooleanParameter() {
         assertEquals("true", new HttpParameter("test", true).getValue());
         assertEquals("false", new HttpParameter("test", false).getValue());
     }
 
     @Test
-    void testgetContentType() throws Exception {
+    void testgetContentType() {
         assertValidContentType("image/jpeg", "img.jpeg");
         assertValidContentType("image/jpeg", "img.JPEG");
         assertValidContentType("image/jpeg", "img.jpg");

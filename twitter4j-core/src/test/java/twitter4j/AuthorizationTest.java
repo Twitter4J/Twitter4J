@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.NullAuthorization;
 import twitter4j.auth.OAuth2Authorization;
@@ -30,18 +32,19 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class AuthorizationTest extends TwitterTestBase {
 
 
     @Test
-    void testAnonymousInstance() throws Exception {
+    void testAnonymousInstance() {
         Twitter twitter = new TwitterFactory().getInstance();
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
     }
 
     @Test
-    void testOAuthInstance() throws Exception {
+    void testOAuthInstance() {
 
         Twitter twitter = new TwitterFactory().getInstance();
         twitter.setOAuthConsumer(browserConsumerKey , browserConsumerSecret);
@@ -57,7 +60,7 @@ class AuthorizationTest extends TwitterTestBase {
     }
 
     @Test
-    void testOAuth2Instance() throws Exception {
+    void testOAuth2Instance() {
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setApplicationOnlyAuthEnabled(true);

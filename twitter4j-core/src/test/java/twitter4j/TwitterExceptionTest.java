@@ -18,6 +18,8 @@ package twitter4j;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,10 +27,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class TwitterExceptionTest {
 
     @Test
-    void testException() throws Exception {
+    void testException() {
         TwitterException te1, te2, te3;
         te1 = new TwitterException("test");
         te2 = new TwitterException("test");
@@ -44,13 +47,12 @@ public class TwitterExceptionTest {
         assertEquals(35, te3.getExceptionCode().length());
 
         assertNotEquals(code1, code2);
-        new TwitterException("msg").toString();
     }
 
     @Test
-    void testEncodedMessage() throws Exception {
+    void testEncodedMessage() {
         TwitterException te = new TwitterException("{\"errors\":[{\"message\":\"Sorry, that page does not exist\",\"code\":34}]}");
-        assertTrue(-1 != te.getMessage().indexOf("Sorry, that page does not exist"));
+        assertTrue(te.getMessage().contains("Sorry, that page does not exist"));
         assertTrue(te.isErrorMessageAvailable());
         assertEquals("Sorry, that page does not exist", te.getErrorMessage());
         assertEquals(34, te.getErrorCode());
@@ -61,7 +63,7 @@ public class TwitterExceptionTest {
     }
 
     @Test
-    void testGetLong() throws Exception {
+    void testGetLong() {
         JSONObject json = new JSONObject("{\"value\":\"13857270119014401\"}");
         assertEquals(13857270119014401L, json.getLong("value"));
     }

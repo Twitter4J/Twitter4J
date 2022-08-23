@@ -16,8 +16,9 @@
 
 package twitter4j.auth;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -31,20 +32,15 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class ApplicationOnlyAuthTest extends TwitterTestBase {
-    private ConfigurationBuilder builder;
-
-    @BeforeEach
-    protected void beforeEach() throws Exception {
-        super.beforeEach();
-        builder = new ConfigurationBuilder();
-        builder.setApplicationOnlyAuthEnabled(true);
-    }
 
     // --- Authentication
 
     @Test
     void testAuthWithBuildingConf1() throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
         // setup
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
@@ -71,6 +67,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testAuthWithBuildingConf2() throws Exception {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
@@ -87,7 +85,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testSettingAccessToken1() throws TwitterException {
-        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
 
@@ -108,7 +107,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testSettingAccessToken2() throws TwitterException {
-        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
 
@@ -130,7 +130,8 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testInvalidation() throws Exception {
-        // setup
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
         Twitter twitter = new TwitterFactory(builder.build()).getInstance();
         OAuth2Token token = twitter.getOAuth2Token();
@@ -188,9 +189,9 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     @Test
     void testSettingAccessTokenFromPropertyFile() throws Exception {
         String filename = "./twitter4j.properties";
-
         try {
-            // setup
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.setApplicationOnlyAuthEnabled(true);
             builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
             OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
             writeFile(filename,
@@ -217,20 +218,19 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     private void writeFile(String filename, String... lines) throws Exception {
         File file = new File(filename);
+        //noinspection ResultOfMethodCallIgnored
         file.delete();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String line : lines) {
                 writer.write(line);
                 writer.newLine();
             }
-        } finally {
-            writer.close();
         }
     }
 
     private void deleteFile(String filename) {
         File file = new File(filename);
+        //noinspection ResultOfMethodCallIgnored
         file.delete();
     }
 }

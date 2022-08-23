@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 @SuppressWarnings("ConstantConditions")
+@Execution(ExecutionMode.CONCURRENT)
 class DAOTest extends TwitterTestBase {
     private final Configuration conf = ConfigurationContext.getInstance();
 

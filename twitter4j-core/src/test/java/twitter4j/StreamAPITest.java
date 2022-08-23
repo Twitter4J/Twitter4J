@@ -18,6 +18,8 @@ package twitter4j;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.AccessToken;
 
 import java.io.InputStream;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Execution(ExecutionMode.SAME_THREAD)
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
     private long userId;
     private long upToStatusId;
@@ -42,12 +44,12 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testToString() throws Exception {
+    void testToString() {
         new TwitterStreamFactory().getInstance().toString();
     }
 
     @Test
-    void testEquality() throws Exception {
+    void testEquality() {
         Map<TwitterStream, String> map = new HashMap<>();
         TwitterStream twitterStream1 = new TwitterStreamFactory().getInstance();
         TwitterStream twitterStream2 = new TwitterStreamFactory().getInstance();
@@ -82,7 +84,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testNoListener() throws Exception {
+    void testNoListener() {
         TwitterStream twitterStream;
         twitterStream = new TwitterStreamFactory().getInstance();
         twitterStream.setOAuthConsumer("dummy", "dummy");
@@ -161,7 +163,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testSample() throws Exception {
+    void testSample() {
         TwitterStream twitterStream2 = new TwitterStreamFactory(conf3).getInstance();
         twitterStream2.addListener(this);
         twitterStream2.sample();
@@ -186,7 +188,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testShutdownAndRestart() throws Exception {
+    void testShutdownAndRestart() {
         TwitterStream twitterStream3 = new TwitterStreamFactory(conf3).getInstance()
                 .addListener(this)
                 .sample();
@@ -231,7 +233,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testFilterIncludesEntities() throws Exception {
+    void testFilterIncludesEntities() {
         this.ex = null;
 
         FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
@@ -270,7 +272,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     }
 
     @Test
-    void testUnAuthorizedStreamMethods() throws Exception {
+    void testUnAuthorizedStreamMethods() {
         TwitterStream twitterStream3 = null;
         try {
             twitterStream3 = new TwitterStreamFactory(conf2).getInstance();
@@ -278,9 +280,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             twitterStream3 = new TwitterStreamFactory().getInstance();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFirehoseStream(0);
             fail();
-        } catch (IllegalStateException ignored) {
-        } catch (TwitterException ignored) {
-
+        } catch (IllegalStateException | TwitterException ignored) {
         }
         try {
             twitterStream3 = new TwitterStreamFactory().getInstance();
@@ -300,7 +300,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     private synchronized void waitForStatus() {
         try {
-            this.wait(2000);
+            this.wait(3000);
             System.out.println("notified.");
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -309,7 +309,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     private synchronized void waitForNotification() {
         try {
-            this.wait(2000);
+            this.wait(3000);
             System.out.println("notified.");
         } catch (InterruptedException e) {
             e.printStackTrace();

@@ -18,13 +18,16 @@ package twitter4j;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Execution(ExecutionMode.CONCURRENT)
 class PagingTest {
     @Test
-    void testPaging() throws Exception {
+    void testPaging() {
         java.util.List<HttpParameter> params;
         Paging paging = new Paging();
         params = paging.asPostParameterList();

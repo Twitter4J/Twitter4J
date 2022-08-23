@@ -17,6 +17,8 @@
 package twitter4j.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,9 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
+@Execution(ExecutionMode.CONCURRENT)
 class CharacterUtilTest {
     @Test
-    void testCount() throws Exception {
+    void testCount() {
         String str;
         int expectedLength;
         str = "a quick brown fox jumped over the lazy dog.";
@@ -41,7 +44,6 @@ class CharacterUtilTest {
         assertFalse(CharacterUtil.isExceedingLengthLimitation(str));
 
         str = "cafe";
-        expectedLength = 4;
         assertEquals(expectedLength, CharacterUtil.count(str));
         assertFalse(CharacterUtil.isExceedingLengthLimitation(str));
 

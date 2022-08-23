@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -24,7 +26,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -34,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author George Ludwig georgeludwig at gmail.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class StatusSerializationTest {
 
 
@@ -44,7 +47,7 @@ class StatusSerializationTest {
         Status status = new StatusJSONImpl(json);
         // confirm the test json actually created some place ids
         String s = status.getScopes().getPlaceIds()[0];
-        assertTrue(s.equals("place one"));
+        assertEquals("place one", s);
         // serialize to outputstream
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -56,7 +59,7 @@ class StatusSerializationTest {
         Status statusTwo = (Status) ois.readObject();
         // confirm the place id is the same
         s = statusTwo.getScopes().getPlaceIds()[0];
-        assertTrue(s.equals("place one"));
+        assertEquals("place one", s);
     }
 
 }

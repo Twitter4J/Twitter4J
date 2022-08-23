@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class TweetsResourcesTest extends TwitterTestBase {
 
     @Test
@@ -117,9 +120,6 @@ class TweetsResourcesTest extends TwitterTestBase {
     void testUploadMediaByFile() throws Exception {
 
         UploadedMedia media = twitter1.uploadMedia(getRandomlyChosenFile());
-
-        assertNotNull(media.getMediaId());
-        assertNotNull(media.getSize());
     }
 
     @Test
@@ -128,9 +128,6 @@ class TweetsResourcesTest extends TwitterTestBase {
         File randomFile = getRandomlyChosenFile();
         FileInputStream fis = new FileInputStream(randomFile);
         UploadedMedia media2 = twitter1.uploadMedia("fromInputStream", fis);
-
-        assertNotNull(media2.getMediaId());
-        assertNotNull(media2.getSize());
     }
 
     @Test

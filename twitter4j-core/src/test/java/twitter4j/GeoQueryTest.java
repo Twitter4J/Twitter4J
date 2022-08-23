@@ -18,6 +18,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * @author Fran Garcia - fgarciarico at gmail.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class GeoQueryTest {
 
     @Test

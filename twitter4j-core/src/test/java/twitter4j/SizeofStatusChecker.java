@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -26,11 +28,11 @@ import java.io.ByteArrayInputStream;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SizeofStatusChecker {
     public static void main(String[] args) throws Exception {
         String statusXML = "<status>  <created_at>Thu Oct 30 10:51:24 +0000 2008</created_at>  <id>981972359</id>  <text>test</text>  <source>&lt;a href=&quot;http://yusuke.homeip.net/twitter4j/&quot;&gt;Twitter4J&lt;/a&gt;</source>  <truncated>false</truncated>  <in_reply_to_status_id></in_reply_to_status_id>  <in_reply_to_user_id></in_reply_to_user_id>  <favorited>false</favorited>  <user>    <id>6358482</id>    <name>twit4j</name>    <screen_name>twit4j</screen_name>    <location>location:Thu Oct 30 19:51:21 J</location>    <description></description>    <profile_image_url>http://static.twitter.com/images/default_profile_normal.png</profile_image_url>    <url></url>    <protected>false</protected>    <followers_count>3</followers_count>  </user></status>";
-        DocumentBuilder builder = null;
-        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         int count = 10000;
         Status[] statuses = new Status[count];
         long before;

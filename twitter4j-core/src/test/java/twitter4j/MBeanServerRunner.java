@@ -15,6 +15,8 @@
  */
 package twitter4j;
 
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.management.APIStatistics;
 import twitter4j.management.APIStatisticsOpenMBean;
 
@@ -29,6 +31,7 @@ import java.lang.management.ManagementFactory;
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class MBeanServerRunner {
     public static void main(String[] args) throws Exception {
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();

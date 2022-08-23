@@ -17,10 +17,12 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
-import twitter4j.*;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Execution(ExecutionMode.CONCURRENT)
 class HTMLEntityTest {
 
     @Test
@@ -55,7 +57,7 @@ class HTMLEntityTest {
     }
 
     @Test
-    void testUnescapeAndSlideEntityIncdicesWithNullParameters() throws Exception {
+    void testUnescapeAndSlideEntityIncdicesWithNullParameters() {
         String rawJSON = "{\"text\":\"@null &lt; #test &gt; &amp;\\u307b\\u3052\\u307b\\u3052 @t4j_news %&amp; http:\\/\\/t.co\\/HwbSpYFr http:\\/\\/t.co\\/d4G7MQ62\"}";
         JSONObject json = new JSONObject(rawJSON);
         String escaped = HTMLEntity.unescapeAndSlideEntityIncdices(json.getString("text"),
@@ -65,7 +67,7 @@ class HTMLEntityTest {
     }
 
     @Test
-    void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() throws Exception {
+    void testUnescapeAndSlideEntityIncdicesWithURLEntitiesOnly() {
         URLEntityJSONImpl t4jURL = new URLEntityJSONImpl(49, 69, "http://t.co/HwbSpYFr"
                 , "http://twitter4j.org/en/index.html#download", "twitter4j.org/en/index.html#\u2026");
 
@@ -126,7 +128,7 @@ class HTMLEntityTest {
     }
 
     @Test
-    void testUnescapeAndSlideEntityIncdicesWithCorrectedIndices() throws Exception {
+    void testUnescapeAndSlideEntityIncdicesWithCorrectedIndices() {
         // #test&amp;test &amp;#test #test&amp; #test&gt;
         // 0123456789012345678901234567890123456789012345
         // 0         1         2         3         4
@@ -147,18 +149,18 @@ class HTMLEntityTest {
     }
 
 	/**
-	 * When Twitter reports indices of entities, it counts surrogate code points
-	 * as a single character. Java, however, treats surrogate code points as two
-	 * characters. This means that any entity occurring after a surrogate code
-	 * point will be incorrect unless counting code points instead of straight
-	 * Java string indexes. This is particularly important to keep in mind when
-	 * sliding indices.
-	 * <p>
-	 * Note that the text of the example tweet used in this test comes from:
-	 * https://twitter.com/WHO/status/874656370829799424
-	 *
-	 * @author Philip Hachey - philip dot hachey at gmail dot com
-	 */
+     * When Twitter reports indices of entities, it counts surrogate code points
+     * as a single character. Java, however, treats surrogate code points as two
+     * characters. This means that any entity occurring after a surrogate code
+     * point will be incorrect unless counting code points instead of straight
+     * Java string indexes. This is particularly important to keep in mind when
+     * sliding indices.
+     * <p>
+     * Note that the text of the example tweet used in this test comes from:
+     * <a href="https://twitter.com/WHO/status/874656370829799424">...</a>
+     *
+     * @author Philip Hachey - philip dot hachey at gmail dot com
+     */
 	@Test
     void testUnescapeAndSlideEntityIncdicesWithSurrogateCodePoints() throws TwitterException, JSONException {
 		// SETUP
@@ -205,7 +207,7 @@ class HTMLEntityTest {
 	}
 
 	@Test
-    void testUnescapeAndSlideEntityIncdicesAtBoundariesWithSurrogateCodePoints() throws Exception {
+    void testUnescapeAndSlideEntityIncdicesAtBoundariesWithSurrogateCodePoints() {
 		// SETUP
 		HashtagEntityJSONImpl test1 = new HashtagEntityJSONImpl(0, 4, "one");
 		HashtagEntityJSONImpl test2 = new HashtagEntityJSONImpl(21, 25, "two");

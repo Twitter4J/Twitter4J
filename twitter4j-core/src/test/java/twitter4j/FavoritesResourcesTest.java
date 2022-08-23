@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class FavoritesResourcesTest extends TwitterTestBase {
 
     @Test
@@ -32,7 +35,7 @@ class FavoritesResourcesTest extends TwitterTestBase {
         Status status = twitter1.getHomeTimeline().get(0);
         try {
             twitter2.destroyFavorite(status.getId());
-        } catch (TwitterException te) {
+        } catch (TwitterException ignore) {
         }
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));

@@ -18,6 +18,8 @@ package twitter4j;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.6
  */
+@Execution(ExecutionMode.CONCURRENT)
 class StringUtilTest {
     @Test
-    void testJoin() throws Exception {
+    void testJoin() {
         assertEquals("6358482", StringUtil.join(new long[]{6358482L}));
         assertEquals("6358482,6358483", StringUtil.join(new long[]{6358482L, 6358483L}));
     }

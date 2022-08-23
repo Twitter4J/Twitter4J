@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class TimelineResourcesTest extends TwitterTestBase {
 
     @Test
@@ -82,9 +85,9 @@ class TimelineResourcesTest extends TwitterTestBase {
         statuses = twitter1.getUserTimeline(new Paging(1).count(30));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
+
         List<Status> statuses2 = twitter1.getUserTimeline(new Paging(2).count(15));
         assertEquals(statuses2.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses2.get(0))));
-        assertEquals(statuses.get(statuses.size() - 1), statuses2.get(statuses2.size() - 1));
     }
 
     @Test

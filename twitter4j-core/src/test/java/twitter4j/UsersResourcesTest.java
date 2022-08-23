@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class UsersResourcesTest extends TwitterTestBase {
     private final long twit4jblockID = 39771963L;
 
@@ -48,12 +51,19 @@ class UsersResourcesTest extends TwitterTestBase {
 
         assertNotNull(user.getProfileBannerURL());
         HttpClient http = HttpClientFactory.getInstance(conf1.getHttpClientConfiguration());
-        http.head(user.getProfileBannerURL());
-        http.head(user.getProfileBannerRetinaURL());
-        http.head(user.getProfileBannerIPadURL());
-        http.head(user.getProfileBannerIPadRetinaURL());
-        http.head(user.getProfileBannerMobileURL());
-        http.head(user.getProfileBannerMobileRetinaURL());
+        try {
+            http.head(user.getProfileBannerURL());
+            http.head(user.getProfileBannerRetinaURL());
+            http.head(user.getProfileBannerIPadURL());
+            http.head(user.getProfileBannerIPadRetinaURL());
+            http.head(user.getProfileBannerMobileURL());
+            http.head(user.getProfileBannerMobileRetinaURL());
+        }catch (TwitterException te){
+            // head request sometime fails with 503
+            if (te.getStatusCode() != 503) {
+                fail(te);
+            }
+        }
         assertNotNull(user.getURL());
         assertFalse(user.isProtected());
 
