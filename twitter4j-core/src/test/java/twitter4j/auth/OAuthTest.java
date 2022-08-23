@@ -28,7 +28,6 @@ import twitter4j.conf.ConfigurationContext;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -39,10 +38,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class OAuthTest extends TwitterTestBase {
 
     @Test
-    void testDeterministic() throws Exception {
-        ArrayList list1 = new ArrayList();
-        ArrayList list2 = new ArrayList();
-        assertEquals(list1, list2);
+    void testDeterministic() {
         Twitter twitter1 = new TwitterFactory().getInstance();
         twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         Twitter twitter2 = new TwitterFactory().getInstance();
@@ -134,6 +130,7 @@ class OAuthTest extends TwitterTestBase {
 
     }
 
+    @Disabled
     @Test
     void testBrowserClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
@@ -147,7 +144,7 @@ class OAuthTest extends TwitterTestBase {
         assertEquals(at.getUserId(), id1.id);
     }
 
-    private AccessToken getAccessToken(Twitter twitter, String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
+    private AccessToken getAccessToken(Twitter twitter, @SuppressWarnings("unused") String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
 
         BrowserVersion browserVersion = BrowserVersion.getDefault();
         browserVersion.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15");
@@ -165,12 +162,6 @@ class OAuthTest extends TwitterTestBase {
             return twitter.getOAuthAccessToken(rt, oauthVerifier);
 
         }
-    }
-
-    private static String catchPattern(String body, String before, String after) {
-        int beforeIndex = body.indexOf(before);
-        int afterIndex = body.indexOf(after, beforeIndex);
-        return body.substring(beforeIndex + before.length(), afterIndex);
     }
 
     @Test
@@ -202,7 +193,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testHeader() throws Exception {
+    void testHeader() {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("file", "vacation.jpg");
         params[1] = new HttpParameter("size", "original");
@@ -214,7 +205,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testEncodeParameter() throws Exception {
+    void testEncodeParameter() {
         //http://wiki.oauth.net/TestCases
         assertEquals("abcABC123", HttpParameter.encode("abcABC123"));
         assertEquals("-._~", HttpParameter.encode("-._~"));
@@ -232,7 +223,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testNormalizeRequestParameters() throws Exception {
+    void testNormalizeRequestParameters() {
         // a=1, c=hi%20there, f=25, f=50, f=a, z=p, z=t
         HttpParameter[] params = new HttpParameter[]{
                 new HttpParameter("a", "1"),
@@ -279,7 +270,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testConstructRequestURL() throws Exception {
+    void testConstructRequestURL() {
         //http://oauth.net/core/1.0#rfc.section.9.1.2
         assertEquals("http://example.com/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:80/resource?id=123"));
         assertEquals("http://example.com:8080/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:8080/resource?id=123"));
