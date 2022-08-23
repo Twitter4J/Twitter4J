@@ -41,7 +41,7 @@ compileJava   {
 }
 
 dependencies {
-    compileOnly 'org.slf4j:slf4j-api:1.7.36'
+    compileOnly 'org.slf4j:slf4j-api:2.0.0'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
     implementation 'com.intellij:annotations:12.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
