@@ -51,17 +51,8 @@ public class TwitterAPIMonitor {
             ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatisticsOpenMBean");
             APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(STATISTICS);
             mbs.registerMBean(openMBean, oName);
-        } catch (InstanceAlreadyExistsException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (MBeanRegistrationException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (NotCompliantMBeanException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (MalformedObjectNameException e) {
-            e.printStackTrace();
+        } catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException |
+                 MalformedObjectNameException e) {
             logger.error(e.getMessage());
         }
     }

@@ -93,8 +93,7 @@ public class GetAccessToken {
                 System.out.println(requestToken.getAuthorizationURL());
                 try {
                     Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
-                } catch (UnsupportedOperationException ignore) {
-                } catch (IOException ignore) {
+                } catch (UnsupportedOperationException | IOException ignore) {
                 } catch (URISyntaxException e) {
                     throw new AssertionError(e);
                 }

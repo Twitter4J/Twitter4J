@@ -48,9 +48,7 @@ final class ParseUtil {
             } else {
                 return json.getString(name);
             }
-        } catch (JSONException jsone) {
-            return null;
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return null;
         }
     }

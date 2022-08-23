@@ -136,8 +136,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         // for Google App Engine
         try {
             loadProperties(props, new FileInputStream("WEB-INF/" + TWITTER4J_PROPERTIES));
-        } catch (SecurityException ignore) {
-        } catch (FileNotFoundException ignore) {
+        } catch (SecurityException | FileNotFoundException ignore) {
         }
 
         setFieldsWithTreePath(props, treePath);
