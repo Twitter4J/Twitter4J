@@ -36,12 +36,7 @@ public final class LoadRawJSON {
      */
     public static void main(String[] args) {
         try {
-            File[] files = new File("statuses").listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(".json");
-                }
-            });
+            File[] files = new File("statuses").listFiles((dir, name) -> name.endsWith(".json"));
             for (File file : files) {
                 String rawJSON = readFirstLine(file);
                 Status status = TwitterObjectFactory.createStatus(rawJSON);
@@ -59,33 +54,10 @@ public final class LoadRawJSON {
     }
 
     private static String readFirstLine(File fileName) throws IOException {
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
-        BufferedReader br = null;
-        try {
-            fis = new FileInputStream(fileName);
-            isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            br = new BufferedReader(isr);
+        try (FileInputStream fis = new FileInputStream(fileName);
+             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+             BufferedReader br = new BufferedReader(isr)) {
             return br.readLine();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException ignore) {
-                }
-            }
-            if (isr != null) {
-                try {
-                    isr.close();
-                } catch (IOException ignore) {
-                }
-            }
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException ignore) {
-                }
-            }
         }
     }
 }

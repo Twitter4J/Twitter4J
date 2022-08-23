@@ -12,12 +12,7 @@ public final class TwitterObjectFactory {
         throw new AssertionError("not intended to be instantiated.");
     }
 
-    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<>() {
-        @Override
-        protected Map initialValue() {
-            return new HashMap();
-        }
-    };
+    private static final ThreadLocal<Map> rawJsonMap = ThreadLocal.withInitial(HashMap::new);
 
     /**
      * Returns a raw JSON form of the provided object.<br>
