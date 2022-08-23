@@ -58,7 +58,7 @@ public final class Paging implements java.io.Serializable {
         if (list.size() == 0) {
             return NULL_PARAMETER_ARRAY;
         }
-        return list.toArray(new HttpParameter[list.size()]);
+        return list.toArray(new HttpParameter[0]);
     }
 
     /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams) {
@@ -108,7 +108,7 @@ public final class Paging implements java.io.Serializable {
         if (pagingParams.size() == 0) {
             return NULL_PARAMETER_ARRAY;
         } else {
-            return pagingParams.toArray(new HttpParameter[pagingParams.size()]);
+            return pagingParams.toArray(new HttpParameter[0]);
         }
     }
 

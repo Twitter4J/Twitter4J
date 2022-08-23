@@ -111,7 +111,7 @@ import java.util.*;
                     String metadata = option.isNull("metadata") ? null :option.getString("metadata");
                     quickReplyList.add(new QuickReply(option.getString("label"), description, metadata));
                 }
-                quickReplies = quickReplyList.toArray(new QuickReply[quickReplyList.size()]);
+                quickReplies = quickReplyList.toArray(new QuickReply[0]);
             }else{
                 quickReplies = new QuickReply[0];
             }

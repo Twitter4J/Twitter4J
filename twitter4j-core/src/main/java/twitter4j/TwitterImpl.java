@@ -95,7 +95,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             if (conf.isTweetModeExtended()) {
                 params.add(new HttpParameter("tweet_mode", "extended"));
             }
-            HttpParameter[] implicitParams = params.toArray(new HttpParameter[params.size()]);
+            HttpParameter[] implicitParams = params.toArray(new HttpParameter[0]);
 
             // implicitParamsMap.containsKey() is evaluated in the above if clause.
             // thus implicitParamsStrMap needs to be initialized first
@@ -821,7 +821,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             profile.add(new HttpParameter("lang", lang));
         }
         return factory.createAccountSettings(post(conf.getRestBaseURL() + "account/settings.json"
-                , profile.toArray(new HttpParameter[profile.size()])));
+                , profile.toArray(new HttpParameter[0])));
 
     }
 
@@ -839,7 +839,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         addParameterToList(profile, "location", location);
         addParameterToList(profile, "description", description);
         return factory.createUser(post(conf.getRestBaseURL() + "account/update_profile.json"
-                , profile.toArray(new HttpParameter[profile.size()])));
+                , profile.toArray(new HttpParameter[0])));
     }
 
 
@@ -1574,7 +1574,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
         if (newDescription != null) {
             httpParams.add(new HttpParameter("description", newDescription));
         }
-        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/update.json", httpParams.toArray(new HttpParameter[httpParams.size()])));
+        return factory.createAUserList(post(conf.getRestBaseURL() + "lists/update.json", httpParams.toArray(new HttpParameter[0])));
     }
 
     @Override
@@ -1586,7 +1586,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             httpParams.add(new HttpParameter("description", description));
         }
         return factory.createAUserList(post(conf.getRestBaseURL() + "lists/create.json",
-                httpParams.toArray(new HttpParameter[httpParams.size()])));
+                httpParams.toArray(new HttpParameter[0])));
     }
 
     @Override

@@ -52,9 +52,9 @@ public class TwitterTestBase {
 
             this.screenName = p.getProperty(screenName + ".user");
             this.password = p.getProperty(screenName + ".password");
-            Long id = -1L;
+            long id = -1L;
             try {
-                id = Long.valueOf(p.getProperty(screenName + ".id"));
+                id = Long.parseLong(p.getProperty(screenName + ".id"));
             } catch (NumberFormatException nfe) {
                 fail("failed to parse:" + p.getProperty(screenName + ".id"));
             }

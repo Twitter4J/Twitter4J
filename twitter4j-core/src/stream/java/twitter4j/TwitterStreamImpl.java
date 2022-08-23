@@ -407,7 +407,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 rawStreamListeners.add((RawStreamListener) streamListener);
             }
         }
-        return rawStreamListeners.toArray(new RawStreamListener[rawStreamListeners.size()]);
+        return rawStreamListeners.toArray(new RawStreamListener[0]);
     }
 
     private StatusListener[] getStatusListeners() {
@@ -417,7 +417,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                 statusListeners.add((StatusListener) streamListener);
             }
         }
-        return statusListeners.toArray(new StatusListener[statusListeners.size()]);
+        return statusListeners.toArray(new StatusListener[0]);
     }
 
     /*

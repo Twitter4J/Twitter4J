@@ -88,7 +88,7 @@ public final class PrintFilterStream {
         for (int i = 0; i < follow.size(); i++) {
             followArray[i] = follow.get(i);
         }
-        String[] trackArray = track.toArray(new String[track.size()]);
+        String[] trackArray = track.toArray(new String[0]);
 
         // filter() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
         twitterStream.filter(new FilterQuery(0, followArray, trackArray));
