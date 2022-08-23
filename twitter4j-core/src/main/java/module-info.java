@@ -8,4 +8,5 @@ module twitter4j {
     exports twitter4j.auth;
     exports twitter4j.conf;
     exports twitter4j.util;
+    exports twitter4j.management;
 }
