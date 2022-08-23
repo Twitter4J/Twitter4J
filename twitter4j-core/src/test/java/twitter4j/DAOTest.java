@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings("ConstantConditions")
 class DAOTest extends TwitterTestBase {
     private final Configuration conf = ConfigurationContext.getInstance();
 
@@ -39,22 +40,22 @@ class DAOTest extends TwitterTestBase {
         HttpClientImpl http = new HttpClientImpl();
 
         // empty User list
-        List<User> users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
+        List<User> users = UserJSONImpl.createUserList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, users.size());
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, statuses.size());
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/statuses/friends/T4J_hudson.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, directMessages.size());
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
-        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("http://twitter4j.org/en/testcases/trends/daily-empty.json"), conf.isJSONStoreEnabled());
+        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.isJSONStoreEnabled());
         assertEquals(0, trends.size());
         assertDeserializedFormIsEqual(trends);
     }
@@ -76,7 +77,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     @Test
-    void testUnparsable() throws Exception {
+    void testUnparsable() {
         String str;
         str = "";
         try {
@@ -137,7 +138,7 @@ class DAOTest extends TwitterTestBase {
 //        url = "https://api.twitter.com/1.1/trends/available.json";
 //        validateJSONArraySchema(url, schema);
         // Place
-        if (!Boolean.valueOf(System.getProperties().getProperty("twitter4j.test.schema"))) {
+        if (!Boolean.parseBoolean(System.getProperties().getProperty("twitter4j.test.schema"))) {
             // skipping schema validation
             return;
         }
@@ -521,7 +522,7 @@ class DAOTest extends TwitterTestBase {
         List<User> users;
 
         // User list
-        users = UserJSONImpl.createUserList(http.get("http://twitter4j.org/en/testcases/statuses/followers/T4J_hudson.json"), conf);
+        users = UserJSONImpl.createUserList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/followers/T4J_hudson.json"), conf);
         assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
     }
@@ -530,7 +531,7 @@ class DAOTest extends TwitterTestBase {
     void testStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("http://twitter4j.org/en/testcases/statuses/public_timeline.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000L), status.getCreatedAt());
         assertEquals(6000554383L, status.getId());
@@ -549,7 +550,7 @@ class DAOTest extends TwitterTestBase {
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
         HttpClientImpl http = new HttpClientImpl();
-        Status status = new StatusJSONImpl(http.get("http://twitter4j.org/en/testcases/statuses/retweet/6010814202.json"), conf);
+        Status status = new StatusJSONImpl(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), conf);
         assertEquals(new Date(1259078050000L), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
         assertNull(status.getInReplyToScreenName());
@@ -638,7 +639,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testDirectMessagesAsJSON() throws Exception {
         HttpClientImpl http = new HttpClientImpl();
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("http://twitter4j.org/en/testcases/direct_messages.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
         assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());
@@ -683,6 +684,5 @@ class DAOTest extends TwitterTestBase {
     void testStatusJSONImplSupportsMoreThan100RetweetedStatus() throws Exception {
         UserJSONImpl user = new UserJSONImpl(new JSONObject(getStringFromClassPath("/dao/24696018620.json")));
         assertNotNull(user.getStatus());
-        assertNotNull(user.getStatus().getRetweetCount());
     }
 }
