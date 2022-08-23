@@ -71,7 +71,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String STREAM_THREAD_NAME = "streamThreadName";
 
     private static final String CONTRIBUTING_TO = "contributingTo";
-    private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     private static final String INCLUDE_ENTITIES = "includeEntities";
     private static final String INCLUDE_EMAIL = "includeEmail";
@@ -310,10 +309,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, CONTRIBUTING_TO)) {
             setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));
         }
-        if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
-            setDispatcherImpl(getString(props, prefix, ASYNC_DISPATCHER_IMPL));
-        }
-
         if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {
             setOAuthRequestTokenURL(getString(props, prefix, OAUTH_REQUEST_TOKEN_URL));
         }

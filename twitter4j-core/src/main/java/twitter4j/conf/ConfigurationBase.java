@@ -66,7 +66,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
     private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
-    private String dispatcherImpl = "twitter4j.DispatcherImpl";
     private int asyncNumThreads = 1;
 
     private String loggerFactory = null;
@@ -602,15 +601,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public String getDispatcherImpl() {
-        return dispatcherImpl;
-    }
-
-    protected final void setDispatcherImpl(String dispatcherImpl) {
-        this.dispatcherImpl = dispatcherImpl;
-    }
-
-    @Override
     public String getLoggerFactory() {
         return loggerFactory;
     }
@@ -851,8 +841,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
-        if (!Objects.equals(dispatcherImpl, that.dispatcherImpl))
-            return false;
         if (!Objects.equals(loggerFactory, that.loggerFactory))
             return false;
         if (!Objects.equals(mediaProvider, that.mediaProvider))
@@ -892,7 +880,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
-        result = 31 * result + (dispatcherImpl != null ? dispatcherImpl.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
@@ -944,7 +931,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
-                ", dispatcherImpl='" + dispatcherImpl + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", loggerFactory='" + loggerFactory + '\'' +
                 ", contributingTo=" + contributingTo +

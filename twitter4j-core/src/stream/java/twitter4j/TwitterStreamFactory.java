@@ -37,11 +37,7 @@ public final class TwitterStreamFactory implements java.io.Serializable {
     @Serial
     private static final long serialVersionUID = -5181136070759074681L;
     private final Configuration conf;
-    private static final TwitterStream SINGLETON;
-
-    static {
-        SINGLETON = new TwitterStreamImpl(ConfigurationContext.getInstance(), TwitterFactory.DEFAULT_AUTHORIZATION);
-    }
+    private static final TwitterStream SINGLETON = new TwitterStreamImpl(ConfigurationContext.getInstance(), TwitterFactory.DEFAULT_AUTHORIZATION);
 
     /**
      * Creates a TwitterStreamFactory with the root configuration.

@@ -252,12 +252,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setDispatcherImpl(String dispatcherImpl) {
-        checkNotBuilt();
-        configurationBean.setDispatcherImpl(dispatcherImpl);
-        return this;
-    }
-
     public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTrimUserEnabled(enabled);

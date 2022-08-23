@@ -75,23 +75,21 @@ public abstract class Logger {
             Method method = conf.getClass().getMethod("dumpConfiguration");
             method.setAccessible(true);
             method.invoke(conf);
-        } catch (IllegalAccessException ignore) {
-        } catch (InvocationTargetException ignore) {
-        } catch (NoSuchMethodException ignore) {
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignore) {
         }
     }
 
     private static LoggerFactory getLoggerFactoryIfAvailable(String checkClassName, String implementationClass) {
         try {
             Class.forName(checkClassName);
-            return (LoggerFactory) Class.forName(implementationClass).newInstance();
+            return (LoggerFactory) Class.forName(implementationClass).getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException ignore) {
-        } catch (InstantiationException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new AssertionError(e);
         } catch (SecurityException ignore) {
             // Unsigned applets are not allowed to access System properties
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
+        } catch (InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
