@@ -83,8 +83,6 @@ class SearchAPITest extends TwitterTestBase {
         queryResult = twitter1.search(query);
         assertTrue(5 > (queryResult.getRateLimitStatus().getRemaining() - rateLimitStatus.getRemaining()));
         assertEquals(0, queryResult.getSinceId());
-//        assertEquals(-1, queryResult.getMaxId());
-//        assertNull(queryResult.getRefreshUrl());
         assertEquals(15, queryResult.getCount());
         assertTrue(4 > queryResult.getCompletedIn());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
@@ -96,8 +94,8 @@ class SearchAPITest extends TwitterTestBase {
         queryResult = twitter1.search(query);
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
-        query.setQuery("from:al3x");
-        query.setGeoCode(new GeoLocation(37.78233252646689, -122.39301681518555), 10, Query.KILOMETERS);
+        query.setQuery("starbucks");
+        query.setGeoCode(new GeoLocation(47.6094651,-122.3411666), 10, Query.KILOMETERS);
         queryResult = twitter1.search(query);
         assertTrue(0 < queryResult.getTweets().size());
 
