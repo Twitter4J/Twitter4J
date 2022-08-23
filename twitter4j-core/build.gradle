@@ -48,7 +48,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
     testImplementation 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0'
     testImplementation 'com.googlecode:kryo:1.04'
-    testImplementation 'org.springframework:spring:2.5.6'
 }
 javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
