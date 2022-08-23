@@ -147,7 +147,6 @@ class OAuthTest extends TwitterTestBase {
     private AccessToken getAccessToken(Twitter twitter, @SuppressWarnings("unused") String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
 
         BrowserVersion browserVersion = BrowserVersion.getDefault();
-        browserVersion.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15");
         HtmlUnitDriver driver = new HtmlUnitDriver(browserVersion);
         driver.get(rt.getAuthorizationURL());
         driver.findElement(By.name("session[username_or_email]")).sendKeys(screenName);
@@ -155,7 +154,7 @@ class OAuthTest extends TwitterTestBase {
         driver.findElement(By.id("allow")).click();
 
         if (pinRequired) {
-            return twitter.getOAuthAccessToken(rt, driver.findElementsByTagName("code").get(0).getText());
+            return twitter.getOAuthAccessToken(rt, driver.findElements(By.tagName("code")).get(0).getText());
 
         } else {
             String oauthVerifier = driver.getCurrentUrl().replaceFirst(".*&oauth_verifier=([a-zA-Z0-9]+)$", "$1");
