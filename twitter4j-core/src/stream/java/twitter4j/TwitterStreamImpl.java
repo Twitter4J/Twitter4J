@@ -41,7 +41,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     @Serial
     private static final long serialVersionUID = 5621090317737561048L;
     private final HttpClient http;
-    private static final Logger logger = Logger.getLogger(TwitterStreamImpl.class);
+    private static final Logger logger = Logger.getLogger();
 
     private final List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<>(0);
     private TwitterStreamConsumer handler = null;

@@ -56,7 +56,7 @@ public final class JSONObjectType {
     }
 
 
-    private static final Logger logger = Logger.getLogger(JSONObjectType.class);
+    private static final Logger logger = Logger.getLogger();
 
     /**
      * Determine the respective object type for a given JSONObject.  This

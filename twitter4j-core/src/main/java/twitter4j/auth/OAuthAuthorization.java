@@ -40,7 +40,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
-    private static final Logger logger = Logger.getLogger(OAuthAuthorization.class);
+    private static final Logger logger = Logger.getLogger();
     private String consumerKey = "";
     private String consumerSecret;
 

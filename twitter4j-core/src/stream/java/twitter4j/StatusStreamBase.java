@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
  * @since Twitter4J 2.1.8
  */
 abstract class StatusStreamBase implements StatusStream {
-    static final Logger logger = Logger.getLogger(StatusStreamImpl.class);
+    static final Logger logger = Logger.getLogger();
 
     private boolean streamAlive = true;
     private final BufferedReader br;

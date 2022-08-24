@@ -37,7 +37,7 @@ import static twitter4j.HttpParameter.getParameterArray;
 class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Serial
     private static final long serialVersionUID = 9170943084096085770L;
-    private static final Logger logger = Logger.getLogger(TwitterBaseImpl.class);
+    private static final Logger logger = Logger.getLogger();
     
     private final String IMPLICIT_PARAMS_STR;
     private final HttpParameter[] IMPLICIT_PARAMS;

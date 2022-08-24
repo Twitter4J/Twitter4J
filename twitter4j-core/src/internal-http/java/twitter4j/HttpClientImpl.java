@@ -30,7 +30,7 @@ import java.util.Map;
  * @since Twitter4J 2.1.2
  */
 class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
-    private static final Logger logger = Logger.getLogger(HttpClientImpl.class);
+    private static final Logger logger = Logger.getLogger();
 
 
     static {

@@ -76,7 +76,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String INCLUDE_EMAIL = "includeEmail";
     private static final String INCLUDE_EXT_ALT_TEXT = "includeExtAltText";
     private static final String TWEET_MODE_EXTENDED = "tweetModeExtended";
-    private static final String LOGGER_FACTORY = "loggerFactory";
     private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     private static final String MBEAN_ENABLED = "mbeanEnabled";
     private static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
@@ -359,9 +358,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, TWEET_MODE_EXTENDED)) {
             setTweetModeExtended(getBoolean(props, prefix, TWEET_MODE_EXTENDED));
-        }
-        if (notNull(props, prefix, LOGGER_FACTORY)) {
-            setLoggerFactory(getString(props, prefix, LOGGER_FACTORY));
         }
         if (notNull(props, prefix, JSON_STORE_ENABLED)) {
             setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));

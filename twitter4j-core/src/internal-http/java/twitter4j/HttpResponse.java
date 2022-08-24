@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public abstract class HttpResponse {
-    private static final Logger logger = Logger.getLogger(HttpResponseImpl.class);
+    private static final Logger logger = Logger.getLogger();
     protected final HttpClientConfiguration CONF;
 
     HttpResponse() {

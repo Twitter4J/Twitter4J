@@ -68,8 +68,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private int asyncNumThreads = 1;
 
-    private String loggerFactory = null;
-
     private long contributingTo = -1L;
 
     private boolean includeMyRetweetEnabled = true;
@@ -242,7 +240,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
 
     public void dumpConfiguration() {
-        Logger log = Logger.getLogger(ConfigurationBase.class);
+        Logger log = Logger.getLogger();
         if (debug) {
             Field[] fields = ConfigurationBase.class.getDeclaredFields();
             for (Field field : fields) {
@@ -601,21 +599,12 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public String getLoggerFactory() {
-        return loggerFactory;
-    }
-
-    @Override
     public boolean isIncludeEntitiesEnabled() {
         return includeEntitiesEnabled;
     }
 
     protected void setIncludeEntitiesEnabled(boolean includeEntitiesEnabled) {
         this.includeEntitiesEnabled = includeEntitiesEnabled;
-    }
-
-    protected final void setLoggerFactory(String loggerImpl) {
-        this.loggerFactory = loggerImpl;
     }
 
     @Override
@@ -841,8 +830,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
-        if (!Objects.equals(loggerFactory, that.loggerFactory))
-            return false;
         if (!Objects.equals(mediaProvider, that.mediaProvider))
             return false;
         if (!Objects.equals(mediaProviderAPIKey, that.mediaProviderAPIKey))
@@ -881,7 +868,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
-        result = 31 * result + (loggerFactory != null ? loggerFactory.hashCode() : 0);
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
@@ -932,7 +918,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
-                ", loggerFactory='" + loggerFactory + '\'' +
                 ", contributingTo=" + contributingTo +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
