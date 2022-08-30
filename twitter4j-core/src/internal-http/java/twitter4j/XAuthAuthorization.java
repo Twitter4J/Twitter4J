@@ -19,11 +19,14 @@ package twitter4j;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.BasicAuthorization;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
 public class XAuthAuthorization implements Authorization, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = -7260372598870697494L;
     private final BasicAuthorization basic;
 

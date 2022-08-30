@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * @since Twitter4J 2.2.1
  */
 public class TwitterAPIMonitor {
-    private static final Logger logger = Logger.getLogger(TwitterAPIMonitor.class);
+    private static final Logger logger = Logger.getLogger();
     // https?:\/\/[^\/]+\/[0-9.]*\/([a-zA-Z_\.]*).*
     // finds the "method" part a Twitter REST API url, ignoring member-specific resource names
     private static final Pattern pattern =
@@ -51,17 +51,8 @@ public class TwitterAPIMonitor {
             ObjectName oName = new ObjectName("twitter4j.mbean:type=APIStatisticsOpenMBean");
             APIStatisticsOpenMBean openMBean = new APIStatisticsOpenMBean(STATISTICS);
             mbs.registerMBean(openMBean, oName);
-        } catch (InstanceAlreadyExistsException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (MBeanRegistrationException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (NotCompliantMBeanException e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-        } catch (MalformedObjectNameException e) {
-            e.printStackTrace();
+        } catch (InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException |
+                 MalformedObjectNameException e) {
             logger.error(e.getMessage());
         }
     }

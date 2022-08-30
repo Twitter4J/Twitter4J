@@ -20,9 +20,11 @@ import twitter4j.HttpResponse;
 import twitter4j.TwitterException;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.io.Serial;
 
 abstract class OAuthToken implements java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = -7841506492508140600L;
     private final String token;
     private final String tokenSecret;
@@ -79,14 +81,10 @@ abstract class OAuthToken implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuthToken)) return false;
-
-        OAuthToken that = (OAuthToken) o;
+        if (!(o instanceof OAuthToken that)) return false;
 
         if (!token.equals(that.token)) return false;
-        if (!tokenSecret.equals(that.tokenSecret)) return false;
-
-        return true;
+        return tokenSecret.equals(that.tokenSecret);
     }
 
     @Override

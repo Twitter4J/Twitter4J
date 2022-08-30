@@ -18,11 +18,13 @@ package twitter4j;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.Serial;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A data class representing HTTP Post parameter
@@ -30,6 +32,7 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
@@ -159,11 +162,11 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
 
         HttpParameter that = (HttpParameter) o;
 
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (value != null ? !value.equals(that.value) : that.value != null) return false;
-        if (jsonObject != null ? !jsonObject.equals(that.jsonObject) : that.jsonObject != null) return false;
-        if (file != null ? !file.equals(that.file) : that.file != null) return false;
-        return fileBody != null ? fileBody.equals(that.fileBody) : that.fileBody == null;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(value, that.value)) return false;
+        if (!Objects.equals(jsonObject, that.jsonObject)) return false;
+        if (!Objects.equals(file, that.file)) return false;
+        return Objects.equals(fileBody, that.fileBody);
 
     }
 
@@ -278,10 +281,7 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
      */
     public static String encode(String value) {
         String encoded = null;
-        try {
-            encoded = URLEncoder.encode(value, "UTF-8");
-        } catch (UnsupportedEncodingException ignore) {
-        }
+        encoded = URLEncoder.encode(value, StandardCharsets.UTF_8);
         StringBuilder buf = new StringBuilder(encoded.length());
         char focus;
         for (int i = 0; i < encoded.length(); i++) {
@@ -314,12 +314,8 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         value = value.replace("%20", " ");
         
         String decoded=null;
-        try {
-            decoded = URLDecoder.decode(value, "UTF-8");
-        }
-        catch(UnsupportedEncodingException ignore) {
-        }
-        
+        decoded = URLDecoder.decode(value, StandardCharsets.UTF_8);
+
         return decoded;
     }
 
@@ -330,7 +326,7 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
      * @return decoded parameters
      */
     public static List<HttpParameter> decodeParameters(String queryParameters) {
-        List<HttpParameter> result=new ArrayList<HttpParameter>();
+        List<HttpParameter> result= new ArrayList<>();
         for (String pair : queryParameters.split("&")) {
             String[] parts=pair.split("=", 2);
             if(parts.length == 2) {

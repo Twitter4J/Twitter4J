@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.NullAuthorization;
 import twitter4j.auth.OAuth2Authorization;
@@ -30,27 +32,24 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class AuthorizationTest extends TwitterTestBase {
 
 
     @Test
-    void testAnonymousInstance() throws Exception {
+    void testAnonymousInstance() {
         Twitter twitter = new TwitterFactory().getInstance();
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
     }
 
     @Test
-    void testOAuthInstance() throws Exception {
-        String consumerSecret;
-        String consumerKey;
-        consumerSecret = p.getProperty("browser.oauth.consumerSecret");
-        consumerKey = p.getProperty("browser.oauth.consumerSecret");
+    void testOAuthInstance() {
 
         Twitter twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(browserConsumerKey , browserConsumerSecret);
         try {
-            twitter.setOAuthConsumer(consumerSecret, consumerKey);
+            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey );
             fail("should throw IllegalStateException");
         } catch (IllegalStateException ignore) {
 
@@ -61,17 +60,15 @@ class AuthorizationTest extends TwitterTestBase {
     }
 
     @Test
-    void testOAuth2Instance() throws Exception {
-        String consumerSecret = p.getProperty("browser.oauth.consumerSecret");
-        String consumerKey = p.getProperty("browser.oauth.consumerSecret");
+    void testOAuth2Instance() {
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setApplicationOnlyAuthEnabled(true);
 
         Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-        twitter.setOAuthConsumer(consumerKey, consumerSecret);
+        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         try {
-            twitter.setOAuthConsumer(consumerSecret, consumerKey);
+            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey);
             fail("should throw IllegalStateException");
         } catch (IllegalStateException ignore) {
         }

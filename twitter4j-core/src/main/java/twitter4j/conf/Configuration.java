@@ -107,10 +107,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     long getContributingTo();
 
-    String getDispatcherImpl();
-
-    String getLoggerFactory();
-
     boolean isIncludeEntitiesEnabled();
 
     boolean isTrimUserEnabled();

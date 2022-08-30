@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class FavoritesResourcesTest extends TwitterTestBase {
 
     @Test
@@ -32,7 +35,7 @@ class FavoritesResourcesTest extends TwitterTestBase {
         Status status = twitter1.getHomeTimeline().get(0);
         try {
             twitter2.destroyFavorite(status.getId());
-        } catch (TwitterException te) {
+        } catch (TwitterException ignore) {
         }
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
@@ -41,10 +44,10 @@ class FavoritesResourcesTest extends TwitterTestBase {
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
         assertTrue(twitter2.getFavorites().size() > 0);
         assertTrue(twitter2.getFavorites("t4j_news").size() > 0);
-        assertTrue(twitter2.getFavorites("t4j_news", new Paging().count(1)).size() == 1);
+        assertEquals(1, twitter2.getFavorites("t4j_news", new Paging().count(1)).size());
         long t4j_news_user_id = 72297675;
         assertTrue(twitter2.getFavorites(t4j_news_user_id).size() > 0);
-        assertTrue(twitter2.getFavorites(t4j_news_user_id, new Paging().count(1)).size() == 1);
+        assertEquals(1, twitter2.getFavorites(t4j_news_user_id, new Paging().count(1)).size());
         try {
             twitter2.destroyFavorite(status.getId());
         } catch (TwitterException te) {

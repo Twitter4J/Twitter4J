@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 final class DispatcherImpl implements Dispatcher {
     private final ExecutorService executorService;
-    private static final Logger logger = Logger.getLogger(DispatcherImpl.class);
+    private static final Logger logger = Logger.getLogger();
     private static final long SHUTDOWN_TIME = 5000;
 
     public DispatcherImpl(final Configuration conf) {
@@ -45,12 +45,7 @@ final class DispatcherImpl implements Dispatcher {
                     }
                 }
         );
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                executorService.shutdown();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> executorService.shutdown()));
     }
 
     @Override

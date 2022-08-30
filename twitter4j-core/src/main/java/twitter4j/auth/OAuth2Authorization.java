@@ -19,8 +19,10 @@ package twitter4j.auth;
 import twitter4j.*;
 import twitter4j.conf.Configuration;
 
-import java.io.UnsupportedEncodingException;
+import java.io.Serial;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
@@ -28,6 +30,7 @@ import java.net.URLEncoder;
  */
 public class OAuth2Authorization implements Authorization, java.io.Serializable, OAuth2Support {
 
+    @Serial
     private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
 
@@ -109,14 +112,10 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
     public String getAuthorizationHeader(HttpRequest req) {
         if (token == null) {
             String credentials = "";
-            try {
-                credentials =
-                        URLEncoder.encode(consumerKey, "UTF-8")
-                                + ":"
-                                + URLEncoder.encode(consumerSecret, "UTF-8");
-
-            } catch (UnsupportedEncodingException ignore) {
-            }
+            credentials =
+                    URLEncoder.encode(consumerKey, StandardCharsets.UTF_8)
+                            + ":"
+                            + URLEncoder.encode(consumerSecret, StandardCharsets.UTF_8);
 
             return "Basic " + BASE64Encoder.encode(credentials.getBytes());
 
@@ -132,22 +131,17 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof OAuth2Authorization)) {
+        if (obj == null || !(obj instanceof OAuth2Authorization that)) {
             return false;
         }
 
-        OAuth2Authorization that = (OAuth2Authorization) obj;
-        if (consumerKey != null ? !consumerKey.equals(that.consumerKey) : that.consumerKey != null) {
+        if (!Objects.equals(consumerKey, that.consumerKey)) {
             return false;
         }
-        if (consumerSecret != null ? !consumerSecret.equals(that.consumerSecret) : that.consumerSecret != null) {
+        if (!Objects.equals(consumerSecret, that.consumerSecret)) {
             return false;
         }
-        if (token != null ? !token.equals(that.token) : that.token != null) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(token, that.token);
     }
 
     @Override
@@ -162,7 +156,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
     public String toString() {
         return "OAuth2Authorization{" +
                 "consumerKey='" + consumerKey + '\'' +
-                ", consumerSecret='******************************************\'" +
+                ", consumerSecret='******************************************'" +
                 ", token=" + ((token == null) ? "null" : token.toString()) +
                 '}';
     }

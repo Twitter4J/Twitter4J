@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -28,6 +29,7 @@ import java.util.Date;
  */
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
+    @Serial
     private static final long serialVersionUID = -2281949861485441692L;
     private Date createdAt;
     private String query;
@@ -59,7 +61,7 @@ import java.util.Date;
         JSONArray json = res.asJSONArray();
         ResponseList<SavedSearch> savedSearches;
         try {
-            savedSearches = new ResponseListImpl<SavedSearch>(json.length(), res);
+            savedSearches = new ResponseListImpl<>(json.length(), res);
             for (int i = 0; i < json.length(); i++) {
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
@@ -118,13 +120,9 @@ import java.util.Date;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SavedSearch)) return false;
+        if (!(o instanceof SavedSearch that)) return false;
 
-        SavedSearch that = (SavedSearch) o;
-
-        if (id != that.getId()) return false;
-
-        return true;
+        return id == that.getId();
     }
 
     @Override

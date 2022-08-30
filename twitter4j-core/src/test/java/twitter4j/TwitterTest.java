@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class TwitterTest extends TwitterTestBase {
 
     @Test
@@ -98,10 +101,8 @@ class TwitterTest extends TwitterTestBase {
     @Test
     void testGetAccessLevel() throws Exception {
         TwitterResponse response;
-        response = twitter1.verifyCredentials();
-        assertEquals(TwitterResponse.READ_WRITE, response.getAccessLevel());
         response = rwPrivateMessage.verifyCredentials();
-        assertEquals(TwitterResponse.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
+        assertEquals(TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
     }
 
     public static Object assertDeserializedFormIsNotEqual(Object obj) throws Exception {
@@ -114,7 +115,7 @@ class TwitterTest extends TwitterTestBase {
         Object that = ois.readObject();
         byteInputStream.close();
         ois.close();
-        assertFalse(obj.equals(that));
+        assertNotEquals(obj, that);
         return that;
     }
 }

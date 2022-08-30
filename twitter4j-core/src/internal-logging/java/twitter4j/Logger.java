@@ -16,94 +16,42 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.function.Function;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
+@SuppressWarnings("unused")
 public abstract class Logger {
-    private static final LoggerFactory LOGGER_FACTORY;
-    private static final String LOGGER_FACTORY_IMPLEMENTATION = "twitter4j.loggerFactory";
-    private static final String LOGGER_FACTORY_IMPLEMENTATION_ENV = "twitter4j_loggerFactory";
+    static Function<String, Logger> factory;
 
     static {
-        LoggerFactory loggerFactory = null;
-        // -Dtwitter4j.debug=true -Dtwitter4j.loggerFactory=twitter4j.StdOutLoggerFactory
-        String loggerFactoryImpl = System.getProperty(LOGGER_FACTORY_IMPLEMENTATION);
-        if (loggerFactoryImpl == null) {
-            loggerFactoryImpl = System.getenv(LOGGER_FACTORY_IMPLEMENTATION_ENV);
-        }
-        if (loggerFactoryImpl != null) {
-            loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
-        }
-
-        Configuration conf = ConfigurationContext.getInstance();
-        // configuration in twitter4j.properties
-        // loggerFactory=twitter4j.StdOutLoggerFactory
-        loggerFactoryImpl = conf.getLoggerFactory();
-        if (loggerFactoryImpl != null) {
-            loggerFactory = getLoggerFactoryIfAvailable(loggerFactoryImpl, loggerFactoryImpl);
-        }
-        // use SLF4J if it's found in the classpath
-        if (null == loggerFactory) {
-            loggerFactory = getLoggerFactoryIfAvailable("org.slf4j.impl.StaticLoggerBinder", "twitter4j.SLF4JLoggerFactory");
-        }
-        // otherwise, use commons-logging if it's found in the classpath
-        if (null == loggerFactory) {
-            loggerFactory = getLoggerFactoryIfAvailable("org.apache.commons.logging.Log", "twitter4j.CommonsLoggingLoggerFactory");
-        }
-        // otherwise, use log4j if it's found in the classpath
-        if (null == loggerFactory) {
-            loggerFactory = getLoggerFactoryIfAvailable("org.apache.log4j.Logger", "twitter4j.Log4JLoggerFactory");
-        }
-        // on Google App Engine, use java.twitter4j.JULogger
-        if (null == loggerFactory) {
-            loggerFactory = getLoggerFactoryIfAvailable("com.google.appengine.api.urlfetch.URLFetchService", "twitter4j.JULLoggerFactory");
-        }
-        // otherwise, use the default logger
-        if (null == loggerFactory) {
-            loggerFactory = new StdOutLoggerFactory();
-        }
-        LOGGER_FACTORY = loggerFactory;
-
+        Function<String, Logger> factoryTemp;
         try {
-            Method method = conf.getClass().getMethod("dumpConfiguration");
-            method.setAccessible(true);
-            method.invoke(conf);
-        } catch (IllegalAccessException ignore) {
-        } catch (InvocationTargetException ignore) {
-        } catch (NoSuchMethodException ignore) {
-        }
-    }
-
-    private static LoggerFactory getLoggerFactoryIfAvailable(String checkClassName, String implementationClass) {
-        try {
-            Class.forName(checkClassName);
-            return (LoggerFactory) Class.forName(implementationClass).newInstance();
+            // use SLF4J if it's found in the classpath
+            Class.forName("org.slf4j.impl.StaticLoggerBinder");
+            factoryTemp = (className) -> new SLF4JLogger(org.slf4j.LoggerFactory.getLogger(className));
         } catch (ClassNotFoundException ignore) {
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (SecurityException ignore) {
-            // Unsigned applets are not allowed to access System properties
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
+            try {
+                // use Log4J if it's found in the classpath
+                Class.forName("org.apache.logging.log4j.Logger");
+                factoryTemp = (className) -> new Log4JLogger(org.apache.logging.log4j.LogManager.getLogger(className));
+            } catch (ClassNotFoundException e) {
+                factoryTemp = (className) -> new JULLogger(java.util.logging.Logger.getLogger(className));
+            }
         }
-        return null;
+        factory = factoryTemp;
     }
 
     /**
      * Returns a Logger instance associated with the specified class.
      *
-     * @param clazz class
      * @return logger instance
      */
-    public static Logger getLogger(Class<?> clazz) {
-        return LOGGER_FACTORY.getLogger(clazz);
+    public static Logger getLogger() {
+        final String className = new Throwable().getStackTrace()[1].getClassName();
+        return factory.apply(className);
     }
 
     /**
@@ -168,7 +116,7 @@ public abstract class Logger {
     public abstract void warn(String message, String message2);
 
     /**
-     * @param message  message
+     * @param message message
      * @param th      throwable
      */
     public abstract void warn(String message, Throwable th);

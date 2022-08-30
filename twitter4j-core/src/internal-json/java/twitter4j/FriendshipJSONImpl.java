@@ -18,11 +18,14 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
 class FriendshipJSONImpl implements Friendship {
+    @Serial
     private static final long serialVersionUID = 6847273186993125826L;
     private final long id;
     private final String name;
@@ -58,7 +61,7 @@ class FriendshipJSONImpl implements Friendship {
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Friendship> friendshipList = new ResponseListImpl<Friendship>(size, res);
+            ResponseList<Friendship> friendshipList = new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Friendship friendship = new FriendshipJSONImpl(json);
@@ -112,9 +115,7 @@ class FriendshipJSONImpl implements Friendship {
         if (following != that.following) return false;
         if (id != that.id) return false;
         if (!name.equals(that.name)) return false;
-        if (!screenName.equals(that.screenName)) return false;
-
-        return true;
+        return screenName.equals(that.screenName);
     }
 
     @Override

@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -25,6 +26,7 @@ import java.util.Arrays;
  * @since Twitter4J 2.1.1
  */
 final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = -6368276880878829754L;
     private String name;
     private String streetAddress;
@@ -142,7 +144,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         try {
             int size = list.length();
             ResponseList<Place> places =
-                    new ResponseListImpl<Place>(size, res);
+                    new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Place place = new PlaceJSONImpl(json);

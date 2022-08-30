@@ -18,9 +18,11 @@ package twitter4j;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -28,6 +30,7 @@ import java.util.List;
  */
 public final class StatusUpdate implements java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7422094739799350035L;
     private final String status;
     private long inReplyToStatusId = -1L;
@@ -235,7 +238,7 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
+        ArrayList<HttpParameter> params = new ArrayList<>();
         appendParameter("status", status, params);
         if (-1 != inReplyToStatusId) {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
@@ -291,14 +294,14 @@ public final class StatusUpdate implements java.io.Serializable {
         if (displayCoordinates != that.displayCoordinates) return false;
         if (possiblySensitive != that.possiblySensitive) return false;
         if (autoPopulateReplyMetadata != that.autoPopulateReplyMetadata) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (location != null ? !location.equals(that.location) : that.location != null) return false;
-        if (placeId != null ? !placeId.equals(that.placeId) : that.placeId != null) return false;
-        if (mediaName != null ? !mediaName.equals(that.mediaName) : that.mediaName != null) return false;
-        if (mediaBody != null ? !mediaBody.equals(that.mediaBody) : that.mediaBody != null) return false;
-        if (mediaFile != null ? !mediaFile.equals(that.mediaFile) : that.mediaFile != null) return false;
+        if (!Objects.equals(status, that.status)) return false;
+        if (!Objects.equals(location, that.location)) return false;
+        if (!Objects.equals(placeId, that.placeId)) return false;
+        if (!Objects.equals(mediaName, that.mediaName)) return false;
+        if (!Objects.equals(mediaBody, that.mediaBody)) return false;
+        if (!Objects.equals(mediaFile, that.mediaFile)) return false;
         if (!Arrays.equals(mediaIds, that.mediaIds)) return false;
-        return attachmentUrl != null ? attachmentUrl.equals(that.attachmentUrl) : that.attachmentUrl == null;
+        return Objects.equals(attachmentUrl, that.attachmentUrl);
     }
 
     @Override

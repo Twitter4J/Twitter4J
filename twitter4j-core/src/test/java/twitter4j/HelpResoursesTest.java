@@ -16,9 +16,10 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.api.HelpResources;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class HelpResoursesTest extends TwitterTestBase {
     @Test
     void testHelpMethods() throws Exception {
@@ -35,20 +37,5 @@ class HelpResoursesTest extends TwitterTestBase {
         assertNotNull(language.getCode());
         assertNotNull(language.getName());
         assertNotNull(language.getStatus());
-
-        TwitterAPIConfiguration conf = twitter1.getAPIConfiguration();
-        assertEquals(3145728, conf.getPhotoSizeLimit());
-        assertEquals(24, conf.getCharactersReservedPerMedia());
-        assertEquals(23, conf.getShortURLLength());
-        assertEquals(23, conf.getShortURLLengthHttps());
-        assertEquals(4, conf.getPhotoSizes().size());
-        assertTrue(20 < conf.getNonUsernamePaths().length);
-        assertEquals(1, conf.getMaxMediaPerUpload());
-    }
-
-    @Test
-    void testLegalResources() throws Exception {
-        assertNotNull(twitter1.getTermsOfService());
-        assertNotNull(twitter1.getPrivacyPolicy());
     }
 }

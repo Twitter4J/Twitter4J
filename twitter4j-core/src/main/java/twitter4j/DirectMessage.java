@@ -43,28 +43,16 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
     /**
      *
      * @return quick reply options
-     * @since Twitter4J 4.0.7
+     * @since Twitter4J 4.0.8
+     * @see <a href="https://developer.twitter.com/en/docs/twitter-api/v1/direct-messages/quick-replies/overview">Quick Replies</a>
      */
     QuickReply[] getQuickReplies();
 
     /**
      *
      * @return quick reply response metadata
-     * @since Twitter4J 4.0.7
-     */
-    String getQuickReplyResponse();
-
-    /**
-     *
-     * @return quick reply options
-     * @since Twitter4J 4.0.7
-     */
-    QuickReply[] getQuickReplies();
-
-    /**
-     *
-     * @return quick reply response metadata
-     * @since Twitter4J 4.0.7
+     * @since Twitter4J 4.0.8
+     * @see <a href="https://developer.twitter.com/en/docs/twitter-api/v1/direct-messages/quick-replies/overview">Quick Replies</a>
      */
     String getQuickReplyResponse();
 

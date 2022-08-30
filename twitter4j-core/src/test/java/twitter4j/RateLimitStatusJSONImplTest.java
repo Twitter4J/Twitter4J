@@ -16,8 +16,9 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +27,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class RateLimitStatusJSONImplTest {
     @Test
-    void testGetResetTimeInSeconds() throws Exception {
+    void testGetResetTimeInSeconds() {
         RateLimitStatus status = RateLimitStatusJSONImpl.createFromResponseHeader(new MockHttpResponse());
 //        System.out.println(status.getResetTimeInSeconds());
 //        System.out.println((System.currentTimeMillis() / 1000) + 13 * 60);
@@ -37,7 +39,7 @@ class RateLimitStatusJSONImplTest {
         assertTrue(status.getResetTimeInSeconds() > (System.currentTimeMillis() / 1000) + 13 * 60);
     }
 
-    class MockHttpResponse extends HttpResponse {
+    static class MockHttpResponse extends HttpResponse {
 
         MockHttpResponse() {
             super(null);
@@ -45,14 +47,12 @@ class RateLimitStatusJSONImplTest {
 
         @Override
         public String getResponseHeader(String name) {
-            if (name.equals("X-Rate-Limit-Limit")) {
-                return "180";
-            } else if (name.equals("X-Rate-Limit-Remaining")) {
-                return "178";
-            } else if (name.equals("X-Rate-Limit-Reset")) {
-                return String.valueOf((System.currentTimeMillis() + 14 * 60 * 1000) / 1000);
-            }
-            return null;
+            return switch (name) {
+                case "X-Rate-Limit-Limit" -> "180";
+                case "X-Rate-Limit-Remaining" -> "178";
+                case "X-Rate-Limit-Reset" -> String.valueOf((System.currentTimeMillis() + 14 * 60 * 1000) / 1000);
+                default -> null;
+            };
         }
 
         @Override
@@ -61,7 +61,7 @@ class RateLimitStatusJSONImplTest {
         }
 
         @Override
-        public void disconnect() throws IOException {
+        public void disconnect() {
         }
     }
 }

@@ -44,12 +44,12 @@ import java.util.Set;
  * be coerced using {@link Number#intValue() intValue}. Strings
  * that can be coerced using {@link Double#valueOf(String)} will be,
  * and then cast to int.
- * <li><a name="lossy">When the requested type is a long, other {@link Number} types will
+ * <li><div id="lossy">When the requested type is a long, other {@link Number} types will
  * be coerced using {@link Number#longValue() longValue}. Strings
  * that can be coerced using {@link Double#valueOf(String)} will be,
  * and then cast to long. This two-step conversion is lossy for very
  * large values. For example, the string "9223372036854775806" yields the
- * long 9223372036854775807.</a>
+ * long 9223372036854775807.</div>
  * <li>When the requested type is a String, other non-null values will be
  * coerced using {@link String#valueOf(Object)}. Although null cannot be
  * coerced, the sentinel value {@link JSONObject#NULL} is coerced to the
@@ -122,7 +122,7 @@ public class JSONObject {
      * Creates a {@code JSONObject} with no name/value mappings.
      */
     public JSONObject() {
-        nameValuePairs = new LinkedHashMap<String, Object>();
+        nameValuePairs = new LinkedHashMap<>();
     }
 
     /**
@@ -340,8 +340,7 @@ public class JSONObject {
             return put(name, value);
         }
 
-        if (current instanceof JSONArray) {
-            JSONArray array = (JSONArray) current;
+        if (current instanceof JSONArray array) {
             array.checkedPut(value);
         } else {
             JSONArray array = new JSONArray();
@@ -792,7 +791,7 @@ public class JSONObject {
     public JSONArray names() {
         return nameValuePairs.isEmpty()
                 ? null
-                : new JSONArray(new ArrayList<String>(nameValuePairs.keySet()));
+                : new JSONArray(new ArrayList<>(nameValuePairs.keySet()));
     }
 
     /**

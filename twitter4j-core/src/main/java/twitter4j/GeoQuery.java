@@ -16,8 +16,10 @@
 
 package twitter4j;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -25,6 +27,7 @@ import java.util.List;
  */
 public final class GeoQuery implements java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 5434503339001056634L;
     private GeoLocation location;
     private String query = null;
@@ -138,7 +141,7 @@ public final class GeoQuery implements java.io.Serializable {
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<HttpParameter>();
+        ArrayList<HttpParameter> params = new ArrayList<>();
         if (location != null) {
             appendParameter("lat", location.getLatitude(), params);
             appendParameter("long", location.getLongitude(), params);
@@ -180,16 +183,13 @@ public final class GeoQuery implements java.io.Serializable {
         GeoQuery geoQuery = (GeoQuery) o;
 
         if (maxResults != geoQuery.maxResults) return false;
-        if (accuracy != null ? !accuracy.equals(geoQuery.accuracy) : geoQuery.accuracy != null)
+        if (!Objects.equals(accuracy, geoQuery.accuracy))
             return false;
-        if (granularity != null ? !granularity.equals(geoQuery.granularity) : geoQuery.granularity != null)
+        if (!Objects.equals(granularity, geoQuery.granularity))
             return false;
-        if (ip != null ? !ip.equals(geoQuery.ip) : geoQuery.ip != null)
+        if (!Objects.equals(ip, geoQuery.ip))
             return false;
-        if (location != null ? !location.equals(geoQuery.location) : geoQuery.location != null)
-            return false;
-
-        return true;
+        return Objects.equals(location, geoQuery.location);
     }
 
     @Override

@@ -19,15 +19,15 @@ package twitter4j.management;
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public interface InvocationStatistics {
-    public String getName();
+    String getName();
 
-    public long getCallCount();
+    long getCallCount();
 
-    public long getErrorCount();
+    long getErrorCount();
 
-    public long getTotalTime();
+    long getTotalTime();
 
-    public long getAverageTime();
+    long getAverageTime();
 
-    public void reset();
+    void reset();
 }

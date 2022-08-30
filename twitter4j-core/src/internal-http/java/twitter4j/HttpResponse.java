@@ -19,6 +19,7 @@ package twitter4j;
 import twitter4j.conf.ConfigurationContext;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public abstract class HttpResponse {
-    private static final Logger logger = Logger.getLogger(HttpResponseImpl.class);
+    private static final Logger logger = Logger.getLogger();
     protected final HttpClientConfiguration CONF;
 
     HttpResponse() {
@@ -85,7 +86,7 @@ public abstract class HttpResponse {
                 if (null == stream) {
                     return null;
                 }
-                br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
                 StringBuilder buf = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -181,11 +182,7 @@ public abstract class HttpResponse {
     }
 
     public Reader asReader() {
-        try {
-            return new BufferedReader(new InputStreamReader(is, "UTF-8"));
-        } catch (java.io.UnsupportedEncodingException uee) {
-            return new InputStreamReader(is);
-        }
+        return new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
     }
 
     private void disconnectForcibly() {

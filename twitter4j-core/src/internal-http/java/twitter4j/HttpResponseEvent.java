@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import java.util.Objects;
+
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
@@ -72,12 +74,9 @@ public final class HttpResponseEvent {
 
         HttpResponseEvent that = (HttpResponseEvent) o;
 
-        if (request != null ? !request.equals(that.request) : that.request != null)
+        if (!Objects.equals(request, that.request))
             return false;
-        if (response != null ? !response.equals(that.response) : that.response != null)
-            return false;
-
-        return true;
+        return Objects.equals(response, that.response);
     }
 
     @Override

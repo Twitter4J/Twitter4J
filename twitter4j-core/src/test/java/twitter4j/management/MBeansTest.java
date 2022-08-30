@@ -16,6 +16,8 @@
 package twitter4j.management;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.management.AttributeList;
 import javax.management.MBeanAttributeInfo;
@@ -32,13 +34,14 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
+@Execution(ExecutionMode.CONCURRENT)
 class MBeansTest {
 
     /**
      * Tests statistics calculation for a single method
      */
     @Test
-    void testInvocationStatisticsCalculator() throws Exception {
+    void testInvocationStatisticsCalculator() {
         InvocationStatisticsCalculator calc = new InvocationStatisticsCalculator("foo", 5);
 
         assertEquals("foo", calc.getName());
@@ -76,7 +79,7 @@ class MBeansTest {
      * Tests statistics calculation/aggregation for an entire API
      */
     @Test
-    void testAPIStatistics() throws Exception {
+    void testAPIStatistics() {
         APIStatistics stats = new APIStatistics(5);
 
         checkCalculator(stats, 0, 0, 0, 0);
@@ -128,7 +131,7 @@ class MBeansTest {
         assertEquals(5, info.getAttributes().length);
         assertEquals(1, info.getOperations().length);
 
-        List<String> attrNames = new ArrayList<String>();
+        List<String> attrNames = new ArrayList<>();
         for (MBeanAttributeInfo attr : info.getAttributes()) {
             assertNotNull(openMBean.getAttribute(attr.getName()));
             attrNames.add(attr.getName());
@@ -141,7 +144,7 @@ class MBeansTest {
         Long callCount = (Long) openMBean.getAttribute("callCount");
         assertEquals(0, callCount.longValue());
         Long errorCount = (Long) openMBean.getAttribute("errorCount");
-        assertEquals(0, callCount.longValue());
+        assertEquals(0, errorCount.longValue());
         Long totalTime = (Long) openMBean.getAttribute("totalTime");
         assertEquals(0, totalTime.longValue());
         Long averageTime = (Long) openMBean.getAttribute("averageTime");

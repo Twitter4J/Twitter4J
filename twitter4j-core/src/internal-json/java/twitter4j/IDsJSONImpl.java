@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 /**
@@ -27,6 +28,7 @@ import java.util.Arrays;
  */
 /*package*/ final class IDsJSONImpl extends TwitterResponseImpl implements IDs {
 
+    @Serial
     private static final long serialVersionUID = 6999637496007165672L;
     private long[] ids;
     private long previousCursor = -1;
@@ -106,13 +108,9 @@ import java.util.Arrays;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof IDs)) return false;
+        if (!(o instanceof IDs iDs)) return false;
 
-        IDs iDs = (IDs) o;
-
-        if (!Arrays.equals(ids, iDs.getIDs())) return false;
-
-        return true;
+        return Arrays.equals(ids, iDs.getIDs());
     }
 
     @Override

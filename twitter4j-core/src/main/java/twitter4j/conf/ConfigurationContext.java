@@ -39,12 +39,8 @@ public final class ConfigurationContext {
 
         try {
             factory = (ConfigurationFactory) Class.forName(CONFIG_IMPL).newInstance();
-        } catch (ClassNotFoundException cnfe) {
-            throw new AssertionError(cnfe);
-        } catch (InstantiationException ie) {
-            throw new AssertionError(ie);
-        } catch (IllegalAccessException iae) {
-            throw new AssertionError(iae);
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            throw new AssertionError(e);
         }
     }
 

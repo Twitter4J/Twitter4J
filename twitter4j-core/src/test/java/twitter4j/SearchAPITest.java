@@ -18,20 +18,21 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Execution(ExecutionMode.CONCURRENT)
 class SearchAPITest extends TwitterTestBase {
 
     @Test
-    void testQuery() throws Exception {
+    void testQuery() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Query query = new Query("test")
                 .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
@@ -80,10 +81,8 @@ class SearchAPITest extends TwitterTestBase {
 
         query = new Query("from:twit4j doesnothit");
         queryResult = twitter1.search(query);
-        assertEquals(queryResult.getRateLimitStatus().getRemaining() + 1, rateLimitStatus.getRemaining());
+        assertTrue(5 > (queryResult.getRateLimitStatus().getRemaining() - rateLimitStatus.getRemaining()));
         assertEquals(0, queryResult.getSinceId());
-//        assertEquals(-1, queryResult.getMaxId());
-//        assertNull(queryResult.getRefreshUrl());
         assertEquals(15, queryResult.getCount());
         assertTrue(4 > queryResult.getCompletedIn());
         assertEquals("from:twit4j doesnothit", queryResult.getQuery());
@@ -95,10 +94,10 @@ class SearchAPITest extends TwitterTestBase {
         queryResult = twitter1.search(query);
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
-        query.setQuery("from:al3x");
-        query.setGeoCode(new GeoLocation(37.78233252646689, -122.39301681518555), 10, Query.KILOMETERS);
+        query.setQuery("starbucks");
+        query.setGeoCode(new GeoLocation(47.6094651,-122.3411666), 10, Query.KILOMETERS);
         queryResult = twitter1.search(query);
-        assertTrue(0 <= queryResult.getTweets().size());
+        assertTrue(0 < queryResult.getTweets().size());
 
         query = new Query("from:tsuda");
         query.setSinceId(1671199128);

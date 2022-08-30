@@ -16,8 +16,10 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration tests for APIStatistics ensuring that the integration logic
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
+@Execution(ExecutionMode.CONCURRENT)
 class MBeansIntegrationTest extends TwitterTestBase {
 
     @Test
@@ -33,6 +36,6 @@ class MBeansIntegrationTest extends TwitterTestBase {
         TwitterAPIMonitor monitor = TwitterAPIMonitor.getInstance();
         long count = monitor.getStatistics().getCallCount();
         twitter1.getHomeTimeline();
-        assertEquals(count + 1, monitor.getStatistics().getCallCount());
+        assertTrue(count < monitor.getStatistics().getCallCount());
     }
 }

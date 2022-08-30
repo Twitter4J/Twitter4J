@@ -23,8 +23,7 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.io.Serial;
 
 /**
  * A factory class for Twitter.
@@ -34,58 +33,13 @@ import java.lang.reflect.InvocationTargetException;
  * @since Twitter4J 2.1.0
  */
 public class TwitterFactory implements java.io.Serializable {
-    private static final Constructor<Twitter> TWITTER_CONSTRUCTOR;
     /*AsyncTwitterFactory and TWitterStream will access this field*/
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
-    private static final Twitter SINGLETON;
+    private static final Twitter SINGLETON = new TwitterImpl(ConfigurationContext.getInstance(), DEFAULT_AUTHORIZATION);
+
+    @Serial
     private static final long serialVersionUID = -563983536986910054L;
     private final Configuration conf;
-
-
-    static {
-        // detecting Google App Engine
-        boolean gaeDetected;
-        try {
-            Class.forName("com.google.appengine.api.urlfetch.URLFetchService");
-            gaeDetected = true;
-        } catch (ClassNotFoundException cnfe) {
-            gaeDetected = false;
-        }
-
-        String className = null;
-        if (gaeDetected) {
-            final String APP_ENGINE_TWITTER_IMPL = "twitter4j.AppEngineTwitterImpl";
-            try {
-                Class.forName(APP_ENGINE_TWITTER_IMPL);
-                className = APP_ENGINE_TWITTER_IMPL;
-            } catch (ClassNotFoundException ignore) {
-            }
-        }
-        if (className == null) {
-            className = "twitter4j.TwitterImpl";
-        }
-        Constructor<Twitter> constructor;
-        Class clazz;
-        try {
-            clazz = Class.forName(className);
-            constructor = clazz.getDeclaredConstructor(Configuration.class, Authorization.class);
-        } catch (NoSuchMethodException e) {
-            throw new AssertionError(e);
-        } catch (ClassNotFoundException e) {
-            throw new AssertionError(e);
-        }
-        TWITTER_CONSTRUCTOR = constructor;
-
-        try {
-            SINGLETON = TWITTER_CONSTRUCTOR.newInstance(ConfigurationContext.getInstance(), DEFAULT_AUTHORIZATION);
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
-        }
-    }
 
     /**
      * Creates a TwitterFactory with the root configuration.
@@ -146,15 +100,7 @@ public class TwitterFactory implements java.io.Serializable {
     }
 
     public Twitter getInstance(Authorization auth) {
-        try {
-            return TWITTER_CONSTRUCTOR.newInstance(conf, auth);
-        } catch (InstantiationException e) {
-            throw new AssertionError(e);
-        } catch (IllegalAccessException e) {
-            throw new AssertionError(e);
-        } catch (InvocationTargetException e) {
-            throw new AssertionError(e);
-        }
+        return new TwitterImpl(conf, auth);
     }
 
     /**

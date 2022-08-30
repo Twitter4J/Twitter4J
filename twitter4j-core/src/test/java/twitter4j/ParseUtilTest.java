@@ -17,6 +17,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.5
  */
+@Execution(ExecutionMode.CONCURRENT)
 class ParseUtilTest {
 
     @Test

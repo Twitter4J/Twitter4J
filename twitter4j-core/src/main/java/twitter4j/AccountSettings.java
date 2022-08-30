@@ -59,7 +59,7 @@ public interface AccountSettings extends TwitterResponse, java.io.Serializable {
     /**
      * Returns the timezone configured for this user.
      *
-     * @return the timezone (formated as a Rails TimeZone name)
+     * @return the timezone (formatted as a Rails TimeZone name)
      */
     TimeZone getTimeZone();
 

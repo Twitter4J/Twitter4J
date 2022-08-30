@@ -16,6 +16,8 @@
 package twitter4j;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.conf.PropertyConfiguration;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
+@Execution(ExecutionMode.CONCURRENT)
 class FriendsFollowersResourcesTest extends TwitterTestBase {
 
     @Test
@@ -31,8 +34,8 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
         IDs ids;
         ids = twitter1.getFriendsIDs(-1);
         assertNotNull(TwitterObjectFactory.getRawJSON(ids));
-        int yusukey = 4933401;
-        assertIDExsits("twit4j is following yusukey", ids, yusukey);
+        int yusuke = 4933401;
+        assertIDExsits("twit4j is following yusuke", ids, yusuke);
 
         IDs obamaFollowers;
         obamaFollowers = twitter1.getFollowersIDs("barackobama", -1);

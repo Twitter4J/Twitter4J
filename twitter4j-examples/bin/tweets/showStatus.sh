@@ -2,6 +2,6 @@
 cd ..
 . ./setEnv.sh
 
-RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH twitter4j.examples.tweets.ShowStatus"
+RUN_CMD="$JAVA_HOME/bin/java $MEM_ARGS -cp $CLASSPATH examples..tweets.ShowStatus"
 echo $RUN_CMD ${1+"$@"}
 exec $RUN_CMD ${1+"$@"}

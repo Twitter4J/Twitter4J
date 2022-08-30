@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import java.io.Serial;
+import java.util.Objects;
+
 /**
  * A data interface representing one single user mention entity.
  *
@@ -23,6 +26,7 @@ package twitter4j;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
+    @Serial
     private static final long serialVersionUID = 6060510953676673013L;
     private String name;
     private String screenName;
@@ -103,10 +107,8 @@ package twitter4j;
         UserMentionEntityJSONImpl that = (UserMentionEntityJSONImpl) o;
 
         if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null) return false;
-
-        return true;
+        if (!Objects.equals(name, that.name)) return false;
+        return Objects.equals(screenName, that.screenName);
     }
 
     @Override

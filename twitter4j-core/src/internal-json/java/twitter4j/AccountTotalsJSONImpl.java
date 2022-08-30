@@ -18,12 +18,15 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
 class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = 4199733699237229892L;
     private final int updates;
     private final int followers;
@@ -80,9 +83,7 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
         if (favorites != that.favorites) return false;
         if (followers != that.followers) return false;
         if (friends != that.friends) return false;
-        if (updates != that.updates) return false;
-
-        return true;
+        return updates == that.updates;
     }
 
     @Override

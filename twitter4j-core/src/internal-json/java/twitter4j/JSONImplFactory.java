@@ -19,13 +19,16 @@ package twitter4j;
 import twitter4j.api.HelpResources;
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.4
  */
 class JSONImplFactory implements ObjectFactory {
+    @Serial
     private static final long serialVersionUID = -1853541456182663343L;
     private final Configuration conf;
 
@@ -178,11 +181,6 @@ class JSONImplFactory implements ObjectFactory {
     }
 
     @Override
-    public ResponseList<Category> createCategoryList(HttpResponse res) throws TwitterException {
-        return CategoryJSONImpl.createCategoriesList(res, conf);
-    }
-
-    @Override
     public DirectMessage createDirectMessage(HttpResponse res) throws TwitterException {
         return new DirectMessageJSONImpl(res, conf);
     }
@@ -238,16 +236,11 @@ class JSONImplFactory implements ObjectFactory {
             return PlaceJSONImpl.createPlaceList(res, conf);
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
-                return new ResponseListImpl<Place>(0, null);
+                return new ResponseListImpl<>(0, null);
             } else {
                 throw te;
             }
         }
-    }
-
-    @Override
-    public TwitterAPIConfiguration createTwitterAPIConfiguration(HttpResponse res) throws TwitterException {
-        return new TwitterAPIConfigurationJSONImpl(res, conf);
     }
 
     @Override
@@ -257,7 +250,7 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public <T> ResponseList<T> createEmptyResponseList() {
-        return new ResponseListImpl<T>(0, null);
+        return new ResponseListImpl<>(0, null);
     }
 
     @Override
@@ -299,14 +292,9 @@ class JSONImplFactory implements ObjectFactory {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JSONImplFactory)) return false;
+        if (!(o instanceof JSONImplFactory that)) return false;
 
-        JSONImplFactory that = (JSONImplFactory) o;
-
-        if (conf != null ? !conf.equals(that.conf) : that.conf != null)
-            return false;
-
-        return true;
+        return Objects.equals(conf, that.conf);
     }
 
     @Override

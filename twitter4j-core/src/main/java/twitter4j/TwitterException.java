@@ -16,7 +16,9 @@
 
 package twitter4j;
 
+import java.io.Serial;
 import java.util.List;
+import java.util.Objects;
 
 import static twitter4j.ParseUtil.getInt;
 
@@ -27,6 +29,7 @@ import static twitter4j.ParseUtil.getInt;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
+    @Serial
     private static final long serialVersionUID = 6006561839051121336L;
     private int statusCode = -1;
     private int errorCode = -1;
@@ -74,7 +77,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
             value.append(super.getMessage());
         }
         if (statusCode != -1) {
-            return getCause(statusCode) + "\n" + value.toString();
+            return getCause(statusCode) + "\n" + value;
         } else {
             return value.toString();
         }
@@ -122,7 +125,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     }
 
     @Override
-    public int getAccessLevel() {
+    public AccessLevel getAccessLevel() {
         return ParseUtil.toAccessLevel(response);
     }
 
@@ -250,12 +253,10 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         if (errorCode != that.errorCode) return false;
         if (nested != that.nested) return false;
         if (statusCode != that.statusCode) return false;
-        if (errorMessage != null ? !errorMessage.equals(that.errorMessage) : that.errorMessage != null) return false;
-        if (exceptionDiagnosis != null ? !exceptionDiagnosis.equals(that.exceptionDiagnosis) : that.exceptionDiagnosis != null)
+        if (!Objects.equals(errorMessage, that.errorMessage)) return false;
+        if (!Objects.equals(exceptionDiagnosis, that.exceptionDiagnosis))
             return false;
-        if (response != null ? !response.equals(that.response) : that.response != null) return false;
-
-        return true;
+        return Objects.equals(response, that.response);
     }
 
     @Override

@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -28,6 +29,7 @@ import java.util.Date;
  */
 /*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
     private String name;
@@ -521,7 +523,7 @@ import java.util.Date;
             JSONArray list = json.getJSONArray("users");
             int size = list.length();
             PagableResponseList<User> users =
-                    new PagableResponseListImpl<User>(size, json, res);
+                    new PagableResponseListImpl<>(size, json, res);
             for (int i = 0; i < size; i++) {
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
@@ -552,7 +554,7 @@ import java.util.Date;
             }
             int size = list.length();
             ResponseList<User> users =
-                    new ResponseListImpl<User>(size, res);
+                    new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 User user = new UserJSONImpl(json);

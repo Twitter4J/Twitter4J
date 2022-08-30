@@ -71,13 +71,11 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String STREAM_THREAD_NAME = "streamThreadName";
 
     private static final String CONTRIBUTING_TO = "contributingTo";
-    private static final String ASYNC_DISPATCHER_IMPL = "async.dispatcherImpl";
     private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     private static final String INCLUDE_ENTITIES = "includeEntities";
     private static final String INCLUDE_EMAIL = "includeEmail";
     private static final String INCLUDE_EXT_ALT_TEXT = "includeExtAltText";
     private static final String TWEET_MODE_EXTENDED = "tweetModeExtended";
-    private static final String LOGGER_FACTORY = "loggerFactory";
     private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     private static final String MBEAN_ENABLED = "mbeanEnabled";
     private static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
@@ -88,6 +86,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String MEDIA_PROVIDER = "media.provider";
     private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
     private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
+    @Serial
     private static final long serialVersionUID = -7262615247923693252L;
 
 
@@ -136,8 +135,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         // for Google App Engine
         try {
             loadProperties(props, new FileInputStream("WEB-INF/" + TWITTER4J_PROPERTIES));
-        } catch (SecurityException ignore) {
-        } catch (FileNotFoundException ignore) {
+        } catch (SecurityException | FileNotFoundException ignore) {
         }
 
         setFieldsWithTreePath(props, treePath);
@@ -188,7 +186,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void normalize(Properties props) {
-        ArrayList<String> toBeNormalized = new ArrayList<String>(10);
+        ArrayList<String> toBeNormalized = new ArrayList<>(10);
         for (Object key : props.keySet()) {
             String keyStr = (String) key;
             if (-1 != (keyStr.indexOf("twitter4j."))) {
@@ -309,10 +307,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, CONTRIBUTING_TO)) {
             setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));
         }
-        if (notNull(props, prefix, ASYNC_DISPATCHER_IMPL)) {
-            setDispatcherImpl(getString(props, prefix, ASYNC_DISPATCHER_IMPL));
-        }
-
         if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {
             setOAuthRequestTokenURL(getString(props, prefix, OAUTH_REQUEST_TOKEN_URL));
         }
@@ -364,9 +358,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, TWEET_MODE_EXTENDED)) {
             setTweetModeExtended(getBoolean(props, prefix, TWEET_MODE_EXTENDED));
-        }
-        if (notNull(props, prefix, LOGGER_FACTORY)) {
-            setLoggerFactory(getString(props, prefix, LOGGER_FACTORY));
         }
         if (notNull(props, prefix, JSON_STORE_ENABLED)) {
             setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));
@@ -432,6 +423,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     // assures equality after deserialization
+    @Serial
     @Override
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();

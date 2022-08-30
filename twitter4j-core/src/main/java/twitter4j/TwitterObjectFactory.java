@@ -12,12 +12,7 @@ public final class TwitterObjectFactory {
         throw new AssertionError("not intended to be instantiated.");
     }
 
-    private static final ThreadLocal<Map> rawJsonMap = new ThreadLocal<Map>() {
-        @Override
-        protected Map initialValue() {
-            return new HashMap();
-        }
-    };
+    private static final ThreadLocal<Map> rawJsonMap = ThreadLocal.withInitial(HashMap::new);
 
     /**
      * Returns a raw JSON form of the provided object.<br>
@@ -189,22 +184,6 @@ public final class TwitterObjectFactory {
     public static Map<String, RateLimitStatus> createRateLimitStatus(String rawJSON) throws TwitterException {
         try {
             return RateLimitStatusJSONImpl.createRateLimitStatuses(new JSONObject(rawJSON));
-        } catch (JSONException e) {
-            throw new TwitterException(e);
-        }
-    }
-
-    /**
-     * Constructs a Category object from rawJSON string.
-     *
-     * @param rawJSON raw JSON form as String
-     * @return Category
-     * @throws TwitterException when provided string is not a valid JSON string.
-     * @since Twitter4J 2.1.7
-     */
-    public static Category createCategory(String rawJSON) throws TwitterException {
-        try {
-            return new CategoryJSONImpl(new JSONObject(rawJSON));
         } catch (JSONException e) {
             throw new TwitterException(e);
         }

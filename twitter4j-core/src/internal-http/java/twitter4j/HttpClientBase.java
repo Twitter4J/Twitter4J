@@ -4,12 +4,14 @@ import twitter4j.auth.Authorization;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class HttpClientBase implements HttpClient, Serializable {
-    private static final Logger logger = Logger.getLogger(HttpClientBase.class);
+    private static final Logger logger = Logger.getLogger();
+    @Serial
     private static final long serialVersionUID = -8016974810651763053L;
     protected final HttpClientConfiguration CONF;
 
@@ -17,7 +19,7 @@ public abstract class HttpClientBase implements HttpClient, Serializable {
 
     public HttpClientBase(HttpClientConfiguration conf) {
         this.CONF = conf;
-        requestHeaders = new HashMap<String, String>();
+        requestHeaders = new HashMap<>();
         requestHeaders.put("X-Twitter-Client-Version", Version.getVersion());
         requestHeaders.put("X-Twitter-Client-URL", "http://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         requestHeaders.put("X-Twitter-Client", "Twitter4J");

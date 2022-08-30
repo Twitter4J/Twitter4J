@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -29,7 +30,7 @@ import static twitter4j.ParseUtil.getDate;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
-    private static final Logger logger = Logger.getLogger(StatusJSONImpl.class);
+    @Serial
     private static final long serialVersionUID = -6461195536943679985L;
 
     private Date createdAt;
@@ -440,7 +441,7 @@ import static twitter4j.ParseUtil.getDate;
             }
             JSONArray list = res.asJSONArray();
             int size = list.length();
-            ResponseList<Status> statuses = new ResponseListImpl<Status>(size, res);
+            ResponseList<Status> statuses = new ResponseListImpl<>(size, res);
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);

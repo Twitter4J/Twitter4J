@@ -16,8 +16,8 @@
 
 package twitter4j;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,9 +48,7 @@ final class ParseUtil {
             } else {
                 return json.getString(name);
             }
-        } catch (JSONException jsone) {
-            return null;
-        } catch (Exception ex) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -58,10 +56,7 @@ final class ParseUtil {
     static String getURLDecodedString(String name, JSONObject json) {
         String returnValue = getRawString(name, json);
         if (returnValue != null) {
-            try {
-                returnValue = URLDecoder.decode(returnValue, "UTF-8");
-            } catch (UnsupportedEncodingException ignore) {
-            }
+            returnValue = URLDecoder.decode(returnValue, StandardCharsets.UTF_8);
         }
         return returnValue;
     }
@@ -95,13 +90,12 @@ final class ParseUtil {
         }
     }
 
-    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<String,
-            LinkedBlockingQueue<SimpleDateFormat>>();
+    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<>();
 
     public static Date getDate(String dateString, String format) throws TwitterException {
         LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
         if (simpleDateFormats == null) {
-            simpleDateFormats = new LinkedBlockingQueue<SimpleDateFormat>();
+            simpleDateFormats = new LinkedBlockingQueue<>();
             formatMapQueue.put(format, simpleDateFormats);
         }
         SimpleDateFormat sdf = simpleDateFormats.poll();
@@ -175,35 +169,35 @@ final class ParseUtil {
     }
 
 
-    public static int toAccessLevel(HttpResponse res) {
+    public static TwitterResponse.AccessLevel toAccessLevel(HttpResponse res) {
         if (null == res) {
-            return -1;
+            return TwitterResponse.AccessLevel.NONE;
         }
         String xAccessLevel = res.getResponseHeader("X-Access-Level");
-        int accessLevel;
+        TwitterResponse.AccessLevel accessLevel;
         if (null == xAccessLevel) {
-            accessLevel = TwitterResponse.NONE;
+            accessLevel = TwitterResponse.AccessLevel.NONE;
         } else {
             // https://dev.twitter.com/pages/application-permission-model-faq#how-do-we-know-what-the-access-level-of-a-user-token-is
             switch (xAccessLevel.length()) {
                 // “read” (Read-only)
                 case 4:
-                    accessLevel = TwitterResponse.READ;
+                    accessLevel = TwitterResponse.AccessLevel.READ;
                     break;
                 case 10:
                     // “read-write” (Read & Write)
-                    accessLevel = TwitterResponse.READ_WRITE;
+                    accessLevel = TwitterResponse.AccessLevel.READ_WRITE;
                     break;
                 case 25:
                     // “read-write-directmessages” (Read, Write, & Direct Message)
-                    accessLevel = TwitterResponse.READ_WRITE_DIRECTMESSAGES;
+                    accessLevel = TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES;
                     break;
                 case 26:
                     // “read-write-privatemessages” (Read, Write, & Direct Message)
-                    accessLevel = TwitterResponse.READ_WRITE_DIRECTMESSAGES;
+                    accessLevel = TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES;
                     break;
                 default:
-                    accessLevel = TwitterResponse.NONE;
+                    accessLevel = TwitterResponse.AccessLevel.NONE;
                     // unknown access level;
             }
         }

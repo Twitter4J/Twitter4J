@@ -34,7 +34,7 @@ public class APIStatistics implements APIStatisticsMBean {
      */
     public APIStatistics(int historySize) {
         API_STATS_CALCULATOR = new InvocationStatisticsCalculator("API", historySize);
-        METHOD_STATS_MAP = new HashMap<String, InvocationStatisticsCalculator>(100);
+        METHOD_STATS_MAP = new HashMap<>(100);
         HISTORY_SIZE = historySize;
     }
 
@@ -102,7 +102,7 @@ public class APIStatistics implements APIStatisticsMBean {
 
     @Override
     public synchronized Map<String, String> getMethodLevelSummariesAsString() {
-        Map<String, String> summariesMap = new HashMap<String, String>();
+        Map<String, String> summariesMap = new HashMap<>();
 
         Collection<InvocationStatisticsCalculator> allMethodStats = METHOD_STATS_MAP.values();
         for (InvocationStatisticsCalculator methodStats : allMethodStats) {

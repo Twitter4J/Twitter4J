@@ -18,6 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -30,6 +31,7 @@ import java.util.Iterator;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 2054973282133379835L;
     private Date asOf;
     private Date trendAt;
@@ -98,7 +100,7 @@ import java.util.Iterator;
             Date asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
-            trends = new ResponseListImpl<Trends>(trendsJson.length(), res);
+            trends = new ResponseListImpl<>(trendsJson.length(), res);
             Iterator ite = trendsJson.keys();
             while (ite.hasNext()) {
                 String key = (String) ite.next();
@@ -176,17 +178,13 @@ import java.util.Iterator;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Trends)) return false;
-
-        Trends trends1 = (Trends) o;
+        if (!(o instanceof Trends trends1)) return false;
 
         if (asOf != null ? !asOf.equals(trends1.getAsOf()) : trends1.getAsOf() != null)
             return false;
         if (trendAt != null ? !trendAt.equals(trends1.getTrendAt()) : trends1.getTrendAt() != null)
             return false;
-        if (!Arrays.equals(trends, trends1.getTrends())) return false;
-
-        return true;
+        return Arrays.equals(trends, trends1.getTrends());
     }
 
     @Override

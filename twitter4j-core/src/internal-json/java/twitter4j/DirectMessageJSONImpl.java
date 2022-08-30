@@ -18,10 +18,8 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.io.Serial;
+import java.util.*;
 
 /**
  * A data class representing sent/received direct message.
@@ -30,6 +28,7 @@ import java.util.List;
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
+    @Serial
     private static final long serialVersionUID = 7092906238192790921L;
     private long id;
     private String text;
@@ -77,7 +76,7 @@ import java.util.List;
 
             }else{
                 // raw JSON data from Twitter4J 4.0.6 or before
-                createdAt = ParseUtil.getDate("created_at", json);;
+                createdAt = ParseUtil.getDate("created_at", json);
                 senderId = ParseUtil.getLong("sender_id", json);
                 recipientId = ParseUtil.getLong("recipient_id", json);
                 messageData = json;
@@ -105,14 +104,14 @@ import java.util.List;
             if (!messageData.isNull("quick_reply")) {
                 // dm with quick reply options
                 JSONArray options = messageData.getJSONObject("quick_reply").getJSONArray("options");
-                List<QuickReply> quickReplyList = new ArrayList<QuickReply>();
+                List<QuickReply> quickReplyList = new ArrayList<>();
                 for (int i = 0; i < options.length(); i++) {
                     JSONObject option = options.getJSONObject(i);
                     String description = option.isNull("description") ? null :option.getString("description");
                     String metadata = option.isNull("metadata") ? null :option.getString("metadata");
                     quickReplyList.add(new QuickReply(option.getString("label"), description, metadata));
                 }
-                quickReplies = quickReplyList.toArray(new QuickReply[quickReplyList.size()]);
+                quickReplies = quickReplyList.toArray(new QuickReply[0]);
             }else{
                 quickReplies = new QuickReply[0];
             }
@@ -236,8 +235,8 @@ import java.util.List;
         if (id != that.id) return false;
         if (senderId != that.senderId) return false;
         if (recipientId != that.recipientId) return false;
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (!Objects.equals(text, that.text)) return false;
+        if (!Objects.equals(createdAt, that.createdAt)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(userMentionEntities, that.userMentionEntities)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
@@ -250,7 +249,7 @@ import java.util.List;
         if (!Arrays.equals(symbolEntities, that.symbolEntities)) return false;
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         if (!Arrays.equals(quickReplies, that.quickReplies)) return false;
-        return quickReplyResponse != null ? quickReplyResponse.equals(that.quickReplyResponse) : that.quickReplyResponse == null;
+        return Objects.equals(quickReplyResponse, that.quickReplyResponse);
     }
 
     @Override

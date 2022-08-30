@@ -17,22 +17,19 @@
 package twitter4j.auth;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import twitter4j.*;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
-import twitter4j.conf.PropertyConfiguration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectOutputStream;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -40,13 +37,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@Execution(ExecutionMode.CONCURRENT)
 class OAuthTest extends TwitterTestBase {
 
     @Test
-    void testDeterministic() throws Exception {
-        ArrayList list1 = new ArrayList();
-        ArrayList list2 = new ArrayList();
-        assertEquals(list1, list2);
+    void testDeterministic() {
         Twitter twitter1 = new TwitterFactory().getInstance();
         twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         Twitter twitter2 = new TwitterFactory().getInstance();
@@ -111,7 +106,7 @@ class OAuthTest extends TwitterTestBase {
         AccessToken at1 = twitter.getOAuthAccessToken();
         assertEquals(at, at1);
         TwitterResponse res = twitter.getLanguages();
-        assertEquals(TwitterResponse.READ, res.getAccessLevel());
+        assertEquals(TwitterResponse.AccessLevel.READ, res.getAccessLevel());
     }
 
     @Test
@@ -138,6 +133,7 @@ class OAuthTest extends TwitterTestBase {
 
     }
 
+    @Disabled
     @Test
     void testBrowserClient() throws Exception {
         Twitter twitter = new TwitterFactory().getInstance();
@@ -151,10 +147,9 @@ class OAuthTest extends TwitterTestBase {
         assertEquals(at.getUserId(), id1.id);
     }
 
-    private AccessToken getAccessToken(Twitter twitter, String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
+    private AccessToken getAccessToken(Twitter twitter, @SuppressWarnings("unused") String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
 
         BrowserVersion browserVersion = BrowserVersion.getDefault();
-        browserVersion.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15");
         HtmlUnitDriver driver = new HtmlUnitDriver(browserVersion);
         driver.get(rt.getAuthorizationURL());
         driver.findElement(By.name("session[username_or_email]")).sendKeys(screenName);
@@ -162,19 +157,13 @@ class OAuthTest extends TwitterTestBase {
         driver.findElement(By.id("allow")).click();
 
         if (pinRequired) {
-            return twitter.getOAuthAccessToken(rt, driver.findElementsByTagName("code").get(0).getText());
+            return twitter.getOAuthAccessToken(rt, driver.findElements(By.tagName("code")).get(0).getText());
 
         } else {
             String oauthVerifier = driver.getCurrentUrl().replaceFirst(".*&oauth_verifier=([a-zA-Z0-9]+)$", "$1");
             return twitter.getOAuthAccessToken(rt, oauthVerifier);
 
         }
-    }
-
-    private static String catchPattern(String body, String before, String after) {
-        int beforeIndex = body.indexOf(before);
-        int afterIndex = body.indexOf(after, beforeIndex);
-        return body.substring(beforeIndex + before.length(), afterIndex);
     }
 
     @Test
@@ -206,7 +195,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testHeader() throws Exception {
+    void testHeader() {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("file", "vacation.jpg");
         params[1] = new HttpParameter("size", "original");
@@ -218,7 +207,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testEncodeParameter() throws Exception {
+    void testEncodeParameter() {
         //http://wiki.oauth.net/TestCases
         assertEquals("abcABC123", HttpParameter.encode("abcABC123"));
         assertEquals("-._~", HttpParameter.encode("-._~"));
@@ -236,7 +225,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testNormalizeRequestParameters() throws Exception {
+    void testNormalizeRequestParameters() {
         // a=1, c=hi%20there, f=25, f=50, f=a, z=p, z=t
         HttpParameter[] params = new HttpParameter[]{
                 new HttpParameter("a", "1"),
@@ -283,7 +272,7 @@ class OAuthTest extends TwitterTestBase {
     }
 
     @Test
-    void testConstructRequestURL() throws Exception {
+    void testConstructRequestURL() {
         //http://oauth.net/core/1.0#rfc.section.9.1.2
         assertEquals("http://example.com/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:80/resource?id=123"));
         assertEquals("http://example.com:8080/resource", OAuthAuthorization.constructRequestURL("HTTP://Example.com:8080/resource?id=123"));
@@ -291,37 +280,6 @@ class OAuthTest extends TwitterTestBase {
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com:443/resource?id=123"));
         assertEquals("https://example.com:8443/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com:8443/resource?id=123"));
         assertEquals("https://example.com/resource", OAuthAuthorization.constructRequestURL("HTTPS://Example.com/resource?id=123"));
-    }
-
-    @Test
-    void testXAuth() throws Exception {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(desktopConsumerKey);
-        builder.setOAuthConsumerSecret(desktopConsumerSecret);
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
-        try {
-            twitter.getOAuthAccessToken(id1.screenName, id2.password);
-            fail("expecting TwitterException");
-        } catch (TwitterException te) {
-            // id1 doesn't have access to xAuth
-            assertEquals(403, te.getStatusCode());
-        }
-        InputStream is = OAuthTest.class.getResourceAsStream("/xauth-test.properties");
-        if (null == is) {
-            System.out.println("xauth-test.properties not found. skipping xAuth test.");
-        } else {
-            Properties props = new Properties();
-            props.load(is);
-            Configuration conf = new PropertyConfiguration(props);
-            twitter = new TwitterFactory(conf).getInstance();
-            twitter.getOAuthAccessToken(id1.screenName, id1.password);
-            twitter.updateStatus(new Date() + ": xAuth test.");
-
-            twitter = new TwitterFactory().getInstance();
-            twitter.setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-            twitter.getOAuthAccessToken(id1.screenName, id1.password);
-        }
-
     }
 
     private void trySerializable(Object obj) throws IOException {
