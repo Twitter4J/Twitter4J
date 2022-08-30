@@ -36,7 +36,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class TwitterFactory implements java.io.Serializable {
     private static final Constructor<Twitter> TWITTER_CONSTRUCTOR;
-    /*AsyncTwitterFactory and TWitterStream will access this field*/
+    /*AsyncTwitterFactory and TwitterStream will access this field*/
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
     private static final Twitter SINGLETON;
     @Serial
