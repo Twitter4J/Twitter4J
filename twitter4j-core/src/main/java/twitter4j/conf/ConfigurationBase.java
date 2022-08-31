@@ -63,7 +63,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String restBaseURL = "https://api.twitter.com/1.1/";
     private String streamBaseURL = "https://stream.twitter.com/1.1/";
     private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
-    private String siteStreamBaseURL = "https://sitestream.twitter.com/1.1/";
     private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
     private int asyncNumThreads = 1;
@@ -533,15 +532,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public String getSiteStreamBaseURL() {
-        return siteStreamBaseURL;
-    }
-
-    protected final void setSiteStreamBaseURL(String siteStreamBaseURL) {
-        this.siteStreamBaseURL = siteStreamBaseURL;
-    }
-
-    @Override
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
@@ -805,8 +795,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (!Objects.equals(userStreamBaseURL, that.userStreamBaseURL))
             return false;
-        if (!Objects.equals(siteStreamBaseURL, that.siteStreamBaseURL))
-            return false;
         if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
         return Objects.equals(streamThreadName, that.streamThreadName);
@@ -838,7 +826,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
-        result = 31 * result + (siteStreamBaseURL != null ? siteStreamBaseURL.hashCode() : 0);
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
@@ -885,7 +872,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", restBaseURL='" + restBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
-                ", siteStreamBaseURL='" + siteStreamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", contributingTo=" + contributingTo +

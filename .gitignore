@@ -18,7 +18,5 @@ test.properties
 test0.properties
 test1.properties
 twitter4j.properties
-xauth-test.properties
-sitestream-test.properties
 build
 .gradle

@@ -85,8 +85,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     String getUserStreamBaseURL();
 
-    String getSiteStreamBaseURL();
-
     boolean isIncludeMyRetweetEnabled();
 
     boolean isJSONStoreEnabled();

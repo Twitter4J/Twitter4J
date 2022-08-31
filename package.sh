@@ -104,7 +104,6 @@ unzip twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar -d tw
 mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-javadoc.jar twitter4j-stream/
 # mv twitter4j-stream/target/twitter4j-stream-$LATEST_VERSION-sources.jar twitter4j-stream/
 rm twitter4j-stream/src/test/resources/test.properties
-rm twitter4j-stream/src/test/resources/sitestream-test.properties
 
 mkdir twitter4j-appengine/javadoc/
 unzip twitter4j-appengine/target/twitter4j-appengine-$LATEST_VERSION-javadoc.jar -d twitter4j-appengine/javadoc/

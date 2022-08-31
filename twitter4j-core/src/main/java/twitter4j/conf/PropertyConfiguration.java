@@ -64,8 +64,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String REST_BASE_URL = "restBaseURL";
     private static final String STREAM_BASE_URL = "streamBaseURL";
     private static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
-    private static final String SITE_STREAM_BASE_URL = "siteStreamBaseURL";
-
     private static final String ASYNC_NUM_THREADS = "async.numThreads";
     private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
     private static final String STREAM_THREAD_NAME = "streamThreadName";
@@ -83,10 +81,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
     private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
-    private static final String MEDIA_PROVIDER = "media.provider";
-    private static final String MEDIA_PROVIDER_API_KEY = "media.providerAPIKey";
-    private static final String MEDIA_PROVIDER_PARAMETERS = "media.providerParameters";
-    @Serial
     private static final long serialVersionUID = -7262615247923693252L;
 
 
@@ -341,9 +335,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, USER_STREAM_BASE_URL)) {
             setUserStreamBaseURL(getString(props, prefix, USER_STREAM_BASE_URL));
         }
-        if (notNull(props, prefix, SITE_STREAM_BASE_URL)) {
-            setSiteStreamBaseURL(getString(props, prefix, SITE_STREAM_BASE_URL));
-        }
         if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
             setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
         }
@@ -376,21 +367,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, APPLICATION_ONLY_AUTH_ENABLED)) {
             setApplicationOnlyAuthEnabled(getBoolean(props, prefix, APPLICATION_ONLY_AUTH_ENABLED));
-        }
-        if (notNull(props, prefix, MEDIA_PROVIDER)) {
-            setMediaProvider(getString(props, prefix, MEDIA_PROVIDER));
-        }
-        if (notNull(props, prefix, MEDIA_PROVIDER_API_KEY)) {
-            setMediaProviderAPIKey(getString(props, prefix, MEDIA_PROVIDER_API_KEY));
-        }
-        if (notNull(props, prefix, MEDIA_PROVIDER_PARAMETERS)) {
-            String[] propsAry = getString(props, prefix, MEDIA_PROVIDER_PARAMETERS).split("&");
-            Properties p = new Properties();
-            for (String str : propsAry) {
-                String[] parameter = str.split("=");
-                p.setProperty(parameter[0], parameter[1]);
-            }
-            setMediaProviderParameters(p);
         }
         cacheInstance();
     }
