@@ -22,7 +22,6 @@ twitter4j.properties - Twitter4J configuration
 
 - Directory structure
 account/ - Account resources examples
-async/ - Async API examples
 block/ - Block resources examples
 directmessage/ - Direct Message resources examples
 favorite/ - Favorite resources examples

@@ -2,4 +2,4 @@ Twittetr4J is a Twitter API binding library for the Java language licensed under
 
 readme-libs.txt - this file
 twitter4j-core.jar - REST and Search API support
-twitter4j-examples.jar - examples : use with twitter4j-core, twitter4j-async and twitter4j-stream
+twitter4j-examples.jar - examples : use with twitter4j-core
