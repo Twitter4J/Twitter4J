@@ -399,6 +399,11 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     }
 
     @Override
+    public synchronized void invalidateOAuthToken() throws TwitterException {
+        getOAuth().invalidateOAuthToken();
+    }
+
+    @Override
     public synchronized void invalidateOAuth2Token() throws TwitterException {
         getOAuth2().invalidateOAuth2Token();
     }

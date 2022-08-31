@@ -183,6 +183,39 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         this.realm = realm;
     }
 
+    /**
+     * Invalidates the OAuth token
+     *
+     * On success, sets oauthToken to null
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     */
+    @Override
+    public void invalidateOAuthToken() throws TwitterException {
+        if (oauthToken == null) {
+            throw new IllegalStateException("OAuth Token is not available.");
+        }
+
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("access_token", getOAuthAccessToken().getToken());
+
+        OAuthToken _token = oauthToken;
+        boolean succeed = false;
+
+        try {
+            HttpResponse res = http.post(conf.getOAuthInvalidateTokenURL(), params, this, null);
+            if (res.getStatusCode() != 200) {
+                throw new TwitterException("Invalidating OAuth Token failed.", res);
+            }
+
+            succeed = true;
+
+        } finally {
+            oauthToken = null;
+            if (!succeed) {
+                oauthToken = _token;
+            }
+        }
+    }
 
     /*package*/ String generateAuthorizationHeader(String method, String url, HttpParameter[] params, String nonce, String timestamp, OAuthToken otoken) {
         if (null == params) {

@@ -95,6 +95,7 @@ Robson Cassol <robsoncassol at gmail.com> @robsoncassol
 Roy Reshef <royreshef at gmail.com> @tsipo
 Rui Silva
 Sam Pullara <sam at sampullara.com> @sampullara
+Sami Shahin <ssshahin at bu.edu> @dr_wisper
 Sdk0815 <developer at terumode.net> @Sdk0815
 Shane Gibson <shane.a.gibson at gmail.com> @shaneagibson
 Shintaro Watanabe <shintaro.watanabe1226@gmail.com> @shin_taro_1226
