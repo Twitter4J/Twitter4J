@@ -34,12 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Execution(ExecutionMode.CONCURRENT)
 class TwitterTest extends TwitterTestBase {
 
-    @Test
-    void testGetScreenName() throws Exception {
-        assertEquals(id1.screenName, twitter1.getScreenName());
-        assertEquals(id1.id, twitter1.getId());
-    }
-
     RateLimitStatus rateLimitStatus = null;
     boolean accountLimitStatusAcquired;
     boolean ipLimitStatusAcquired;

@@ -41,8 +41,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     private static final long serialVersionUID = -7824361938865528554L;
 
     Configuration conf;
-    private transient String screenName = null;
-    private transient long id = 0;
 
     transient HttpClient http;
     private List<RateLimitStatusListener> rateLimitStatusListeners = new ArrayList<>(0);
@@ -92,52 +90,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
     void setFactory() {
         factory = new JSONImplFactory(conf);
-    }
-
-    @Override
-    public String getScreenName() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (null == screenName) {
-            if (auth instanceof BasicAuthorization) {
-                screenName = ((BasicAuthorization) auth).getUserId();
-                if (screenName.contains("@")) {
-                    screenName = null;
-                }
-            }
-            if (null == screenName) {
-                // retrieve the screen name if this instance is authenticated with OAuth or email address
-                fillInIDAndScreenName();
-            }
-        }
-        return screenName;
-    }
-
-    @Override
-    public long getId() throws TwitterException, IllegalStateException {
-        if (!auth.isEnabled()) {
-            throw new IllegalStateException(
-                    "Neither user ID/password combination nor OAuth consumer key/secret combination supplied");
-        }
-        if (0 == id) {
-            fillInIDAndScreenName();
-        }
-        // retrieve the screen name if this instance is authenticated with OAuth or email address
-        return id;
-    }
-
-    User fillInIDAndScreenName() throws TwitterException {
-        return fillInIDAndScreenName(null);
-    }
-    
-    User fillInIDAndScreenName(HttpParameter[] parameters) throws TwitterException {
-        ensureAuthorizationEnabled();
-        User user = new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json", parameters, auth, this), conf);
-        this.screenName = user.getScreenName();
-        this.id = user.getId();
-        return user;
     }
 
     @Override
@@ -222,13 +174,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         if (!auth.isEnabled()) {
             throw new IllegalStateException(
                 "Authentication credentials are missing. " + WWW_DETAILS);
-        }
-    }
-
-    final void ensureOAuthEnabled() {
-        if (!(auth instanceof OAuthAuthorization)) {
-            throw new IllegalStateException(
-                "OAuth required. Authentication credentials are missing. " + WWW_DETAILS);
         }
     }
 
@@ -343,8 +288,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 oauthAccessToken = getOAuth().getOAuthAccessToken();
             }
         }
-        screenName = oauthAccessToken.getScreenName();
-        id = oauthAccessToken.getUserId();
         return oauthAccessToken;
     }
 
@@ -352,7 +295,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     @Override
     public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
-        screenName = oauthAccessToken.getScreenName();
         return oauthAccessToken;
     }
 
@@ -360,7 +302,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         OAuthSupport oauth = getOAuth();
         AccessToken oauthAccessToken = oauth.getOAuthAccessToken(requestToken);
-        screenName = oauthAccessToken.getScreenName();
         return oauthAccessToken;
     }
 

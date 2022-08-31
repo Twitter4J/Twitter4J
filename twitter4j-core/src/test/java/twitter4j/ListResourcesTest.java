@@ -58,7 +58,7 @@ class ListResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
 
-        userList = twitter1.showUserList(twitter1.getId(), userList.getSlug());
+        userList = twitter1.showUserList(id1.id, userList.getSlug());
         assertEquals(userList, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userList)));
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
@@ -86,7 +86,7 @@ class ListResourcesTest extends TwitterTestBase {
         assertEquals("testpoint2", userList.getName());
         assertEquals("description2", userList.getDescription());
 
-        userList = twitter1.updateUserList(twitter1.getId(), userList.getSlug(), "testpoint3", true, "description3");
+        userList = twitter1.updateUserList(id1.id, userList.getSlug(), "testpoint3", true, "description3");
         assertEquals(userList, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(userList)));
         assertTrue(userList.isPublic());
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
@@ -235,7 +235,7 @@ class ListResourcesTest extends TwitterTestBase {
         /*List Subscribers Methods*/
         PagableResponseList<User> users;
 
-        users = twitter1.getUserListSubscribers(twitter1.getId(), userList.getSlug(), -1L);
+        users = twitter1.getUserListSubscribers(id1.id, userList.getSlug(), -1L);
         assertNotNull(TwitterObjectFactory.getRawJSON(users));
         twitter2.createUserListSubscription(userList.getId());
         twitter2.destroyUserListSubscription(userList.getId());
@@ -331,7 +331,7 @@ class ListResourcesTest extends TwitterTestBase {
                 list = alist;
             } else {
                 try {
-                    UserList deletedLiet = twitter1.destroyUserList(twitter1.getId(), alist.getSlug());
+                    UserList deletedLiet = twitter1.destroyUserList(id1.id, alist.getSlug());
                     assertNotNull(TwitterObjectFactory.getRawJSON(deletedLiet));
                     assertEquals(deletedLiet, TwitterObjectFactory.createUserList(TwitterObjectFactory.getRawJSON(deletedLiet)));
                     assertNotNull(deletedLiet);

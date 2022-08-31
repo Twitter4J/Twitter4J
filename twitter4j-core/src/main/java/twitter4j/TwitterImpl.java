@@ -792,8 +792,8 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public User verifyCredentials() throws TwitterException {
-        return super.fillInIDAndScreenName(
-                new HttpParameter[]{new HttpParameter("include_email", conf.isIncludeEmailEnabled())});
+        return new UserJSONImpl(http.get(conf.getRestBaseURL() + "account/verify_credentials.json",
+                new HttpParameter[]{new HttpParameter("include_email", conf.isIncludeEmailEnabled())}, auth, this), conf);
     }
     
     @Override

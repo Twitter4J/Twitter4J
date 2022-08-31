@@ -202,7 +202,7 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertEquals("barakobama", friendshipList.get(0).getScreenName());
         assertFalse(friendshipList.get(0).isFollowing());
         assertFalse(friendshipList.get(0).isFollowedBy());
-        assertEquals(followsOneWay.getScreenName(), friendshipList.get(1).getScreenName());
+        assertEquals(followsOneWayInfo.screenName, friendshipList.get(1).getScreenName());
 
 
         String twitterapi = "TwitterAPI";
