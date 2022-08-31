@@ -99,12 +99,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isStallWarningsEnabled();
 
-    String getMediaProvider();
-
-    String getMediaProviderAPIKey();
-
-    Properties getMediaProviderParameters();
-
     int getAsyncNumThreads();
 
     long getContributingTo();

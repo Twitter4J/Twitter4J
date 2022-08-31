@@ -27,7 +27,6 @@ import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 
 /**
  * Configuration base class with default settings.
@@ -88,9 +87,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean applicationOnlyAuthEnabled = false;
 
-    private String mediaProvider = "TWITTER";
-    private String mediaProviderAPIKey = null;
-    private Properties mediaProviderParameters = null;
     private boolean daemonEnabled = true;
 
     private String streamThreadName = "";
@@ -726,33 +722,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public String getMediaProvider() {
-        return this.mediaProvider;
-    }
-
-    protected final void setMediaProvider(String mediaProvider) {
-        this.mediaProvider = mediaProvider;
-    }
-
-    @Override
-    public String getMediaProviderAPIKey() {
-        return this.mediaProviderAPIKey;
-    }
-
-    protected final void setMediaProviderAPIKey(String mediaProviderAPIKey) {
-        this.mediaProviderAPIKey = mediaProviderAPIKey;
-    }
-
-    @Override
-    public Properties getMediaProviderParameters() {
-        return this.mediaProviderParameters;
-    }
-
-    protected final void setMediaProviderParameters(Properties props) {
-        this.mediaProviderParameters = props;
-    }
-
-    @Override
     public String getStreamThreadName() {
         return this.streamThreadName;
     }
@@ -840,12 +809,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             return false;
         if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
-        if (!Objects.equals(mediaProvider, that.mediaProvider))
-            return false;
-        if (!Objects.equals(mediaProviderAPIKey, that.mediaProviderAPIKey))
-            return false;
-        if (!Objects.equals(mediaProviderParameters, that.mediaProviderParameters))
-            return false;
         return Objects.equals(streamThreadName, that.streamThreadName);
 
     }
@@ -891,9 +854,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (userStreamWithFollowingsEnabled ? 1 : 0);
         result = 31 * result + (stallWarningsEnabled ? 1 : 0);
         result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
-        result = 31 * result + (mediaProvider != null ? mediaProvider.hashCode() : 0);
-        result = 31 * result + (mediaProviderAPIKey != null ? mediaProviderAPIKey.hashCode() : 0);
-        result = 31 * result + (mediaProviderParameters != null ? mediaProviderParameters.hashCode() : 0);
         result = 31 * result + (daemonEnabled ? 1 : 0);
         result = 31 * result + (streamThreadName != null ? streamThreadName.hashCode() : 0);
         return result;
@@ -941,9 +901,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", userStreamWithFollowingsEnabled=" + userStreamWithFollowingsEnabled +
                 ", stallWarningsEnabled=" + stallWarningsEnabled +
                 ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
-                ", mediaProvider='" + mediaProvider + '\'' +
-                ", mediaProviderAPIKey='" + mediaProviderAPIKey + '\'' +
-                ", mediaProviderParameters=" + mediaProviderParameters +
                 ", daemonEnabled=" + daemonEnabled +
                 ", streamThreadName='" + streamThreadName + '\'' +
                 '}';

@@ -294,20 +294,6 @@ public class ConfigurationTest {
         assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
         assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
 
-        // disable SSL
-        writeFile("./twitter4j.properties", """
-                twitter4j.restBaseURL=http://somewhere.com/
-                twitter4j.debug=true
-                media.providerParameters=debug=true&foo=bar""");
-        conf = new ConfigurationBuilder().build();
-        assertEquals("http://somewhere.com/", conf.getRestBaseURL());
-        assertTrue(conf.isDebugEnabled());
-        Properties mediaProps = conf.getMediaProviderParameters();
-        assertNotNull(mediaProps);
-        assertNull(mediaProps.getProperty("hoge"));
-        assertEquals("true", mediaProps.getProperty("debug"));
-        assertEquals("bar", mediaProps.getProperty("foo"));
-
         deleteFile("./twitter4j.properties");
     }
 

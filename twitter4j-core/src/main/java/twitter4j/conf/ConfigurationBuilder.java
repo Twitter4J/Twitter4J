@@ -16,8 +16,6 @@
 
 package twitter4j.conf;
 
-import java.util.Properties;
-
 /**
  * A builder that can be used to construct a twitter4j configuration with desired settings.  This
  * builder has sensible defaults such that {@code new ConfigurationBuilder().build()} would create a
@@ -309,24 +307,6 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setUserStreamWithFollowingsEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setUserStreamWithFollowingsEnabled(enabled);
-        return this;
-    }
-
-    public ConfigurationBuilder setMediaProvider(String mediaProvider) {
-        checkNotBuilt();
-        configurationBean.setMediaProvider(mediaProvider);
-        return this;
-    }
-
-    public ConfigurationBuilder setMediaProviderAPIKey(String mediaProviderAPIKey) {
-        checkNotBuilt();
-        configurationBean.setMediaProviderAPIKey(mediaProviderAPIKey);
-        return this;
-    }
-
-    public ConfigurationBuilder setMediaProviderParameters(Properties props) {
-        checkNotBuilt();
-        configurationBean.setMediaProviderParameters(props);
         return this;
     }
 
