@@ -83,17 +83,11 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     String getOAuth2InvalidateTokenURL();
 
-    String getUserStreamBaseURL();
-
     boolean isIncludeMyRetweetEnabled();
 
     boolean isJSONStoreEnabled();
 
     boolean isMBeanEnabled();
-
-    boolean isUserStreamRepliesAllEnabled();
-
-    boolean isUserStreamWithFollowingsEnabled();
 
     boolean isStallWarningsEnabled();
 

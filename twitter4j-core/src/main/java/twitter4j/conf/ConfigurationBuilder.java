@@ -220,12 +220,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder setUserStreamBaseURL(String userStreamBaseURL) {
-        checkNotBuilt();
-        configurationBean.setUserStreamBaseURL(userStreamBaseURL);
-        return this;
-    }
-
     public ConfigurationBuilder setAsyncNumThreads(int asyncNumThreads) {
         checkNotBuilt();
         configurationBean.setAsyncNumThreads(asyncNumThreads);
@@ -289,18 +283,6 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder setMBeanEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setMBeanEnabled(enabled);
-        return this;
-    }
-
-    public ConfigurationBuilder setUserStreamRepliesAllEnabled(boolean enabled) {
-        checkNotBuilt();
-        configurationBean.setUserStreamRepliesAllEnabled(enabled);
-        return this;
-    }
-
-    public ConfigurationBuilder setUserStreamWithFollowingsEnabled(boolean enabled) {
-        checkNotBuilt();
-        configurationBean.setUserStreamWithFollowingsEnabled(enabled);
         return this;
     }
 

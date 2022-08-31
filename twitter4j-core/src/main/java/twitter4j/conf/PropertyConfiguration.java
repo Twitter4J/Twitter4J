@@ -63,7 +63,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     private static final String REST_BASE_URL = "restBaseURL";
     private static final String STREAM_BASE_URL = "streamBaseURL";
-    private static final String USER_STREAM_BASE_URL = "userStreamBaseURL";
     private static final String ASYNC_NUM_THREADS = "async.numThreads";
     private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
     private static final String STREAM_THREAD_NAME = "streamThreadName";
@@ -332,9 +331,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         if (notNull(props, prefix, STREAM_BASE_URL)) {
             setStreamBaseURL(getString(props, prefix, STREAM_BASE_URL));
         }
-        if (notNull(props, prefix, USER_STREAM_BASE_URL)) {
-            setUserStreamBaseURL(getString(props, prefix, USER_STREAM_BASE_URL));
-        }
         if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
             setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
         }
@@ -355,12 +351,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, MBEAN_ENABLED)) {
             setMBeanEnabled(getBoolean(props, prefix, MBEAN_ENABLED));
-        }
-        if (notNull(props, prefix, STREAM_USER_REPLIES_ALL)) {
-            setUserStreamRepliesAllEnabled(getBoolean(props, prefix, STREAM_USER_REPLIES_ALL));
-        }
-        if (notNull(props, prefix, STREAM_USER_WITH_FOLLOWINGS)) {
-            setUserStreamWithFollowingsEnabled(getBoolean(props, prefix, STREAM_USER_WITH_FOLLOWINGS));
         }
         if (notNull(props, prefix, STREAM_STALL_WARNINGS_ENABLED)) {
             setStallWarningsEnabled(getBoolean(props, prefix, STREAM_STALL_WARNINGS_ENABLED));

@@ -62,7 +62,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private String restBaseURL = "https://api.twitter.com/1.1/";
     private String streamBaseURL = "https://stream.twitter.com/1.1/";
-    private String userStreamBaseURL = "https://userstream.twitter.com/1.1/";
     private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
     private int asyncNumThreads = 1;
@@ -80,8 +79,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     private boolean mbeanEnabled = false;
 
-    private boolean userStreamRepliesAllEnabled = false;
-    private boolean userStreamWithFollowingsEnabled = true;
     private boolean stallWarningsEnabled = true;
 
     private boolean applicationOnlyAuthEnabled = false;
@@ -523,15 +520,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public String getUserStreamBaseURL() {
-        return userStreamBaseURL;
-    }
-
-    protected final void setUserStreamBaseURL(String siteStreamBaseURL) {
-        this.userStreamBaseURL = siteStreamBaseURL;
-    }
-
-    @Override
     public String getOAuthRequestTokenURL() {
         return oAuthRequestTokenURL;
     }
@@ -676,24 +664,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public boolean isUserStreamRepliesAllEnabled() {
-        return this.userStreamRepliesAllEnabled;
-    }
-
-    @Override
-    public boolean isUserStreamWithFollowingsEnabled() {
-        return this.userStreamWithFollowingsEnabled;
-    }
-
-    protected final void setUserStreamRepliesAllEnabled(boolean enabled) {
-        this.userStreamRepliesAllEnabled = enabled;
-    }
-
-    protected final void setUserStreamWithFollowingsEnabled(boolean enabled) {
-        this.userStreamWithFollowingsEnabled = enabled;
-    }
-
-    @Override
     public boolean isStallWarningsEnabled() {
         return stallWarningsEnabled;
     }
@@ -757,8 +727,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (includeEmailEnabled != that.includeEmailEnabled) return false;
         if (jsonStoreEnabled != that.jsonStoreEnabled) return false;
         if (mbeanEnabled != that.mbeanEnabled) return false;
-        if (userStreamRepliesAllEnabled != that.userStreamRepliesAllEnabled) return false;
-        if (userStreamWithFollowingsEnabled != that.userStreamWithFollowingsEnabled) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
         if (daemonEnabled != that.daemonEnabled) return false;
@@ -793,8 +761,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (!Objects.equals(restBaseURL, that.restBaseURL)) return false;
         if (!Objects.equals(streamBaseURL, that.streamBaseURL))
             return false;
-        if (!Objects.equals(userStreamBaseURL, that.userStreamBaseURL))
-            return false;
         if (!Objects.equals(uploadBaseURL, that.uploadBaseURL))
             return false;
         return Objects.equals(streamThreadName, that.streamThreadName);
@@ -825,7 +791,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (oAuth2InvalidateTokenURL != null ? oAuth2InvalidateTokenURL.hashCode() : 0);
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
-        result = 31 * result + (userStreamBaseURL != null ? userStreamBaseURL.hashCode() : 0);
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
         result = 31 * result + asyncNumThreads;
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
@@ -837,8 +802,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (includeEmailEnabled ? 1 : 0);
         result = 31 * result + (jsonStoreEnabled ? 1 : 0);
         result = 31 * result + (mbeanEnabled ? 1 : 0);
-        result = 31 * result + (userStreamRepliesAllEnabled ? 1 : 0);
-        result = 31 * result + (userStreamWithFollowingsEnabled ? 1 : 0);
         result = 31 * result + (stallWarningsEnabled ? 1 : 0);
         result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
         result = 31 * result + (daemonEnabled ? 1 : 0);
@@ -871,7 +834,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", oAuth2InvalidateTokenURL='" + oAuth2InvalidateTokenURL + '\'' +
                 ", restBaseURL='" + restBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
-                ", userStreamBaseURL='" + userStreamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", asyncNumThreads=" + asyncNumThreads +
                 ", contributingTo=" + contributingTo +
@@ -883,8 +845,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", includeEmailEnabled=" + includeEmailEnabled +
                 ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", mbeanEnabled=" + mbeanEnabled +
-                ", userStreamRepliesAllEnabled=" + userStreamRepliesAllEnabled +
-                ", userStreamWithFollowingsEnabled=" + userStreamWithFollowingsEnabled +
                 ", stallWarningsEnabled=" + stallWarningsEnabled +
                 ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
                 ", daemonEnabled=" + daemonEnabled +
