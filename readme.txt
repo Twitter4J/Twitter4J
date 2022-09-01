@@ -114,6 +114,7 @@ Tomasz Nurkiewicz @tnurkiewicz
 Tomoaki Iwasaki <multicolorworld.shinku at gmail.com> @MulticolorWorld
 Tomoaki Takezoe <sumito3478 at gmail.com> @sumito3478
 Tomohisa Igarashi <tm.igarashi at gmail.com>
+Tomo Tomo <tomoppeko at gmail.com> @tomocrafter
 Tyler MacLeod
 Venil Noronha <venil.noronha at gmail.com> @venilnoronha
 Will Glozer <will at glozer.net> @ar3te
