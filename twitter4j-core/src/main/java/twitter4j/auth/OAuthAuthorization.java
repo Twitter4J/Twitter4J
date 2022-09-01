@@ -114,7 +114,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (xAuthMode != null) {
             params.add(new HttpParameter("x_auth_mode", xAuthMode));
         }
-        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this, null), this);
+        oauthToken = new RequestToken(conf, http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[params.size()]), this, null), this);
         return (RequestToken) oauthToken;
     }
 
