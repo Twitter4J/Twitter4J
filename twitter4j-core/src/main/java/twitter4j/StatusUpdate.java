@@ -44,6 +44,7 @@ public final class StatusUpdate implements java.io.Serializable {
     private long[] mediaIds;
     private boolean autoPopulateReplyMetadata;
     private String attachmentUrl = null;
+    private long[] excludeReplyUserIds;
 
     public StatusUpdate(String status) {
         this.status = status;
@@ -237,6 +238,32 @@ public final class StatusUpdate implements java.io.Serializable {
         return this;
     }
 
+    /**
+     * @return excludeReplyUserIds
+     * @since Twitter4J 4.0.x
+     */
+    public long[] getExcludeReplyUserIds() {
+        return excludeReplyUserIds;
+    }
+
+    /**
+     * @param excludeReplyUserIds enable specific IDs (apart from the leading one) to be excluded from a reply if auto_populate_reply_metadata enabled
+     * @since Twitter4J 4.0.x
+     */
+    public void setExcludeReplyUserIds(long... excludeReplyUserIds) {
+        this.excludeReplyUserIds = excludeReplyUserIds;
+    }
+
+    /**
+     * @param excludeReplyUserIds enable specific IDs (apart from the leading one) to be excluded from a reply if auto_populate_reply_metadata enabled
+     * @return this instance
+     * @since Twitter4J 4.0.x
+     */
+    public StatusUpdate excludeReplyUserIds(long... excludeReplyUserIds) {
+        setExcludeReplyUserIds(excludeReplyUserIds);
+        return this;
+    }
+
     /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<>();
         appendParameter("status", status, params);
@@ -265,6 +292,9 @@ public final class StatusUpdate implements java.io.Serializable {
             appendParameter("auto_populate_reply_metadata", "true", params);
         }
         appendParameter("attachment_url", attachmentUrl, params);
+        if (excludeReplyUserIds != null && excludeReplyUserIds.length >= 1) {
+            params.add(new HttpParameter("exclude_reply_user_ids", StringUtil.join(excludeReplyUserIds)));
+        }
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
