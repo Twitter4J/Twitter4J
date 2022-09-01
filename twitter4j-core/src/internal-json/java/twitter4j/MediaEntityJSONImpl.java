@@ -39,6 +39,11 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private long videoDurationMillis;
     private Variant[] videoVariants;
     private String extAltText;
+    private String additionalMediaTitle;
+    private String additionalMediaDescription;
+    private Boolean additionalMediaEmbeddable;
+    private Boolean additionalMediaMonetizable;
+    private User additionalMediaSourceUser;
 
 
     MediaEntityJSONImpl(JSONObject json) throws TwitterException {
@@ -86,7 +91,18 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
             }
 
             if (json.has("ext_alt_text")) {
-                extAltText = json.getString("ext_alt_text");
+                this.extAltText = json.getString("ext_alt_text");
+            }
+
+            if (json.has("additional_media_info")) {
+                JSONObject additionalMediaInfo = json.getJSONObject("additional_media_info");
+                this.additionalMediaTitle = additionalMediaInfo.optString("title", null);
+                this.additionalMediaDescription = additionalMediaInfo.optString("description", null);
+                this.additionalMediaEmbeddable = additionalMediaInfo.optBoolean("embeddable", false);
+                this.additionalMediaMonetizable = additionalMediaInfo.optBoolean("monetizable", false);
+                if (!additionalMediaInfo.isNull("source_user")) {
+                    this.additionalMediaSourceUser = new UserJSONImpl(additionalMediaInfo.getJSONObject("source_user"));
+                }
             }
 
         } catch (JSONException jsone) {
@@ -239,6 +255,31 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     @Override
     public String getExtAltText() {
         return extAltText;
+    }
+
+    @Override
+    public String getAdditionalMediaTitle() {
+        return additionalMediaTitle;
+    }
+
+    @Override
+    public String getAdditionalMediaDescription() {
+        return additionalMediaDescription;
+    }
+
+    @Override
+    public Boolean getAdditionalMediaEmbeddable() {
+        return additionalMediaEmbeddable;
+    }
+
+    @Override
+    public Boolean getAdditionalMediaMonetizable() {
+        return additionalMediaMonetizable;
+    }
+
+    @Override
+    public User getAdditionalMediaSourceUser() {
+        return additionalMediaSourceUser;
     }
 
     @Override

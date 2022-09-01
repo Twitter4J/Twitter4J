@@ -90,4 +90,15 @@ public interface MediaEntity extends URLEntity {
     Variant[] getVideoVariants();
 
     String getExtAltText();
+
+    String getAdditionalMediaTitle();
+
+    String getAdditionalMediaDescription();
+
+    Boolean getAdditionalMediaEmbeddable();
+
+    Boolean getAdditionalMediaMonetizable();
+
+    User getAdditionalMediaSourceUser();
+
 }
