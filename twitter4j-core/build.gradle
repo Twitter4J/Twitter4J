@@ -46,11 +46,11 @@ compileTestJava   {
 }
 
 dependencies {
-    compileOnly 'org.slf4j:slf4j-api:2.0.0'
-    compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
+    compileOnly 'org.slf4j:slf4j-api:2.0.2'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.19.0'
     implementation 'org.jetbrains:annotations:23.0.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
     testImplementation 'org.seleniumhq.selenium:htmlunit-driver:3.64.0'
     testImplementation 'com.googlecode:kryo:1.04'
 }

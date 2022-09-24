@@ -43,6 +43,8 @@ package twitter4j;
  */
 public class JSONException extends RuntimeException {
 
+    private static final long serialVersionUID = 8114410160791733006L;
+
     public JSONException(String s) {
         super(s);
     }
