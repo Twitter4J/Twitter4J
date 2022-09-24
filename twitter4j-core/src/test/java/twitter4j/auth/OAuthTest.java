@@ -84,14 +84,6 @@ class OAuthTest extends TwitterTestBase {
             assertEquals(401, te.getStatusCode());
         }
         twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        rt = twitter.getOAuthRequestToken(null, "read");
-        // trying to get an access token without permitting the request token.
-        try {
-            twitter.getOAuthAccessToken(rt.getToken(), rt.getTokenSecret());
-            fail();
-        } catch (TwitterException te) {
-            assertEquals(403, te.getStatusCode());
-        }
         AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
         try {
             twitter.getOAuthRequestToken();

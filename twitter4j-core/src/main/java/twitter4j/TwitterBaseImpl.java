@@ -224,10 +224,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
                 oauth.setOAuthConsumer(consumerKey, consumerSecret);
                 auth = oauth;
             }
-        } else if (auth instanceof BasicAuthorization) {
-            XAuthAuthorization xauth = new XAuthAuthorization((BasicAuthorization) auth);
-            xauth.setOAuthConsumer(consumerKey, consumerSecret);
-            auth = xauth;
         } else if (auth instanceof OAuthAuthorization || auth instanceof OAuth2Authorization) {
             throw new IllegalStateException("consumer key/secret pair already set.");
         }
@@ -243,50 +239,14 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         return getOAuth().getOAuthRequestToken(callbackUrl);
     }
 
-    @Override
-    public RequestToken getOAuthRequestToken(String callbackUrl, String xAuthAccessType) throws TwitterException {
-        return getOAuth().getOAuthRequestToken(callbackUrl, xAuthAccessType);
-    }
-
-    @Override
-    public RequestToken getOAuthRequestToken(String callbackUrl, String xAuthAccessType, String xAuthMode) throws TwitterException {
-        return getOAuth().getOAuthRequestToken(callbackUrl, xAuthAccessType, xAuthMode);
-    }
-
     /**
      * {@inheritDoc}
-     * Basic authenticated instance of this class will try acquiring an AccessToken using xAuth.<br>
-     * In order to get access acquire AccessToken using xAuth, you must apply by sending an email to <a href="mailto:api@twitter.com">api@twitter.com</a> all other applications will receive an HTTP 401 error.  Web-based applications will not be granted access, except on a temporary basis for when they are converting from basic-authentication support to full OAuth support.<br>
-     * Storage of Twitter usernames and passwords is forbidden. By using xAuth, you are required to store only access tokens and access token secrets. If the access token expires or is expunged by a user, you must ask for their login and password again before exchanging the credentials for an access token.
      *
-     * @throws TwitterException When Twitter service or network is unavailable, when the user has not authorized, or when the client application is not permitted to use xAuth
-     * @see <a href="https://dev.twitter.com/docs/oauth/xauth">xAuth | Twitter Developers</a>
+     * @throws TwitterException When Twitter service or network is unavailable, or when the user has not authorized
      */
     @Override
     public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
-        Authorization auth = getAuthorization();
-        AccessToken oauthAccessToken;
-        if (auth instanceof BasicAuthorization) {
-            BasicAuthorization basicAuth = (BasicAuthorization) auth;
-            auth = AuthorizationFactory.getInstance(conf);
-            if (auth instanceof OAuthAuthorization) {
-                OAuthAuthorization oauthAuth = (OAuthAuthorization)auth;
-                this.auth = auth;
-                oauthAccessToken = oauthAuth.getOAuthAccessToken(basicAuth.getUserId(), basicAuth.getPassword());
-            } else {
-                throw new IllegalStateException("consumer key / secret combination not supplied.");
-            }
-        } else {
-            if (auth instanceof XAuthAuthorization) {
-                XAuthAuthorization xauth = (XAuthAuthorization)auth;
-                OAuthAuthorization oauthAuth = new OAuthAuthorization(conf);
-                oauthAuth.setOAuthConsumer(xauth.getConsumerKey(), xauth.getConsumerSecret());
-                oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
-            } else {
-                oauthAccessToken = getOAuth().getOAuthAccessToken();
-            }
-        }
-        return oauthAccessToken;
+        return getOAuth().getOAuthAccessToken();
     }
 
 
@@ -311,10 +271,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         getOAuth().setOAuthAccessToken(accessToken);
     }
 
-    @Override
-    public synchronized AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(screenName, password);
-    }
     /* OAuth support methods */
 
     private OAuthSupport getOAuth() {

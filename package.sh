@@ -13,7 +13,6 @@ cp -r twitter4j-core/src $DIR/twitter4j-core/
 cp twitter4j-core/pom.xml $DIR/twitter4j-core/
 rm $DIR/twitter4j-core/src/test/resources/twitter4j.properties
 rm $DIR/twitter4j-core/src/test/resources/test.properties
-rm $DIR/twitter4j-core/src/test/resources/xauth-test.properties
 
 mkdir $DIR/twitter4j-examples
 cp -r twitter4j-examples/src $DIR/twitter4j-examples/

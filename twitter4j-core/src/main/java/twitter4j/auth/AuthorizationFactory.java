@@ -55,12 +55,6 @@ public final class AuthorizationFactory {
                 }
                 auth = oauth;
             }
-        } else {
-            String screenName = conf.getUser();
-            String password = conf.getPassword();
-            if (screenName != null && password != null) {
-                auth = new BasicAuthorization(screenName, password);
-            }
         }
         if (null == auth) {
             auth = NullAuthorization.getInstance();

@@ -84,33 +84,17 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     @Override
     public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null, null, null);
+        return getOAuthRequestToken(null);
     }
 
     @Override
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
-        return getOAuthRequestToken(callbackURL, null, null);
-    }
-
-    @Override
-    public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType) throws TwitterException {
-        return getOAuthRequestToken(callbackURL, xAuthAccessType, null);
-    }
-
-    @Override
-    public RequestToken getOAuthRequestToken(String callbackURL, String xAuthAccessType, String xAuthMode) throws TwitterException {
         if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
         }
         List<HttpParameter> params = new ArrayList<>();
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
-        }
-        if (xAuthAccessType != null) {
-            params.add(new HttpParameter("x_auth_access_type", xAuthAccessType));
-        }
-        if (xAuthMode != null) {
-            params.add(new HttpParameter("x_auth_mode", xAuthMode));
         }
         oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[0]), this, null), this);
         return (RequestToken) oauthToken;
@@ -144,26 +128,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken(oauthVerifier);
-    }
-
-    @Override
-    public AccessToken getOAuthAccessToken(String screenName, String password) throws TwitterException {
-        try {
-            String url = conf.getOAuthAccessTokenURL();
-            if (0 == url.indexOf("http://")) {
-                // SSL is required
-                // @see https://dev.twitter.com/docs/oauth/xauth
-                url = "https://" + url.substring(7);
-            }
-            oauthToken = new AccessToken(http.post(url, new HttpParameter[]{
-                    new HttpParameter("x_auth_username", screenName),
-                    new HttpParameter("x_auth_password", password),
-                    new HttpParameter("x_auth_mode", "client_auth")
-            }, this, null));
-            return (AccessToken) oauthToken;
-        } catch (TwitterException te) {
-            throw new TwitterException("The screen name / password combination seems to be invalid.", te, te.getStatusCode());
-        }
     }
 
     @Override
