@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class Paging implements java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = -7226113618341047983L;
     private int page = -1;
     private int count = -1;
@@ -223,12 +221,9 @@ public final class Paging implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Paging paging)) return false;
-
-        if (count != paging.count) return false;
-        if (maxId != paging.maxId) return false;
-        if (page != paging.page) return false;
-        return sinceId == paging.sinceId;
+        if (o == null || getClass() != o.getClass()) return false;
+        Paging paging = (Paging) o;
+        return page == paging.page && count == paging.count && sinceId == paging.sinceId && maxId == paging.maxId;
     }
 
     @Override

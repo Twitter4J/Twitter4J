@@ -35,7 +35,6 @@ import static twitter4j.HttpParameter.getParameterArray;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class TwitterImpl extends TwitterBaseImpl implements Twitter {
-    @Serial
     private static final long serialVersionUID = 9170943084096085770L;
     private static final Logger logger = Logger.getLogger();
     
@@ -273,7 +272,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 	@Override
 	public UploadedMedia uploadMediaChunked(String fileName, InputStream media) throws TwitterException {
 		//If the InputStream is remote, this is will download it into memory speeding up the chunked upload process 
-		byte[] dataBytes = null;
+		byte[] dataBytes;
 		try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(256 * 1024);
             byte[] buffer = new byte[32768];
@@ -300,7 +299,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 			byte[] segmentData = new byte[CHUNK_SIZE];
 			int segmentIndex = 0;
 			int totalRead = 0;
-			int bytesRead = 0;
+			int bytesRead;
 			
 			while ((bytesRead = dataInputStream.read(segmentData)) > 0) {
 				totalRead = totalRead + bytesRead;

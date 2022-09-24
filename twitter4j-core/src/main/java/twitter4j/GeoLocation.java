@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 
 /**
  * A data class representing geo location.
@@ -25,7 +24,6 @@ import java.io.Serial;
  */
 public class GeoLocation implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 6353721071298376949L;
     private double latitude;
     private double longitude;
@@ -67,10 +65,9 @@ public class GeoLocation implements java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GeoLocation that)) return false;
-
-        if (Double.compare(that.getLatitude(), latitude) != 0) return false;
-        return Double.compare(that.getLongitude(), longitude) == 0;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeoLocation that = (GeoLocation) o;
+        return Double.compare(that.latitude, latitude) == 0 && Double.compare(that.longitude, longitude) == 0;
     }
 
     @Override

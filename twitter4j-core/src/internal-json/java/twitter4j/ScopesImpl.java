@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import java.io.Serial;
 
 /**
  * A data interface representing targeting scopes applied to a status.
@@ -24,7 +23,6 @@ import java.io.Serial;
  * @since Twitter4J 3.0.6
  */
 public class ScopesImpl implements Scopes {
-    @Serial
     private static final long serialVersionUID = -6301829625595514787L;
 
     private final String[] placeIds;

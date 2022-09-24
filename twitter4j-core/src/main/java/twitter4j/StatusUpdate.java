@@ -18,7 +18,6 @@ package twitter4j;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.Objects;
  */
 public final class StatusUpdate implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 7422094739799350035L;
     private final String status;
     private long inReplyToStatusId = -1L;

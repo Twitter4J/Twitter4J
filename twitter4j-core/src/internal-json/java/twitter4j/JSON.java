@@ -29,7 +29,8 @@ class JSON {
     static Boolean toBoolean(Object value) {
         if (value instanceof Boolean) {
             return (Boolean) value;
-        } else if (value instanceof String stringValue) {
+        } else if (value instanceof String) {
+            String stringValue = (String) value;
             if ("true".equalsIgnoreCase(stringValue)) {
                 return true;
             } else if ("false".equalsIgnoreCase(stringValue)) {

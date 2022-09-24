@@ -21,25 +21,27 @@ import twitter4j.JSONException;
 import twitter4j.JSONObject;
 import twitter4j.TwitterException;
 
-import java.io.Serial;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 
 public class OAuth2Token implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = -8985359441959903216L;
     private final String tokenType;
 
-    private String accessToken;
+    private final String accessToken;
 
     OAuth2Token(HttpResponse res) throws TwitterException {
         JSONObject json = res.asJSONObject();
         tokenType = getRawString("token_type", json);
-        accessToken = URLDecoder.decode(getRawString("access_token", json), StandardCharsets.UTF_8);
+        try {
+            accessToken = URLDecoder.decode(getRawString("access_token", json), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public OAuth2Token(String tokenType, String accessToken) {
@@ -56,21 +58,21 @@ public class OAuth2Token implements java.io.Serializable {
     }
 
     /*package*/ String generateAuthorizationHeader() {
-        String encoded = "";
-        encoded = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
+        String encoded;
+        try {
+            encoded = URLEncoder.encode(accessToken, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         return "Bearer " + encoded;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof OAuth2Token that)) {
-            return false;
-        }
-
-        if (!Objects.equals(tokenType, that.tokenType)) {
-            return false;
-        }
-        return Objects.equals(accessToken, that.accessToken);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OAuth2Token that = (OAuth2Token) o;
+        return Objects.equals(tokenType, that.tokenType) && Objects.equals(accessToken, that.accessToken);
     }
 
     @Override

@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,7 +25,6 @@ import java.util.Objects;
  * @since Twitter4J 2.1.2
  */
 public final class FilterQuery implements java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = -142808200594318258L;
     private int count;
     private long[] follow;

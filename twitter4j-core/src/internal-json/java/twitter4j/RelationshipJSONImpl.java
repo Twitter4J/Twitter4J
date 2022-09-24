@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -30,7 +29,6 @@ import java.util.Objects;
  */
 /*package*/ class RelationshipJSONImpl extends TwitterResponseImpl implements Relationship, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = -2001484553401916448L;
     private final long targetUserId;
     private final String targetUserScreenName;

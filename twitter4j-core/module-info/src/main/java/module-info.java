@@ -1,4 +1,4 @@
-module twitter4j {
+module org.twitter4j {
     requires java.management;
     requires java.logging;
     requires static org.slf4j;

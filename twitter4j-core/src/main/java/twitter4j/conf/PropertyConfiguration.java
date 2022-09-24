@@ -182,7 +182,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         ArrayList<String> toBeNormalized = new ArrayList<>(10);
         for (Object key : props.keySet()) {
             String keyStr = (String) key;
-            if (-1 != (keyStr.indexOf("twitter4j."))) {
+            if (keyStr.contains("twitter4j.")) {
                 toBeNormalized.add(keyStr);
             }
         }
@@ -363,7 +363,7 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     private boolean getBoolean(Properties props, String prefix, String name) {
         String value = props.getProperty(prefix + name);
-        return Boolean.valueOf(value);
+        return Boolean.parseBoolean(value);
     }
 
     private int getIntProperty(Properties props, String prefix, String name) {
@@ -389,7 +389,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     // assures equality after deserialization
-    @Serial
     @Override
     protected Object readResolve() throws ObjectStreamException {
         return super.readResolve();

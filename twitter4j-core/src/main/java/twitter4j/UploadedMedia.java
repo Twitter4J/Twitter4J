@@ -15,7 +15,8 @@
  */
 package twitter4j;
 
-import java.io.Serial;
+
+import java.util.Objects;
 
 /**
  * Represents result of "/1.1/media/upload.json"
@@ -25,7 +26,6 @@ import java.io.Serial;
  */
 public final class UploadedMedia implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 5393092535610604718L;
     
     private int imageWidth;
@@ -106,7 +106,7 @@ public final class UploadedMedia implements java.io.Serializable {
 
         if (imageWidth != that.imageWidth) return false;
         if (imageHeight != that.imageHeight) return false;
-        if (imageType != that.imageType) return false;
+        if (!Objects.equals(imageType, that.imageType)) return false;
         if (mediaId != that.mediaId) return false;
         return size == that.size;
     }

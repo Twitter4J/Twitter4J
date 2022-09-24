@@ -19,7 +19,7 @@ package twitter4j.auth;
 import twitter4j.BASE64Encoder;
 import twitter4j.HttpRequest;
 
-import java.io.Serial;
+import java.util.Objects;
 
 /**
  * An authentication implementation implements Basic authentication
@@ -28,7 +28,6 @@ import java.io.Serial;
  */
 public class BasicAuthorization implements Authorization, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 7420629998989177351L;
     private final String userId;
 
@@ -72,10 +71,9 @@ public class BasicAuthorization implements Authorization, java.io.Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BasicAuthorization that)) return false;
-
-        return basic.equals(that.basic);
-
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicAuthorization that = (BasicAuthorization) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(password, that.password) && Objects.equals(basic, that.basic);
     }
 
     @Override

@@ -19,7 +19,6 @@ package twitter4j;
 import twitter4j.auth.*;
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -37,7 +36,6 @@ import static twitter4j.HttpResponseCode.*;
  */
 abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAuthSupport, OAuth2Support, HttpResponseListener {
     private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details. See and register at http://apps.twitter.com/";
-    @Serial
     private static final long serialVersionUID = -7824361938865528554L;
 
     Configuration conf;
@@ -177,7 +175,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         }
     }
 
-    @Serial
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#861
         out.putFields();
@@ -194,7 +191,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         out.writeObject(serializableRateLimitStatusListeners);
     }
 
-    @Serial
     private void readObject(ObjectInputStream stream)
         throws IOException, ClassNotFoundException {
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
@@ -270,17 +266,19 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
         Authorization auth = getAuthorization();
         AccessToken oauthAccessToken;
-        if (auth instanceof BasicAuthorization basicAuth) {
+        if (auth instanceof BasicAuthorization) {
+            BasicAuthorization basicAuth = (BasicAuthorization) auth;
             auth = AuthorizationFactory.getInstance(conf);
-            if (auth instanceof OAuthAuthorization oauthAuth) {
+            if (auth instanceof OAuthAuthorization) {
+                OAuthAuthorization oauthAuth = (OAuthAuthorization)auth;
                 this.auth = auth;
                 oauthAccessToken = oauthAuth.getOAuthAccessToken(basicAuth.getUserId(), basicAuth.getPassword());
             } else {
                 throw new IllegalStateException("consumer key / secret combination not supplied.");
             }
         } else {
-            if (auth instanceof XAuthAuthorization xauth) {
-                this.auth = xauth;
+            if (auth instanceof XAuthAuthorization) {
+                XAuthAuthorization xauth = (XAuthAuthorization)auth;
                 OAuthAuthorization oauthAuth = new OAuthAuthorization(conf);
                 oauthAuth.setOAuthConsumer(xauth.getConsumerKey(), xauth.getConsumerSecret());
                 oauthAccessToken = oauthAuth.getOAuthAccessToken(xauth.getUserId(), xauth.getPassword());
@@ -360,14 +358,9 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TwitterBaseImpl that)) return false;
-
-        if (!Objects.equals(auth, that.auth))
-            return false;
-        if (!conf.equals(that.conf)) return false;
-        if (!Objects.equals(http, that.http))
-            return false;
-        return rateLimitStatusListeners.equals(that.rateLimitStatusListeners);
+        if (o == null || getClass() != o.getClass()) return false;
+        TwitterBaseImpl that = (TwitterBaseImpl) o;
+        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(rateLimitStatusListeners, that.rateLimitStatusListeners) && Objects.equals(factory, that.factory) && Objects.equals(auth, that.auth);
     }
 
     @Override

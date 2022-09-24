@@ -18,8 +18,8 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * A data class representing a Saved Search
@@ -29,7 +29,6 @@ import java.util.Date;
  */
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
-    @Serial
     private static final long serialVersionUID = -2281949861485441692L;
     private Date createdAt;
     private String query;
@@ -120,9 +119,9 @@ import java.util.Date;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SavedSearch that)) return false;
-
-        return id == that.getId();
+        if (o == null || getClass() != o.getClass()) return false;
+        SavedSearchJSONImpl that = (SavedSearchJSONImpl) o;
+        return position == that.position && id == that.id && Objects.equals(createdAt, that.createdAt) && Objects.equals(query, that.query) && Objects.equals(name, that.name);
     }
 
     @Override

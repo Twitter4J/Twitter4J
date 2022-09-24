@@ -19,9 +19,8 @@ package twitter4j.auth;
 import twitter4j.*;
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -30,7 +29,6 @@ import java.util.Objects;
  */
 public class OAuth2Authorization implements Authorization, java.io.Serializable, OAuth2Support {
 
-    @Serial
     private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
 
@@ -111,11 +109,15 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
     @Override
     public String getAuthorizationHeader(HttpRequest req) {
         if (token == null) {
-            String credentials = "";
-            credentials =
-                    URLEncoder.encode(consumerKey, StandardCharsets.UTF_8)
-                            + ":"
-                            + URLEncoder.encode(consumerSecret, StandardCharsets.UTF_8);
+            String credentials;
+            try {
+                credentials =
+                        URLEncoder.encode(consumerKey, "UTF-8")
+                                + ":"
+                                + URLEncoder.encode(consumerSecret, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
 
             return "Basic " + BASE64Encoder.encode(credentials.getBytes());
 
@@ -130,18 +132,11 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof OAuth2Authorization that)) {
-            return false;
-        }
-
-        if (!Objects.equals(consumerKey, that.consumerKey)) {
-            return false;
-        }
-        if (!Objects.equals(consumerSecret, that.consumerSecret)) {
-            return false;
-        }
-        return Objects.equals(token, that.token);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OAuth2Authorization that = (OAuth2Authorization) o;
+        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(token, that.token);
     }
 
     @Override

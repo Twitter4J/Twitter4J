@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +31,6 @@ import java.util.Map;
  */
 /*package*/ final class RateLimitStatusJSONImpl implements RateLimitStatus, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 7790337632915862445L;
     private int remaining;
     private int limit;
@@ -53,12 +51,12 @@ import java.util.Map;
         Map<String, RateLimitStatus> map = new HashMap<>();
         try {
             JSONObject resources = json.getJSONObject("resources");
-            Iterator resourceKeys = resources.keys();
+            Iterator<String> resourceKeys = resources.keys();
             while (resourceKeys.hasNext()) {
-                JSONObject resource = resources.getJSONObject((String) resourceKeys.next());
-                Iterator endpointKeys = resource.keys();
+                JSONObject resource = resources.getJSONObject(resourceKeys.next());
+                Iterator<String> endpointKeys = resource.keys();
                 while (endpointKeys.hasNext()) {
-                    String endpoint = (String) endpointKeys.next();
+                    String endpoint = endpointKeys.next();
                     JSONObject rateLimitStatusJSON = resource.getJSONObject(endpoint);
                     RateLimitStatus rateLimitStatus = new RateLimitStatusJSONImpl(rateLimitStatusJSON);
                     map.put(endpoint, rateLimitStatus);

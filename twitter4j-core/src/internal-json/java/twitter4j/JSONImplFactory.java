@@ -19,7 +19,6 @@ package twitter4j;
 import twitter4j.api.HelpResources;
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,7 +27,6 @@ import java.util.Objects;
  * @since Twitter4J 2.2.4
  */
 class JSONImplFactory implements ObjectFactory {
-    @Serial
     private static final long serialVersionUID = -1853541456182663343L;
     private final Configuration conf;
 
@@ -292,8 +290,8 @@ class JSONImplFactory implements ObjectFactory {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JSONImplFactory that)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
+        JSONImplFactory that = (JSONImplFactory) o;
         return Objects.equals(conf, that.conf);
     }
 

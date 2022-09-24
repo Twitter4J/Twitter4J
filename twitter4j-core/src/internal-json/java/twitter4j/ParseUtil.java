@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -56,7 +57,11 @@ final class ParseUtil {
     static String getURLDecodedString(String name, JSONObject json) {
         String returnValue = getRawString(name, json);
         if (returnValue != null) {
-            returnValue = URLDecoder.decode(returnValue, StandardCharsets.UTF_8);
+            try {
+                returnValue = URLDecoder.decode(returnValue, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
         }
         return returnValue;
     }

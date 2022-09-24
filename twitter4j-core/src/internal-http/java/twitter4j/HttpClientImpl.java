@@ -21,6 +21,7 @@ import twitter4j.conf.ConfigurationContext;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,6 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         }
     }
 
-    @Serial
     private static final long serialVersionUID = -403500272719330534L;
 
     public HttpClientImpl() {
@@ -106,7 +106,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                                     write(out, "Content-Disposition: form-data; name=\"" + param.getName() + "\"; filename=\"" + param.getFile().getName() + "\"\r\n");
                                     write(out, "Content-Type: " + param.getContentType() + "\r\n\r\n");
                                     BufferedInputStream in = new BufferedInputStream(
-                                            param.hasFileBody() ? param.getFileBody() : new FileInputStream(param.getFile())
+                                            param.hasFileBody() ? param.getFileBody() : Files.newInputStream(param.getFile().toPath())
                                     );
                                     byte[] buff = new byte[1024];
                                     int length;
@@ -165,9 +165,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                         }
                     }
                     if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
-                        if (responseCode == ENHANCE_YOUR_CLAIM ||
-                                responseCode == BAD_REQUEST ||
-                                responseCode < INTERNAL_SERVER_ERROR ||
+                        if (responseCode < INTERNAL_SERVER_ERROR ||
                                 retriedCount == CONF.getHttpRetryCount()) {
                             throw new TwitterException(res.asString(), res);
                         }
@@ -177,7 +175,9 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
                     }
                 } finally {
                     try {
-                        os.close();
+                        if (os != null) {
+                            os.close();
+                        }
                     } catch (Exception ignore) {
                     }
                 }
@@ -215,6 +215,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
         String authorizationHeader;
         if (req.getAuthorization() != null && (authorizationHeader = req.getAuthorization().getAuthorizationHeader(req)) != null) {
             if (logger.isDebugEnabled()) {
+                //noinspection SuspiciousRegexArgument
                 logger.debug("Authorization: ", authorizationHeader.replaceAll(".", "*"));
             }
             connection.addRequestProperty("Authorization", authorizationHeader);
@@ -233,6 +234,7 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
             if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
+                    //noinspection SuspiciousRegexArgument
                     logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
                 }
                 Authenticator.setDefault(new Authenticator() {

@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.auth.Authorization;
 
-import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -30,7 +29,6 @@ import java.util.Objects;
  */
 public final class HttpRequest implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 3365496352032493020L;
     private final RequestMethod method;
 

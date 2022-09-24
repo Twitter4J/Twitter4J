@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -26,7 +25,6 @@ import java.io.Serial;
  */
 class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 4199733699237229892L;
     private final int updates;
     private final int followers;

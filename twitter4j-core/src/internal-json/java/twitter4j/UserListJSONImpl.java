@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -30,7 +29,6 @@ import java.util.Date;
  */
 /*package*/ class UserListJSONImpl extends TwitterResponseImpl implements UserList, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 449418980060197008L;
     private long id;
     private String name;

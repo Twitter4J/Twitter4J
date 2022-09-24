@@ -18,7 +18,6 @@ package twitter4j;
 import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -38,7 +37,6 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  * @since Twitter4J 2.0.4
  */
 class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
-    @Serial
     private static final long serialVersionUID = 5621090317737561048L;
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger();

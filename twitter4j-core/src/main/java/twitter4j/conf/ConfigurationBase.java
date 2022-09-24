@@ -20,7 +20,6 @@ import twitter4j.HttpClientConfiguration;
 import twitter4j.Logger;
 
 import java.io.ObjectStreamException;
-import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.Proxy;
@@ -34,7 +33,6 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 6175546394599249696L;
     private boolean debug = false;
     private String user = null;
@@ -101,17 +99,16 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     class MyHttpClientConfiguration implements HttpClientConfiguration, Serializable {
-        @Serial
-        private static final long serialVersionUID = 8226866124868861058L;
-        private String httpProxyHost = null;
-        private String httpProxyUser = null;
-        private String httpProxyPassword = null;
-        private boolean httpProxySocks = false;
-        private int httpProxyPort = -1;
-        private int httpConnectionTimeout = 20000;
-        private int httpReadTimeout = 120000;
-        private boolean prettyDebug = false;
-        private boolean gzipEnabled = true;
+            private static final long serialVersionUID = 8226866124868861058L;
+        private final String httpProxyHost;
+        private final String httpProxyUser;
+        private final String httpProxyPassword;
+        private final boolean httpProxySocks;
+        private final int httpProxyPort;
+        private final int httpConnectionTimeout;
+        private final int httpReadTimeout;
+        private final boolean prettyDebug;
+        private final boolean gzipEnabled;
 
         MyHttpClientConfiguration(String httpProxyHost, String httpProxyUser, String httpProxyPassword, int httpProxyPort, boolean httpProxySocks, int httpConnectionTimeout, int httpReadTimeout, boolean prettyDebug, boolean gzipEnabled) {
             this.httpProxyHost = httpProxyHost;
@@ -188,7 +185,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
             MyHttpClientConfiguration that = (MyHttpClientConfiguration) o;
 
             if (gzipEnabled != that.gzipEnabled) return false;
-            if (httpProxySocks != that.httpProxySocks) return false;
             if (httpConnectionTimeout != that.httpConnectionTimeout) return false;
             if (httpProxyPort != that.httpProxyPort) return false;
             if (httpProxySocks != that.httpProxySocks) return false;
@@ -241,6 +237,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                     Object value = field.get(this);
                     String strValue = String.valueOf(value);
                     if (value != null && field.getName().matches("oAuthConsumerSecret|oAuthAccessTokenSecret|password")) {
+                        //noinspection SuspiciousRegexArgument
                         strValue = String.valueOf(value).replaceAll(".", "*");
                     }
                     log.debug(field.getName() + ": " + strValue);
@@ -875,7 +872,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     // assures equality after deserializedation
-    @Serial
     protected Object readResolve() throws ObjectStreamException {
         return getInstance(this);
     }

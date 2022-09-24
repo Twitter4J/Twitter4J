@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -29,7 +28,6 @@ import java.util.Date;
  */
 /*package*/ final class UserJSONImpl extends TwitterResponseImpl implements User, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = -5448266606847617015L;
     private long id;
     private String name;
@@ -176,8 +174,8 @@ import java.util.Date;
      * @param json     user json object
      * @param category entities category. e.g. "description" or "url"
      * @return URLEntity array by entities/[category]/urls/url[]
-     * @throws JSONException
-     * @throws TwitterException
+     * @throws JSONException JSONException
+     * @throws TwitterException TwitterException
      */
     private static URLEntity[] getURLEntitiesFromJSON(JSONObject json, String category) throws JSONException, TwitterException {
         if (!json.isNull("entities")) {

@@ -16,12 +16,13 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.InputStream;
-import java.io.Serial;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +33,6 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
@@ -133,14 +133,19 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         } else {
             extensions = extensions.substring(extensions.lastIndexOf(".") + 1).toLowerCase();
             if (extensions.length() == 3) {
-                if ("gif".equals(extensions)) {
-                    contentType = GIF;
-                } else if ("png".equals(extensions)) {
-                    contentType = PNG;
-                } else if ("jpg".equals(extensions)) {
-                    contentType = JPEG;
-                } else {
-                    contentType = OCTET;
+                switch (extensions) {
+                    case "gif":
+                        contentType = GIF;
+                        break;
+                    case "png":
+                        contentType = PNG;
+                        break;
+                    case "jpg":
+                        contentType = JPEG;
+                        break;
+                    default:
+                        contentType = OCTET;
+                        break;
                 }
             } else if (extensions.length() == 4) {
                 if ("jpeg".equals(extensions)) {
@@ -241,7 +246,7 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
     }
 
     @Override
-    public int compareTo(HttpParameter o) {
+    public int compareTo(@NotNull HttpParameter o) {
         int compared = 0;
         if (name != null) {
             compared = name.compareTo(o.name);
@@ -280,8 +285,12 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax - 2.1. Percent-Encoding</a>
      */
     public static String encode(String value) {
-        String encoded = null;
-        encoded = URLEncoder.encode(value, StandardCharsets.UTF_8);
+        String encoded;
+        try {
+            encoded = URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
         StringBuilder buf = new StringBuilder(encoded.length());
         char focus;
         for (int i = 0; i < encoded.length(); i++) {
@@ -313,8 +322,12 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         value = value.replace("%2a", "*");
         value = value.replace("%20", " ");
         
-        String decoded=null;
-        decoded = URLDecoder.decode(value, StandardCharsets.UTF_8);
+        String decoded;
+        try {
+            decoded = URLDecoder.decode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
         return decoded;
     }

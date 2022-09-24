@@ -15,7 +15,6 @@
  */
 package twitter4j;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +26,6 @@ import java.util.Objects;
  * @since Twitter4J 3.0.2
  */
 public final class OEmbedRequest implements Serializable {
-    @Serial
     private static final long serialVersionUID = 7454130135274547901L;
     private final long statusId;
     private final String url;

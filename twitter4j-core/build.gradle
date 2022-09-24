@@ -13,14 +13,14 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDir 'src/internal-async/java'
-            srcDir 'src/internal-http/java'
-            srcDir 'src/jmx/java'
-            srcDir 'src/internal-json/java'
-            srcDir 'src/internal-logging/java'
-            srcDir 'src/internal-util/java'
-            srcDir 'src/stream/java'
-            srcDir 'src/main/java'
+            srcDirs(['src/internal-async/java',
+                     'src/internal-http/java',
+                     'src/jmx/java',
+                     'src/internal-json/java',
+                     'src/internal-logging/java',
+                     'src/internal-util/java',
+                     'src/stream/java',
+                     'src/main/java'])
         }
     }
 }
@@ -36,6 +36,11 @@ java {
     withSourcesJar()
 }
 compileJava   {
+    sourceCompatibility = '8'
+    targetCompatibility = '8'
+}
+
+compileTestJava   {
     sourceCompatibility = '17'
     targetCompatibility = '17'
 }
@@ -54,6 +59,17 @@ javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 test {
     useJUnitPlatform()
 }
+
+jar {
+    from('module-info/build/classes/java/main') {
+        include "module-info.class"
+        into "META-INF/versions/9"
+    }
+    manifest {
+        attributes 'Multi-Release': 'true'
+    }
+}
+tasks.jar.dependsOn([':twitter4j-core:module-info:compileJava'])
 
 publishing {
     publications {

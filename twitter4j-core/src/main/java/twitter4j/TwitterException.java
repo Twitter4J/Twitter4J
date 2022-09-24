@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +28,6 @@ import static twitter4j.ParseUtil.getInt;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
-    @Serial
     private static final long serialVersionUID = 6006561839051121336L;
     private int statusCode = -1;
     private int errorCode = -1;
@@ -153,7 +151,7 @@ public class TwitterException extends Exception implements TwitterResponse, Http
             try {
                 String retryAfterStr = response.getResponseHeader("Retry-After");
                 if (retryAfterStr != null) {
-                    retryAfter = Integer.valueOf(retryAfterStr);
+                    retryAfter = Integer.parseInt(retryAfterStr);
                 }
             } catch (NumberFormatException ignore) {
             }

@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.io.Serial;
+import java.util.Objects;
 
 /**
  * A data class representing Trend.
@@ -25,12 +25,11 @@ import java.io.Serial;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendJSONImpl implements Trend, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = -4353426776065521132L;
     private final String name;
-    private String url = null;
-    private String query = null;
-    private int tweetVolume = -1;
+    private final String url;
+    private final String query;
+    private final int tweetVolume;
 
     /*package*/ TrendJSONImpl(JSONObject json, boolean storeJSON) {
         this.name = ParseUtil.getRawString("name", json);
@@ -69,14 +68,9 @@ import java.io.Serial;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Trend trend)) return false;
-
-        if (!name.equals(trend.getName())) return false;
-        if (query != null ? !query.equals(trend.getQuery()) : trend.getQuery() != null)
-            return false;
-        if (url != null ? !url.equals(trend.getURL()) : trend.getURL() != null)
-            return false;
-        return tweetVolume == trend.getTweetVolume();
+        if (o == null || getClass() != o.getClass()) return false;
+        TrendJSONImpl trendJSON = (TrendJSONImpl) o;
+        return tweetVolume == trendJSON.tweetVolume && Objects.equals(name, trendJSON.name) && Objects.equals(url, trendJSON.url) && Objects.equals(query, trendJSON.query);
     }
 
     @Override

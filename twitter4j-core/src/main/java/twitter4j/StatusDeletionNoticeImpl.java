@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 
 /**
  * StatusDeletionNotice implementation. This class is NOT intended to be extended but left non-final for the ease of mock testing.
@@ -26,7 +25,6 @@ import java.io.Serial;
  */
 class StatusDeletionNoticeImpl implements StatusDeletionNotice, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 9144204870473786368L;
     private final long statusId;
     private final long userId;

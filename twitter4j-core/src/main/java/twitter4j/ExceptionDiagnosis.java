@@ -16,14 +16,12 @@
 
 package twitter4j;
 
-import java.io.Serial;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.3
  */
 final class ExceptionDiagnosis implements java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 8501009773274399369L;
     private int stackLineHash;
     private int lineNumberHash;
@@ -34,7 +32,6 @@ final class ExceptionDiagnosis implements java.io.Serializable {
     }
 
     ExceptionDiagnosis(Throwable th, String[] inclusionFilter) {
-        Throwable th1 = th;
 
         StackTraceElement[] stackTrace = th.getStackTrace();
         stackLineHash = 0;

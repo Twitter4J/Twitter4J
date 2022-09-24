@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -26,7 +25,6 @@ import java.util.Objects;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class HashtagEntityJSONImpl extends EntityIndex implements HashtagEntity, SymbolEntity {
-    @Serial
     private static final long serialVersionUID = -5317828991902848906L;
     private String text;
 

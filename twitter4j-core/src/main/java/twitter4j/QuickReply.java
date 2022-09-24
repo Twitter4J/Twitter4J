@@ -15,11 +15,9 @@
  */
 package twitter4j;
 
-import java.io.Serial;
 import java.util.Objects;
 
 public final class QuickReply implements java.io.Serializable{
-    @Serial
     private static final long serialVersionUID = 2928983476392757806L;
     private final String label;
     private final String description;

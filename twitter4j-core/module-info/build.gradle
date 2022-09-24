@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'org.twitter4j'
+version '4.0.8-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    sourceCompatibility = '9'
+    targetCompatibility = '9'
+    options.compilerArgs += ["--module-version", "$version"]
+}
+sourceSets {
+    main {
+        java {
+            srcDirs(['../src/internal-async/java',
+                     '../src/internal-http/java',
+                     '../src/jmx/java',
+                     '../src/internal-json/java',
+                     '../src/internal-logging/java',
+                     '../src/internal-util/java',
+                     '../src/stream/java',
+                     '../src/main/java',
+                     'src/main/java'])
+        }
+    }
+}
+
+dependencies {
+    compileOnly 'org.slf4j:slf4j-api:2.0.2'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.18.0'
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+
+}

@@ -21,9 +21,8 @@ import twitter4j.conf.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.Serial;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -33,7 +32,6 @@ import java.util.*;
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
 public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
-    @Serial
     private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
     private static HttpClient http;
@@ -185,7 +183,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
 
     /**
      * Invalidates the OAuth token
-     *
+     * <p>
      * On success, sets oauthToken to null
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      */
@@ -257,22 +255,23 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         int queryStart = url.indexOf("?");
         if (-1 != queryStart) {
             String[] queryStrs = url.substring(queryStart + 1).split("&");
-            for (String query : queryStrs) {
-                String[] split = query.split("=");
-                if (split.length == 2) {
-                    signatureBaseParams.add(
-                            new HttpParameter(URLDecoder.decode(split[0],
-                                    StandardCharsets.UTF_8), URLDecoder.decode(split[1],
-                                    StandardCharsets.UTF_8))
-                    );
-                } else {
-                    signatureBaseParams.add(
-                            new HttpParameter(URLDecoder.decode(split[0],
-                                    StandardCharsets.UTF_8), "")
-                    );
+            try {
+                for (String query : queryStrs) {
+                    String[] split = query.split("=");
+                    if (split.length == 2) {
+                        signatureBaseParams.add(
+                                new HttpParameter(URLDecoder.decode(split[0],
+                                        "UTF-8"), URLDecoder.decode(split[1], "UTF-8"))
+                        );
+                    } else {
+                        signatureBaseParams.add(
+                                new HttpParameter(URLDecoder.decode(split[0], "UTF-8"), "")
+                        );
+                    }
                 }
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
             }
-
         }
 
     }
@@ -328,7 +327,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * @see <a href="http://oauth.net/core/1.0a/#rfc.section.9.2.1">OAuth Core - 9.2.1.  Generating Signature</a>
      */
     /*package*/ String generateSignature(String data, OAuthToken token) {
-        byte[] byteHMAC = null;
+        byte[] byteHMAC;
         try {
             Mac mac = Mac.getInstance(HMAC_SHA1);
             SecretKeySpec spec;

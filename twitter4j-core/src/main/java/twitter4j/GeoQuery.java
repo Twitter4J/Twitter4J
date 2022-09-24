@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +26,6 @@ import java.util.Objects;
  */
 public final class GeoQuery implements java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = 5434503339001056634L;
     private GeoLocation location;
     private String query = null;

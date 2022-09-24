@@ -18,14 +18,12 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.9
  */
 class FriendshipJSONImpl implements Friendship {
-    @Serial
     private static final long serialVersionUID = 6847273186993125826L;
     private final long id;
     private final String name;

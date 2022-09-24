@@ -23,7 +23,6 @@ import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 
-import java.io.Serial;
 
 /**
  * A factory class for Twitter.
@@ -37,7 +36,6 @@ public class TwitterFactory implements java.io.Serializable {
     static final Authorization DEFAULT_AUTHORIZATION = AuthorizationFactory.getInstance(ConfigurationContext.getInstance());
     private static final Twitter SINGLETON = new TwitterImpl(ConfigurationContext.getInstance(), DEFAULT_AUTHORIZATION);
 
-    @Serial
     private static final long serialVersionUID = -563983536986910054L;
     private final Configuration conf;
 

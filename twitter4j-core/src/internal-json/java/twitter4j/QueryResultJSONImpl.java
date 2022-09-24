@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import java.util.List;
  */
 /*package*/ final class QueryResultJSONImpl extends TwitterResponseImpl implements QueryResult, java.io.Serializable {
 
-    @Serial
     private static final long serialVersionUID = -5359566235429947156L;
     private final long sinceId;
     private long maxId;
@@ -148,7 +146,7 @@ import java.util.List;
         result = 31 * result + (int) (maxId ^ (maxId >>> 32));
         result = 31 * result + (refreshUrl != null ? refreshUrl.hashCode() : 0);
         result = 31 * result + count;
-        temp = completedIn != +0.0d ? Double.doubleToLongBits(completedIn) : 0L;
+        temp = completedIn != 0.0d ? Double.doubleToLongBits(completedIn) : 0L;
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + query.hashCode();
         result = 31 * result + (tweets != null ? tweets.hashCode() : 0);

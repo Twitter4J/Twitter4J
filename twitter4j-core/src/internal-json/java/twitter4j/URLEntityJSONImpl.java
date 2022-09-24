@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -27,7 +26,6 @@ import java.util.Objects;
  */
 /* package */ final class URLEntityJSONImpl extends EntityIndex implements URLEntity {
 
-    @Serial
     private static final long serialVersionUID = 7333552738058031524L;
     private String url;
     private String expandedURL;

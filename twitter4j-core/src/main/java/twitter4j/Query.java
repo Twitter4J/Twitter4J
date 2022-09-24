@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.*;
 
 /**
@@ -29,7 +28,6 @@ import java.util.*;
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
 public final class Query implements java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 7196404519192910019L;
     private String query = null;
     private String lang = null;

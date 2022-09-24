@@ -18,7 +18,6 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
 import java.util.*;
 
 /**
@@ -28,7 +27,6 @@ import java.util.*;
  * @author Hiroaki TAKEUCHI - takke30 at gmail.com
  */
 /*package*/ final class DirectMessageJSONImpl extends TwitterResponseImpl implements DirectMessage, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 7092906238192790921L;
     private long id;
     private String text;

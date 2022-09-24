@@ -19,7 +19,6 @@ package twitter4j.auth;
 import twitter4j.HttpResponse;
 import twitter4j.TwitterException;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -29,7 +28,6 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class AccessToken extends OAuthToken implements java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 2470022129505774772L;
     private String screenName;
     private long userId = -1L;

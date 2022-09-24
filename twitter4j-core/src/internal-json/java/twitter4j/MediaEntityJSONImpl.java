@@ -15,16 +15,16 @@
  */
 package twitter4j;
 
-import java.io.Serial;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
 public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
-    @Serial
     private static final long serialVersionUID = 1571961225214439778L;
     protected long id;
     protected String url;
@@ -161,8 +161,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     static class Size implements MediaEntity.Size {
-        @Serial
-        private static final long serialVersionUID = -2515842281909325169L;
+            private static final long serialVersionUID = -2515842281909325169L;
         int width;
         int height;
         int resize;
@@ -196,11 +195,9 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Size size)) return false;
-
-            if (height != size.height) return false;
-            if (resize != size.resize) return false;
-            return width == size.width;
+            if (o == null || getClass() != o.getClass()) return false;
+            Size size = (Size) o;
+            return width == size.width && height == size.height && resize == size.resize;
         }
 
         @Override
@@ -247,8 +244,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     static class Variant implements MediaEntity.Variant {
-        @Serial
-        private static final long serialVersionUID = 1027236588556797980L;
+            private static final long serialVersionUID = 1027236588556797980L;
         int bitrate;
         String contentType;
         String url;
@@ -281,11 +277,9 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Variant variant)) return false;
-
-            if (bitrate != variant.bitrate) return false;
-            if (!contentType.equals(variant.contentType)) return false;
-            return url.equals(variant.url);
+            if (o == null || getClass() != o.getClass()) return false;
+            Variant variant = (Variant) o;
+            return bitrate == variant.bitrate && Objects.equals(contentType, variant.contentType) && Objects.equals(url, variant.url);
         }
 
         @Override
@@ -309,9 +303,9 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MediaEntityJSONImpl that)) return false;
-
-        return id == that.id;
+        if (o == null || getClass() != o.getClass()) return false;
+        MediaEntityJSONImpl that = (MediaEntityJSONImpl) o;
+        return id == that.id && videoAspectRatioWidth == that.videoAspectRatioWidth && videoAspectRatioHeight == that.videoAspectRatioHeight && videoDurationMillis == that.videoDurationMillis && Objects.equals(url, that.url) && Objects.equals(mediaURL, that.mediaURL) && Objects.equals(mediaURLHttps, that.mediaURLHttps) && Objects.equals(expandedURL, that.expandedURL) && Objects.equals(displayURL, that.displayURL) && Objects.equals(sizes, that.sizes) && Objects.equals(type, that.type) && Arrays.equals(videoVariants, that.videoVariants) && Objects.equals(extAltText, that.extAltText);
     }
 
     @Override

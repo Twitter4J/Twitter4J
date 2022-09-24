@@ -19,7 +19,6 @@ package twitter4j.auth;
 import twitter4j.HttpRequest;
 
 import java.io.ObjectStreamException;
-import java.io.Serial;
 
 /**
  * An interface represents credentials.
@@ -27,7 +26,6 @@ import java.io.Serial;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public class NullAuthorization implements Authorization, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = -7704668493278727510L;
     private static final NullAuthorization SINGLETON = new NullAuthorization();
 
@@ -59,7 +57,6 @@ public class NullAuthorization implements Authorization, java.io.Serializable {
         return "NullAuthentication{SINGLETON}";
     }
 
-    @Serial
     private Object readResolve() throws ObjectStreamException {
         return SINGLETON;
     }

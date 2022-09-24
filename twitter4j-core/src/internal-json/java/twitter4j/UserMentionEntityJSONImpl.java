@@ -16,7 +16,6 @@
 
 package twitter4j;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -26,7 +25,6 @@ import java.util.Objects;
  * @since Twitter4J 2.1.9
  */
 /*package*/ class UserMentionEntityJSONImpl extends EntityIndex implements UserMentionEntity {
-    @Serial
     private static final long serialVersionUID = 6060510953676673013L;
     private String name;
     private String screenName;

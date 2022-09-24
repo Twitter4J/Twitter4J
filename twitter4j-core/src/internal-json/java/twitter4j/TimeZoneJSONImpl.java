@@ -16,13 +16,11 @@
 
 package twitter4j;
 
-import java.io.Serial;
 
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com
  */
 public class TimeZoneJSONImpl implements TimeZone {
-    @Serial
     private static final long serialVersionUID = 81958969762484144L;
     private final String NAME;
     private final String TZINFO_NAME;

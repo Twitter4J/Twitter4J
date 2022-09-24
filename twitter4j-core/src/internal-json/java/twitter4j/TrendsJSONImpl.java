@@ -18,11 +18,7 @@ package twitter4j;
 
 import twitter4j.conf.Configuration;
 
-import java.io.Serial;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A data class representing Trends.
@@ -31,7 +27,6 @@ import java.util.Iterator;
  * @since Twitter4J 2.0.2
  */
 /*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
-    @Serial
     private static final long serialVersionUID = 2054973282133379835L;
     private Date asOf;
     private Date trendAt;
@@ -101,9 +96,9 @@ import java.util.Iterator;
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
             trends = new ResponseListImpl<>(trendsJson.length(), res);
-            Iterator ite = trendsJson.keys();
+            Iterator<String> ite = trendsJson.keys();
             while (ite.hasNext()) {
-                String key = (String) ite.next();
+                String key = ite.next();
                 JSONArray array = trendsJson.getJSONArray(key);
                 Trend[] trendsArray = jsonArrayToTrendArray(array, storeJSON);
                 if (key.length() == 19) {
@@ -178,13 +173,9 @@ import java.util.Iterator;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Trends trends1)) return false;
-
-        if (asOf != null ? !asOf.equals(trends1.getAsOf()) : trends1.getAsOf() != null)
-            return false;
-        if (trendAt != null ? !trendAt.equals(trends1.getTrendAt()) : trends1.getTrendAt() != null)
-            return false;
-        return Arrays.equals(trends, trends1.getTrends());
+        if (o == null || getClass() != o.getClass()) return false;
+        TrendsJSONImpl that = (TrendsJSONImpl) o;
+        return Objects.equals(asOf, that.asOf) && Objects.equals(trendAt, that.trendAt) && Arrays.equals(trends, that.trends) && Objects.equals(location, that.location);
     }
 
     @Override
