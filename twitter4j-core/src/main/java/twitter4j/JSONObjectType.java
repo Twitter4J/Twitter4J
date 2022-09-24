@@ -101,20 +101,21 @@ public final class JSONObjectType {
                 } else if ("unfollow".equals(event)) {
                     return Type.UNFOLLOW;
                 } else if (event.startsWith("list")) {
-                    if ("list_member_added".equals(event)) {
-                        return Type.USER_LIST_MEMBER_ADDED;
-                    } else if ("list_member_removed".equals(event)) {
-                        return Type.USER_LIST_MEMBER_DELETED;
-                    } else if ("list_user_subscribed".equals(event)) {
-                        return Type.USER_LIST_SUBSCRIBED;
-                    } else if ("list_user_unsubscribed".equals(event)) {
-                        return Type.USER_LIST_UNSUBSCRIBED;
-                    } else if ("list_created".equals(event)) {
-                        return Type.USER_LIST_CREATED;
-                    } else if ("list_updated".equals(event)) {
-                        return Type.USER_LIST_UPDATED;
-                    } else if ("list_destroyed".equals(event)) {
-                        return Type.USER_LIST_DESTROYED;
+                    switch (event) {
+                        case "list_member_added":
+                            return Type.USER_LIST_MEMBER_ADDED;
+                        case "list_member_removed":
+                            return Type.USER_LIST_MEMBER_DELETED;
+                        case "list_user_subscribed":
+                            return Type.USER_LIST_SUBSCRIBED;
+                        case "list_user_unsubscribed":
+                            return Type.USER_LIST_UNSUBSCRIBED;
+                        case "list_created":
+                            return Type.USER_LIST_CREATED;
+                        case "list_updated":
+                            return Type.USER_LIST_UPDATED;
+                        case "list_destroyed":
+                            return Type.USER_LIST_DESTROYED;
                     }
                 } else if ("user_update".equals(event)) {
                     return Type.USER_UPDATE;

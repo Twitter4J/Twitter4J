@@ -18,7 +18,6 @@ package twitter4j;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -194,11 +193,9 @@ final class ParseUtil {
                     accessLevel = TwitterResponse.AccessLevel.READ_WRITE;
                     break;
                 case 25:
-                    // “read-write-directmessages” (Read, Write, & Direct Message)
-                    accessLevel = TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES;
-                    break;
                 case 26:
                     // “read-write-privatemessages” (Read, Write, & Direct Message)
+                    // “read-write-directmessages” (Read, Write, & Direct Message)
                     accessLevel = TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES;
                     break;
                 default:

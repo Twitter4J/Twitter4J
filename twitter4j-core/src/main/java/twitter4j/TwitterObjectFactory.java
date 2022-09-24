@@ -278,11 +278,10 @@ public final class TwitterObjectFactory {
             JSONObjectType.Type jsonObjectType = JSONObjectType.determine(json);
             switch (jsonObjectType) {
                 case SENDER:
+                case DIRECT_MESSAGE:
                     return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
                 case STATUS:
                     return registerJSONObject(new StatusJSONImpl(json), json);
-                case DIRECT_MESSAGE:
-                    return registerJSONObject(new DirectMessageJSONImpl(json.getJSONObject("direct_message")), json);
                 case DELETE:
                     return registerJSONObject(new StatusDeletionNoticeImpl(json.getJSONObject("delete").getJSONObject("status")), json);
                 case LIMIT:

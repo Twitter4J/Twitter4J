@@ -24,7 +24,7 @@ import java.util.function.Function;
  */
 @SuppressWarnings("unused")
 public abstract class Logger {
-    static Function<String, Logger> factory;
+    private static final Function<String, Logger> factory;
 
     static {
         Function<String, Logger> factoryTemp;

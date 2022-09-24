@@ -48,11 +48,6 @@ public class NullAuthorization implements Authorization, java.io.Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return SINGLETON == o;
-    }
-
-    @Override
     public String toString() {
         return "NullAuthentication{SINGLETON}";
     }

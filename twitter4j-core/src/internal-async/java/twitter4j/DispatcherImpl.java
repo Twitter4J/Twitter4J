@@ -45,7 +45,7 @@ final class DispatcherImpl implements Dispatcher {
                     }
                 }
         );
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> executorService.shutdown()));
+        Runtime.getRuntime().addShutdownHook(new Thread(executorService::shutdown));
     }
 
     @Override

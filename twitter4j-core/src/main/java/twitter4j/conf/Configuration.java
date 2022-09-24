@@ -19,8 +19,6 @@ package twitter4j.conf;
 import twitter4j.HttpClientConfiguration;
 import twitter4j.auth.AuthorizationConfiguration;
 
-import java.util.Properties;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
@@ -87,6 +85,7 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isJSONStoreEnabled();
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isMBeanEnabled();
 
     boolean isStallWarningsEnabled();

@@ -30,7 +30,7 @@ public class TwitterStreamLambda {
         // Twitter4j 4.0.4+
         TwitterStreamFactory.getSingleton()
                 .onStatus(e -> System.out.printf("@%s %s%n", e.getUser().getScreenName(), e.getText()))
-                .onException(e -> e.printStackTrace())
+                .onException(Throwable::printStackTrace)
                 .filter("twitter4j", "#twitter4j");
 
     }

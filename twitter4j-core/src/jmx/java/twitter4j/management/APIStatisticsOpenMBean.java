@@ -144,16 +144,17 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
     @Override
     public Object getAttribute(String attribute)
             throws AttributeNotFoundException, MBeanException, ReflectionException {
-        if (attribute.equals("statisticsTable")) {
-            return getStatistics();
-        } else if (attribute.equals("callCount")) {
-            return API_STATISTICS.getCallCount();
-        } else if (attribute.equals("errorCount")) {
-            return API_STATISTICS.getErrorCount();
-        } else if (attribute.equals("totalTime")) {
-            return API_STATISTICS.getTotalTime();
-        } else if (attribute.equals("averageTime")) {
-            return API_STATISTICS.getAverageTime();
+        switch (attribute) {
+            case "statisticsTable":
+                return getStatistics();
+            case "callCount":
+                return API_STATISTICS.getCallCount();
+            case "errorCount":
+                return API_STATISTICS.getErrorCount();
+            case "totalTime":
+                return API_STATISTICS.getTotalTime();
+            case "averageTime":
+                return API_STATISTICS.getAverageTime();
         }
         throw new AttributeNotFoundException("Cannot find " + attribute + " attribute ");
     }

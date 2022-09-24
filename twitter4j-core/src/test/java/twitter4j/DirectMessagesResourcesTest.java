@@ -37,16 +37,6 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
                 new QuickReply("quick response label2", "quick response description2", "metadata2"));
 
         twitter1.sendDirectMessage(rwPrivate.id, "quick response label1" + System.currentTimeMillis(), "metadata1");
-        // this part is flaky
-//        boolean quickReplyResponseFound = false;
-//        for (DirectMessage directMessage : rwPrivateMessage.getDirectMessages(100)) {
-//            String quickReplyResponse = directMessage.getQuickReplyResponse();
-//            if (quickReplyResponse != null) {
-//                quickReplyResponseFound = true;
-//                break;
-//            }
-//        }
-//        assertTrue(quickReplyResponseFound);
     }
 
     @Test

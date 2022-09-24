@@ -59,7 +59,7 @@ abstract class StatusStreamBase implements StatusStream {
         return line;
     }
 
-    abstract class StreamEvent implements Runnable {
+    abstract static class StreamEvent implements Runnable {
         String line;
 
         StreamEvent(String line) {

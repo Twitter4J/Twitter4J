@@ -23,7 +23,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.RequestToken;
 
 import java.io.*;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 

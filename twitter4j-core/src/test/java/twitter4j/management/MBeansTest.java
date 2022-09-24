@@ -136,7 +136,7 @@ class MBeansTest {
             assertNotNull(openMBean.getAttribute(attr.getName()));
             attrNames.add(attr.getName());
         }
-        AttributeList attrList = openMBean.getAttributes(attrNames.toArray(new String[attrNames.size()]));
+        AttributeList attrList = openMBean.getAttributes(attrNames.toArray(new String[0]));
         assertNotNull(attrList);
         assertEquals(5, attrList.size());
 

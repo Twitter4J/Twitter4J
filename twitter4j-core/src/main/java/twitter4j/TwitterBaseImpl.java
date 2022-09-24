@@ -292,15 +292,13 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
 
     @Override
     public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
-        AccessToken oauthAccessToken = getOAuth().getOAuthAccessToken(oauthVerifier);
-        return oauthAccessToken;
+        return getOAuth().getOAuthAccessToken(oauthVerifier);
     }
 
     @Override
     public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         OAuthSupport oauth = getOAuth();
-        AccessToken oauthAccessToken = oauth.getOAuthAccessToken(requestToken);
-        return oauthAccessToken;
+        return oauth.getOAuthAccessToken(requestToken);
     }
 
     @Override
