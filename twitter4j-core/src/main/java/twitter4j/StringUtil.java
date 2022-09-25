@@ -25,7 +25,7 @@ class StringUtil {
         throw new AssertionError();
     }
 
-    public static String join(long[] follows) {
+    static String join(long[] follows) {
         StringBuilder buf = new StringBuilder(11 * follows.length);
         for (long follow : follows) {
             if (0 != buf.length()) {
@@ -36,7 +36,7 @@ class StringUtil {
         return buf.toString();
     }
 
-    public static String join(String[] track) {
+    static String join(String[] track) {
         StringBuilder buf = new StringBuilder(11 * track.length);
         for (String str : track) {
             if (0 != buf.length()) {
