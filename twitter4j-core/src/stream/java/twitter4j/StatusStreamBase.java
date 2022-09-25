@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -35,23 +37,22 @@ abstract class StatusStreamBase implements StatusStream {
     private final BufferedReader br;
     private final InputStream is;
     private HttpResponse response;
-    private final Dispatcher dispatcher;
+    private final ExecutorService dispatcher = Executors.newFixedThreadPool(1);
     final Configuration CONF;
     private final ObjectFactory factory;
 
     /*package*/
 
-    StatusStreamBase(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
+    StatusStreamBase(InputStream stream, Configuration conf) throws IOException {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        this.dispatcher = dispatcher;
         this.CONF = conf;
         this.factory = new JSONImplFactory(conf);
     }
     /*package*/
 
-    StatusStreamBase(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
-        this(dispatcher, response.asStream(), conf);
+    StatusStreamBase(HttpResponse response, Configuration conf) throws IOException {
+        this( response.asStream(), conf);
         this.response = response;
     }
 
@@ -78,7 +79,7 @@ abstract class StatusStreamBase implements StatusStream {
                 //invalidate this status stream
                 throw new IOException("the end of the stream has been reached");
             }
-            dispatcher.invokeLater(new StreamEvent(line) {
+            dispatcher.execute(new StreamEvent(line) {
                 @Override
                 public void run() {
                     try {

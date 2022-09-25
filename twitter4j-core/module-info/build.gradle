@@ -17,8 +17,7 @@ compileJava {
 sourceSets {
     main {
         java {
-            srcDirs(['../src/internal-async/java',
-                     '../src/internal-http/java',
+            srcDirs(['../src/internal-http/java',
                      '../src/jmx/java',
                      '../src/internal-json/java',
                      '../src/internal-logging/java',

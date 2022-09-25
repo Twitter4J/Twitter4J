@@ -121,7 +121,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + relativeUrl
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
                     , stallWarningsParam}, auth, null), conf);
         } catch (IOException e) {
@@ -154,7 +154,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL() + "statuses/retweet.json"
                     , new HttpParameter[]{stallWarningsParam}, auth, null), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -199,7 +199,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
+            return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
                     + stallWarningsGetParam, null, auth, null), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -220,29 +220,12 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream(String language) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
+            return new StatusStreamImpl(http.get(conf.getStreamBaseURL() + "statuses/sample.json?"
                     + stallWarningsGetParam + "&language=" + language, null, auth, null), conf);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
     }
-
-
-    private Dispatcher getDispatcher() {
-        if (null == TwitterStreamImpl.dispatcher) {
-            synchronized (TwitterStreamImpl.class) {
-                if (null == TwitterStreamImpl.dispatcher) {
-                    // dispatcher is held statically, but it'll be instantiated with
-                    // the configuration instance associated with this TwitterStream
-                    // instance which invokes getDispatcher() on the first time.
-                    TwitterStreamImpl.dispatcher = new DispatcherFactory(conf).getInstance();
-                }
-            }
-        }
-        return TwitterStreamImpl.dispatcher;
-    }
-
-    private static volatile Dispatcher dispatcher;
 
 
     @Override
@@ -278,7 +261,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getFilterStream(FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(getDispatcher(), http.post(conf.getStreamBaseURL()
+            return new StatusStreamImpl(http.post(conf.getStreamBaseURL()
                     + "statuses/filter.json"
                     , query.asHttpParameterArray(stallWarningsParam), auth, null), conf);
         } catch (IOException e) {
@@ -320,14 +303,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     @Override
     public synchronized TwitterStream shutdown() {
         cleanUp();
-        synchronized (TwitterStreamImpl.class) {
-            if (0 == numberOfHandlers) {
-                if (dispatcher != null) {
-                    dispatcher.shutdown();
-                    dispatcher = null;
-                }
-            }
-        }
         return this;
     }
 

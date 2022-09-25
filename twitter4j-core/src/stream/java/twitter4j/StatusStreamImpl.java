@@ -30,13 +30,13 @@ import java.io.InputStream;
 class StatusStreamImpl extends StatusStreamBase {
     /*package*/
 
-    StatusStreamImpl(Dispatcher dispatcher, InputStream stream, Configuration conf) throws IOException {
-        super(dispatcher, stream, conf);
+    StatusStreamImpl(InputStream stream, Configuration conf) throws IOException {
+        super(stream, conf);
     }
     /*package*/
 
-    StatusStreamImpl(Dispatcher dispatcher, HttpResponse response, Configuration conf) throws IOException {
-        super(dispatcher, response, conf);
+    StatusStreamImpl(HttpResponse response, Configuration conf) throws IOException {
+        super(response, conf);
     }
 
     String line;

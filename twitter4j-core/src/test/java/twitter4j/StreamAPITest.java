@@ -124,7 +124,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     @Test
     void testStatusStream() throws Exception {
         InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
-        StatusStream stream = new StatusStreamImpl(new DispatcherFactory().getInstance(), is, conf1);
+        StatusStream stream = new StatusStreamImpl(is, conf1);
         stream.next(this);
         waitForNotification();
         assertEquals(6832057002L, deletionNotice.getStatusId());
