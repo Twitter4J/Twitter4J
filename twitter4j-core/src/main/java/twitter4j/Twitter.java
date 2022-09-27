@@ -16,16 +16,12 @@
 package twitter4j;
 
 import twitter4j.api.*;
-import twitter4j.auth.OAuth2Support;
-import twitter4j.auth.OAuthSupport;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
  */
 public interface Twitter extends java.io.Serializable,
-    OAuthSupport,
-    OAuth2Support,
     TwitterBase,
     TimelinesResources,
     TweetsResources,

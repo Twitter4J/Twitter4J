@@ -16,6 +16,7 @@
 package twitter4j.auth;
 
 import twitter4j.TwitterException;
+import twitter4j.conf.Configuration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -45,6 +46,9 @@ public interface OAuthSupport {
      */
     RequestToken getOAuthRequestToken() throws TwitterException;
 
+    static OAuthSupport getInstance(Configuration conf){
+        return new OAuthAuthorization(conf);
+    }
     /**
      * Retrieves a request token
      *

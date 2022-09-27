@@ -21,6 +21,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuthAuthorization;
 import twitter4j.auth.RequestToken;
 
 import java.io.BufferedReader;
@@ -49,7 +50,8 @@ public final class UpdateStatus {
             try {
                 // get request token.
                 // this will throw IllegalStateException if access token is already available
-                RequestToken requestToken = twitter.getOAuthRequestToken();
+                OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(twitter.getConfiguration());
+                RequestToken requestToken = oAuthAuthorization.getOAuthRequestToken();
                 System.out.println("Got request token.");
                 System.out.println("Request token: " + requestToken.getToken());
                 System.out.println("Request token secret: " + requestToken.getTokenSecret());
@@ -63,9 +65,9 @@ public final class UpdateStatus {
                     String pin = br.readLine();
                     try {
                         if (pin.length() > 0) {
-                            accessToken = twitter.getOAuthAccessToken(requestToken, pin);
+                            accessToken = oAuthAuthorization.getOAuthAccessToken(requestToken, pin);
                         } else {
-                            accessToken = twitter.getOAuthAccessToken(requestToken);
+                            accessToken = oAuthAuthorization.getOAuthAccessToken(requestToken);
                         }
                     } catch (TwitterException te) {
                         if (401 == te.getStatusCode()) {

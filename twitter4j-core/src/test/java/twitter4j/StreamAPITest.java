@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -86,9 +86,14 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     @Test
     void testNoListener() {
         TwitterStream twitterStream;
-        twitterStream = new TwitterStreamFactory().getInstance();
-        twitterStream.setOAuthConsumer("dummy", "dummy");
-        twitterStream.setOAuthAccessToken(new AccessToken("dummy", "dummy"));
+        twitterStream = new TwitterStreamFactory(
+                new ConfigurationBuilder()
+                        .setOAuthConsumerSecret("dummy")
+                        .setOAuthConsumerKey("dummy")
+                        .setOAuthAccessToken("dummy")
+                        .setOAuthAccessTokenSecret("dummy")
+                        .build()
+        ).getInstance();
         try {
             twitterStream.sample();
             fail("expecting IllegalStateException");

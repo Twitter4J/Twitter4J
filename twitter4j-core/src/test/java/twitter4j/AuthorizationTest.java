@@ -21,12 +21,8 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.auth.Authorization;
 import twitter4j.auth.NullAuthorization;
-import twitter4j.auth.OAuth2Authorization;
-import twitter4j.auth.OAuthAuthorization;
-import twitter4j.conf.ConfigurationBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -43,37 +39,4 @@ class AuthorizationTest extends TwitterTestBase {
         assertTrue(auth instanceof NullAuthorization);
     }
 
-    @Test
-    void testOAuthInstance() {
-
-        Twitter twitter = new TwitterFactory().getInstance();
-        twitter.setOAuthConsumer(browserConsumerKey , browserConsumerSecret);
-        try {
-            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey );
-            fail("should throw IllegalStateException");
-        } catch (IllegalStateException ignore) {
-
-        }
-
-        Authorization auth = twitter.getAuthorization();
-        assertTrue(auth instanceof OAuthAuthorization);
-    }
-
-    @Test
-    void testOAuth2Instance() {
-
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setApplicationOnlyAuthEnabled(true);
-
-        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        try {
-            twitter.setOAuthConsumer(browserConsumerSecret, browserConsumerKey);
-            fail("should throw IllegalStateException");
-        } catch (IllegalStateException ignore) {
-        }
-
-        Authorization auth = twitter.getAuthorization();
-        assertTrue(auth instanceof OAuth2Authorization);
-    }
 }

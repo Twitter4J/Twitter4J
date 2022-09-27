@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.*;
+import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.BufferedWriter;
@@ -41,13 +42,20 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     void testAuthWithBuildingConf1() throws Exception {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
-        // setup
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
+        // setupTwitter twitter = new TwitterFactory(builder.build()).getInstance();
+        OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.build());
 
         // exercise & verify
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        OAuth2Token token = twitter.getOAuth2Token();
+        oAuth2Authorization.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        OAuth2Token token = oAuth2Authorization.getOAuth2Token();
         assertEquals("bearer", token.getTokenType());
+
+        Twitter twitter = new TwitterFactory(new ConfigurationBuilder()
+                .setApplicationOnlyAuthEnabled(true)
+                .setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret)
+                .setOAuth2TokenType(token.getTokenType())
+                .setOAuth2AccessToken(token.getAccessToken()).build()).getInstance();
 
         Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
@@ -71,11 +79,18 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         builder.setApplicationOnlyAuthEnabled(true);
         // setup
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
 
         // exercise & verify
-        OAuth2Token token = twitter.getOAuth2Token();
+        OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.build());
+
+        OAuth2Token token = oAuth2Authorization.getOAuth2Token();
         assertEquals("bearer", token.getTokenType());
+        Twitter twitter = new TwitterFactory(new ConfigurationBuilder()
+                .setApplicationOnlyAuthEnabled(true)
+                .setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret)
+                .setOAuth2TokenType(token.getTokenType())
+                .setOAuth2AccessToken(token.getAccessToken()).build()).getInstance();
 
         Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
@@ -88,16 +103,20 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
-        OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
+        OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.build());
+        OAuth2Token token = oAuth2Authorization.getOAuth2Token();
 
         // exercise & verify
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setApplicationOnlyAuthEnabled(true);
 
-        Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+        Twitter twitter = new TwitterFactory(cb.setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret)
+                .setOAuth2TokenType(token.getTokenType())
+                .setOAuth2AccessToken(token.getAccessToken()).build()).getInstance();
 
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        twitter.setOAuth2Token(token);
+        oAuth2Authorization.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        oAuth2Authorization.setOAuth2Token(token);
 
         Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
@@ -110,7 +129,9 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
-        OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
+        OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.build());
+
+        OAuth2Token token = oAuth2Authorization.getOAuth2Token();
 
         // exercise & verify
         ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -133,27 +154,25 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         builder.setApplicationOnlyAuthEnabled(true);
         builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
-        Twitter twitter = new TwitterFactory(builder.build()).getInstance();
-        OAuth2Token token = twitter.getOAuth2Token();
+        Configuration build = builder.build();
+        OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(build);
+
+        OAuth2Token token = oAuth2Authorization.getOAuth2Token();
+
 
         // exercise
-        twitter.invalidateOAuth2Token();
+        oAuth2Authorization.invalidateOAuth2Token();
+        Twitter twitter = new TwitterFactory(new ConfigurationBuilder()
+                .setApplicationOnlyAuthEnabled(true)
+                .setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret)
+                .setOAuth2TokenType(token.getTokenType())
+                .setOAuth2AccessToken(token.getAccessToken()).build()).getInstance();
 
         try {
             twitter.getRateLimitStatus();
             fail("show throw IllegalStateException");
-
-        } catch (IllegalStateException ignore) {
-        }
-
-        twitter.setOAuth2Token(token);
-        try {
-            twitter.getRateLimitStatus();
-            fail("should throw TwitterException");
-
-        } catch (TwitterException e) {
-            assertEquals(401, e.getStatusCode());
-            assertEquals(89, e.getErrorCode());
+        } catch (TwitterException expected) {
         }
     }
 
@@ -171,10 +190,14 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
             );
 
             // exercise
-            Twitter twitter = new TwitterFactory(new ConfigurationBuilder().build()).getInstance();
-            OAuth2Token token = twitter.getOAuth2Token();
+            Configuration build = new ConfigurationBuilder().build();
+            OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(build);
+
+            OAuth2Token token = oAuth2Authorization.getOAuth2Token();
             assertEquals("bearer", token.getTokenType());
 
+            Twitter twitter = new TwitterFactory(new ConfigurationBuilder().setOAuth2TokenType(token.getTokenType())
+                    .setOAuth2AccessToken(token.getAccessToken()).build()).getInstance();
             // verify
             Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
             RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
@@ -193,7 +216,10 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setApplicationOnlyAuthEnabled(true);
             builder.setOAuthConsumerKey(browserConsumerKey).setOAuthConsumerSecret(browserConsumerSecret);
-            OAuth2Token token = new TwitterFactory(builder.build()).getInstance().getOAuth2Token();
+            Configuration build = builder.build();
+            OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(build);
+
+            OAuth2Token token = oAuth2Authorization.getOAuth2Token();
             writeFile(filename,
                     "enableApplicationOnlyAuth=true",
                     "http.useSSL=true",

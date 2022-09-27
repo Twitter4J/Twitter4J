@@ -24,6 +24,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import twitter4j.*;
+import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
 
@@ -42,10 +43,10 @@ class OAuthTest extends TwitterTestBase {
 
     @Test
     void testDeterministic() {
-        Twitter twitter1 = new TwitterFactory().getInstance();
-        twitter1.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        Twitter twitter2 = new TwitterFactory().getInstance();
-        twitter2.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        Twitter twitter1 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
+        Twitter twitter2 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
         assertEquals(twitter1, twitter2);
     }
 
@@ -71,22 +72,26 @@ class OAuthTest extends TwitterTestBase {
         Twitter twitter = new TwitterFactory().getInstance();
 
         // desktop client - requiring pin
-        Twitter unauthenticated = new TwitterFactory().getInstance();
-        unauthenticated.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        RequestToken rt = unauthenticated.getOAuthRequestToken();
+        Configuration build = new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
+                .setOAuthConsumerSecret(browserConsumerSecret).build();
+        Twitter unauthenticated = new TwitterFactory(build).getInstance();
+
+
+        OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(build);
+        RequestToken rt = oAuthAuthorization.getOAuthRequestToken();
         //noinspection ResultOfMethodCallIgnored
         rt.hashCode();
         // trying to get an access token without permitting the request token.
         try {
-            unauthenticated.getOAuthAccessToken();
+            oAuthAuthorization.getOAuthAccessToken();
             fail();
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
-        twitter.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
+        oAuthAuthorization.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
+        AccessToken at = getAccessToken(oAuthAuthorization, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
         try {
-            twitter.getOAuthRequestToken();
+            oAuthAuthorization.getOAuthRequestToken();
         } catch (TwitterException te) {
             fail("expecting IllegalStateException as access token is already available.");
         } catch (IllegalStateException ignored) {
@@ -95,7 +100,7 @@ class OAuthTest extends TwitterTestBase {
 
         assertEquals(at.getScreenName(), numberId);
         assertEquals(at.getUserId(), numberIdId);
-        AccessToken at1 = twitter.getOAuthAccessToken();
+        AccessToken at1 = oAuthAuthorization.getOAuthAccessToken();
         assertEquals(at, at1);
         TwitterResponse res = twitter.getLanguages();
         assertEquals(TwitterResponse.AccessLevel.READ, res.getAccessLevel());
@@ -104,7 +109,7 @@ class OAuthTest extends TwitterTestBase {
     @Test
     void testIllegalStatus() throws Exception {
         try {
-            new TwitterFactory().getInstance().getOAuthAccessToken();
+            new OAuthAuthorization(new ConfigurationBuilder().build()).getOAuthAccessToken();
             fail("should throw IllegalStateException since request token hasn't been acquired.");
         } catch (IllegalStateException ignore) {
         }
@@ -113,12 +118,12 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testSigninWithTwitter() throws Exception {
-        Twitter twitter = new TwitterFactory().getInstance();
+        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().build());
         // browser client - not requiring pin
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
+        oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
-        AccessToken at = getAccessToken(twitter, rt.getAuthenticationURL(), rt, id1.screenName, id1.password, false);
+        AccessToken at = getAccessToken(oauth, rt.getAuthenticationURL(), rt, id1.screenName, id1.password, false);
 
         assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), id1.id);
@@ -128,18 +133,18 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testBrowserClient() throws Exception {
-        Twitter twitter = new TwitterFactory().getInstance();
+        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().build());
 
         // browser client - not requiring pin
-        twitter.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
-        RequestToken rt = twitter.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
+        oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
-        AccessToken at = getAccessToken(twitter, rt.getAuthorizationURL(), rt, id1.screenName, id1.password, false);
+        AccessToken at = getAccessToken(oauth, rt.getAuthorizationURL(), rt, id1.screenName, id1.password, false);
         assertEquals(at.getScreenName(), id1.screenName);
         assertEquals(at.getUserId(), id1.id);
     }
 
-    private AccessToken getAccessToken(Twitter twitter, @SuppressWarnings("unused") String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
+    private AccessToken getAccessToken(OAuthAuthorization twitter, @SuppressWarnings("unused") String url, RequestToken rt, String screenName, String password, boolean pinRequired) throws TwitterException {
 
         BrowserVersion browserVersion = BrowserVersion.getDefault();
         HtmlUnitDriver driver = new HtmlUnitDriver(browserVersion);

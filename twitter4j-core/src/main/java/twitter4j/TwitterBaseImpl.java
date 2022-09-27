@@ -34,7 +34,7 @@ import static twitter4j.HttpResponseCode.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAuthSupport, OAuth2Support, HttpResponseListener {
+abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, HttpResponseListener {
     private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details. See and register at http://apps.twitter.com/";
     private static final long serialVersionUID = -7824361938865528554L;
 
@@ -203,111 +203,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, OAu
         setFactory();
     }
 
-
-    // methods declared in OAuthSupport interface
-
-    @Override
-    public synchronized void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        if (null == consumerKey) {
-            throw new NullPointerException("consumer key is null");
-        }
-        if (null == consumerSecret) {
-            throw new NullPointerException("consumer secret is null");
-        }
-        if (auth instanceof NullAuthorization) {
-            if (conf.isApplicationOnlyAuthEnabled()) {
-                OAuth2Authorization oauth2 = new OAuth2Authorization(conf);
-                oauth2.setOAuthConsumer(consumerKey, consumerSecret);
-                auth = oauth2;
-            } else {
-                OAuthAuthorization oauth = new OAuthAuthorization(conf);
-                oauth.setOAuthConsumer(consumerKey, consumerSecret);
-                auth = oauth;
-            }
-        } else if (auth instanceof OAuthAuthorization || auth instanceof OAuth2Authorization) {
-            throw new IllegalStateException("consumer key/secret pair already set.");
-        }
-    }
-
-    @Override
-    public RequestToken getOAuthRequestToken() throws TwitterException {
-        return getOAuthRequestToken(null);
-    }
-
-    @Override
-    public RequestToken getOAuthRequestToken(String callbackUrl) throws TwitterException {
-        return getOAuth().getOAuthRequestToken(callbackUrl);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws TwitterException When Twitter service or network is unavailable, or when the user has not authorized
-     */
-    @Override
-    public synchronized AccessToken getOAuthAccessToken() throws TwitterException {
-        return getOAuth().getOAuthAccessToken();
-    }
-
-
-    @Override
-    public synchronized AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(oauthVerifier);
-    }
-
-    @Override
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
-        OAuthSupport oauth = getOAuth();
-        return oauth.getOAuthAccessToken(requestToken);
-    }
-
-    @Override
-    public synchronized AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
-        return getOAuth().getOAuthAccessToken(requestToken, oauthVerifier);
-    }
-
-    @Override
-    public synchronized void setOAuthAccessToken(AccessToken accessToken) {
-        getOAuth().setOAuthAccessToken(accessToken);
-    }
-
-    /* OAuth support methods */
-
-    private OAuthSupport getOAuth() {
-        if (!(auth instanceof OAuthSupport)) {
-            throw new IllegalStateException(
-                "OAuth consumer key/secret combination not supplied");
-        }
-        return (OAuthSupport) auth;
-    }
-
-    @Override
-    public synchronized OAuth2Token getOAuth2Token() throws TwitterException {
-        return getOAuth2().getOAuth2Token();
-    }
-
-    @Override
-    public synchronized void setOAuth2Token(OAuth2Token oauth2Token) {
-        getOAuth2().setOAuth2Token(oauth2Token);
-    }
-
-    @Override
-    public synchronized void invalidateOAuthToken() throws TwitterException {
-        getOAuth().invalidateOAuthToken();
-    }
-
-    @Override
-    public synchronized void invalidateOAuth2Token() throws TwitterException {
-        getOAuth2().invalidateOAuth2Token();
-    }
-
-    private OAuth2Support getOAuth2() {
-        if (!(auth instanceof OAuth2Support)) {
-            throw new IllegalStateException(
-                "OAuth consumer key/secret combination not supplied");
-        }
-        return (OAuth2Support) auth;
-    }
 
     @Override
     public boolean equals(Object o) {

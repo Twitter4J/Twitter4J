@@ -15,14 +15,13 @@
  */
 package twitter4j;
 
-import twitter4j.auth.OAuthSupport;
 import java.util.function.Consumer;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
  */
-public interface TwitterStream extends OAuthSupport, TwitterBase {
+public interface TwitterStream extends TwitterBase {
     /**
      * Adds a ConnectionLifeCycleListener
      *
