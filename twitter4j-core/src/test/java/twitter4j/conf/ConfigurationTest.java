@@ -35,7 +35,7 @@ public class ConfigurationTest {
 
     @Test
     void testGetInstance() {
-        Configuration conf = ConfigurationContext.getInstance();
+        Configuration conf = Configuration.getInstance();
         assertNotNull(conf);
     }
 

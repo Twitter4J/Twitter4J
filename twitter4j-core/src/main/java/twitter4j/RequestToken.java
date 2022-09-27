@@ -17,8 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -29,12 +27,12 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
     private final Configuration conf;
     RequestToken(HttpResponse res) throws TwitterException {
         super(res);
-        conf = ConfigurationContext.getInstance();
+        conf = Configuration.getInstance();
     }
 
     public RequestToken(String token, String tokenSecret) {
         super(token, tokenSecret);
-        conf = ConfigurationContext.getInstance();
+        conf = Configuration.getInstance();
     }
 
     /**

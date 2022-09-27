@@ -1,7 +1,6 @@
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
-
+import twitter4j.conf.Configuration;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +24,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
     private final Map<String, String> requestHeaders;
 
     HttpClient(){
-        this(ConfigurationContext.getInstance().getHttpClientConfiguration());
+        this(Configuration.getInstance().getHttpClientConfiguration());
     }
     HttpClient(HttpClientConfiguration conf) {
         this.CONF = conf;

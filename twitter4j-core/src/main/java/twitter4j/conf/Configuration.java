@@ -23,6 +23,13 @@ import twitter4j.HttpClientConfiguration;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Configuration extends AuthorizationConfiguration, java.io.Serializable {
+    static Configuration getInstance(){
+        return new PropertyConfiguration();
+    }
+
+    static Configuration getInstance(String configTreePath) {
+        return new PropertyConfiguration(configTreePath);
+    }
 
     boolean isDebugEnabled();
 

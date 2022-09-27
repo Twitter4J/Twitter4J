@@ -21,8 +21,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.conf.ConfigurationContext;
-
 import java.io.*;
 import java.util.*;
 
@@ -34,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("ConstantConditions")
 @Execution(ExecutionMode.CONCURRENT)
 class DAOTest extends TwitterTestBase {
-    private final Configuration conf = ConfigurationContext.getInstance();
+    private final Configuration conf = Configuration.getInstance();
 
     @Test
     void testEmptyJSON() throws Exception {

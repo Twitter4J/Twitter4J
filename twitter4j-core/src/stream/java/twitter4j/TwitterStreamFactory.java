@@ -17,8 +17,6 @@
 package twitter4j;
 
 import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationContext;
-
 
 /**
  * A factory class for TwitterFactory.<br>
@@ -31,13 +29,13 @@ import twitter4j.conf.ConfigurationContext;
 public final class TwitterStreamFactory implements java.io.Serializable {
     private static final long serialVersionUID = -5181136070759074681L;
     private final Configuration conf;
-    private static final TwitterStream SINGLETON = new TwitterStreamImpl(ConfigurationContext.getInstance(), TwitterFactory.DEFAULT_AUTHORIZATION);
+    private static final TwitterStream SINGLETON = new TwitterStreamImpl(Configuration.getInstance(), TwitterFactory.DEFAULT_AUTHORIZATION);
 
     /**
      * Creates a TwitterStreamFactory with the root configuration.
      */
     public TwitterStreamFactory() {
-        this(ConfigurationContext.getInstance());
+        this(Configuration.getInstance());
     }
 
     /**
@@ -48,15 +46,6 @@ public final class TwitterStreamFactory implements java.io.Serializable {
      */
     public TwitterStreamFactory(Configuration conf) {
         this.conf = conf;
-    }
-
-    /**
-     * Creates a TwitterStreamFactory with a specified config tree.
-     *
-     * @param configTreePath the path
-     */
-    public TwitterStreamFactory(String configTreePath) {
-        this(ConfigurationContext.getInstance(configTreePath));
     }
 
     // implementations for BasicSupportFactory
