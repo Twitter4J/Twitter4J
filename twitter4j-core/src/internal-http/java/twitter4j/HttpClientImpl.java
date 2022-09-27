@@ -22,7 +22,6 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,19 +32,6 @@ import java.util.Map;
 final class HttpClientImpl extends HttpClient implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger();
 
-
-    static {
-        // disable keepAlive (Android 2.1 or earlier)
-        // quick and dirty workaround for TFJ-296
-        // @see http://stackoverflow.com/questions/1440957/
-        try {
-            // Integer.parseInt(Build.VERSION.SDK) < Build.VERSION_CODES.FROYO
-            if (Integer.parseInt((String) Class.forName("android.os.Build$VERSION").getField("SDK").get(null)) < 8) {
-                System.setProperty("http.keepAlive", "false");
-            }
-        } catch (Exception ignore) {
-        }
-    }
 
     private static final long serialVersionUID = -403500272719330534L;
 
