@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io.Serializable {
+final class HttpClientImpl extends HttpClient implements HttpResponseCode, java.io.Serializable {
     private static final Logger logger = Logger.getLogger();
 
 
@@ -49,36 +49,27 @@ class HttpClientImpl extends HttpClientBase implements HttpResponseCode, java.io
 
     private static final long serialVersionUID = -403500272719330534L;
 
-    public HttpClientImpl() {
+    HttpClientImpl() {
         super(ConfigurationContext.getInstance().getHttpClientConfiguration());
     }
 
-    public HttpClientImpl(HttpClientConfiguration conf) {
+    HttpClientImpl(HttpClientConfiguration conf) {
         super(conf);
     }
 
     private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<>(1);
 
-    public static HttpClient getInstance(HttpClientConfiguration conf) {
-        HttpClient client = instanceMap.get(conf);
-        if (null == client) {
-            client = new HttpClientImpl(conf);
-            instanceMap.put(conf, client);
-        }
-        return client;
-    }
-
     @Override
-    public HttpResponse get(String url) throws TwitterException {
+    HttpResponse get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
     }
 
-    public HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
+    HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
     }
 
     @Override
-    public HttpResponse handleRequest(HttpRequest req) throws TwitterException {
+    HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         int retriedCount;
         int retry = CONF.getHttpRetryCount() + 1;
         HttpResponse res = null;

@@ -81,7 +81,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
                 this.auth = NullAuthorization.getInstance();
             }
         }
-        http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
+        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();
     }
 
@@ -198,7 +198,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
         conf = (Configuration) stream.readObject();
         auth = (Authorization) stream.readObject();
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
-        http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
+        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();
     }
 
