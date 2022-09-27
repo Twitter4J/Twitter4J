@@ -88,10 +88,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         TwitterStream twitterStream;
         twitterStream = new TwitterStreamFactory(
                 new ConfigurationBuilder()
-                        .setOAuthConsumerSecret("dummy")
-                        .setOAuthConsumerKey("dummy")
-                        .setOAuthAccessToken("dummy")
-                        .setOAuthAccessTokenSecret("dummy")
+                        .oAuthConsumerSecret("dummy")
+                        .oAuthConsumerKey("dummy")
+                        .oAuthAccessToken("dummy")
+                        .oAuthAccessTokenSecret("dummy")
                         .build()
         ).getInstance();
         try {

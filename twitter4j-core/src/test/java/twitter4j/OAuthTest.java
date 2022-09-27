@@ -42,10 +42,10 @@ class OAuthTest extends TwitterTestBase {
 
     @Test
     void testDeterministic() {
-        Twitter twitter1 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
-                .setOAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
-        Twitter twitter2 = new TwitterFactory(new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
-                .setOAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
+        Twitter twitter1 = new TwitterFactory(new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
+        Twitter twitter2 = new TwitterFactory(new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
         assertEquals(twitter1, twitter2);
     }
 
@@ -56,10 +56,10 @@ class OAuthTest extends TwitterTestBase {
         String oAuthAccessTokenSecret = p.getProperty("id1.oauth.accessTokenSecret");
         String oAuthConsumerKey = p.getProperty("oauth.consumerKey");
         String oAuthConsumerSecret = p.getProperty("oauth.consumerSecret");
-        build.setOAuthAccessToken(oAuthAccessToken);
-        build.setOAuthAccessTokenSecret(oAuthAccessTokenSecret);
-        build.setOAuthConsumerKey(oAuthConsumerKey);
-        build.setOAuthConsumerSecret(oAuthConsumerSecret);
+        build.oAuthAccessToken(oAuthAccessToken);
+        build.oAuthAccessTokenSecret(oAuthAccessTokenSecret);
+        build.oAuthConsumerKey(oAuthConsumerKey);
+        build.oAuthConsumerSecret(oAuthConsumerSecret);
         OAuthAuthorization auth = new OAuthAuthorization(build.build());
         Twitter twitter = new TwitterFactory().getInstance(auth);
         twitter.verifyCredentials();
@@ -71,10 +71,8 @@ class OAuthTest extends TwitterTestBase {
         Twitter twitter = new TwitterFactory().getInstance();
 
         // desktop client - requiring pin
-        Configuration build = new ConfigurationBuilder().setOAuthConsumerKey(browserConsumerKey)
-                .setOAuthConsumerSecret(browserConsumerSecret).build();
-        Twitter unauthenticated = new TwitterFactory(build).getInstance();
-
+        Configuration build = new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build();
 
         OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(build);
         RequestToken rt = oAuthAuthorization.getOAuthRequestToken();

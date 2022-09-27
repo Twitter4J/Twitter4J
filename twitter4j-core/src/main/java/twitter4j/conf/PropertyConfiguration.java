@@ -73,8 +73,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     private static final String TWEET_MODE_EXTENDED = "tweetModeExtended";
     private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
     private static final String MBEAN_ENABLED = "mbeanEnabled";
-    private static final String STREAM_USER_REPLIES_ALL = "stream.user.repliesAll";
-    private static final String STREAM_USER_WITH_FOLLOWINGS = "stream.user.withFollowings";
     private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
     private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
@@ -87,10 +85,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         Properties props = new Properties();
         loadProperties(props, is);
         setFieldsWithTreePath(props, "/");
-    }
-
-    public PropertyConfiguration(Properties props) {
-        this(props, "/");
     }
 
     public PropertyConfiguration(Properties props, String treePath) {

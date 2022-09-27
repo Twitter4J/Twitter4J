@@ -276,8 +276,8 @@ public class ConfigurationTest {
         assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
 
         builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey("key");
-        builder.setOAuthConsumerSecret("secret");
+        builder.oAuthConsumerKey("key");
+        builder.oAuthConsumerSecret("secret");
         conf = builder.build();
         assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
         assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));

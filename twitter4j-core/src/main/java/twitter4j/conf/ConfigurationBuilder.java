@@ -17,258 +17,259 @@
 package twitter4j.conf;
 
 /**
- * A builder that can be used to construct a twitter4j configuration with desired settings.  This
+ * A builder that can be used to construct a Twitter4J configuration with desired settings.  This
  * builder has sensible defaults such that {@code new ConfigurationBuilder().build()} would create a
  * usable configuration.  This configuration builder is useful for clients that wish to configure
- * twitter4j in unit tests or from command line flags for example.
+ * Twitter4J in unit tests or from command line flags for example.
  *
  * @author John Sirois - john.sirois at gmail.com
  */
+@SuppressWarnings("unused")
 public final class ConfigurationBuilder {
 
     private ConfigurationBase configurationBean = new PropertyConfiguration();
 
-    public ConfigurationBuilder setPrettyDebugEnabled(boolean prettyDebugEnabled) {
+    public ConfigurationBuilder prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
         configurationBean.setPrettyDebugEnabled(prettyDebugEnabled);
         return this;
     }
 
-    public ConfigurationBuilder setGZIPEnabled(boolean gzipEnabled) {
+    public ConfigurationBuilder gzipEnabled(boolean gzipEnabled) {
         checkNotBuilt();
         configurationBean.setGZIPEnabled(gzipEnabled);
         return this;
     }
 
-    public ConfigurationBuilder setDebugEnabled(boolean debugEnabled) {
+    public ConfigurationBuilder debugEnabled(boolean debugEnabled) {
         checkNotBuilt();
         configurationBean.setDebug(debugEnabled);
         return this;
     }
 
-    public ConfigurationBuilder setApplicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+    public ConfigurationBuilder applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
         configurationBean.setApplicationOnlyAuthEnabled(applicationOnlyAuthEnabled);
         return this;
     }
 
-    public ConfigurationBuilder setUser(String user) {
+    public ConfigurationBuilder user(String user) {
         checkNotBuilt();
         configurationBean.setUser(user);
         return this;
     }
 
-    public ConfigurationBuilder setPassword(String password) {
+    public ConfigurationBuilder password(String password) {
         checkNotBuilt();
         configurationBean.setPassword(password);
         return this;
     }
 
-    public ConfigurationBuilder setHttpProxyHost(String httpProxyHost) {
+    public ConfigurationBuilder httpProxyHost(String httpProxyHost) {
         checkNotBuilt();
         configurationBean.setHttpProxyHost(httpProxyHost);
         return this;
     }
 
-    public ConfigurationBuilder setHttpProxyUser(String httpProxyUser) {
+    public ConfigurationBuilder httpProxyUser(String httpProxyUser) {
         checkNotBuilt();
         configurationBean.setHttpProxyUser(httpProxyUser);
         return this;
     }
 
-    public ConfigurationBuilder setHttpProxyPassword(String httpProxyPassword) {
+    public ConfigurationBuilder httpProxyPassword(String httpProxyPassword) {
         checkNotBuilt();
         configurationBean.setHttpProxyPassword(httpProxyPassword);
         return this;
     }
 
-    public ConfigurationBuilder setHttpProxyPort(int httpProxyPort) {
+    public ConfigurationBuilder httpProxyPort(int httpProxyPort) {
         checkNotBuilt();
         configurationBean.setHttpProxyPort(httpProxyPort);
         return this;
     }
 
-    public ConfigurationBuilder setHttpProxySocks(boolean httpProxySocks) {
+    public ConfigurationBuilder httpProxySocks(boolean httpProxySocks) {
         checkNotBuilt();
         configurationBean.setHttpProxySocks(httpProxySocks);
         return this;
     }
     
-    public ConfigurationBuilder setHttpConnectionTimeout(int httpConnectionTimeout) {
+    public ConfigurationBuilder httpConnectionTimeout(int httpConnectionTimeout) {
         checkNotBuilt();
         configurationBean.setHttpConnectionTimeout(httpConnectionTimeout);
         return this;
     }
 
-    public ConfigurationBuilder setHttpReadTimeout(int httpReadTimeout) {
+    public ConfigurationBuilder httpReadTimeout(int httpReadTimeout) {
         checkNotBuilt();
         configurationBean.setHttpReadTimeout(httpReadTimeout);
         return this;
     }
 
-    public ConfigurationBuilder setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
+    public ConfigurationBuilder httpStreamingReadTimeout(int httpStreamingReadTimeout) {
         checkNotBuilt();
         configurationBean.setHttpStreamingReadTimeout(httpStreamingReadTimeout);
         return this;
     }
 
-    public ConfigurationBuilder setHttpRetryCount(int httpRetryCount) {
+    public ConfigurationBuilder httpRetryCount(int httpRetryCount) {
         checkNotBuilt();
         configurationBean.setHttpRetryCount(httpRetryCount);
         return this;
     }
 
-    public ConfigurationBuilder setHttpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
+    public ConfigurationBuilder httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
         checkNotBuilt();
         configurationBean.setHttpRetryIntervalSeconds(httpRetryIntervalSeconds);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthConsumerKey(String oAuthConsumerKey) {
+    public ConfigurationBuilder oAuthConsumerKey(String oAuthConsumerKey) {
         checkNotBuilt();
         configurationBean.setOAuthConsumerKey(oAuthConsumerKey);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthConsumerSecret(String oAuthConsumerSecret) {
+    public ConfigurationBuilder oAuthConsumerSecret(String oAuthConsumerSecret) {
         checkNotBuilt();
         configurationBean.setOAuthConsumerSecret(oAuthConsumerSecret);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthAccessToken(String oAuthAccessToken) {
+    public ConfigurationBuilder oAuthAccessToken(String oAuthAccessToken) {
         checkNotBuilt();
         configurationBean.setOAuthAccessToken(oAuthAccessToken);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
+    public ConfigurationBuilder oAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
         checkNotBuilt();
         configurationBean.setOAuthAccessTokenSecret(oAuthAccessTokenSecret);
         return this;
     }
 
-    public ConfigurationBuilder setOAuth2TokenType(String oAuth2TokenType) {
+    public ConfigurationBuilder oAuth2TokenType(String oAuth2TokenType) {
         checkNotBuilt();
         configurationBean.setOAuth2TokenType(oAuth2TokenType);
         return this;
     }
 
-    public ConfigurationBuilder setOAuth2AccessToken(String oAuth2AccessToken) {
+    public ConfigurationBuilder oAuth2AccessToken(String oAuth2AccessToken) {
         checkNotBuilt();
         configurationBean.setOAuth2AccessToken(oAuth2AccessToken);
         return this;
     }
 
-    public ConfigurationBuilder setOAuth2Scope(String oAuth2Scope) {
+    public ConfigurationBuilder oAuth2Scope(String oAuth2Scope) {
         checkNotBuilt();
         configurationBean.setOAuth2Scope(oAuth2Scope);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
+    public ConfigurationBuilder oAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuthRequestTokenURL(oAuthRequestTokenURL);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
+    public ConfigurationBuilder oAuthAuthorizationURL(String oAuthAuthorizationURL) {
         checkNotBuilt();
         configurationBean.setOAuthAuthorizationURL(oAuthAuthorizationURL);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
+    public ConfigurationBuilder oAuthAccessTokenURL(String oAuthAccessTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuthAccessTokenURL(oAuthAccessTokenURL);
         return this;
     }
 
-    public ConfigurationBuilder setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
+    public ConfigurationBuilder oAuthAuthenticationURL(String oAuthAuthenticationURL) {
         checkNotBuilt();
         configurationBean.setOAuthAuthenticationURL(oAuthAuthenticationURL);
         return this;
     }
 
-    public ConfigurationBuilder setOAuth2TokenURL(String oAuth2TokenURL) {
+    public ConfigurationBuilder oAuth2TokenURL(String oAuth2TokenURL) {
         checkNotBuilt();
         configurationBean.setOAuth2TokenURL(oAuth2TokenURL);
         return this;
     }
 
-    public ConfigurationBuilder setOAuth2InvalidateTokenURL(String invalidateTokenURL) {
+    public ConfigurationBuilder oAuth2InvalidateTokenURL(String invalidateTokenURL) {
         checkNotBuilt();
         configurationBean.setOAuth2InvalidateTokenURL(invalidateTokenURL);
         return this;
     }
 
-    public ConfigurationBuilder setRestBaseURL(String restBaseURL) {
+    public ConfigurationBuilder restBaseURL(String restBaseURL) {
         checkNotBuilt();
         configurationBean.setRestBaseURL(restBaseURL);
         return this;
     }
 
-    public ConfigurationBuilder setUploadBaseURL(String uploadBaseURL) {
+    public ConfigurationBuilder uploadBaseURL(String uploadBaseURL) {
         checkNotBuilt();
         configurationBean.setUploadBaseURL(uploadBaseURL);
         return this;
     }
 
-    public ConfigurationBuilder setStreamBaseURL(String streamBaseURL) {
+    public ConfigurationBuilder streamBaseURL(String streamBaseURL) {
         checkNotBuilt();
         configurationBean.setStreamBaseURL(streamBaseURL);
         return this;
     }
 
-    public ConfigurationBuilder setContributingTo(long contributingTo) {
+    public ConfigurationBuilder contributingTo(long contributingTo) {
         checkNotBuilt();
         configurationBean.setContributingTo(contributingTo);
         return this;
     }
 
-    public ConfigurationBuilder setTrimUserEnabled(boolean enabled) {
+    public ConfigurationBuilder trimUserEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTrimUserEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setIncludeExtAltTextEnabled(boolean enabled) {
+    public ConfigurationBuilder includeExtAltTextEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeExtAltTextEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setTweetModeExtended(boolean enabled) {
+    public ConfigurationBuilder tweetModeExtended(boolean enabled) {
         checkNotBuilt();
         configurationBean.setTweetModeExtended(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setIncludeMyRetweetEnabled(boolean enabled) {
+    public ConfigurationBuilder includeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeMyRetweetEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setIncludeEntitiesEnabled(boolean enabled) {
+    public ConfigurationBuilder includeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeEntitiesEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setIncludeEmailEnabled(boolean enabled) {
+    public ConfigurationBuilder includeEmailEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setIncludeEmailEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setJSONStoreEnabled(boolean enabled) {
+    public ConfigurationBuilder jsonStoreEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setJSONStoreEnabled(enabled);
         return this;
     }
 
-    public ConfigurationBuilder setMBeanEnabled(boolean enabled) {
+    public ConfigurationBuilder mBeanEnabled(boolean enabled) {
         checkNotBuilt();
         configurationBean.setMBeanEnabled(enabled);
         return this;
