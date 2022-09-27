@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
  * @see <a href="https://dev.twitter.com/docs/auth/application-only-auth">Application-only authentication</a>
  */
-public class OAuth2Authorization implements Authorization, java.io.Serializable, OAuth2Support {
+public class OAuth2Authorization implements Authorization, java.io.Serializable {
 
     private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
@@ -46,13 +46,26 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
         http = HttpClientFactory.getInstance(conf.getHttpClientConfiguration());
     }
 
-    @Override
+    /**
+     * Sets the OAuth consumer key and consumer secret.
+     *
+     * @param consumerKey    OAuth consumer key
+     * @param consumerSecret OAuth consumer secret
+     * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization.
+     */
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
         this.consumerKey = consumerKey != null ? consumerKey : "";
         this.consumerSecret = consumerSecret != null ? consumerSecret : "";
     }
 
-    @Override
+    /**
+     * Obtains an OAuth 2 Bearer token.
+     *
+     * @return OAuth 2 Bearer token
+     * @throws TwitterException      when Twitter service or network is unavailable, or connecting non-SSL endpoints.
+     * @throws IllegalStateException when Bearer token is already available, or OAuth consumer is not available.
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth2/token">POST oauth2/token | Twitter Developers</a>
+     */
     public OAuth2Token getOAuth2Token() throws TwitterException {
         if (token != null) {
             throw new IllegalStateException("OAuth 2 Bearer Token is already available.");
@@ -72,12 +85,21 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable,
         return token;
     }
 
-    @Override
+    /**
+     * Sets the OAuth 2 Bearer token.
+     *
+     * @param oauth2Token OAuth 2 Bearer token
+     */
     public void setOAuth2Token(OAuth2Token oauth2Token) {
         this.token = oauth2Token;
     }
 
-    @Override
+    /**
+     * Revokes an issued OAuth 2 Bearer Token.
+     *
+     * @throws TwitterException      when Twitter service or network is unavailable, or connecting non-SSL endpoints.
+     * @throws IllegalStateException when Bearer token is not available.
+     */
     public void invalidateOAuth2Token() throws TwitterException {
         if (token == null) {
             throw new IllegalStateException("OAuth 2 Bearer Token is not available.");

@@ -31,7 +31,7 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
-public class OAuthAuthorization implements Authorization, java.io.Serializable, OAuthSupport {
+public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
     private static HttpClient http;
@@ -80,14 +80,33 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return oauthToken != null && oauthToken instanceof AccessToken;
     }
 
-    // implementation for OAuthSupport interface
-
-    @Override
+    /**
+     * Retrieves a request token
+     *
+     * @return generated request token.
+     * @throws TwitterException      when Twitter service or network is unavailable
+     * @throws IllegalStateException access token is already available
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @since Twitter4J 2.0.0
+     */
     public RequestToken getOAuthRequestToken() throws TwitterException {
         return getOAuthRequestToken(null);
     }
 
-    @Override
+    /**
+     * Retrieves a request token
+     *
+     * @param callbackURL callback URL
+     * @return generated request token
+     * @throws TwitterException      when Twitter service or network is unavailable
+     * @throws IllegalStateException access token is already available
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | Twitter Developers</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step1">OAuth Core 1.0a - 6.1.  Obtaining an Unauthorized Request Token</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/request_token">POST oauth/request_token | Twitter Developers</a>
+     * @since Twitter4J 2.0.0
+     */
     public RequestToken getOAuthRequestToken(String callbackURL) throws TwitterException {
         if (oauthToken instanceof AccessToken) {
             throw new IllegalStateException("Access token already available.");
@@ -96,11 +115,22 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
         }
-        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[0]), this, null), this);
+        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[0]), this, null));
         return (RequestToken) oauthToken;
     }
 
-    @Override
+    /**
+     * Returns an access token associated with this instance.<br>
+     * If no access token is associated with this instance, this will retrieve a new access token.
+     *
+     * @return access token
+     * @throws TwitterException      when Twitter service or network is unavailable, or the user has not authorized
+     * @throws IllegalStateException when RequestToken has never been acquired
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @since Twitter4J 2.0.0
+     */
     public AccessToken getOAuthAccessToken() throws TwitterException {
         ensureTokenIsAvailable();
         if (oauthToken instanceof AccessToken) {
@@ -110,7 +140,17 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return (AccessToken) oauthToken;
     }
 
-    @Override
+    /**
+     * Retrieves an access token.
+     *
+     * @param oauthVerifier OAuth verifier. AKA pin.
+     * @return access token
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @since Twitter4J 2.0.0
+     */
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
         oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
@@ -118,19 +158,44 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return (AccessToken) oauthToken;
     }
 
-    @Override
+    /**
+     * Retrieves an access token associated with the supplied request token and sets userId.
+     *
+     * @param requestToken the request token
+     * @return access token associated with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="https://dev.twitter.com/docs/auth/oauth/faq">OAuth FAQ | dev.twitter.com - How long does an access token last?</a>
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @since Twitter4J 2.0.0
+     */
     public AccessToken getOAuthAccessToken(RequestToken requestToken) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken();
     }
 
-    @Override
+    /**
+     * Retrieves an access token associated with the supplied request token and sets userId.
+     *
+     * @param requestToken  the request token
+     * @param oauthVerifier OAuth verifier. AKA pin.
+     * @return access token associated with the supplied request token.
+     * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
+     * @see <a href="http://oauth.net/core/1.0a/#auth_step2">OAuth Core 1.0a - 6.2.  Obtaining User Authorization</a>
+     * @see <a href="https://dev.twitter.com/docs/api/1.1/post/oauth/access_token">POST oauth/access_token | Twitter Developers</a>
+     * @since Twitter 2.1.1
+     */
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken(oauthVerifier);
     }
 
-    @Override
+    /**
+     * Sets the access token
+     *
+     * @param accessToken accessToken
+     * @since Twitter4J 2.0.0
+     */
     public void setOAuthAccessToken(AccessToken accessToken) {
         this.oauthToken = accessToken;
     }
@@ -141,6 +206,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * @param realm OAuth realm
      * @since Twitter 2.1.4
      */
+    @SuppressWarnings("unused")
     public void setOAuthRealm(String realm) {
         this.realm = realm;
     }
@@ -151,7 +217,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * On success, sets oauthToken to null
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      */
-    @Override
+    @SuppressWarnings("unused")
     public void invalidateOAuthToken() throws TwitterException {
         if (oauthToken == null) {
             throw new IllegalStateException("OAuth Token is not available.");
@@ -252,36 +318,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return generateAuthorizationHeader(method, url, params, String.valueOf(nonce), String.valueOf(timestamp), token);
     }
 
-    public List<HttpParameter> generateOAuthSignatureHttpParams(String method, String url) {
-        long timestamp = System.currentTimeMillis() / 1000;
-        long nonce = timestamp + RAND.nextInt();
-
-        List<HttpParameter> oauthHeaderParams = new ArrayList<>(5);
-        oauthHeaderParams.add(new HttpParameter("oauth_consumer_key", consumerKey));
-        oauthHeaderParams.add(OAUTH_SIGNATURE_METHOD);
-        oauthHeaderParams.add(new HttpParameter("oauth_timestamp", timestamp));
-        oauthHeaderParams.add(new HttpParameter("oauth_nonce", nonce));
-        oauthHeaderParams.add(new HttpParameter("oauth_version", "1.0"));
-        if (oauthToken != null) {
-            oauthHeaderParams.add(new HttpParameter("oauth_token", oauthToken.getToken()));
-        }
-
-        List<HttpParameter> signatureBaseParams = new ArrayList<>(oauthHeaderParams.size());
-        signatureBaseParams.addAll(oauthHeaderParams);
-        parseGetParameters(url, signatureBaseParams);
-
-        StringBuilder base = new StringBuilder(method).append("&")
-                .append(HttpParameter.encode(constructRequestURL(url))).append("&");
-        base.append(HttpParameter.encode(normalizeRequestParameters(signatureBaseParams)));
-
-        String oauthBaseString = base.toString();
-        String signature = generateSignature(oauthBaseString, oauthToken);
-
-        oauthHeaderParams.add(new HttpParameter("oauth_signature", signature));
-
-        return oauthHeaderParams;
-    }
-
     /**
      * Computes RFC 2104-compliant HMAC signature.
      *
@@ -317,13 +353,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         }
         return BASE64Encoder.encode(byteHMAC);
     }
-
-    /*package*/
-
-    String generateSignature(String data) {
-        return generateSignature(data, null);
-    }
-
 
     /**
      * The request parameters are collected, sorted and concatenated into a normalized string:<br>
@@ -408,6 +437,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
      * @return the Signature Base String
      * @see <a href="http://oauth.net/core/1.0#rfc.section.9.1.2">OAuth Core - 9.1.2.  Construct Request URL</a>
      */
+    @SuppressWarnings("JavadocLinkAsPlainText")
     static String constructRequestURL(String url) {
         int index = url.indexOf("?");
         if (-1 != index) {
@@ -431,7 +461,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
         return url;
     }
 
-    @Override
     public void setOAuthConsumer(String consumerKey, String consumerSecret) {
         this.consumerKey = consumerKey != null ? consumerKey : "";
         this.consumerSecret = consumerSecret != null ? consumerSecret : "";
@@ -441,15 +470,9 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable, 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OAuthSupport)) return false;
-
+        if (o == null || getClass() != o.getClass()) return false;
         OAuthAuthorization that = (OAuthAuthorization) o;
-
-        if (!Objects.equals(consumerKey, that.consumerKey))
-            return false;
-        if (!Objects.equals(consumerSecret, that.consumerSecret))
-            return false;
-        return Objects.equals(oauthToken, that.oauthToken);
+        return Objects.equals(conf, that.conf) && Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(realm, that.realm) && Objects.equals(oauthToken, that.oauthToken);
     }
 
     @Override

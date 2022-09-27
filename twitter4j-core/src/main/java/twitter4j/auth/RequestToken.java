@@ -29,23 +29,14 @@ import twitter4j.conf.ConfigurationContext;
 public final class RequestToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = -8806439091674811734L;
     private final Configuration conf;
-    private OAuthSupport oauth;
-
-    RequestToken(HttpResponse res, OAuthSupport oauth) throws TwitterException {
+    RequestToken(HttpResponse res) throws TwitterException {
         super(res);
         conf = ConfigurationContext.getInstance();
-        this.oauth = oauth;
     }
 
     public RequestToken(String token, String tokenSecret) {
         super(token, tokenSecret);
         conf = ConfigurationContext.getInstance();
-    }
-
-    RequestToken(String token, String tokenSecret, OAuthSupport oauth) {
-        super(token, tokenSecret);
-        conf = ConfigurationContext.getInstance();
-        this.oauth = oauth;
     }
 
     /**
