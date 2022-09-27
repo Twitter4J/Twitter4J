@@ -16,9 +16,8 @@
 
 package twitter4j;
 
-import twitter4j.conf.ConfigurationContext;
-
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +27,39 @@ import java.util.Map;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public abstract class HttpResponse {
+class HttpResponse {
     private static final Logger logger = Logger.getLogger();
     protected final HttpClientConfiguration CONF;
+    private HttpURLConnection con;
 
-    HttpResponse() {
-        this.CONF = ConfigurationContext.getInstance().getHttpClientConfiguration();
+    HttpResponse(HttpURLConnection con, HttpClientConfiguration conf) throws IOException {
+        this.CONF = conf;
+        this.con = con;
+        try {
+            this.statusCode = con.getResponseCode();
+        } catch (IOException e) {
+            /*
+             * If the user has revoked the access token in use, then Twitter naughtily returns a 401 with no "WWW-Authenticate" header.
+             *
+             * This causes an IOException in the getResponseCode() method call. See https://dev.twitter.com/issues/1114
+             * This call can, however, me made a second time without exception.
+             */
+            if ("Received authentication challenge is null".equals(e.getMessage())) {
+                this.statusCode = con.getResponseCode();
+            } else {
+                throw e;
+            }
+        }
+        if (null == (is = con.getErrorStream())) {
+            is = con.getInputStream();
+        }
+        if (is != null && "gzip".equals(con.getContentEncoding())) {
+            // the response is gzipped
+            is = new StreamingGZIPInputStream(is);
+        }
     }
 
-    public HttpResponse(HttpClientConfiguration conf) {
+    HttpResponse(HttpClientConfiguration conf) {
         this.CONF = conf;
     }
 
@@ -45,13 +68,17 @@ public abstract class HttpResponse {
     protected InputStream is;
     private boolean streamConsumed = false;
 
-    public int getStatusCode() {
+    int getStatusCode() {
         return statusCode;
     }
 
-    public abstract String getResponseHeader(String name);
+    String getResponseHeader(String name) {
+        return con.getHeaderField(name);
+    }
 
-    public abstract Map<String, List<String>> getResponseHeaderFields();
+    Map<String, List<String>> getResponseHeaderFields() {
+        return con.getHeaderFields();
+    }
 
     /**
      * Returns the response stream.<br>
@@ -63,7 +90,7 @@ public abstract class HttpResponse {
      * @return response body stream
      * @see #disconnect()
      */
-    public InputStream asStream() {
+    InputStream asStream() {
         if (streamConsumed) {
             throw new IllegalStateException("Stream has already been consumed.");
         }
@@ -77,7 +104,7 @@ public abstract class HttpResponse {
      * @return response body
      * @throws TwitterException when there is any network issue upon response body consumption
      */
-    public String asString() throws TwitterException {
+    String asString() throws TwitterException {
         if (null == responseAsString) {
             BufferedReader br = null;
             InputStream stream = null;
@@ -126,7 +153,7 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.JSONObject
      * @throws TwitterException when the response body is not in JSON Object format
      */
-    public JSONObject asJSONObject() throws TwitterException {
+    JSONObject asJSONObject() throws TwitterException {
         if (json == null) {
             try {
                 json = new JSONObject(asString());
@@ -158,7 +185,7 @@ public abstract class HttpResponse {
      * @return response body as twitter4j.JSONArray
      * @throws TwitterException when the response body is not in JSON Array format
      */
-    public JSONArray asJSONArray() throws TwitterException {
+    JSONArray asJSONArray() throws TwitterException {
         if (jsonArray == null) {
             try {
                 jsonArray = new JSONArray(asString());
@@ -181,7 +208,8 @@ public abstract class HttpResponse {
         return jsonArray;
     }
 
-    public Reader asReader() {
+    @SuppressWarnings("unused")
+    Reader asReader() {
         return new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
     }
 
@@ -192,7 +220,9 @@ public abstract class HttpResponse {
         }
     }
 
-    public abstract void disconnect() throws IOException;
+    void disconnect() {
+        con.disconnect();
+    }
 
     @Override
     public String toString() {

@@ -79,6 +79,9 @@ abstract class HttpClient implements Serializable {
             , Authorization authorization, HttpResponseListener listener) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, parameters, authorization, this.requestHeaders), listener);
     }
+    HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
+        return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
+    }
 
     HttpResponse post(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, null, null, this.requestHeaders));

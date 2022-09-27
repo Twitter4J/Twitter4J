@@ -57,15 +57,9 @@ final class HttpClientImpl extends HttpClient implements HttpResponseCode, java.
         super(conf);
     }
 
-    private static final Map<HttpClientConfiguration, HttpClient> instanceMap = new HashMap<>(1);
-
     @Override
     HttpResponse get(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.GET, url, null, null, null));
-    }
-
-    HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
-        return request(new HttpRequest(RequestMethod.POST, url, params, null, null));
     }
 
     @Override
@@ -139,7 +133,7 @@ final class HttpClientImpl extends HttpClient implements HttpResponseCode, java.
                         os.flush();
                         os.close();
                     }
-                    res = new HttpResponseImpl(con, CONF);
+                    res = new HttpResponse(con, CONF);
                     responseCode = con.getResponseCode();
                     if (logger.isDebugEnabled()) {
                         logger.debug("Response: ");
