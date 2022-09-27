@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
+package twitter4j;
 
 import twitter4j.conf.Configuration;
 

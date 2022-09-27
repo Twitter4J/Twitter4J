@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
-
-import twitter4j.HttpRequest;
+package twitter4j;
 
 import java.io.ObjectStreamException;
 

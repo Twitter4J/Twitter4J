@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
-
-import twitter4j.HttpResponse;
-import twitter4j.TwitterException;
+package twitter4j;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;

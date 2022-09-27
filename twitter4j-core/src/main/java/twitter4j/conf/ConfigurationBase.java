@@ -62,8 +62,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private String streamBaseURL = "https://stream.twitter.com/1.1/";
     private String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
-    private int asyncNumThreads = 1;
-
     private long contributingTo = -1L;
 
     private boolean includeMyRetweetEnabled = true;
@@ -80,8 +78,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     private boolean stallWarningsEnabled = true;
 
     private boolean applicationOnlyAuthEnabled = false;
-
-    private boolean daemonEnabled = true;
 
     private String streamThreadName = "";
 
@@ -471,14 +467,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         this.oAuth2Scope = oAuth2Scope;
     }
 
-    @Override
-    public final int getAsyncNumThreads() {
-        return asyncNumThreads;
-    }
-
-    protected final void setAsyncNumThreads(int asyncNumThreads) {
-        this.asyncNumThreads = asyncNumThreads;
-    }
 
     @Override
     public final long getContributingTo() {
@@ -613,15 +601,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     }
 
     @Override
-    public boolean isDaemonEnabled() {
-        return daemonEnabled;
-    }
-
-    protected void setDaemonEnabled(boolean daemonEnabled) {
-        this.daemonEnabled = daemonEnabled;
-    }
-
-    @Override
     public boolean isIncludeEmailEnabled() {
         return includeEmailEnabled;
     }
@@ -714,7 +693,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
-        if (asyncNumThreads != that.asyncNumThreads) return false;
         if (contributingTo != that.contributingTo) return false;
         if (includeMyRetweetEnabled != that.includeMyRetweetEnabled) return false;
         if (includeEntitiesEnabled != that.includeEntitiesEnabled) return false;
@@ -726,7 +704,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         if (mbeanEnabled != that.mbeanEnabled) return false;
         if (stallWarningsEnabled != that.stallWarningsEnabled) return false;
         if (applicationOnlyAuthEnabled != that.applicationOnlyAuthEnabled) return false;
-        if (daemonEnabled != that.daemonEnabled) return false;
         if (!Objects.equals(user, that.user)) return false;
         if (!Objects.equals(password, that.password)) return false;
         if (!Objects.equals(httpConf, that.httpConf)) return false;
@@ -789,7 +766,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (restBaseURL != null ? restBaseURL.hashCode() : 0);
         result = 31 * result + (streamBaseURL != null ? streamBaseURL.hashCode() : 0);
         result = 31 * result + (uploadBaseURL != null ? uploadBaseURL.hashCode() : 0);
-        result = 31 * result + asyncNumThreads;
         result = 31 * result + (int) (contributingTo ^ (contributingTo >>> 32));
         result = 31 * result + (includeMyRetweetEnabled ? 1 : 0);
         result = 31 * result + (includeEntitiesEnabled ? 1 : 0);
@@ -801,7 +777,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
         result = 31 * result + (mbeanEnabled ? 1 : 0);
         result = 31 * result + (stallWarningsEnabled ? 1 : 0);
         result = 31 * result + (applicationOnlyAuthEnabled ? 1 : 0);
-        result = 31 * result + (daemonEnabled ? 1 : 0);
         result = 31 * result + (streamThreadName != null ? streamThreadName.hashCode() : 0);
         return result;
     }
@@ -832,7 +807,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", restBaseURL='" + restBaseURL + '\'' +
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
-                ", asyncNumThreads=" + asyncNumThreads +
                 ", contributingTo=" + contributingTo +
                 ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
@@ -844,7 +818,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", stallWarningsEnabled=" + stallWarningsEnabled +
                 ", applicationOnlyAuthEnabled=" + applicationOnlyAuthEnabled +
-                ", daemonEnabled=" + daemonEnabled +
                 ", streamThreadName='" + streamThreadName + '\'' +
                 '}';
     }

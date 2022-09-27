@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.auth.Authorization;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;

@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
-
-import twitter4j.HttpResponse;
-import twitter4j.TwitterException;
+package twitter4j;
 
 import java.util.Objects;
 
@@ -56,11 +53,6 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
             } catch (NumberFormatException ignore) {
             }
         }
-    }
-
-    public AccessToken(String token, String tokenSecret, long userId) {
-        super(token, tokenSecret);
-        this.userId = userId;
     }
 
     /**

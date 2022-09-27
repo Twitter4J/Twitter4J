@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
-
-import twitter4j.HttpResponse;
-import twitter4j.JSONException;
-import twitter4j.JSONObject;
-import twitter4j.TwitterException;
+package twitter4j;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

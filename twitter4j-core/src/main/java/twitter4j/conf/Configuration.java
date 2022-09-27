@@ -16,8 +16,8 @@
 
 package twitter4j.conf;
 
+import twitter4j.AuthorizationConfiguration;
 import twitter4j.HttpClientConfiguration;
-import twitter4j.auth.AuthorizationConfiguration;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -90,8 +90,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
 
     boolean isStallWarningsEnabled();
 
-    int getAsyncNumThreads();
-
     long getContributingTo();
 
     boolean isIncludeEntitiesEnabled();
@@ -101,8 +99,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
     boolean isIncludeExtAltTextEnabled();
 
     boolean isTweetModeExtended();
-
-    boolean isDaemonEnabled();
 
     boolean isIncludeEmailEnabled();
 

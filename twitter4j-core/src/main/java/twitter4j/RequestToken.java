@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
+package twitter4j;
 
-import twitter4j.HttpResponse;
-import twitter4j.TwitterException;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationContext;
 

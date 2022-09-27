@@ -19,8 +19,6 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.auth.Authorization;
-import twitter4j.auth.NullAuthorization;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

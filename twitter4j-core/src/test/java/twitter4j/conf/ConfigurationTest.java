@@ -20,7 +20,7 @@ package twitter4j.conf;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.auth.RequestToken;
+import twitter4j.RequestToken;
 
 import java.io.*;
 
@@ -310,15 +310,6 @@ public class ConfigurationTest {
         return that;
     }
 
-    @Test
-    void testEnvironmentVariableBasedConfiguration() {
-        Configuration conf = ConfigurationContext.getInstance();
-        // perquisite: export twitter4j.debug=true
-//        assertTrue(conf.isDebugEnabled());
-        // perquisite: export twitter4j.debug=false
-//        assertFalse(conf.isDebugEnabled());
-    }
-
     private void writeFile(String path, String content) throws IOException {
         File file = new File(path);
         //noinspection ResultOfMethodCallIgnored
@@ -328,7 +319,7 @@ public class ConfigurationTest {
         bw.close();
     }
 
-    private void deleteFile(String path) throws IOException {
+    private void deleteFile(String path) {
         File file = new File(path);
         //noinspection ResultOfMethodCallIgnored
         file.delete();

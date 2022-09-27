@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
+package twitter4j;
 
 /**
- * A static factory class for Authorization.
+ * An interface represents credentials.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.1
  */
-public interface AuthorizationConfiguration {
+public interface Authorization extends java.io.Serializable {
+    String getAuthorizationHeader(HttpRequest req);
 
-    String getUser();
-
-    String getPassword();
-
-    String getOAuthConsumerKey();
-
-    String getOAuthConsumerSecret();
-
-    String getOAuthAccessToken();
-
-    String getOAuthAccessTokenSecret();
-
-    String getOAuth2TokenType();
-
-    String getOAuth2AccessToken();
+    /**
+     * Returns true if authorization credentials are set.
+     *
+     * @return true if authorization credentials are set
+     */
+    boolean isEnabled();
 }

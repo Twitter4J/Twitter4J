@@ -63,8 +63,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     private static final String REST_BASE_URL = "restBaseURL";
     private static final String STREAM_BASE_URL = "streamBaseURL";
-    private static final String ASYNC_NUM_THREADS = "async.numThreads";
-    private static final String ASYNC_DAEMON_ENABLED = "async.daemonEnabled";
     private static final String STREAM_THREAD_NAME = "streamThreadName";
 
     private static final String CONTRIBUTING_TO = "contributingTo";
@@ -287,12 +285,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
         if (notNull(props, prefix, OAUTH2_SCOPE)) {
             setOAuth2Scope(getString(props, prefix, OAUTH2_SCOPE));
-        }
-        if (notNull(props, prefix, ASYNC_NUM_THREADS)) {
-            setAsyncNumThreads(getIntProperty(props, prefix, ASYNC_NUM_THREADS));
-        }
-        if (notNull(props, prefix, ASYNC_DAEMON_ENABLED)) {
-            setDaemonEnabled(getBoolean(props, prefix, ASYNC_DAEMON_ENABLED));
         }
         if (notNull(props, prefix, STREAM_THREAD_NAME)) {
             setStreamThreadName(getString(props, prefix, STREAM_THREAD_NAME));

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.auth;
+package twitter4j;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.junit.jupiter.api.Disabled;
@@ -23,7 +23,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import twitter4j.*;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.conf.ConfigurationContext;
