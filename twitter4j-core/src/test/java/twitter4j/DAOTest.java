@@ -38,7 +38,7 @@ class DAOTest extends TwitterTestBase {
 
     @Test
     void testEmptyJSON() throws Exception {
-        HttpClientImpl http = new HttpClientImpl();
+        HttpClient http = new HttpClient();
 
         // empty User list
         List<User> users = UserJSONImpl.createUserList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
@@ -531,7 +531,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testStatusAsJSON() throws Exception {
         // single Status
-        HttpClientImpl http = new HttpClientImpl();
+        HttpClient http = new HttpClient();
         List<Status> statuses = StatusJSONImpl.createStatusList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000L), status.getCreatedAt());
@@ -550,7 +550,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
-        HttpClientImpl http = new HttpClientImpl();
+        HttpClient http = new HttpClient();
         Status status = new StatusJSONImpl(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), conf);
         assertEquals(new Date(1259078050000L), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
@@ -639,7 +639,7 @@ class DAOTest extends TwitterTestBase {
 
     @Test
     void testDirectMessagesAsJSON() throws Exception {
-        HttpClientImpl http = new HttpClientImpl();
+        HttpClient http = new HttpClient();
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
         assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
