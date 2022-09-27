@@ -31,8 +31,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
         return new PropertyConfiguration(configTreePath);
     }
 
-    boolean isDebugEnabled();
-
     boolean isApplicationOnlyAuthEnabled();
 
     @Override

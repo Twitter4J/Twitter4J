@@ -41,12 +41,6 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder debugEnabled(boolean debugEnabled) {
-        checkNotBuilt();
-        configurationBean.setDebug(debugEnabled);
-        return this;
-    }
-
     public ConfigurationBuilder applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
         configurationBean.setApplicationOnlyAuthEnabled(applicationOnlyAuthEnabled);

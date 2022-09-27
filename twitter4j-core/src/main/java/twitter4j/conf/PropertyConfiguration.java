@@ -26,7 +26,6 @@ import java.util.Properties;
  */
 public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
-    private static final String DEBUG = "debug";
     private static final String USER = "user";
     private static final String PASSWORD = "password";
 
@@ -212,10 +211,6 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
     }
 
     private void setFieldsWithPrefix(Properties props, String prefix) {
-        if (notNull(props, prefix, DEBUG)) {
-            setDebug(getBoolean(props, prefix, DEBUG));
-        }
-
         if (notNull(props, prefix, USER)) {
             setUser(getString(props, prefix, USER));
         }

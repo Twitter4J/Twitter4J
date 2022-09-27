@@ -34,7 +34,6 @@ import java.util.Objects;
  */
 class ConfigurationBase implements Configuration, java.io.Serializable {
     private static final long serialVersionUID = 6175546394599249696L;
-    private boolean debug = false;
     private String user = null;
     private String password = null;
     private HttpClientConfiguration httpConf;
@@ -226,7 +225,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     public void dumpConfiguration() {
         Logger log = Logger.getLogger();
-        if (debug) {
+        if (log.isDebugEnabled()) {
             Field[] fields = ConfigurationBase.class.getDeclaredFields();
             for (Field field : fields) {
                 try {
@@ -241,15 +240,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
                 }
             }
         }
-    }
-
-    @Override
-    public final boolean isDebugEnabled() {
-        return debug;
-    }
-
-    protected final void setDebug(boolean debug) {
-        this.debug = debug;
     }
 
     @Override
@@ -689,7 +679,6 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
         ConfigurationBase that = (ConfigurationBase) o;
 
-        if (debug != that.debug) return false;
         if (httpStreamingReadTimeout != that.httpStreamingReadTimeout) return false;
         if (httpRetryCount != that.httpRetryCount) return false;
         if (httpRetryIntervalSeconds != that.httpRetryIntervalSeconds) return false;
@@ -743,8 +732,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
 
     @Override
     public int hashCode() {
-        int result = (debug ? 1 : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
+        int result = (user != null ? user.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (httpConf != null ? httpConf.hashCode() : 0);
         result = 31 * result + httpStreamingReadTimeout;
@@ -784,8 +772,7 @@ class ConfigurationBase implements Configuration, java.io.Serializable {
     @Override
     public String toString() {
         return "ConfigurationBase{" +
-                "debug=" + debug +
-                ", user='" + user + '\'' +
+                "user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 ", httpConf=" + httpConf +
                 ", httpStreamingReadTimeout=" + httpStreamingReadTimeout +
