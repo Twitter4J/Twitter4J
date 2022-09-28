@@ -6,6 +6,5 @@ module org.twitter4j {
     requires static org.jetbrains.annotations;
     exports twitter4j;
     exports twitter4j.api;
-    exports twitter4j.conf;
     exports twitter4j.management;
 }

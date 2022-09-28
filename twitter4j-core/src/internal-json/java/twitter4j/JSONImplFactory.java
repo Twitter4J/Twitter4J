@@ -17,7 +17,6 @@
 package twitter4j;
 
 import twitter4j.api.HelpResources;
-import twitter4j.conf.Configuration;
 
 import java.util.Map;
 import java.util.Objects;

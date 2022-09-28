@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package twitter4j.conf;
+package twitter4j;
 
 import org.jetbrains.annotations.Nullable;
-import twitter4j.AuthorizationConfiguration;
-import twitter4j.HttpClientConfiguration;
 
 import java.io.Serializable;
 import java.net.Proxy;

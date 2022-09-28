@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;

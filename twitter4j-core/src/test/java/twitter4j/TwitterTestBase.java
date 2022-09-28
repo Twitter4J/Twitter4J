@@ -16,9 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

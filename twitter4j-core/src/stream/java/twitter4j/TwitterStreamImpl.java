@@ -15,14 +15,11 @@
  */
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-
-import java.util.Objects;
-import java.util.function.Consumer;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 import static java.lang.String.format;
 import static twitter4j.HttpResponseCode.FORBIDDEN;

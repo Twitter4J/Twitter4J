@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

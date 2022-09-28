@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  *         representing unauthorized Request Token which is passed to the service provider when acquiring the authorized Access Token

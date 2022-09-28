@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.conf;
-
-import twitter4j.Logger;
+package twitter4j;
 
 import java.io.*;
 import java.nio.file.Files;

@@ -18,7 +18,6 @@
 package twitter4j;
 
 import twitter4j.api.*;
-import twitter4j.conf.Configuration;
 
 import java.io.*;
 import java.util.*;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.conf;
+package twitter4j;
 
 import java.util.Properties;
 

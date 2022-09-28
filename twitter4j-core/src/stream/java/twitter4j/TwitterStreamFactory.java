@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import twitter4j.conf.Configuration;
-
 /**
  * A factory class for TwitterFactory.<br>
  * An instance of this class is completely thread safe and can be re-used and used concurrently.<br>
