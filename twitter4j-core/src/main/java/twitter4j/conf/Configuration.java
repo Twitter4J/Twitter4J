@@ -27,10 +27,6 @@ public interface Configuration extends AuthorizationConfiguration, java.io.Seria
         return new PropertyConfiguration();
     }
 
-    static Configuration getInstance(String configTreePath) {
-        return new PropertyConfiguration(configTreePath);
-    }
-
     boolean isApplicationOnlyAuthEnabled();
 
     @Override

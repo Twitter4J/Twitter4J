@@ -54,15 +54,6 @@ public class TwitterFactory implements java.io.Serializable {
     }
 
     /**
-     * Creates a TwitterFactory with a specified config tree
-     *
-     * @param configTreePath the path
-     */
-    public TwitterFactory(String configTreePath) {
-        this(Configuration.getInstance(configTreePath));
-    }
-
-    /**
      * Returns a instance associated with the configuration bound to this factory.
      *
      * @return default singleton instance

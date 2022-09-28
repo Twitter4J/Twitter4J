@@ -37,14 +37,14 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
 
     @BeforeEach
-    protected void beforeEach() throws Exception {
-        super.beforeEach();
+    protected void before() {
         this.status = null;
         this.deletionNotice = null;
     }
 
     @Test
     void testToString() {
+        //noinspection ResultOfMethodCallIgnored
         new TwitterStreamFactory().getInstance().toString();
     }
 

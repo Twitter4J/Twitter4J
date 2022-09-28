@@ -16,6 +16,8 @@
 
 package twitter4j.conf;
 
+import java.util.Properties;
+
 /**
  * A builder that can be used to construct a Twitter4J configuration with desired settings.  This
  * builder has sensible defaults such that {@code new ConfigurationBuilder().build()} would create a
@@ -27,7 +29,7 @@ package twitter4j.conf;
 @SuppressWarnings("unused")
 public final class ConfigurationBuilder {
 
-    private ConfigurationBase configurationBean = new PropertyConfiguration();
+    private PropertyConfiguration configurationBean = new PropertyConfiguration();
 
     public ConfigurationBuilder prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
@@ -44,6 +46,11 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
         configurationBean.setApplicationOnlyAuthEnabled(applicationOnlyAuthEnabled);
+        return this;
+    }
+    public ConfigurationBuilder load(Properties props){
+        checkNotBuilt();
+        configurationBean.load(props);
         return this;
     }
 

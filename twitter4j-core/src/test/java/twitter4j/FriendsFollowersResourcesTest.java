@@ -18,7 +18,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.conf.PropertyConfiguration;
+import twitter4j.conf.ConfigurationBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -150,7 +150,7 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
 
     @Test
     void testRelationship() throws Exception {
-        Twitter followsOneWay = new TwitterFactory(new PropertyConfiguration(p, "/followsOneWay")).getInstance();
+        Twitter followsOneWay = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "followsOneWay")).build()).getInstance();
         followsOneWay.createFriendship(id1.screenName);
         TestUserInfo followsOneWayInfo = new TestUserInfo("followsOneWay");
         //  TESTING PRECONDITIONS:

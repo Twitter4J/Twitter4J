@@ -16,7 +16,10 @@
 
 package twitter4j.conf;
 
+import twitter4j.Logger;
+
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -24,8 +27,9 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
+final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
 
+    private static final Logger logger = Logger.getLogger();
     private static final String USER = "user";
     private static final String PASSWORD = "password";
 
@@ -77,21 +81,11 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
 
     private static final long serialVersionUID = -7262615247923693252L;
 
-
-    @SuppressWarnings("unused")
-    public PropertyConfiguration(InputStream is) {
-        super();
-        Properties props = new Properties();
-        loadProperties(props, is);
-        setFieldsWithTreePath(props, "/");
+    void load(Properties props) {
+        setFieldsWithPrefix(props);
     }
 
-    public PropertyConfiguration(Properties props, String treePath) {
-        super();
-        setFieldsWithTreePath(props, treePath);
-    }
-
-    PropertyConfiguration(String treePath) {
+    PropertyConfiguration() {
         super();
         Properties props;
         // load from system properties
@@ -122,51 +116,31 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         } catch (SecurityException | FileNotFoundException ignore) {
         }
 
-        setFieldsWithTreePath(props, treePath);
+        setFieldsWithPrefix(props);
     }
 
-    /**
-     * Creates a root PropertyConfiguration. This constructor is equivalent to new PropertyConfiguration("/").
-     */
-    PropertyConfiguration() {
-        this("/");
+    private static boolean notNull(Properties props, String name) {
+        return props.getProperty(name) != null;
     }
 
-    private boolean notNull(Properties props, String prefix, String name) {
-        return props.getProperty(prefix + name) != null;
-    }
-
-    private boolean loadProperties(Properties props, String path) {
-        FileInputStream fis = null;
-        try {
-            File file = new File(path);
-            if (file.exists() && file.isFile()) {
-                fis = new FileInputStream(file);
-                props.load(fis);
-                normalize(props);
-                return true;
-            }
-        } catch (Exception ignore) {
-        } finally {
+    private void loadProperties(Properties props, String path) {
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
             try {
-                if (fis != null) {
-                    fis.close();
-                }
-            } catch (IOException ignore) {
-
+                props.load(Files.newInputStream(file.toPath()));
+            } catch (IOException ioe) {
+                logger.warn("failed to load properties:" + file.getAbsolutePath(), ioe);
             }
+            normalize(props);
         }
-        return false;
     }
 
-    private boolean loadProperties(Properties props, InputStream is) {
+    private void loadProperties(Properties props, InputStream is) {
         try {
             props.load(is);
             normalize(props);
-            return true;
         } catch (Exception ignore) {
         }
-        return false;
     }
 
     private void normalize(Properties props) {
@@ -185,170 +159,146 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    /**
-     * passing "/foo/bar" as treePath will result:<br>
-     * 1. load [twitter4j.]restBaseURL<br>
-     * 2. override the value with foo.[twitter4j.]restBaseURL<br>
-     * 3. override the value with foo.bar.[twitter4j.]restBaseURL<br>
-     *
-     * @param props    properties to be loaded
-     * @param treePath the path
-     */
-    private void setFieldsWithTreePath(Properties props, String treePath) {
-        setFieldsWithPrefix(props, "");
-        String[] splitArray = treePath.split("/");
-        String prefix = null;
-        for (String split : splitArray) {
-            if (!"".equals(split)) {
-                if (null == prefix) {
-                    prefix = split + ".";
-                } else {
-                    prefix += split + ".";
-                }
-                setFieldsWithPrefix(props, prefix);
-            }
-        }
-    }
 
-    private void setFieldsWithPrefix(Properties props, String prefix) {
-        if (notNull(props, prefix, USER)) {
-            setUser(getString(props, prefix, USER));
+    private void setFieldsWithPrefix(Properties props) {
+        if (notNull(props, USER)) {
+            setUser(getString(props, USER));
         }
-        if (notNull(props, prefix, PASSWORD)) {
-            setPassword(getString(props, prefix, PASSWORD));
+        if (notNull(props, PASSWORD)) {
+            setPassword(getString(props, PASSWORD));
         }
-        if (notNull(props, prefix, HTTP_PRETTY_DEBUG)) {
-            setPrettyDebugEnabled(getBoolean(props, prefix, HTTP_PRETTY_DEBUG));
+        if (notNull(props, HTTP_PRETTY_DEBUG)) {
+            setPrettyDebugEnabled(getBoolean(props, HTTP_PRETTY_DEBUG));
         }
-        if (notNull(props, prefix, HTTP_GZIP)) {
-            setGZIPEnabled(getBoolean(props, prefix, HTTP_GZIP));
+        if (notNull(props, HTTP_GZIP)) {
+            setGZIPEnabled(getBoolean(props, HTTP_GZIP));
         }
-        if (notNull(props, prefix, HTTP_PROXY_HOST)) {
-            setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST));
-        } else if (notNull(props, prefix, HTTP_PROXY_HOST_FALLBACK)) {
-            setHttpProxyHost(getString(props, prefix, HTTP_PROXY_HOST_FALLBACK));
+        if (notNull(props, HTTP_PROXY_HOST)) {
+            setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
+        } else if (notNull(props, HTTP_PROXY_HOST_FALLBACK)) {
+            setHttpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
         }
-        if (notNull(props, prefix, HTTP_PROXY_USER)) {
-            setHttpProxyUser(getString(props, prefix, HTTP_PROXY_USER));
+        if (notNull(props, HTTP_PROXY_USER)) {
+            setHttpProxyUser(getString(props, HTTP_PROXY_USER));
         }
-        if (notNull(props, prefix, HTTP_PROXY_PASSWORD)) {
-            setHttpProxyPassword(getString(props, prefix, HTTP_PROXY_PASSWORD));
+        if (notNull(props, HTTP_PROXY_PASSWORD)) {
+            setHttpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
         }
-        if (notNull(props, prefix, HTTP_PROXY_PORT)) {
-            setHttpProxyPort(getIntProperty(props, prefix, HTTP_PROXY_PORT));
-        } else if (notNull(props, prefix, HTTP_PROXY_PORT_FALLBACK)) {
-            setHttpProxyPort(getIntProperty(props, prefix, HTTP_PROXY_PORT_FALLBACK));
+        if (notNull(props, HTTP_PROXY_PORT)) {
+            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
+        } else if (notNull(props, HTTP_PROXY_PORT_FALLBACK)) {
+            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
         }
-        if (notNull(props, prefix, HTTP_CONNECTION_TIMEOUT)) {
-            setHttpConnectionTimeout(getIntProperty(props, prefix, HTTP_CONNECTION_TIMEOUT));
+        if (notNull(props, HTTP_CONNECTION_TIMEOUT)) {
+            setHttpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
         }
-        if (notNull(props, prefix, HTTP_READ_TIMEOUT)) {
-            setHttpReadTimeout(getIntProperty(props, prefix, HTTP_READ_TIMEOUT));
+        if (notNull(props, HTTP_READ_TIMEOUT)) {
+            setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
         }
-        if (notNull(props, prefix, HTTP_STREAMING_READ_TIMEOUT)) {
-            setHttpStreamingReadTimeout(getIntProperty(props, prefix, HTTP_STREAMING_READ_TIMEOUT));
+        if (notNull(props, HTTP_STREAMING_READ_TIMEOUT)) {
+            setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
         }
-        if (notNull(props, prefix, HTTP_RETRY_COUNT)) {
-            setHttpRetryCount(getIntProperty(props, prefix, HTTP_RETRY_COUNT));
+        if (notNull(props, HTTP_RETRY_COUNT)) {
+            setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
         }
-        if (notNull(props, prefix, HTTP_RETRY_INTERVAL_SECS)) {
-            setHttpRetryIntervalSeconds(getIntProperty(props, prefix, HTTP_RETRY_INTERVAL_SECS));
+        if (notNull(props, HTTP_RETRY_INTERVAL_SECS)) {
+            setHttpRetryIntervalSeconds(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
         }
-        if (notNull(props, prefix, OAUTH_CONSUMER_KEY)) {
-            setOAuthConsumerKey(getString(props, prefix, OAUTH_CONSUMER_KEY));
+        if (notNull(props, OAUTH_CONSUMER_KEY)) {
+            setOAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
         }
-        if (notNull(props, prefix, OAUTH_CONSUMER_SECRET)) {
-            setOAuthConsumerSecret(getString(props, prefix, OAUTH_CONSUMER_SECRET));
+        if (notNull(props, OAUTH_CONSUMER_SECRET)) {
+            setOAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
         }
-        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN)) {
-            setOAuthAccessToken(getString(props, prefix, OAUTH_ACCESS_TOKEN));
+        if (notNull(props, OAUTH_ACCESS_TOKEN)) {
+            setOAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
         }
-        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_SECRET)) {
-            setOAuthAccessTokenSecret(getString(props, prefix, OAUTH_ACCESS_TOKEN_SECRET));
+        if (notNull(props, OAUTH_ACCESS_TOKEN_SECRET)) {
+            setOAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
         }
-        if (notNull(props, prefix, OAUTH2_TOKEN_TYPE)) {
-            setOAuth2TokenType(getString(props, prefix, OAUTH2_TOKEN_TYPE));
+        if (notNull(props, OAUTH2_TOKEN_TYPE)) {
+            setOAuth2TokenType(getString(props, OAUTH2_TOKEN_TYPE));
         }
-        if (notNull(props, prefix, OAUTH2_ACCESS_TOKEN)) {
-            setOAuth2AccessToken(getString(props, prefix, OAUTH2_ACCESS_TOKEN));
+        if (notNull(props, OAUTH2_ACCESS_TOKEN)) {
+            setOAuth2AccessToken(getString(props, OAUTH2_ACCESS_TOKEN));
         }
-        if (notNull(props, prefix, OAUTH2_SCOPE)) {
-            setOAuth2Scope(getString(props, prefix, OAUTH2_SCOPE));
+        if (notNull(props, OAUTH2_SCOPE)) {
+            setOAuth2Scope(getString(props, OAUTH2_SCOPE));
         }
-        if (notNull(props, prefix, STREAM_THREAD_NAME)) {
-            setStreamThreadName(getString(props, prefix, STREAM_THREAD_NAME));
+        if (notNull(props, STREAM_THREAD_NAME)) {
+            setStreamThreadName(getString(props, STREAM_THREAD_NAME));
         }
-        if (notNull(props, prefix, CONTRIBUTING_TO)) {
-            setContributingTo(getLongProperty(props, prefix, CONTRIBUTING_TO));
+        if (notNull(props, CONTRIBUTING_TO)) {
+            setContributingTo(getLongProperty(props, CONTRIBUTING_TO));
         }
-        if (notNull(props, prefix, OAUTH_REQUEST_TOKEN_URL)) {
-            setOAuthRequestTokenURL(getString(props, prefix, OAUTH_REQUEST_TOKEN_URL));
+        if (notNull(props, OAUTH_REQUEST_TOKEN_URL)) {
+            setOAuthRequestTokenURL(getString(props, OAUTH_REQUEST_TOKEN_URL));
         }
 
-        if (notNull(props, prefix, OAUTH_AUTHORIZATION_URL)) {
-            setOAuthAuthorizationURL(getString(props, prefix, OAUTH_AUTHORIZATION_URL));
+        if (notNull(props, OAUTH_AUTHORIZATION_URL)) {
+            setOAuthAuthorizationURL(getString(props, OAUTH_AUTHORIZATION_URL));
         }
 
-        if (notNull(props, prefix, OAUTH_ACCESS_TOKEN_URL)) {
-            setOAuthAccessTokenURL(getString(props, prefix, OAUTH_ACCESS_TOKEN_URL));
+        if (notNull(props, OAUTH_ACCESS_TOKEN_URL)) {
+            setOAuthAccessTokenURL(getString(props, OAUTH_ACCESS_TOKEN_URL));
         }
 
-        if (notNull(props, prefix, OAUTH_AUTHENTICATION_URL)) {
-            setOAuthAuthenticationURL(getString(props, prefix, OAUTH_AUTHENTICATION_URL));
+        if (notNull(props, OAUTH_AUTHENTICATION_URL)) {
+            setOAuthAuthenticationURL(getString(props, OAUTH_AUTHENTICATION_URL));
         }
 
-        if (notNull(props, prefix, OAUTH2_TOKEN_URL)) {
-            setOAuth2TokenURL(getString(props, prefix, OAUTH2_TOKEN_URL));
+        if (notNull(props, OAUTH2_TOKEN_URL)) {
+            setOAuth2TokenURL(getString(props, OAUTH2_TOKEN_URL));
         }
 
-        if (notNull(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL)) {
-            setOAuth2InvalidateTokenURL(getString(props, prefix, OAUTH2_INVALIDATE_TOKEN_URL));
+        if (notNull(props, OAUTH2_INVALIDATE_TOKEN_URL)) {
+            setOAuth2InvalidateTokenURL(getString(props, OAUTH2_INVALIDATE_TOKEN_URL));
         }
 
-        if (notNull(props, prefix, REST_BASE_URL)) {
-            setRestBaseURL(getString(props, prefix, REST_BASE_URL));
+        if (notNull(props, REST_BASE_URL)) {
+            setRestBaseURL(getString(props, REST_BASE_URL));
         }
 
-        if (notNull(props, prefix, STREAM_BASE_URL)) {
-            setStreamBaseURL(getString(props, prefix, STREAM_BASE_URL));
+        if (notNull(props, STREAM_BASE_URL)) {
+            setStreamBaseURL(getString(props, STREAM_BASE_URL));
         }
-        if (notNull(props, prefix, INCLUDE_MY_RETWEET)) {
-            setIncludeMyRetweetEnabled(getBoolean(props, prefix, INCLUDE_MY_RETWEET));
+        if (notNull(props, INCLUDE_MY_RETWEET)) {
+            setIncludeMyRetweetEnabled(getBoolean(props, INCLUDE_MY_RETWEET));
         }
-        if (notNull(props, prefix, INCLUDE_ENTITIES)) {
-            setIncludeEntitiesEnabled(getBoolean(props, prefix, INCLUDE_ENTITIES));
+        if (notNull(props, INCLUDE_ENTITIES)) {
+            setIncludeEntitiesEnabled(getBoolean(props, INCLUDE_ENTITIES));
         }
-        if (notNull(props, prefix, INCLUDE_EMAIL)) {
-            setIncludeEmailEnabled(getBoolean(props, prefix, INCLUDE_EMAIL));
+        if (notNull(props, INCLUDE_EMAIL)) {
+            setIncludeEmailEnabled(getBoolean(props, INCLUDE_EMAIL));
         }
-        if (notNull(props, prefix, INCLUDE_EXT_ALT_TEXT)) {
-            setIncludeExtAltTextEnabled(getBoolean(props, prefix, INCLUDE_EXT_ALT_TEXT));
+        if (notNull(props, INCLUDE_EXT_ALT_TEXT)) {
+            setIncludeExtAltTextEnabled(getBoolean(props, INCLUDE_EXT_ALT_TEXT));
         }
-        if (notNull(props, prefix, TWEET_MODE_EXTENDED)) {
-            setTweetModeExtended(getBoolean(props, prefix, TWEET_MODE_EXTENDED));
+        if (notNull(props, TWEET_MODE_EXTENDED)) {
+            setTweetModeExtended(getBoolean(props, TWEET_MODE_EXTENDED));
         }
-        if (notNull(props, prefix, JSON_STORE_ENABLED)) {
-            setJSONStoreEnabled(getBoolean(props, prefix, JSON_STORE_ENABLED));
+        if (notNull(props, JSON_STORE_ENABLED)) {
+            setJSONStoreEnabled(getBoolean(props, JSON_STORE_ENABLED));
         }
-        if (notNull(props, prefix, MBEAN_ENABLED)) {
-            setMBeanEnabled(getBoolean(props, prefix, MBEAN_ENABLED));
+        if (notNull(props, MBEAN_ENABLED)) {
+            setMBeanEnabled(getBoolean(props, MBEAN_ENABLED));
         }
-        if (notNull(props, prefix, STREAM_STALL_WARNINGS_ENABLED)) {
-            setStallWarningsEnabled(getBoolean(props, prefix, STREAM_STALL_WARNINGS_ENABLED));
+        if (notNull(props, STREAM_STALL_WARNINGS_ENABLED)) {
+            setStallWarningsEnabled(getBoolean(props, STREAM_STALL_WARNINGS_ENABLED));
         }
-        if (notNull(props, prefix, APPLICATION_ONLY_AUTH_ENABLED)) {
-            setApplicationOnlyAuthEnabled(getBoolean(props, prefix, APPLICATION_ONLY_AUTH_ENABLED));
+        if (notNull(props, APPLICATION_ONLY_AUTH_ENABLED)) {
+            setApplicationOnlyAuthEnabled(getBoolean(props, APPLICATION_ONLY_AUTH_ENABLED));
         }
         cacheInstance();
     }
 
-    private boolean getBoolean(Properties props, String prefix, String name) {
-        String value = props.getProperty(prefix + name);
+    private static boolean getBoolean(Properties props, String name) {
+        String value = props.getProperty(name);
         return Boolean.parseBoolean(value);
     }
 
-    private int getIntProperty(Properties props, String prefix, String name) {
-        String value = props.getProperty(prefix + name);
+    private static int getIntProperty(Properties props, String name) {
+        String value = props.getProperty(name);
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException nfe) {
@@ -356,8 +306,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    private long getLongProperty(Properties props, String prefix, String name) {
-        String value = props.getProperty(prefix + name);
+    private static long getLongProperty(Properties props, String name) {
+        String value = props.getProperty(name);
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException nfe) {
@@ -365,8 +315,8 @@ public final class PropertyConfiguration extends ConfigurationBase implements ja
         }
     }
 
-    private String getString(Properties props, String prefix, String name) {
-        return props.getProperty(prefix + name);
+    private static String getString(Properties props, String name) {
+        return props.getProperty(name);
     }
 
     // assures equality after deserialization

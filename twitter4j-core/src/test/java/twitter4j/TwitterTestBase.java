@@ -16,9 +16,8 @@
 
 package twitter4j;
 
-import org.junit.jupiter.api.BeforeEach;
 import twitter4j.conf.Configuration;
-import twitter4j.conf.PropertyConfiguration;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,17 +30,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TwitterTestBase {
 
-    Twitter twitter1, twitter2, twitter3,
+    static Twitter twitter1, twitter2, twitter3,
             twitterAPIBestFriend1, twitterAPIBestFriend2,
             rwPrivateMessage, readonly;
-    protected Properties p;
+    static protected Properties p;
 
-    protected String numberId, numberPass;
-    protected long numberIdId;
-    protected TestUserInfo id1, id2, id3, bestFriend1, bestFriend2, rwPrivate;
-    protected Configuration conf1, conf2, conf3, bestFriend1Conf, bestFriend2Conf, rwPrivateConf;
+    static protected String numberId, numberPass;
+    static protected long numberIdId;
+    static protected TestUserInfo id1, id2, id3, bestFriend1, bestFriend2, rwPrivate;
+    static protected Configuration conf1, conf2, conf3, bestFriend1Conf, bestFriend2Conf, rwPrivateConf;
 
-    protected class TestUserInfo {
+    static class TestUserInfo {
         public final String screenName;
         public final String password;
         public final long id;
@@ -64,10 +63,10 @@ public class TwitterTestBase {
         }
     }
 
-    protected String desktopConsumerSecret;
-    protected String desktopConsumerKey;
-    protected String browserConsumerSecret;
-    protected String browserConsumerKey;
+    static String desktopConsumerSecret;
+    static String desktopConsumerKey;
+    static String browserConsumerSecret;
+    static String browserConsumerKey;
 
     private static int currentIndex;
     private static int maxTestPropertyIndex = -1;
@@ -80,7 +79,7 @@ public class TwitterTestBase {
         } catch (FileNotFoundException fnfe) {
             try {
                 resource = new FileInputStream("../test.properties");
-            }catch (FileNotFoundException fnfe2) {
+            } catch (FileNotFoundException fnfe2) {
                 resource = TwitterTestBase.class.getResourceAsStream("/test.properties");
             }
         }
@@ -137,8 +136,7 @@ public class TwitterTestBase {
         return props;
     }
 
-    @BeforeEach
-    protected void beforeEach() throws Exception {
+    static {
         p = getNextProperty();
 
         desktopConsumerSecret = p.getProperty("desktop.oauth.consumerSecret");
@@ -146,24 +144,24 @@ public class TwitterTestBase {
         browserConsumerSecret = p.getProperty("browser.oauth.consumerSecret");
         browserConsumerKey = p.getProperty("browser.oauth.consumerKey");
 
-        conf1 = new PropertyConfiguration(p, "/id1");
+        conf1 = new ConfigurationBuilder().load(subProperty(p, "id1")).build();
         id1 = new TestUserInfo("id1");
-        conf2 = new PropertyConfiguration(p, "/id2");
+        conf2 = new ConfigurationBuilder().load(subProperty(p, "id2")).build();
         id2 = new TestUserInfo("id2");
-        conf3 = new PropertyConfiguration(p, "/id3");
+        conf3 = new ConfigurationBuilder().load(subProperty(p, "id3")).build();
         id3 = new TestUserInfo("id3");
-        rwPrivateMessage = new TwitterFactory(new PropertyConfiguration(p, "/rwprivate")).getInstance();
-        bestFriend1Conf = new PropertyConfiguration(p, "/bestFriend1");
+        rwPrivateMessage = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "rwprivate")).build()).getInstance();
+        bestFriend1Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend1")).build();
         bestFriend1 = new TestUserInfo("bestFriend1");
-        bestFriend2Conf = new PropertyConfiguration(p, "/bestFriend2");
+        bestFriend2Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend2")).build();
         bestFriend2 = new TestUserInfo("bestFriend2");
         rwPrivate = new TestUserInfo("rwprivate");
-        rwPrivateConf = new PropertyConfiguration(p, "/rwprivate");
+        rwPrivateConf = new ConfigurationBuilder().load(subProperty(p, "rwprivate")).build();
 
         numberId = p.getProperty("numberid.user");
         numberPass = p.getProperty("numberid.password");
 //        id1id = Integer.valueOf(p.getProperty("id1id"));
-        numberIdId = Long.valueOf(p.getProperty("numberid.id"));
+        numberIdId = Long.parseLong(p.getProperty("numberid.id"));
 
         twitter1 = new TwitterFactory(conf1).getInstance();
 
@@ -176,6 +174,22 @@ public class TwitterTestBase {
         twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
 
 
-        readonly = new TwitterFactory(new PropertyConfiguration(p, "/readonly")).getInstance();
+        readonly = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "readonly")).build()).getInstance();
+
+        System.out.println("twitter1:"+twitter1);
+        System.out.println("twitter2:"+twitter2);
+        System.out.println("twitter3:"+twitter3);
+        System.out.println("twitter readoonly:"+readonly);
+    }
+
+    static Properties subProperty(Properties p, String path){
+        Properties p1 = new Properties((Properties) p.clone());
+        p.keySet().forEach(key -> {
+            String ks = (String) key;
+            if (ks.startsWith(path+".")) {
+                p1.setProperty(ks.replaceFirst("^" + path + "\\.", ""), (String) p.get(key));
+            }
+        });
+        return p1;
     }
 }
