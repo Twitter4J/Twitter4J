@@ -29,7 +29,7 @@ import java.util.Properties;
 @SuppressWarnings("unused")
 public final class ConfigurationBuilder {
 
-    private ConfigurationBase configurationBean = new ConfigurationBase();
+    private Configuration configurationBean = new Configuration();
 
     public ConfigurationBuilder prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();

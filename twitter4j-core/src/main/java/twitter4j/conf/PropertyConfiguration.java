@@ -79,11 +79,11 @@ final class PropertyConfiguration {
     private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
     private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
-    static void load(ConfigurationBase conf, Properties props) {
+    static void load(Configuration conf, Properties props) {
         setFieldsWithPrefix(conf, props);
     }
 
-    static void loadDefaultProperties(ConfigurationBase conf) {
+    static void loadDefaultProperties(Configuration conf) {
         Properties props = (Properties) System.getProperties().clone();
         // load from system properties
         try {
@@ -155,7 +155,7 @@ final class PropertyConfiguration {
     }
 
 
-    private static void setFieldsWithPrefix(ConfigurationBase conf, Properties props) {
+    private static void setFieldsWithPrefix(Configuration conf, Properties props) {
         if (notNull(props, USER)) {
             conf.setUser(getString(props, USER));
         }
