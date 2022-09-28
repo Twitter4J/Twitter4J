@@ -29,7 +29,7 @@ import java.util.Properties;
 @SuppressWarnings("unused")
 public final class ConfigurationBuilder {
 
-    private PropertyConfiguration configurationBean = new PropertyConfiguration();
+    private ConfigurationBase configurationBean = new ConfigurationBase();
 
     public ConfigurationBuilder prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
@@ -50,7 +50,7 @@ public final class ConfigurationBuilder {
     }
     public ConfigurationBuilder load(Properties props){
         checkNotBuilt();
-        configurationBean.load(props);
+        PropertyConfiguration.load(configurationBean, props);
         return this;
     }
 
@@ -278,7 +278,6 @@ public final class ConfigurationBuilder {
 
     public Configuration build() {
         checkNotBuilt();
-        configurationBean.cacheInstance();
         try {
             return configurationBean;
         } finally {

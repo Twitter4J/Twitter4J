@@ -24,7 +24,7 @@ import twitter4j.HttpClientConfiguration;
  */
 public interface Configuration extends AuthorizationConfiguration, java.io.Serializable {
     static Configuration getInstance(){
-        return new PropertyConfiguration();
+        return new ConfigurationBase();
     }
 
     boolean isApplicationOnlyAuthEnabled();

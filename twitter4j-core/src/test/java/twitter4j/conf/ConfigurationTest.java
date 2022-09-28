@@ -56,78 +56,78 @@ public class ConfigurationTest {
         String override = "system property";
 
         System.getProperties().remove("twitter4j.user");
-        ConfigurationBase conf = new PropertyConfiguration();
+        ConfigurationBase conf = new ConfigurationBase();
         assertNull(conf.getUser());
 
         conf.setUser(test);
         assertEquals(test, conf.getUser());
         System.setProperty("twitter4j.user", override);
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(override, conf.getUser());
         conf.setUser(test);
         assertEquals(test, conf.getUser());
         System.getProperties().remove("twitter4j.user");
 
         System.getProperties().remove("twitter4j.password");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertNull(conf.getPassword());
 
         conf.setPassword(test);
         assertEquals(test, conf.getPassword());
         System.setProperty("twitter4j.password", override);
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(override, conf.getPassword());
         conf.setPassword(test);
         assertEquals(test, conf.getPassword());
         System.getProperties().remove("twitter4j.password");
 
         System.getProperties().remove("twitter4j.http.proxyHost");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertNull(conf.getHttpClientConfiguration().getHttpProxyHost());
 
         System.setProperty("twitter4j.http.proxyHost", override);
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyHost());
         System.getProperties().remove("twitter4j.http.proxyHost");
 
         System.getProperties().remove("twitter4j.http.proxyPort");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(-1, conf.getHttpClientConfiguration().getHttpProxyPort());
 
         System.setProperty("twitter4j.http.proxyPort", "100");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(100, conf.getHttpClientConfiguration().getHttpProxyPort());
         System.getProperties().remove("twitter4j.http.proxyPort");
 
 
         System.getProperties().remove("twitter4j.http.proxyUser");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertNull(conf.getHttpClientConfiguration().getHttpProxyUser());
 
         System.setProperty("twitter4j.http.proxyUser", override);
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyUser());
         System.getProperties().remove("twitter4j.http.proxyUser");
 
 
         System.getProperties().remove("twitter4j.http.proxyPassword");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertNull(conf.getHttpClientConfiguration().getHttpProxyPassword());
 
         System.setProperty("twitter4j.http.proxyPassword", override);
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyPassword());
         System.getProperties().remove("twitter4j.http.proxyPassword");
 
 
         System.getProperties().remove("twitter4j.http.connectionTimeout");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(20000, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
 
         conf.setHttpConnectionTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         System.setProperty("twitter4j.http.connectionTimeout", "100");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(100, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         conf.setHttpConnectionTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
@@ -135,23 +135,23 @@ public class ConfigurationTest {
 
 
         System.getProperties().remove("twitter4j.http.readTimeout");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(120000, conf.getHttpClientConfiguration().getHttpReadTimeout());
 
         conf.setHttpReadTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.setProperty("twitter4j.http.readTimeout", "100");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(100, conf.getHttpClientConfiguration().getHttpReadTimeout());
         conf.setHttpReadTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.getProperties().remove("twitter4j.http.readTimeout");
 
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(1234, conf.getHttpClientConfiguration().getHttpReadTimeout());
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=4321");
-        conf = new PropertyConfiguration();
+        conf = new ConfigurationBase();
         assertEquals(4321, conf.getHttpClientConfiguration().getHttpReadTimeout());
         deleteFile("./twitter4j.properties");
     }
@@ -166,8 +166,6 @@ public class ConfigurationTest {
         Configuration conf;
         builder = new ConfigurationBuilder();
         conf = builder.build();
-
-        Configuration t = (Configuration) serializeDeserialize(conf);
 
         assertEquals(conf, serializeDeserialize(conf));
 
@@ -212,7 +210,7 @@ public class ConfigurationTest {
         return that;
     }
 
-    private void writeFile(String path, String content) throws IOException {
+    private void writeFile(@SuppressWarnings("SameParameterValue") String path, String content) throws IOException {
         File file = new File(path);
         //noinspection ResultOfMethodCallIgnored
         file.delete();
@@ -221,7 +219,7 @@ public class ConfigurationTest {
         bw.close();
     }
 
-    private void deleteFile(String path) {
+    private void deleteFile(@SuppressWarnings("SameParameterValue") String path) {
         File file = new File(path);
         //noinspection ResultOfMethodCallIgnored
         file.delete();

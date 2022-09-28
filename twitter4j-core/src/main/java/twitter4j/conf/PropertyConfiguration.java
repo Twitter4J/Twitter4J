@@ -27,7 +27,7 @@ import java.util.Properties;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-final class PropertyConfiguration extends ConfigurationBase implements java.io.Serializable {
+final class PropertyConfiguration {
 
     private static final Logger logger = Logger.getLogger();
     private static final String USER = "user";
@@ -79,18 +79,14 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
     private static final String STREAM_STALL_WARNINGS_ENABLED = "stream.enableStallWarnings";
     private static final String APPLICATION_ONLY_AUTH_ENABLED = "enableApplicationOnlyAuth";
 
-    private static final long serialVersionUID = -7262615247923693252L;
-
-    void load(Properties props) {
-        setFieldsWithPrefix(props);
+    static void load(ConfigurationBase conf, Properties props) {
+        setFieldsWithPrefix(conf, props);
     }
 
-    PropertyConfiguration() {
-        super();
-        Properties props;
+    static void loadDefaultProperties(ConfigurationBase conf) {
+        Properties props = (Properties) System.getProperties().clone();
         // load from system properties
         try {
-            props = (Properties) System.getProperties().clone();
             try {
                 Map<String, String> envMap = System.getenv();
                 for (String key : envMap.keySet()) {
@@ -115,15 +111,14 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
             loadProperties(props, new FileInputStream("WEB-INF/" + TWITTER4J_PROPERTIES));
         } catch (SecurityException | FileNotFoundException ignore) {
         }
-
-        setFieldsWithPrefix(props);
+        setFieldsWithPrefix(conf, props);
     }
 
     private static boolean notNull(Properties props, String name) {
         return props.getProperty(name) != null;
     }
 
-    private void loadProperties(Properties props, String path) {
+    private static void loadProperties(Properties props, String path) {
         File file = new File(path);
         if (file.exists() && file.isFile()) {
             try {
@@ -135,7 +130,7 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
         }
     }
 
-    private void loadProperties(Properties props, InputStream is) {
+    private static void loadProperties(Properties props, InputStream is) {
         try {
             props.load(is);
             normalize(props);
@@ -143,7 +138,7 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
         }
     }
 
-    private void normalize(Properties props) {
+    private static void normalize(Properties props) {
         ArrayList<String> toBeNormalized = new ArrayList<>(10);
         for (Object key : props.keySet()) {
             String keyStr = (String) key;
@@ -160,136 +155,135 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
     }
 
 
-    private void setFieldsWithPrefix(Properties props) {
+    private static void setFieldsWithPrefix(ConfigurationBase conf, Properties props) {
         if (notNull(props, USER)) {
-            setUser(getString(props, USER));
+            conf.setUser(getString(props, USER));
         }
         if (notNull(props, PASSWORD)) {
-            setPassword(getString(props, PASSWORD));
+            conf.setPassword(getString(props, PASSWORD));
         }
         if (notNull(props, HTTP_PRETTY_DEBUG)) {
-            setPrettyDebugEnabled(getBoolean(props, HTTP_PRETTY_DEBUG));
+            conf.setPrettyDebugEnabled(getBoolean(props, HTTP_PRETTY_DEBUG));
         }
         if (notNull(props, HTTP_GZIP)) {
-            setGZIPEnabled(getBoolean(props, HTTP_GZIP));
+            conf.setGZIPEnabled(getBoolean(props, HTTP_GZIP));
         }
         if (notNull(props, HTTP_PROXY_HOST)) {
-            setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
+            conf.setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
         } else if (notNull(props, HTTP_PROXY_HOST_FALLBACK)) {
-            setHttpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
+            conf.setHttpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
         }
         if (notNull(props, HTTP_PROXY_USER)) {
-            setHttpProxyUser(getString(props, HTTP_PROXY_USER));
+            conf.setHttpProxyUser(getString(props, HTTP_PROXY_USER));
         }
         if (notNull(props, HTTP_PROXY_PASSWORD)) {
-            setHttpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
+            conf.setHttpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
         }
         if (notNull(props, HTTP_PROXY_PORT)) {
-            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
+            conf.setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
         } else if (notNull(props, HTTP_PROXY_PORT_FALLBACK)) {
-            setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
+            conf.setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
         }
         if (notNull(props, HTTP_CONNECTION_TIMEOUT)) {
-            setHttpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
+            conf.setHttpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
         }
         if (notNull(props, HTTP_READ_TIMEOUT)) {
-            setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
+            conf.setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
         }
         if (notNull(props, HTTP_STREAMING_READ_TIMEOUT)) {
-            setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
+            conf.setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
         }
         if (notNull(props, HTTP_RETRY_COUNT)) {
-            setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
+            conf.setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
         }
         if (notNull(props, HTTP_RETRY_INTERVAL_SECS)) {
-            setHttpRetryIntervalSeconds(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
+            conf.setHttpRetryIntervalSeconds(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
         }
         if (notNull(props, OAUTH_CONSUMER_KEY)) {
-            setOAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
+            conf.setOAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
         }
         if (notNull(props, OAUTH_CONSUMER_SECRET)) {
-            setOAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
+            conf.setOAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
         }
         if (notNull(props, OAUTH_ACCESS_TOKEN)) {
-            setOAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
+            conf.setOAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
         }
         if (notNull(props, OAUTH_ACCESS_TOKEN_SECRET)) {
-            setOAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
+            conf.setOAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
         }
         if (notNull(props, OAUTH2_TOKEN_TYPE)) {
-            setOAuth2TokenType(getString(props, OAUTH2_TOKEN_TYPE));
+            conf.setOAuth2TokenType(getString(props, OAUTH2_TOKEN_TYPE));
         }
         if (notNull(props, OAUTH2_ACCESS_TOKEN)) {
-            setOAuth2AccessToken(getString(props, OAUTH2_ACCESS_TOKEN));
+            conf.setOAuth2AccessToken(getString(props, OAUTH2_ACCESS_TOKEN));
         }
         if (notNull(props, OAUTH2_SCOPE)) {
-            setOAuth2Scope(getString(props, OAUTH2_SCOPE));
+            conf.setOAuth2Scope(getString(props, OAUTH2_SCOPE));
         }
         if (notNull(props, STREAM_THREAD_NAME)) {
-            setStreamThreadName(getString(props, STREAM_THREAD_NAME));
+            conf.setStreamThreadName(getString(props, STREAM_THREAD_NAME));
         }
         if (notNull(props, CONTRIBUTING_TO)) {
-            setContributingTo(getLongProperty(props, CONTRIBUTING_TO));
+            conf.setContributingTo(getLongProperty(props, CONTRIBUTING_TO));
         }
         if (notNull(props, OAUTH_REQUEST_TOKEN_URL)) {
-            setOAuthRequestTokenURL(getString(props, OAUTH_REQUEST_TOKEN_URL));
+            conf.setOAuthRequestTokenURL(getString(props, OAUTH_REQUEST_TOKEN_URL));
         }
 
         if (notNull(props, OAUTH_AUTHORIZATION_URL)) {
-            setOAuthAuthorizationURL(getString(props, OAUTH_AUTHORIZATION_URL));
+            conf.setOAuthAuthorizationURL(getString(props, OAUTH_AUTHORIZATION_URL));
         }
 
         if (notNull(props, OAUTH_ACCESS_TOKEN_URL)) {
-            setOAuthAccessTokenURL(getString(props, OAUTH_ACCESS_TOKEN_URL));
+            conf.setOAuthAccessTokenURL(getString(props, OAUTH_ACCESS_TOKEN_URL));
         }
 
         if (notNull(props, OAUTH_AUTHENTICATION_URL)) {
-            setOAuthAuthenticationURL(getString(props, OAUTH_AUTHENTICATION_URL));
+            conf.setOAuthAuthenticationURL(getString(props, OAUTH_AUTHENTICATION_URL));
         }
 
         if (notNull(props, OAUTH2_TOKEN_URL)) {
-            setOAuth2TokenURL(getString(props, OAUTH2_TOKEN_URL));
+            conf.setOAuth2TokenURL(getString(props, OAUTH2_TOKEN_URL));
         }
 
         if (notNull(props, OAUTH2_INVALIDATE_TOKEN_URL)) {
-            setOAuth2InvalidateTokenURL(getString(props, OAUTH2_INVALIDATE_TOKEN_URL));
+            conf.setOAuth2InvalidateTokenURL(getString(props, OAUTH2_INVALIDATE_TOKEN_URL));
         }
 
         if (notNull(props, REST_BASE_URL)) {
-            setRestBaseURL(getString(props, REST_BASE_URL));
+            conf.setRestBaseURL(getString(props, REST_BASE_URL));
         }
 
         if (notNull(props, STREAM_BASE_URL)) {
-            setStreamBaseURL(getString(props, STREAM_BASE_URL));
+            conf.setStreamBaseURL(getString(props, STREAM_BASE_URL));
         }
         if (notNull(props, INCLUDE_MY_RETWEET)) {
-            setIncludeMyRetweetEnabled(getBoolean(props, INCLUDE_MY_RETWEET));
+            conf.setIncludeMyRetweetEnabled(getBoolean(props, INCLUDE_MY_RETWEET));
         }
         if (notNull(props, INCLUDE_ENTITIES)) {
-            setIncludeEntitiesEnabled(getBoolean(props, INCLUDE_ENTITIES));
+            conf.setIncludeEntitiesEnabled(getBoolean(props, INCLUDE_ENTITIES));
         }
         if (notNull(props, INCLUDE_EMAIL)) {
-            setIncludeEmailEnabled(getBoolean(props, INCLUDE_EMAIL));
+            conf.setIncludeEmailEnabled(getBoolean(props, INCLUDE_EMAIL));
         }
         if (notNull(props, INCLUDE_EXT_ALT_TEXT)) {
-            setIncludeExtAltTextEnabled(getBoolean(props, INCLUDE_EXT_ALT_TEXT));
+            conf.setIncludeExtAltTextEnabled(getBoolean(props, INCLUDE_EXT_ALT_TEXT));
         }
         if (notNull(props, TWEET_MODE_EXTENDED)) {
-            setTweetModeExtended(getBoolean(props, TWEET_MODE_EXTENDED));
+            conf.setTweetModeExtended(getBoolean(props, TWEET_MODE_EXTENDED));
         }
         if (notNull(props, JSON_STORE_ENABLED)) {
-            setJSONStoreEnabled(getBoolean(props, JSON_STORE_ENABLED));
+            conf.setJSONStoreEnabled(getBoolean(props, JSON_STORE_ENABLED));
         }
         if (notNull(props, MBEAN_ENABLED)) {
-            setMBeanEnabled(getBoolean(props, MBEAN_ENABLED));
+            conf.setMBeanEnabled(getBoolean(props, MBEAN_ENABLED));
         }
         if (notNull(props, STREAM_STALL_WARNINGS_ENABLED)) {
-            setStallWarningsEnabled(getBoolean(props, STREAM_STALL_WARNINGS_ENABLED));
+            conf.setStallWarningsEnabled(getBoolean(props, STREAM_STALL_WARNINGS_ENABLED));
         }
         if (notNull(props, APPLICATION_ONLY_AUTH_ENABLED)) {
-            setApplicationOnlyAuthEnabled(getBoolean(props, APPLICATION_ONLY_AUTH_ENABLED));
+            conf.setApplicationOnlyAuthEnabled(getBoolean(props, APPLICATION_ONLY_AUTH_ENABLED));
         }
-        cacheInstance();
     }
 
     private static boolean getBoolean(Properties props, String name) {
@@ -306,7 +300,7 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
         }
     }
 
-    private static long getLongProperty(Properties props, String name) {
+    private static long getLongProperty(Properties props, @SuppressWarnings("SameParameterValue") String name) {
         String value = props.getProperty(name);
         try {
             return Long.parseLong(value);
@@ -318,11 +312,4 @@ final class PropertyConfiguration extends ConfigurationBase implements java.io.S
     private static String getString(Properties props, String name) {
         return props.getProperty(name);
     }
-
-    // assures equality after deserialization
-    @Override
-    protected Object readResolve() throws ObjectStreamException {
-        return super.readResolve();
-    }
-
 }
