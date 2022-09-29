@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import java.util.function.Consumer;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
@@ -26,8 +24,8 @@ public interface TwitterStream extends TwitterBase {
      * returns new Builder instance
      * @return Builder instance
      */
-    static Configuration<TwitterStream> newBuilder(){
-        return new Configuration<>(TwitterStreamImpl::new);
+    static TwitterStreamBuilder newBuilder(){
+        return new TwitterStreamBuilder();
     }
 
     /**
@@ -37,56 +35,6 @@ public interface TwitterStream extends TwitterBase {
     static TwitterStream getInstance(){
         return newBuilder().build();
     }
-
-    /**
-     * Adds a ConnectionLifeCycleListener
-     *
-     * @param listener listener to be added
-     * @since Twitter4J 2.1.7
-     */
-    TwitterStream addConnectionLifeCycleListener(ConnectionLifeCycleListener listener);
-
-    /**
-     * @param listener listener to add
-     * @since Twitter4J 2.1.8
-     */
-    TwitterStream addListener(StreamListener listener);
-
-    /**
-     * @param action action when receiving Status
-     * @return this instance
-     * @since Twitter4J 4.0.4
-     */
-    TwitterStream onStatus(Consumer<Status> action);
-
-    /**
-     * @param action action when receiving TwitterException
-     * @return this instance
-     * @since Twitter4J 4.0.4
-     */
-    TwitterStream onException(Consumer<Exception> action);
-
-    /**
-     * @param listener listener to remove
-     * @since Twitter4J 4.0.0
-     */
-    TwitterStream removeListener(StreamListener listener);
-
-    /**
-     * clear status listeners
-     *
-     * @since Twitter4J 4.0.0
-     */
-    TwitterStream clearListeners();
-
-    /**
-     * replace existing listener
-     *
-     * @param toBeRemoved listener to be removed
-     * @param toBeAdded   listener to be added
-     * @since Twitter4J 4.0.0
-     */
-    TwitterStream replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded);
 
     /**
      * Starts listening on all public statuses. Available only to approved parties and requires a signed agreement to access. Please do not contact us about access to the firehose. If your service warrants access to it, we'll contact you.

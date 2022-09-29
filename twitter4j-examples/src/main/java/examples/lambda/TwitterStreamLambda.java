@@ -16,9 +16,6 @@
 
 package examples.lambda;
 
-import twitter4j.FilterQuery;
-import twitter4j.Status;
-import twitter4j.StatusAdapter;
 import twitter4j.TwitterStream;
 
 /**
@@ -26,28 +23,10 @@ import twitter4j.TwitterStream;
  */
 public class TwitterStreamLambda {
     public static void main(String... args) {
-        // Twitter4j 4.0.4+
-        TwitterStream.getInstance()
+        TwitterStream.newBuilder()
                 .onStatus(e -> System.out.printf("@%s %s%n", e.getUser().getScreenName(), e.getText()))
                 .onException(Throwable::printStackTrace)
-                .filter("twitter4j", "#twitter4j");
+                .build().filter("twitter4j", "#twitter4j");
 
-    }
-
-    public static void oldTraditionalDullBoringImplementation(String... dummy){
-        // Twitter4J 4.0.3 or earlier
-        TwitterStream stream = TwitterStream.getInstance();
-        stream.addListener(new StatusAdapter() {
-            @Override
-            public void onStatus(Status status) {
-                String.format("@%s %s", status.getUser().getScreenName(), status.getText());
-            }
-
-            @Override
-            public void onException(Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-        stream.filter(new FilterQuery("twitter4j", "#twitter4j"));
     }
 }

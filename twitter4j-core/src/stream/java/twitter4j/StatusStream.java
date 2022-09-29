@@ -17,6 +17,7 @@
 package twitter4j;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -27,11 +28,11 @@ interface StatusStream {
     /**
      * Reads next status from this stream.
      *
-     * @param listener a StatusListener implementation
+     * @param listeners StatusListener implementations
      * @throws TwitterException      when the end of the stream has been reached.
      * @throws IllegalStateException when the end of the stream had been reached.
      */
-    void next(StatusListener listener) throws TwitterException;
+    void next(List<StreamListener> listeners) throws TwitterException;
 
     void close() throws IOException;
 }

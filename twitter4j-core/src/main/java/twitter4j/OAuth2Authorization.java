@@ -37,7 +37,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
 
     private OAuth2Token token;
 
-    public OAuth2Authorization(Configuration conf) {
+    public OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {
         this.conf = conf;
         setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());

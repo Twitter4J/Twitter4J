@@ -16,10 +16,7 @@
 package twitter4j;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import static java.lang.String.format;
 import static twitter4j.HttpResponseCode.FORBIDDEN;
@@ -37,15 +34,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private final HttpClient http;
     private static final Logger logger = Logger.getLogger();
 
-    private final List<ConnectionLifeCycleListener> lifeCycleListeners = new ArrayList<>(0);
     private TwitterStreamConsumer handler = null;
 
     private final String stallWarningsGetParam;
     private final HttpParameter stallWarningsParam;
 
     /*package*/
-    TwitterStreamImpl(Configuration<TwitterStream> conf) {
+    TwitterStreamImpl(Configuration conf) {
         super(conf);
+        ensureAuthorizationEnabled();
+        ensureStatusStreamListenerIsSet();
         http = HttpClient.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
@@ -55,13 +53,11 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         stallWarningsGetParam = "stall_warnings=" + (conf.stallWarningsEnabled ? "true" : "false");
         stallWarningsParam = new HttpParameter("stall_warnings", conf.stallWarningsEnabled);
     }
-    
+
     /* Streaming API */
 
     @Override
     public TwitterStream firehose(final int count) {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -88,8 +84,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     @Override
     public TwitterStream links(final int count) {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -119,7 +113,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
-                    , stallWarningsParam}, auth, null), conf);
+                            , stallWarningsParam}, auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -127,8 +121,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     @Override
     public TwitterStream retweet() {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -151,7 +143,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL + "statuses/retweet.json"
-                    , new HttpParameter[]{stallWarningsParam}, auth, null), conf);
+                    , new HttpParameter[]{stallWarningsParam}, auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -159,8 +151,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     @Override
     public TwitterStream sample() {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -172,8 +162,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     @Override
     public TwitterStream sample(final String language) {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -196,7 +184,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
-                    + stallWarningsGetParam, null, auth, null), conf);
+                    + stallWarningsGetParam, null, auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -217,7 +205,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
-                    + stallWarningsGetParam + "&language=" + language, null, auth, null), conf);
+                    + stallWarningsGetParam + "&language=" + language, null, auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -226,8 +214,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
 
     @Override
     public TwitterStream filter(final FilterQuery query) {
-        ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -258,8 +244,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL
-                    + "statuses/filter.json"
-                    , query.asHttpParameterArray(stallWarningsParam), auth, null), conf);
+                            + "statuses/filter.json"
+                    , query.asHttpParameterArray(stallWarningsParam), auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -273,7 +259,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
      */
 
     private void ensureStatusStreamListenerIsSet() {
-        if (streamListeners.size() == 0) {
+        if (getConf().streamListeners.size() == 0 && getConf().rawStreamListeners.size() == 0) {
             throw new IllegalStateException("StatusListener is not set.");
         }
     }
@@ -302,92 +288,6 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         return this;
     }
 
-    @Override
-    public TwitterStream addConnectionLifeCycleListener(ConnectionLifeCycleListener listener) {
-        this.lifeCycleListeners.add(listener);
-        return this;
-    }
-
-    private final ArrayList<StreamListener> streamListeners = new ArrayList<>(0);
-
-    @Override
-    public synchronized TwitterStream addListener(StreamListener listener) {
-        streamListeners.add(listener);
-        updateListeners();
-        return this;
-    }
-
-    @Override
-    public synchronized TwitterStream onStatus(final Consumer<Status> action) {
-        streamListeners.add(new StatusAdapter() {
-            @Override
-            public void onStatus(Status status) {
-                action.accept(status);
-            }
-        });
-        updateListeners();
-        return this;
-    }
-
-    @Override
-    public synchronized TwitterStream onException(final Consumer<Exception> action) {
-        streamListeners.add(new StatusAdapter() {
-            @Override
-            public void onException(Exception ex) {
-                action.accept(ex);
-            }
-        });
-        updateListeners();
-        return this;
-    }
-
-    @Override
-    public synchronized TwitterStream removeListener(StreamListener listener) {
-        streamListeners.remove(listener);
-        updateListeners();
-        return this;
-    }
-
-    @Override
-    public synchronized TwitterStream clearListeners() {
-        streamListeners.clear();
-        updateListeners();
-        return this;
-    }
-
-    @Override
-    public synchronized TwitterStream replaceListener(StreamListener toBeRemoved, StreamListener toBeAdded) {
-        streamListeners.remove(toBeRemoved);
-        streamListeners.add(toBeAdded);
-        updateListeners();
-        return this;
-    }
-
-    private synchronized void updateListeners() {
-        if (handler != null) {
-            handler.updateListeners();
-        }
-    }
-
-    private RawStreamListener[] getRawStreamListeners() {
-        ArrayList<RawStreamListener> rawStreamListeners = new ArrayList<>();
-        for (StreamListener streamListener : streamListeners) {
-            if (streamListener instanceof RawStreamListener) {
-                rawStreamListeners.add((RawStreamListener) streamListener);
-            }
-        }
-        return rawStreamListeners.toArray(new RawStreamListener[0]);
-    }
-
-    private StatusListener[] getStatusListeners() {
-        ArrayList<StatusListener> statusListeners = new ArrayList<>();
-        for (StreamListener streamListener : streamListeners) {
-            if (streamListener instanceof StatusListener) {
-                statusListeners.add((StatusListener) streamListener);
-            }
-        }
-        return statusListeners.toArray(new StatusListener[0]);
-    }
 
     /*
      https://dev.twitter.com/docs/streaming-api/concepts#connecting
@@ -409,26 +309,23 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         user, status
     }
 
+    TwitterStreamBuilder getConf() {
+        return (TwitterStreamBuilder) conf;
+    }
+
     abstract class TwitterStreamConsumer extends Thread {
         private StatusStreamBase stream = null;
         private final String NAME;
         private volatile boolean closed = false;
-        private StreamListener[] streamListeners;
-        private RawStreamListener[] rawStreamListeners;
         private final Mode mode;
 
         TwitterStreamConsumer(Mode mode) {
             super();
             this.mode = mode;
             NAME = format("Twitter Stream consumer / %s [%s]", conf.streamThreadName, ++count);
-            updateListeners();
             setName(NAME + "[initializing]");
         }
 
-        void updateListeners() {
-            this.streamListeners = getStatusListeners();
-            this.rawStreamListeners = getRawStreamListeners();
-        }
 
         @Override
         public void run() {
@@ -443,31 +340,32 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         stream = (StatusStreamBase) getStream();
                         connected = true;
                         logger.info("Connection established.");
-                        for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                        getConf().connectionLifeCycleListeners.forEach(e -> {
                             try {
-                                listener.onConnect();
-                            } catch (Exception e) {
-                                logger.warn(e.getMessage());
+                                e.onConnect();
+                            } catch (Exception ex) {
+                                logger.warn(ex.getMessage());
                             }
-                        }
+
+                        });
                         // connection established successfully
                         timeToSleep = NO_WAIT;
                         logger.info("Receiving status stream.");
                         setStatus("[Receiving stream]");
                         while (!closed) {
                             try {
-                                stream.next(this.streamListeners, this.rawStreamListeners);
+                                stream.next(getConf().streamListeners, getConf().rawStreamListeners);
                             } catch (IllegalStateException ise) {
                                 logger.warn(ise.getMessage());
                                 break;
                             } catch (TwitterException e) {
                                 logger.info(e.getMessage());
-                                stream.onException(e, this.streamListeners, this.rawStreamListeners);
+                                stream.onException(e);
                                 throw e;
                             } catch (Exception e) {
                                 if (!(e instanceof NullPointerException) && !"Inflater has been closed".equals(e.getMessage())) {
                                     logger.info(e.getMessage());
-                                    stream.onException(e, this.streamListeners, this.rawStreamListeners);
+                                    stream.onException(e);
                                     closed = true;
                                     break;
                                 }
@@ -481,27 +379,25 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                             if (te.getStatusCode() == FORBIDDEN) {
                                 logger.warn("This account is not in required role. ", te.getMessage());
                                 closed = true;
-                                for (StreamListener statusListener : this.streamListeners) {
-                                    statusListener.onException(te);
-                                }
+                                stream.onException(te);
                                 break;
                             }
                             if (te.getStatusCode() == NOT_ACCEPTABLE) {
                                 logger.warn("Parameter not accepted with the role. ", te.getMessage());
                                 closed = true;
-                                for (StreamListener statusListener : streamListeners) {
-                                    statusListener.onException(te);
-                                }
+                                stream.onException(te);
                                 break;
                             }
                             connected = false;
-                            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
-                                try {
-                                    listener.onDisconnect();
-                                } catch (Exception e) {
-                                    logger.warn(e.getMessage());
-                                }
-                            }
+                            getConf().connectionLifeCycleListeners.forEach(
+                                    listener -> {
+                                        try {
+                                            listener.onDisconnect();
+                                        } catch (Exception ex) {
+                                            logger.warn(ex.getMessage());
+                                        }
+                                    }
+                            );
                             if (te.getStatusCode() > 200) {
                                 timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                             } else {
@@ -511,9 +407,13 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                         if (te.getStatusCode() > 200 && timeToSleep < HTTP_ERROR_INITIAL_WAIT) {
                             timeToSleep = HTTP_ERROR_INITIAL_WAIT;
                         }
-                        for (StreamListener statusListener : streamListeners) {
-                            statusListener.onException(te);
-                        }
+                        getConf().streamListeners.forEach(listener -> {
+                            try {
+                                listener.onException(te);
+                            } catch (Exception ex) {
+                                logger.warn(ex.getMessage());
+                            }
+                        });
                         // there was a problem establishing the connection, or the connection closed by peer
                         if (!closed) {
                             // wait for a moment not to overload Twitter API
@@ -539,22 +439,22 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
                     e.printStackTrace();
                     logger.warn(e.getMessage());
                 } finally {
-                    for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+                    getConf().connectionLifeCycleListeners.forEach(listener -> {
                         try {
                             listener.onDisconnect();
-                        } catch (Exception e) {
-                            logger.warn(e.getMessage());
+                        } catch (Exception ex) {
+                            logger.warn(ex.getMessage());
                         }
-                    }
+                    });
                 }
             }
-            for (ConnectionLifeCycleListener listener : lifeCycleListeners) {
+            getConf().connectionLifeCycleListeners.forEach(listener -> {
                 try {
                     listener.onCleanUp();
-                } catch (Exception e) {
-                    logger.warn(e.getMessage());
+                } catch (Exception ex) {
+                    logger.warn(ex.getMessage());
                 }
-            }
+            });
         }
 
         public synchronized void close() {
@@ -586,29 +486,17 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-
         TwitterStreamImpl that = (TwitterStreamImpl) o;
-
-        if (!Objects.equals(handler, that.handler)) return false;
-        if (!Objects.equals(http, that.http)) return false;
-        if (!lifeCycleListeners.equals(that.lifeCycleListeners))
-            return false;
-        if (!Objects.equals(stallWarningsGetParam, that.stallWarningsGetParam))
-            return false;
-        if (!Objects.equals(stallWarningsParam, that.stallWarningsParam))
-            return false;
-        return streamListeners.equals(that.streamListeners);
+        return Objects.equals(http, that.http) && Objects.equals(handler, that.handler) && Objects.equals(stallWarningsGetParam, that.stallWarningsGetParam) && Objects.equals(stallWarningsParam, that.stallWarningsParam);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (http != null ? http.hashCode() : 0);
-        result = 31 * result + lifeCycleListeners.hashCode();
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
         result = 31 * result + (stallWarningsGetParam != null ? stallWarningsGetParam.hashCode() : 0);
         result = 31 * result + (stallWarningsParam != null ? stallWarningsParam.hashCode() : 0);
-        result = 31 * result + streamListeners.hashCode();
         return result;
     }
 
@@ -616,11 +504,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     public String toString() {
         return "TwitterStreamImpl{" +
                 "http=" + http +
-                ", lifeCycleListeners=" + lifeCycleListeners +
                 ", handler=" + handler +
                 ", stallWarningsGetParam='" + stallWarningsGetParam + '\'' +
                 ", stallWarningsParam=" + stallWarningsParam +
-                ", streamListeners=" + streamListeners +
                 '}';
     }
 }

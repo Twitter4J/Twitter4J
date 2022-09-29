@@ -42,8 +42,8 @@ public interface Twitter extends java.io.Serializable,
      * returns new Builder instance
      * @return Builder instance
      */
-    static Configuration<Twitter> newBuilder(){
-        return new Configuration<>(TwitterImpl::new);
+    static TwitterBuilder newBuilder() {
+        return new TwitterBuilder();
     }
 
     /**

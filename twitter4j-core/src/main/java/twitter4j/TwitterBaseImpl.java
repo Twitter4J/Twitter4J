@@ -159,8 +159,9 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
         return auth;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
-    public Configuration<Twitter> getConfiguration() {
+    public Configuration getConfiguration() {
         return this.conf;
     }
 

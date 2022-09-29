@@ -49,11 +49,11 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 	private static final int MAX_VIDEO_SIZE = 512 * MB; // 512MB is a constraint  imposed by Twitter for video files
 	private static final int CHUNK_SIZE = 2 * MB; // max chunk size
 
-    private static final ConcurrentHashMap<Configuration<Twitter>, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<>();
-    private static final ConcurrentHashMap<Configuration<Twitter>, String> implicitParamsStrMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Configuration<Twitter, Configuration>, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Configuration<Twitter, Configuration>, String> implicitParamsStrMap = new ConcurrentHashMap<>();
 
     /*package*/
-    TwitterImpl(Configuration<Twitter> conf) {
+    TwitterImpl(Configuration conf) {
         super(conf);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.includeEmailEnabled);
         if (implicitParamsMap.containsKey(conf)) {

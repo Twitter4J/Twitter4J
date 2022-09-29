@@ -25,8 +25,8 @@ import java.util.function.Function;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-@SuppressWarnings({"UnusedReturnValue", "unused"})
-public class Configuration<T> implements AuthorizationConfiguration, HttpClientConfiguration, java.io.Serializable {
+@SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
+class Configuration<T, T2 extends Configuration> implements AuthorizationConfiguration, HttpClientConfiguration, java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
     String user = null;
     String password = null;
@@ -89,13 +89,13 @@ public class Configuration<T> implements AuthorizationConfiguration, HttpClientC
         PropertyConfiguration.loadDefaultProperties(this);
     }
 
-    Function<Configuration<T>, T> factory ;
-    Configuration(Function<Configuration<T>, T> factory){
+    Function<Configuration<T,T2>, T> factory ;
+    Configuration(Function<Configuration<T,T2>, T> factory){
         this();
         this.factory = factory;
     }
 
-    public static Configuration<Twitter> getInstance() {
+    public static Configuration<Twitter, Configuration> getInstance() {
         return new Configuration<>();
     }
 
@@ -249,8 +249,8 @@ public class Configuration<T> implements AuthorizationConfiguration, HttpClientC
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Configuration<?> that = (Configuration<?>) o;
-        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeMyRetweetEnabled == that.includeMyRetweetEnabled && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && includeEmailEnabled == that.includeEmailEnabled && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && built == that.built && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName);
+        Configuration<?, ?> that = (Configuration<?, ?>) o;
+        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeMyRetweetEnabled == that.includeMyRetweetEnabled && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && includeEmailEnabled == that.includeEmailEnabled && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && built == that.built && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName) && Objects.equals(factory, that.factory);
     }
 
     @Override
@@ -315,255 +315,255 @@ public class Configuration<T> implements AuthorizationConfiguration, HttpClientC
         return strToMask.replaceAll(".", "*");
     }
 
-    public Configuration<T> prettyDebugEnabled(boolean prettyDebugEnabled) {
+    public T2 prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
         this.prettyDebug = prettyDebugEnabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> gzipEnabled(boolean gzipEnabled) {
+    public T2 gzipEnabled(boolean gzipEnabled) {
         checkNotBuilt();
         this.gzipEnabled = gzipEnabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+    public T2 applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
         this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
-        return this;
+        return (T2)this;
     }
-    public Configuration<T> load(Properties props){
+    public T2 load(Properties props){
         checkNotBuilt();
         PropertyConfiguration.load(this, props);
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> user(String user) {
+    public T2 user(String user) {
         checkNotBuilt();
         this.user = user;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> password(String password) {
+    public T2 password(String password) {
         checkNotBuilt();
         this.password = password;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpProxyHost(String httpProxyHost) {
+    public T2 httpProxyHost(String httpProxyHost) {
         checkNotBuilt();
         this.httpProxyHost = httpProxyHost;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpProxyUser(String httpProxyUser) {
+    public T2 httpProxyUser(String httpProxyUser) {
         checkNotBuilt();
         this.httpProxyUser = httpProxyUser;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpProxyPassword(String httpProxyPassword) {
+    public T2 httpProxyPassword(String httpProxyPassword) {
         checkNotBuilt();
         this.httpProxyPassword = httpProxyPassword;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpProxyPort(int httpProxyPort) {
+    public T2 httpProxyPort(int httpProxyPort) {
         checkNotBuilt();
         this.httpProxyPort = httpProxyPort;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpProxySocks(boolean httpProxySocks) {
+    public T2 httpProxySocks(boolean httpProxySocks) {
         checkNotBuilt();
         this.httpProxySocks = httpProxySocks;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpConnectionTimeout(int httpConnectionTimeout) {
+    public T2 httpConnectionTimeout(int httpConnectionTimeout) {
         checkNotBuilt();
         this.httpConnectionTimeout = httpConnectionTimeout;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpReadTimeout(int httpReadTimeout) {
+    public T2 httpReadTimeout(int httpReadTimeout) {
         checkNotBuilt();
         this.httpReadTimeout = httpReadTimeout;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpStreamingReadTimeout(int httpStreamingReadTimeout) {
+    public T2 httpStreamingReadTimeout(int httpStreamingReadTimeout) {
         checkNotBuilt();
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpRetryCount(int httpRetryCount) {
+    public T2 httpRetryCount(int httpRetryCount) {
         checkNotBuilt();
         this.httpRetryCount = httpRetryCount;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
+    public T2 httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
         checkNotBuilt();
         this.httpRetryIntervalSeconds = httpRetryIntervalSeconds;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthConsumerKey(String oAuthConsumerKey) {
+    public T2 oAuthConsumerKey(String oAuthConsumerKey) {
         checkNotBuilt();
         this.oAuthConsumerKey = oAuthConsumerKey;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthConsumerSecret(String oAuthConsumerSecret) {
+    public T2 oAuthConsumerSecret(String oAuthConsumerSecret) {
         checkNotBuilt();
         this.oAuthConsumerSecret = oAuthConsumerSecret;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthAccessToken(String oAuthAccessToken) {
+    public T2 oAuthAccessToken(String oAuthAccessToken) {
         checkNotBuilt();
         this.oAuthAccessToken = oAuthAccessToken;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
+    public T2 oAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
         checkNotBuilt();
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuth2TokenType(String oAuth2TokenType) {
+    public T2 oAuth2TokenType(String oAuth2TokenType) {
         checkNotBuilt();
         this.oAuth2TokenType = oAuth2TokenType;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuth2AccessToken(String oAuth2AccessToken) {
+    public T2 oAuth2AccessToken(String oAuth2AccessToken) {
         checkNotBuilt();
         this.oAuth2AccessToken = oAuth2AccessToken;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuth2Scope(String oAuth2Scope) {
+    public T2 oAuth2Scope(String oAuth2Scope) {
         checkNotBuilt();
         this.oAuth2Scope = oAuth2Scope;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthRequestTokenURL(String oAuthRequestTokenURL) {
+    public T2 oAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthAuthorizationURL(String oAuthAuthorizationURL) {
+    public T2 oAuthAuthorizationURL(String oAuthAuthorizationURL) {
         checkNotBuilt();
         this.oAuthAuthorizationURL =oAuthAuthorizationURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthAccessTokenURL(String oAuthAccessTokenURL) {
+    public T2 oAuthAccessTokenURL(String oAuthAccessTokenURL) {
         checkNotBuilt();
         this.oAuthAccessTokenURL =oAuthAccessTokenURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuthAuthenticationURL(String oAuthAuthenticationURL) {
+    public T2 oAuthAuthenticationURL(String oAuthAuthenticationURL) {
         checkNotBuilt();
         this.oAuthAuthenticationURL =oAuthAuthenticationURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuth2TokenURL(String oAuth2TokenURL) {
+    public T2 oAuth2TokenURL(String oAuth2TokenURL) {
         checkNotBuilt();
         this.oAuth2TokenURL =oAuth2TokenURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> oAuth2InvalidateTokenURL(String invalidateTokenURL) {
+    public T2 oAuth2InvalidateTokenURL(String invalidateTokenURL) {
         checkNotBuilt();
         this.oAuth2InvalidateTokenURL =invalidateTokenURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> restBaseURL(String restBaseURL) {
+    public T2 restBaseURL(String restBaseURL) {
         checkNotBuilt();
         this.restBaseURL =restBaseURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> uploadBaseURL(String uploadBaseURL) {
+    public T2 uploadBaseURL(String uploadBaseURL) {
         checkNotBuilt();
         this.uploadBaseURL =uploadBaseURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> streamBaseURL(String streamBaseURL) {
+    public T2 streamBaseURL(String streamBaseURL) {
         checkNotBuilt();
         this.streamBaseURL =streamBaseURL;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> contributingTo(long contributingTo) {
+    public T2 contributingTo(long contributingTo) {
         checkNotBuilt();
         this.contributingTo =contributingTo;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> trimUserEnabled(boolean enabled) {
+    public T2 trimUserEnabled(boolean enabled) {
         checkNotBuilt();
         this.trimUserEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> includeExtAltTextEnabled(boolean enabled) {
+    public T2 includeExtAltTextEnabled(boolean enabled) {
         checkNotBuilt();
         this.includeExtAltTextEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> tweetModeExtended(boolean enabled) {
+    public T2 tweetModeExtended(boolean enabled) {
         checkNotBuilt();
         this.tweetModeExtended =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> includeMyRetweetEnabled(boolean enabled) {
+    public T2 includeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
         this.includeMyRetweetEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> includeEntitiesEnabled(boolean enabled) {
+    public T2 includeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
         this.includeEntitiesEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> includeEmailEnabled(boolean enabled) {
+    public T2 includeEmailEnabled(boolean enabled) {
         checkNotBuilt();
         this.includeEmailEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> jsonStoreEnabled(boolean enabled) {
+    public T2 jsonStoreEnabled(boolean enabled) {
         checkNotBuilt();
         this.jsonStoreEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    public Configuration<T> mBeanEnabled(boolean enabled) {
+    public T2 mBeanEnabled(boolean enabled) {
         checkNotBuilt();
         this.mbeanEnabled =enabled;
-        return this;
+        return (T2)this;
     }
 
-    Configuration<T> buildConfiguration() {
+    T2 buildConfiguration() {
         checkNotBuilt();
         try {
-            return this;
+            return (T2)this;
         } finally {
             built = true;
         }
@@ -577,7 +577,7 @@ public class Configuration<T> implements AuthorizationConfiguration, HttpClientC
         return factory.apply(this);
     }
 
-    boolean built = false;
+    private boolean built = false;
     private void checkNotBuilt() {
         if (built) {
             throw new IllegalStateException("Cannot use this builder any longer, build() has already been called");
