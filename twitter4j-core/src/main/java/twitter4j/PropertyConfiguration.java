@@ -155,68 +155,68 @@ final class PropertyConfiguration {
 
     private static void setFieldsWithPrefix(Configuration conf, Properties props) {
         if (notNull(props, USER)) {
-            conf.setUser(getString(props, USER));
+            conf.user(getString(props, USER));
         }
         if (notNull(props, PASSWORD)) {
-            conf.setPassword(getString(props, PASSWORD));
+            conf.password(getString(props, PASSWORD));
         }
         if (notNull(props, HTTP_PRETTY_DEBUG)) {
-            conf.setPrettyDebugEnabled(getBoolean(props, HTTP_PRETTY_DEBUG));
+            conf.prettyDebugEnabled(getBoolean(props, HTTP_PRETTY_DEBUG));
         }
         if (notNull(props, HTTP_GZIP)) {
-            conf.setGZIPEnabled(getBoolean(props, HTTP_GZIP));
+            conf.gzipEnabled(getBoolean(props, HTTP_GZIP));
         }
         if (notNull(props, HTTP_PROXY_HOST)) {
-            conf.setHttpProxyHost(getString(props, HTTP_PROXY_HOST));
+            conf.httpProxyHost(getString(props, HTTP_PROXY_HOST));
         } else if (notNull(props, HTTP_PROXY_HOST_FALLBACK)) {
-            conf.setHttpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
+            conf.httpProxyHost(getString(props, HTTP_PROXY_HOST_FALLBACK));
         }
         if (notNull(props, HTTP_PROXY_USER)) {
-            conf.setHttpProxyUser(getString(props, HTTP_PROXY_USER));
+            conf.httpProxyUser(getString(props, HTTP_PROXY_USER));
         }
         if (notNull(props, HTTP_PROXY_PASSWORD)) {
-            conf.setHttpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
+            conf.httpProxyPassword(getString(props, HTTP_PROXY_PASSWORD));
         }
         if (notNull(props, HTTP_PROXY_PORT)) {
-            conf.setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
+            conf.httpProxyPort(getIntProperty(props, HTTP_PROXY_PORT));
         } else if (notNull(props, HTTP_PROXY_PORT_FALLBACK)) {
-            conf.setHttpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
+            conf.httpProxyPort(getIntProperty(props, HTTP_PROXY_PORT_FALLBACK));
         }
         if (notNull(props, HTTP_CONNECTION_TIMEOUT)) {
-            conf.setHttpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
+            conf.httpConnectionTimeout(getIntProperty(props, HTTP_CONNECTION_TIMEOUT));
         }
         if (notNull(props, HTTP_READ_TIMEOUT)) {
-            conf.setHttpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
+            conf.httpReadTimeout(getIntProperty(props, HTTP_READ_TIMEOUT));
         }
         if (notNull(props, HTTP_STREAMING_READ_TIMEOUT)) {
-            conf.setHttpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
+            conf.httpStreamingReadTimeout(getIntProperty(props, HTTP_STREAMING_READ_TIMEOUT));
         }
         if (notNull(props, HTTP_RETRY_COUNT)) {
-            conf.setHttpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
+            conf.httpRetryCount(getIntProperty(props, HTTP_RETRY_COUNT));
         }
         if (notNull(props, HTTP_RETRY_INTERVAL_SECS)) {
-            conf.setHttpRetryIntervalSeconds(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
+            conf.httpRetryIntervalSeconds(getIntProperty(props, HTTP_RETRY_INTERVAL_SECS));
         }
         if (notNull(props, OAUTH_CONSUMER_KEY)) {
-            conf.setOAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
+            conf.oAuthConsumerKey(getString(props, OAUTH_CONSUMER_KEY));
         }
         if (notNull(props, OAUTH_CONSUMER_SECRET)) {
-            conf.setOAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
+            conf.oAuthConsumerSecret(getString(props, OAUTH_CONSUMER_SECRET));
         }
         if (notNull(props, OAUTH_ACCESS_TOKEN)) {
-            conf.setOAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
+            conf.oAuthAccessToken(getString(props, OAUTH_ACCESS_TOKEN));
         }
         if (notNull(props, OAUTH_ACCESS_TOKEN_SECRET)) {
-            conf.setOAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
+            conf.oAuthAccessTokenSecret(getString(props, OAUTH_ACCESS_TOKEN_SECRET));
         }
         if (notNull(props, OAUTH2_TOKEN_TYPE)) {
-            conf.setOAuth2TokenType(getString(props, OAUTH2_TOKEN_TYPE));
+            conf.oAuth2TokenType(getString(props, OAUTH2_TOKEN_TYPE));
         }
         if (notNull(props, OAUTH2_ACCESS_TOKEN)) {
-            conf.setOAuth2AccessToken(getString(props, OAUTH2_ACCESS_TOKEN));
+            conf.oAuth2AccessToken(getString(props, OAUTH2_ACCESS_TOKEN));
         }
         if (notNull(props, OAUTH2_SCOPE)) {
-            conf.setOAuth2Scope(getString(props, OAUTH2_SCOPE));
+            conf.oAuth2Scope(getString(props, OAUTH2_SCOPE));
         }
         if (notNull(props, STREAM_THREAD_NAME)) {
             conf.streamThreadName = getString(props, STREAM_THREAD_NAME);

@@ -37,7 +37,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testAuthWithBuildingConf1() throws Exception {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
+        Configuration builder = new Configuration();
         builder.applicationOnlyAuthEnabled(true);
         // setupTwitter twitter = new TwitterFactory(builder.build()).getInstance();
         OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.buildConfiguration());
@@ -72,7 +72,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testAuthWithBuildingConf2() throws Exception {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
+        Configuration builder = new Configuration();
         builder.applicationOnlyAuthEnabled(true);
         // setup
         builder.oAuthConsumerKey(browserConsumerKey).oAuthConsumerSecret(browserConsumerSecret);
@@ -97,7 +97,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testSettingAccessToken1() throws TwitterException {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
+        Configuration builder = new Configuration();
         builder.applicationOnlyAuthEnabled(true);
         builder.oAuthConsumerKey(browserConsumerKey).oAuthConsumerSecret(browserConsumerSecret);
         OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.buildConfiguration());
@@ -123,7 +123,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testSettingAccessToken2() throws TwitterException {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
+        Configuration builder = new Configuration();
         builder.applicationOnlyAuthEnabled(true);
         builder.oAuthConsumerKey(browserConsumerKey).oAuthConsumerSecret(browserConsumerSecret);
         OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(builder.buildConfiguration());
@@ -146,7 +146,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
     @Test
     void testInvalidation() throws Exception {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
+        Configuration builder = new Configuration();
         builder.applicationOnlyAuthEnabled(true);
         builder.oAuthConsumerKey(browserConsumerKey).oAuthConsumerSecret(browserConsumerSecret);
         Configuration build = builder.buildConfiguration();
@@ -185,7 +185,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
             );
 
             // exercise
-            Configuration build = new ConfigurationBuilder().buildConfiguration();
+            Configuration build = new Configuration().buildConfiguration();
             OAuth2Authorization oAuth2Authorization = new OAuth2Authorization(build);
 
             OAuth2Token token = oAuth2Authorization.getOAuth2Token();
@@ -208,7 +208,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
     void testSettingAccessTokenFromPropertyFile() throws Exception {
         String filename = "./twitter4j.properties";
         try {
-            ConfigurationBuilder builder = new ConfigurationBuilder();
+            Configuration builder = new Configuration();
             builder.applicationOnlyAuthEnabled(true);
             builder.oAuthConsumerKey(browserConsumerKey).oAuthConsumerSecret(browserConsumerSecret);
             Configuration build = builder.buildConfiguration();

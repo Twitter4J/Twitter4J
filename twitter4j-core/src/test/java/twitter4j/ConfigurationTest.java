@@ -48,12 +48,12 @@ public class ConfigurationTest {
         Configuration conf = new Configuration();
         assertNull(conf.getUser());
 
-        conf.setUser(test);
+        conf.user(test);
         assertEquals(test, conf.getUser());
         System.setProperty("twitter4j.user", override);
         conf = new Configuration();
         assertEquals(override, conf.getUser());
-        conf.setUser(test);
+        conf.user(test);
         assertEquals(test, conf.getUser());
         System.getProperties().remove("twitter4j.user");
 
@@ -61,12 +61,12 @@ public class ConfigurationTest {
         conf = new Configuration();
         assertNull(conf.getPassword());
 
-        conf.setPassword(test);
+        conf.password(test);
         assertEquals(test, conf.getPassword());
         System.setProperty("twitter4j.password", override);
         conf = new Configuration();
         assertEquals(override, conf.getPassword());
-        conf.setPassword(test);
+        conf.password(test);
         assertEquals(test, conf.getPassword());
         System.getProperties().remove("twitter4j.password");
 
@@ -113,12 +113,12 @@ public class ConfigurationTest {
         conf = new Configuration();
         assertEquals(20000, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
 
-        conf.setHttpConnectionTimeout(10);
+        conf.httpConnectionTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         System.setProperty("twitter4j.http.connectionTimeout", "100");
         conf = new Configuration();
         assertEquals(100, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
-        conf.setHttpConnectionTimeout(10);
+        conf.httpConnectionTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
         System.getProperties().remove("twitter4j.http.connectionTimeout");
 
@@ -127,12 +127,12 @@ public class ConfigurationTest {
         conf = new Configuration();
         assertEquals(120000, conf.getHttpClientConfiguration().getHttpReadTimeout());
 
-        conf.setHttpReadTimeout(10);
+        conf.httpReadTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.setProperty("twitter4j.http.readTimeout", "100");
         conf = new Configuration();
         assertEquals(100, conf.getHttpClientConfiguration().getHttpReadTimeout());
-        conf.setHttpReadTimeout(10);
+        conf.httpReadTimeout(10);
         assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
         System.getProperties().remove("twitter4j.http.readTimeout");
 
@@ -151,9 +151,9 @@ public class ConfigurationTest {
     @Test
     void testConfigurationBuilder() throws Exception {
         deleteFile("./twitter4j.properties");
-        ConfigurationBuilder builder;
+        Configuration builder;
         Configuration conf;
-        builder = new ConfigurationBuilder();
+        builder = new Configuration();
         conf = builder.buildConfiguration();
 
         assertEquals(conf, serializeDeserialize(conf));
@@ -164,7 +164,7 @@ public class ConfigurationTest {
         assertEquals(0, conf.oAuthAccessTokenURL.indexOf("https://"));
         assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
-        builder = new ConfigurationBuilder();
+        builder = new Configuration();
         builder.oAuthConsumerKey("key");
         builder.oAuthConsumerSecret("secret");
         conf = builder.buildConfiguration();

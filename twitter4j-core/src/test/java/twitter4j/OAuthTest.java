@@ -66,7 +66,7 @@ class OAuthTest extends TwitterTestBase {
         Twitter twitter = Twitter.getInstance();
 
         // desktop client - requiring pin
-        Configuration build = new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
+        Configuration build = new Configuration().oAuthConsumerKey(browserConsumerKey)
                 .oAuthConsumerSecret(browserConsumerSecret).buildConfiguration();
 
         OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(build);
@@ -101,7 +101,7 @@ class OAuthTest extends TwitterTestBase {
     @Test
     void testIllegalStatus() throws Exception {
         try {
-            new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration()).getOAuthAccessToken();
+            new OAuthAuthorization(new Configuration().buildConfiguration()).getOAuthAccessToken();
             fail("should throw IllegalStateException since request token hasn't been acquired.");
         } catch (IllegalStateException ignore) {
         }
@@ -110,7 +110,7 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testSigninWithTwitter() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration());
+        OAuthAuthorization oauth = new OAuthAuthorization(new Configuration().buildConfiguration());
         // browser client - not requiring pin
         oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
@@ -125,7 +125,7 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testBrowserClient() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration());
+        OAuthAuthorization oauth = new OAuthAuthorization(new Configuration().buildConfiguration());
 
         // browser client - not requiring pin
         oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);

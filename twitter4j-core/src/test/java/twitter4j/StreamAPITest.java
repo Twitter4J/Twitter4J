@@ -86,7 +86,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     void testNoListener() {
         TwitterStream twitterStream;
         twitterStream = new TwitterStreamFactory(
-                new ConfigurationBuilder()
+                new Configuration()
                         .oAuthConsumerSecret("dummy")
                         .oAuthConsumerKey("dummy")
                         .oAuthAccessToken("dummy")

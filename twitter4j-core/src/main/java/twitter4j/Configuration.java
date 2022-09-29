@@ -19,10 +19,12 @@ package twitter4j;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class Configuration implements AuthorizationConfiguration, HttpClientConfiguration, java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
     String user = null;
@@ -96,10 +98,6 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
         return user;
     }
 
-    void setUser(String user) {
-        this.user = user;
-    }
-
     @Override
     public String getPassword() {
         return password;
@@ -171,18 +169,6 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
         return httpStreamingReadTimeout;
     }
 
-    void setHttpStreamingReadTimeout(int httpStreamingReadTimeout) {
-        this.httpStreamingReadTimeout = httpStreamingReadTimeout;
-    }
-
-    void setHttpRetryCount(int retryCount) {
-        this.httpRetryCount = retryCount;
-    }
-
-    void setHttpRetryIntervalSeconds(int retryIntervalSeconds) {
-        this.httpRetryIntervalSeconds = retryIntervalSeconds;
-    }
-
     // oauth related setter/getters
 
     @Override
@@ -190,17 +176,9 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
         return oAuthConsumerKey;
     }
 
-    void setOAuthConsumerKey(String oAuthConsumerKey) {
-        this.oAuthConsumerKey = oAuthConsumerKey;
-    }
-
     @Override
     public String getOAuthConsumerSecret() {
         return oAuthConsumerSecret;
-    }
-
-    void setOAuthConsumerSecret(String oAuthConsumerSecret) {
-        this.oAuthConsumerSecret = oAuthConsumerSecret;
     }
 
     @Override
@@ -208,26 +186,14 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
         return oAuthAccessToken;
     }
 
-    void setOAuthAccessToken(String oAuthAccessToken) {
-        this.oAuthAccessToken = oAuthAccessToken;
-    }
-
     @Override
     public String getOAuthAccessTokenSecret() {
         return oAuthAccessTokenSecret;
     }
 
-    void setOAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
-        this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
-    }
-
     @Override
     public String getOAuth2TokenType() {
         return oAuth2TokenType;
-    }
-
-    void setOAuth2TokenType(String oAuth2TokenType) {
-        this.oAuth2TokenType = oAuth2TokenType;
     }
 
     @Override
@@ -237,14 +203,6 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
 
     public String getOAuth2Scope() {
         return oAuth2Scope;
-    }
-
-    void setOAuth2AccessToken(String oAuth2AccessToken) {
-        this.oAuth2AccessToken = oAuth2AccessToken;
-    }
-
-    void setOAuth2Scope(String oAuth2Scope) {
-        this.oAuth2Scope = oAuth2Scope;
     }
 
 
@@ -316,5 +274,275 @@ public class Configuration implements AuthorizationConfiguration, HttpClientConf
         }
         //noinspection SuspiciousRegexArgument
         return strToMask.replaceAll(".", "*");
+    }
+
+    public Configuration prettyDebugEnabled(boolean prettyDebugEnabled) {
+        checkNotBuilt();
+        this.prettyDebug = prettyDebugEnabled;
+        return this;
+    }
+
+    public Configuration gzipEnabled(boolean gzipEnabled) {
+        checkNotBuilt();
+        this.gzipEnabled = gzipEnabled;
+        return this;
+    }
+
+    public Configuration applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
+        checkNotBuilt();
+        this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
+        return this;
+    }
+    public Configuration load(Properties props){
+        checkNotBuilt();
+        PropertyConfiguration.load(this, props);
+        return this;
+    }
+
+    public Configuration user(String user) {
+        checkNotBuilt();
+        this.user = user;
+        return this;
+    }
+
+    public Configuration password(String password) {
+        checkNotBuilt();
+        this.password = password;
+        return this;
+    }
+
+    public Configuration httpProxyHost(String httpProxyHost) {
+        checkNotBuilt();
+        this.httpProxyHost = httpProxyHost;
+        return this;
+    }
+
+    public Configuration httpProxyUser(String httpProxyUser) {
+        checkNotBuilt();
+        this.httpProxyUser = httpProxyUser;
+        return this;
+    }
+
+    public Configuration httpProxyPassword(String httpProxyPassword) {
+        checkNotBuilt();
+        this.httpProxyPassword = httpProxyPassword;
+        return this;
+    }
+
+    public Configuration httpProxyPort(int httpProxyPort) {
+        checkNotBuilt();
+        this.httpProxyPort = httpProxyPort;
+        return this;
+    }
+
+    public Configuration httpProxySocks(boolean httpProxySocks) {
+        checkNotBuilt();
+        this.httpProxySocks = httpProxySocks;
+        return this;
+    }
+
+    public Configuration httpConnectionTimeout(int httpConnectionTimeout) {
+        checkNotBuilt();
+        this.httpConnectionTimeout = httpConnectionTimeout;
+        return this;
+    }
+
+    public Configuration httpReadTimeout(int httpReadTimeout) {
+        checkNotBuilt();
+        this.httpReadTimeout = httpReadTimeout;
+        return this;
+    }
+
+    public Configuration httpStreamingReadTimeout(int httpStreamingReadTimeout) {
+        checkNotBuilt();
+        this.httpStreamingReadTimeout = httpStreamingReadTimeout;
+        return this;
+    }
+
+    public Configuration httpRetryCount(int httpRetryCount) {
+        checkNotBuilt();
+        this.httpRetryCount = httpRetryCount;
+        return this;
+    }
+
+    public Configuration httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
+        checkNotBuilt();
+        this.httpRetryIntervalSeconds = httpRetryIntervalSeconds;
+        return this;
+    }
+
+    public Configuration oAuthConsumerKey(String oAuthConsumerKey) {
+        checkNotBuilt();
+        this.oAuthConsumerKey = oAuthConsumerKey;
+        return this;
+    }
+
+    public Configuration oAuthConsumerSecret(String oAuthConsumerSecret) {
+        checkNotBuilt();
+        this.oAuthConsumerSecret = oAuthConsumerSecret;
+        return this;
+    }
+
+    public Configuration oAuthAccessToken(String oAuthAccessToken) {
+        checkNotBuilt();
+        this.oAuthAccessToken = oAuthAccessToken;
+        return this;
+    }
+
+    public Configuration oAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
+        checkNotBuilt();
+        this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
+        return this;
+    }
+
+    public Configuration oAuth2TokenType(String oAuth2TokenType) {
+        checkNotBuilt();
+        this.oAuth2TokenType = oAuth2TokenType;
+        return this;
+    }
+
+    public Configuration oAuth2AccessToken(String oAuth2AccessToken) {
+        checkNotBuilt();
+        this.oAuth2AccessToken = oAuth2AccessToken;
+        return this;
+    }
+
+    public Configuration oAuth2Scope(String oAuth2Scope) {
+        checkNotBuilt();
+        this.oAuth2Scope = oAuth2Scope;
+        return this;
+    }
+
+    public Configuration oAuthRequestTokenURL(String oAuthRequestTokenURL) {
+        checkNotBuilt();
+        this.oAuthRequestTokenURL = oAuthRequestTokenURL;
+        return this;
+    }
+
+    public Configuration oAuthAuthorizationURL(String oAuthAuthorizationURL) {
+        checkNotBuilt();
+        this.oAuthAuthorizationURL =oAuthAuthorizationURL;
+        return this;
+    }
+
+    public Configuration oAuthAccessTokenURL(String oAuthAccessTokenURL) {
+        checkNotBuilt();
+        this.oAuthAccessTokenURL =oAuthAccessTokenURL;
+        return this;
+    }
+
+    public Configuration oAuthAuthenticationURL(String oAuthAuthenticationURL) {
+        checkNotBuilt();
+        this.oAuthAuthenticationURL =oAuthAuthenticationURL;
+        return this;
+    }
+
+    public Configuration oAuth2TokenURL(String oAuth2TokenURL) {
+        checkNotBuilt();
+        this.oAuth2TokenURL =oAuth2TokenURL;
+        return this;
+    }
+
+    public Configuration oAuth2InvalidateTokenURL(String invalidateTokenURL) {
+        checkNotBuilt();
+        this.oAuth2InvalidateTokenURL =invalidateTokenURL;
+        return this;
+    }
+
+    public Configuration restBaseURL(String restBaseURL) {
+        checkNotBuilt();
+        this.restBaseURL =restBaseURL;
+        return this;
+    }
+
+    public Configuration uploadBaseURL(String uploadBaseURL) {
+        checkNotBuilt();
+        this.uploadBaseURL =uploadBaseURL;
+        return this;
+    }
+
+    public Configuration streamBaseURL(String streamBaseURL) {
+        checkNotBuilt();
+        this.streamBaseURL =streamBaseURL;
+        return this;
+    }
+
+    public Configuration contributingTo(long contributingTo) {
+        checkNotBuilt();
+        this.contributingTo =contributingTo;
+        return this;
+    }
+
+    public Configuration trimUserEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.trimUserEnabled =enabled;
+        return this;
+    }
+
+    public Configuration includeExtAltTextEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.includeExtAltTextEnabled =enabled;
+        return this;
+    }
+
+    public Configuration tweetModeExtended(boolean enabled) {
+        checkNotBuilt();
+        this.tweetModeExtended =enabled;
+        return this;
+    }
+
+    public Configuration includeMyRetweetEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.includeMyRetweetEnabled =enabled;
+        return this;
+    }
+
+    public Configuration includeEntitiesEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.includeEntitiesEnabled =enabled;
+        return this;
+    }
+
+    public Configuration includeEmailEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.includeEmailEnabled =enabled;
+        return this;
+    }
+
+    public Configuration jsonStoreEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.jsonStoreEnabled =enabled;
+        return this;
+    }
+
+    public Configuration mBeanEnabled(boolean enabled) {
+        checkNotBuilt();
+        this.mbeanEnabled =enabled;
+        return this;
+    }
+
+    Configuration buildConfiguration() {
+        checkNotBuilt();
+        try {
+            return this;
+        } finally {
+            built = true;
+        }
+    }
+
+    /**
+     * Constructs Twitter instance
+     * @return Twitter instance
+     */
+    public Twitter build(){
+        Configuration conf = buildConfiguration();
+        return new TwitterImpl(conf);
+    }
+
+    boolean built = false;
+    private void checkNotBuilt() {
+        if (built) {
+            throw new IllegalStateException("Cannot use this builder any longer, build() has already been called");
+        }
     }
 }

@@ -141,19 +141,19 @@ public class TwitterTestBase {
         browserConsumerSecret = p.getProperty("browser.oauth.consumerSecret");
         browserConsumerKey = p.getProperty("browser.oauth.consumerKey");
 
-        conf1 = new ConfigurationBuilder().load(subProperty(p, "id1")).buildConfiguration();
+        conf1 = new Configuration().load(subProperty(p, "id1")).buildConfiguration();
         id1 = new TestUserInfo("id1");
-        conf2 = new ConfigurationBuilder().load(subProperty(p, "id2")).buildConfiguration();
+        conf2 = new Configuration().load(subProperty(p, "id2")).buildConfiguration();
         id2 = new TestUserInfo("id2");
-        conf3 = new ConfigurationBuilder().load(subProperty(p, "id3")).buildConfiguration();
+        conf3 = new Configuration().load(subProperty(p, "id3")).buildConfiguration();
         id3 = new TestUserInfo("id3");
         rwPrivateMessage = Twitter.newBuilder().load(subProperty(p, "rwprivate")).build();
-        bestFriend1Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend1")).buildConfiguration();
+        bestFriend1Conf = new Configuration().load(subProperty(p, "bestFriend1")).buildConfiguration();
         bestFriend1 = new TestUserInfo("bestFriend1");
-        bestFriend2Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend2")).buildConfiguration();
+        bestFriend2Conf = new Configuration().load(subProperty(p, "bestFriend2")).buildConfiguration();
         bestFriend2 = new TestUserInfo("bestFriend2");
         rwPrivate = new TestUserInfo("rwprivate");
-        rwPrivateConf = new ConfigurationBuilder().load(subProperty(p, "rwprivate")).buildConfiguration();
+        rwPrivateConf = new Configuration().load(subProperty(p, "rwprivate")).buildConfiguration();
 
         numberId = p.getProperty("numberid.user");
         numberPass = p.getProperty("numberid.password");
