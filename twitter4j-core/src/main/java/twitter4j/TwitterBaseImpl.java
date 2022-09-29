@@ -205,7 +205,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TwitterBaseImpl that = (TwitterBaseImpl) o;
-        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(rateLimitStatusListeners, that.rateLimitStatusListeners) && Objects.equals(factory, that.factory) && Objects.equals(auth, that.auth);
+        return Objects.equals(conf, that.conf) && Objects.equals(rateLimitStatusListeners, that.rateLimitStatusListeners) && Objects.equals(factory, that.factory) && Objects.equals(auth, that.auth);
     }
 
     @Override

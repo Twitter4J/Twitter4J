@@ -33,13 +33,13 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
-        configurationBean.setPrettyDebugEnabled(prettyDebugEnabled);
+        configurationBean.prettyDebug = prettyDebugEnabled;
         return this;
     }
 
     public ConfigurationBuilder gzipEnabled(boolean gzipEnabled) {
         checkNotBuilt();
-        configurationBean.setGZIPEnabled(gzipEnabled);
+        configurationBean.gzipEnabled = gzipEnabled;
         return this;
     }
 
@@ -62,49 +62,49 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder password(String password) {
         checkNotBuilt();
-        configurationBean.setPassword(password);
+        configurationBean.password = password;
         return this;
     }
 
     public ConfigurationBuilder httpProxyHost(String httpProxyHost) {
         checkNotBuilt();
-        configurationBean.setHttpProxyHost(httpProxyHost);
+        configurationBean.httpProxyHost = httpProxyHost;
         return this;
     }
 
     public ConfigurationBuilder httpProxyUser(String httpProxyUser) {
         checkNotBuilt();
-        configurationBean.setHttpProxyUser(httpProxyUser);
+        configurationBean.httpProxyUser = httpProxyUser;
         return this;
     }
 
     public ConfigurationBuilder httpProxyPassword(String httpProxyPassword) {
         checkNotBuilt();
-        configurationBean.setHttpProxyPassword(httpProxyPassword);
+        configurationBean.httpProxyPassword = httpProxyPassword;
         return this;
     }
 
     public ConfigurationBuilder httpProxyPort(int httpProxyPort) {
         checkNotBuilt();
-        configurationBean.setHttpProxyPort(httpProxyPort);
+        configurationBean.httpProxyPort = httpProxyPort;
         return this;
     }
 
     public ConfigurationBuilder httpProxySocks(boolean httpProxySocks) {
         checkNotBuilt();
-        configurationBean.setHttpProxySocks(httpProxySocks);
+        configurationBean.httpProxySocks = httpProxySocks;
         return this;
     }
     
     public ConfigurationBuilder httpConnectionTimeout(int httpConnectionTimeout) {
         checkNotBuilt();
-        configurationBean.setHttpConnectionTimeout(httpConnectionTimeout);
+        configurationBean.httpConnectionTimeout = httpConnectionTimeout;
         return this;
     }
 
     public ConfigurationBuilder httpReadTimeout(int httpReadTimeout) {
         checkNotBuilt();
-        configurationBean.setHttpReadTimeout(httpReadTimeout);
+        configurationBean.httpReadTimeout = httpReadTimeout;
         return this;
     }
 
