@@ -23,6 +23,22 @@ import java.util.function.Consumer;
  */
 public interface TwitterStream extends TwitterBase {
     /**
+     * returns new Builder instance
+     * @return Builder instance
+     */
+    static Configuration<TwitterStream> newBuilder(){
+        return new Configuration<>(TwitterStreamImpl::new);
+    }
+
+    /**
+     * equivalent to calling newBuilder().build();
+     * @return TwitterStream Instance
+     */
+    static TwitterStream getInstance(){
+        return newBuilder().build();
+    }
+
+    /**
      * Adds a ConnectionLifeCycleListener
      *
      * @param listener listener to be added

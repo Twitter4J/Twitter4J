@@ -18,7 +18,6 @@ package examples.stream;
 import twitter4j.RawStreamListener;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - sample method support.<br>
@@ -35,7 +34,7 @@ public class PrintRawSampleStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance().addListener(new RawStreamListener() {
+        TwitterStream.getInstance().addListener(new RawStreamListener() {
             @Override
             public void onMessage(String rawJSON) {
                 System.out.println(rawJSON);
