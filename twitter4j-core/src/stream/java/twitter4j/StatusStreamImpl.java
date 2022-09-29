@@ -29,12 +29,12 @@ import java.util.List;
 class StatusStreamImpl extends StatusStreamBase {
     /*package*/
 
-    StatusStreamImpl(InputStream stream, TwitterStreamBuilder conf) {
+    StatusStreamImpl(InputStream stream, TwitterStream.TwitterStreamBuilder conf) {
         super(stream, conf);
     }
     /*package*/
 
-    StatusStreamImpl(HttpResponse response, TwitterStreamBuilder conf) throws IOException {
+    StatusStreamImpl(HttpResponse response, TwitterStream.TwitterStreamBuilder conf) throws IOException {
         super(response, conf);
     }
 

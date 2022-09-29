@@ -37,12 +37,12 @@ abstract class StatusStreamBase implements StatusStream {
     private final InputStream is;
     private HttpResponse response;
     private final ExecutorService dispatcher = Executors.newFixedThreadPool(1);
-    final TwitterStreamBuilder CONF;
+    final TwitterStream.TwitterStreamBuilder CONF;
     private final ObjectFactory factory;
 
     /*package*/
 
-    StatusStreamBase(InputStream stream, TwitterStreamBuilder conf) {
+    StatusStreamBase(InputStream stream, TwitterStream.TwitterStreamBuilder conf) {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         this.CONF = conf;
@@ -50,7 +50,7 @@ abstract class StatusStreamBase implements StatusStream {
     }
     /*package*/
 
-    StatusStreamBase(HttpResponse response, TwitterStreamBuilder conf) {
+    StatusStreamBase(HttpResponse response, TwitterStream.TwitterStreamBuilder conf) {
         this(response.asStream(), conf);
         this.response = response;
     }
