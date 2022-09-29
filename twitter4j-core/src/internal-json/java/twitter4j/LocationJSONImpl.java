@@ -53,10 +53,10 @@ import java.util.Objects;
 
     /*package*/
     static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
-        return createLocationList(res.asJSONArray(), conf.isJSONStoreEnabled());
+        return createLocationList(res.asJSONArray(), conf.jsonStoreEnabled);
     }
 
     /*package*/

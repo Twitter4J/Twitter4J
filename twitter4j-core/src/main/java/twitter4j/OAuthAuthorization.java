@@ -112,7 +112,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
         }
-        oauthToken = new RequestToken(http.post(conf.getOAuthRequestTokenURL(), params.toArray(new HttpParameter[0]), this, null));
+        oauthToken = new RequestToken(http.post(conf.oAuthRequestTokenURL, params.toArray(new HttpParameter[0]), this, null));
         return (RequestToken) oauthToken;
     }
 
@@ -133,7 +133,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (oauthToken instanceof AccessToken) {
             return (AccessToken) oauthToken;
         }
-        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL(), null, this, null));
+        oauthToken = new AccessToken(http.post(conf.oAuthAccessTokenURL, null, this, null));
         return (AccessToken) oauthToken;
     }
 
@@ -150,7 +150,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      */
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
-        oauthToken = new AccessToken(http.post(conf.getOAuthAccessTokenURL()
+        oauthToken = new AccessToken(http.post(conf.oAuthAccessTokenURL
                 , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this, null));
         return (AccessToken) oauthToken;
     }
@@ -227,7 +227,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         boolean succeed = false;
 
         try {
-            HttpResponse res = http.post(conf.getOAuthInvalidateTokenURL(), params, this, null);
+            HttpResponse res = http.post(conf.oAuthInvalidateTokenURL, params, this, null);
             if (res.getStatusCode() != 200) {
                 throw new TwitterException("Invalidating OAuth Token failed.", res);
             }

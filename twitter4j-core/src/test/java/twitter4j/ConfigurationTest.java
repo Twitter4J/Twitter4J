@@ -158,29 +158,29 @@ public class ConfigurationTest {
 
         assertEquals(conf, serializeDeserialize(conf));
 
-        assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAuthorizationURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, conf.restBaseURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAuthenticationURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAuthorizationURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAccessTokenURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
         builder = new ConfigurationBuilder();
         builder.oAuthConsumerKey("key");
         builder.oAuthConsumerSecret("secret");
         conf = builder.buildConfiguration();
-        assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAuthorizationURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, conf.restBaseURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAuthenticationURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAuthorizationURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthAccessTokenURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
         RequestToken rt = new RequestToken("key", "secret");
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
         assertEquals(0, rt.getAuthenticationURL().indexOf("https://"));
         assertEquals(0, rt.getAuthorizationURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthAccessTokenURL().indexOf("https://"));
-        assertEquals(0, conf.getOAuthRequestTokenURL().indexOf("https://"));
+        assertEquals(0, conf.oAuthAccessTokenURL.indexOf("https://"));
+        assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
         deleteFile("./twitter4j.properties");
     }

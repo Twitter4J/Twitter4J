@@ -56,7 +56,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
             String consumerSecret = conf.getOAuthConsumerSecret();
             // try to find oauth tokens in the configuration
             if (consumerKey != null && consumerSecret != null) {
-                if (conf.isApplicationOnlyAuthEnabled()) {
+                if (conf.applicationOnlyAuthEnabled) {
                     OAuth2Authorization oauth2 = new OAuth2Authorization(conf);
                     String tokenType = conf.getOAuth2TokenType();
                     String accessToken = conf.getOAuth2AccessToken();

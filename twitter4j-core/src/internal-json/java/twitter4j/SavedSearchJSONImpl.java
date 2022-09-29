@@ -36,12 +36,12 @@ import java.util.Objects;
 
     /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -52,7 +52,7 @@ import java.util.Objects;
 
     /*package*/
     static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONArray json = res.asJSONArray();
@@ -63,11 +63,11 @@ import java.util.Objects;
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
                 savedSearches.add(savedSearch);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(savedSearch, savedSearchesJSON);
                 }
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(savedSearches, json);
             }
             return savedSearches;

@@ -69,7 +69,7 @@ import static twitter4j.ParseUtil.getDate;
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }
@@ -78,7 +78,7 @@ import static twitter4j.ParseUtil.getDate;
     /*package*/StatusJSONImpl(JSONObject json, Configuration conf) throws TwitterException {
         super();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -432,7 +432,7 @@ import static twitter4j.ParseUtil.getDate;
     /*package*/
     static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -441,12 +441,12 @@ import static twitter4j.ParseUtil.getDate;
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(status, json);
                 }
                 statuses.add(status);
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(statuses, list);
             }
             return statuses;

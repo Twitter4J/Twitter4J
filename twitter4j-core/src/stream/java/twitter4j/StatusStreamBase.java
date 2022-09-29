@@ -89,7 +89,7 @@ abstract class StatusStreamBase implements StatusStream {
                         if (line != null && line.length() > 0) {
                             // parsing JSON is an expensive process and can be avoided when all listeners are instanceof RawStreamListener
                             if (listeners.length > 0) {
-                                if (CONF.isJSONStoreEnabled()) {
+                                if (CONF.jsonStoreEnabled) {
                                     TwitterObjectFactory.clearThreadLocalMap();
                                 }
                                 JSONObject json = new JSONObject(line);
@@ -357,7 +357,7 @@ abstract class StatusStreamBase implements StatusStream {
     Status asStatus(JSONObject json) throws TwitterException {
         Status status = new StatusJSONImpl(json);
 
-        if (CONF.isJSONStoreEnabled()) {
+        if (CONF.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(status, json);
         }
         return status;
@@ -367,7 +367,7 @@ abstract class StatusStreamBase implements StatusStream {
         try {
             JSONObject dmJSON = json.getJSONObject("direct_message");
             DirectMessage directMessage = new DirectMessageJSONImpl(dmJSON);
-            if (CONF.isJSONStoreEnabled()) {
+            if (CONF.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(directMessage, dmJSON);
             }
             return directMessage;
@@ -392,7 +392,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     User asUser(JSONObject json) throws TwitterException {
         User user = new UserJSONImpl(json);
-        if (CONF.isJSONStoreEnabled()) {
+        if (CONF.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(user, json);
         }
         return user;
@@ -400,7 +400,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     UserList asUserList(JSONObject json) throws TwitterException {
         UserList userList = new UserListJSONImpl(json);
-        if (CONF.isJSONStoreEnabled()) {
+        if (CONF.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(userList, json);
         }
         return userList;

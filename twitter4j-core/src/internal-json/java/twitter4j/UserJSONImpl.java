@@ -73,12 +73,12 @@ import java.util.Date;
 
     /*package*/UserJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -512,7 +512,7 @@ import java.util.Date;
     /*package*/
     static PagableResponseList<User> createPagableUserList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONObject json = res.asJSONObject();
@@ -523,12 +523,12 @@ import java.util.Date;
             for (int i = 0; i < size; i++) {
                 JSONObject userJson = list.getJSONObject(i);
                 User user = new UserJSONImpl(userJson);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(user, userJson);
                 }
                 users.add(user);
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(users, json);
             }
             return users;
@@ -545,7 +545,7 @@ import java.util.Date;
     /*package*/
     static ResponseList<User> createUserList(JSONArray list, HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             int size = list.length();
@@ -555,11 +555,11 @@ import java.util.Date;
                 JSONObject json = list.getJSONObject(i);
                 User user = new UserJSONImpl(json);
                 users.add(user);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(user, json);
                 }
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(users, list);
             }
             return users;

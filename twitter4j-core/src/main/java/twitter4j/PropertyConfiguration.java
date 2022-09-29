@@ -219,68 +219,68 @@ final class PropertyConfiguration {
             conf.setOAuth2Scope(getString(props, OAUTH2_SCOPE));
         }
         if (notNull(props, STREAM_THREAD_NAME)) {
-            conf.setStreamThreadName(getString(props, STREAM_THREAD_NAME));
+            conf.streamThreadName = getString(props, STREAM_THREAD_NAME);
         }
         if (notNull(props, CONTRIBUTING_TO)) {
-            conf.setContributingTo(getLongProperty(props, CONTRIBUTING_TO));
+            conf.contributingTo = getLongProperty(props, CONTRIBUTING_TO);
         }
         if (notNull(props, OAUTH_REQUEST_TOKEN_URL)) {
-            conf.setOAuthRequestTokenURL(getString(props, OAUTH_REQUEST_TOKEN_URL));
+            conf.oAuthRequestTokenURL = getString(props, OAUTH_REQUEST_TOKEN_URL);
         }
 
         if (notNull(props, OAUTH_AUTHORIZATION_URL)) {
-            conf.setOAuthAuthorizationURL(getString(props, OAUTH_AUTHORIZATION_URL));
+            conf.oAuthAuthorizationURL = getString(props, OAUTH_AUTHORIZATION_URL);
         }
 
         if (notNull(props, OAUTH_ACCESS_TOKEN_URL)) {
-            conf.setOAuthAccessTokenURL(getString(props, OAUTH_ACCESS_TOKEN_URL));
+            conf.oAuthAccessTokenURL = getString(props, OAUTH_ACCESS_TOKEN_URL);
         }
 
         if (notNull(props, OAUTH_AUTHENTICATION_URL)) {
-            conf.setOAuthAuthenticationURL(getString(props, OAUTH_AUTHENTICATION_URL));
+            conf.oAuthAuthenticationURL = getString(props, OAUTH_AUTHENTICATION_URL);
         }
 
         if (notNull(props, OAUTH2_TOKEN_URL)) {
-            conf.setOAuth2TokenURL(getString(props, OAUTH2_TOKEN_URL));
+            conf.oAuth2TokenURL = getString(props, OAUTH2_TOKEN_URL);
         }
 
         if (notNull(props, OAUTH2_INVALIDATE_TOKEN_URL)) {
-            conf.setOAuth2InvalidateTokenURL(getString(props, OAUTH2_INVALIDATE_TOKEN_URL));
+            conf.oAuth2InvalidateTokenURL = getString(props, OAUTH2_INVALIDATE_TOKEN_URL);
         }
 
         if (notNull(props, REST_BASE_URL)) {
-            conf.setRestBaseURL(getString(props, REST_BASE_URL));
+            conf.restBaseURL = getString(props, REST_BASE_URL);
         }
 
         if (notNull(props, STREAM_BASE_URL)) {
-            conf.setStreamBaseURL(getString(props, STREAM_BASE_URL));
+            conf.streamBaseURL = getString(props, STREAM_BASE_URL);
         }
         if (notNull(props, INCLUDE_MY_RETWEET)) {
-            conf.setIncludeMyRetweetEnabled(getBoolean(props, INCLUDE_MY_RETWEET));
+            conf.includeMyRetweetEnabled = getBoolean(props, INCLUDE_MY_RETWEET);
         }
         if (notNull(props, INCLUDE_ENTITIES)) {
-            conf.setIncludeEntitiesEnabled(getBoolean(props, INCLUDE_ENTITIES));
+            conf.includeEntitiesEnabled = getBoolean(props, INCLUDE_ENTITIES);
         }
         if (notNull(props, INCLUDE_EMAIL)) {
-            conf.setIncludeEmailEnabled(getBoolean(props, INCLUDE_EMAIL));
+            conf.includeEmailEnabled = getBoolean(props, INCLUDE_EMAIL);
         }
         if (notNull(props, INCLUDE_EXT_ALT_TEXT)) {
-            conf.setIncludeExtAltTextEnabled(getBoolean(props, INCLUDE_EXT_ALT_TEXT));
+            conf.includeExtAltTextEnabled = getBoolean(props, INCLUDE_EXT_ALT_TEXT);
         }
         if (notNull(props, TWEET_MODE_EXTENDED)) {
-            conf.setTweetModeExtended(getBoolean(props, TWEET_MODE_EXTENDED));
+            conf.tweetModeExtended = getBoolean(props, TWEET_MODE_EXTENDED);
         }
         if (notNull(props, JSON_STORE_ENABLED)) {
-            conf.setJSONStoreEnabled(getBoolean(props, JSON_STORE_ENABLED));
+            conf.jsonStoreEnabled = getBoolean(props, JSON_STORE_ENABLED);
         }
         if (notNull(props, MBEAN_ENABLED)) {
-            conf.setMBeanEnabled(getBoolean(props, MBEAN_ENABLED));
+            conf.mbeanEnabled = getBoolean(props, MBEAN_ENABLED);
         }
         if (notNull(props, STREAM_STALL_WARNINGS_ENABLED)) {
-            conf.setStallWarningsEnabled(getBoolean(props, STREAM_STALL_WARNINGS_ENABLED));
+            conf.stallWarningsEnabled = getBoolean(props, STREAM_STALL_WARNINGS_ENABLED);
         }
         if (notNull(props, APPLICATION_ONLY_AUTH_ENABLED)) {
-            conf.setApplicationOnlyAuthEnabled(getBoolean(props, APPLICATION_ONLY_AUTH_ENABLED));
+            conf.applicationOnlyAuthEnabled = getBoolean(props, APPLICATION_ONLY_AUTH_ENABLED);
         }
     }
 

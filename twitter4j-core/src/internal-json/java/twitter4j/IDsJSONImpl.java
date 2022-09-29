@@ -34,7 +34,7 @@ import java.util.Arrays;
         super(res);
         String json = res.asString();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }

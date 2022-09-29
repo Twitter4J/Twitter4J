@@ -42,7 +42,7 @@ import java.util.Objects;
 
     /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         this(res, res.asJSONObject());
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
@@ -77,7 +77,7 @@ import java.util.Objects;
     /*package*/
     static ResponseList<Relationship> createRelationshipList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -86,12 +86,12 @@ import java.util.Objects;
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Relationship relationship = new RelationshipJSONImpl(json);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(relationship, json);
                 }
                 relationships.add(relationship);
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(relationships, list);
             }
             return relationships;

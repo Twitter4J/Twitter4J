@@ -35,7 +35,7 @@ public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }

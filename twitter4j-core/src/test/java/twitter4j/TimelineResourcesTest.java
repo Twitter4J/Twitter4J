@@ -21,9 +21,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -36,7 +34,7 @@ class TimelineResourcesTest extends TwitterTestBase {
     void testGetHomeTimeline() throws Exception {
         List<Status> statuses = twitter1.getHomeTimeline();
         assertTrue(0 < statuses.size());
-        assertTrue(twitter1.getConfiguration().isJSONStoreEnabled());
+        assertTrue(twitter1.getConfiguration().jsonStoreEnabled);
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
     }

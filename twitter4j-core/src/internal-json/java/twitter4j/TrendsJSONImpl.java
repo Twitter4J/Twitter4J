@@ -38,8 +38,8 @@ import java.util.*;
 
     TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
         super(res);
-        init(res.asString(), conf.isJSONStoreEnabled());
-        if (conf.isJSONStoreEnabled()) {
+        init(res.asString(), conf.jsonStoreEnabled);
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asString());
         }

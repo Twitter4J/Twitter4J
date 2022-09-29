@@ -53,7 +53,7 @@ class DAOTest extends TwitterTestBase {
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
-        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.isJSONStoreEnabled());
+        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.jsonStoreEnabled);
         assertEquals(0, trends.size());
         assertDeserializedFormIsEqual(trends);
     }
@@ -61,7 +61,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/dao/trends-available.json");
-        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.isJSONStoreEnabled());
+        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.jsonStoreEnabled);
         assertEquals(23, locations.size());
         Location location = locations.get(0);
         assertEquals("GB", location.getCountryCode());

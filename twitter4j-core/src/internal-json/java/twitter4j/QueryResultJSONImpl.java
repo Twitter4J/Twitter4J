@@ -51,7 +51,7 @@ import java.util.List;
 
             JSONArray array = json.getJSONArray("statuses");
             tweets = new ArrayList<>(array.length());
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             for (int i = 0; i < array.length(); i++) {

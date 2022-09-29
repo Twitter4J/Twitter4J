@@ -45,7 +45,7 @@ import java.util.*;
         try {
             JSONObject event = json.getJSONObject("event");
             init(event);
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
                 TwitterObjectFactory.registerJSONObject(this, event);
             }
@@ -124,7 +124,7 @@ import java.util.*;
 
     static DirectMessageList createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
         try {
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list;
@@ -148,11 +148,11 @@ import java.util.*;
                     JSONObject json = list.getJSONObject(i);
                     DirectMessage directMessage = new DirectMessageJSONImpl(json);
                     directMessages.add(directMessage);
-                    if (conf.isJSONStoreEnabled()) {
+                    if (conf.jsonStoreEnabled) {
                         TwitterObjectFactory.registerJSONObject(directMessage, json);
                     }
                 }
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(directMessages, list);
                 }
                 return directMessages;

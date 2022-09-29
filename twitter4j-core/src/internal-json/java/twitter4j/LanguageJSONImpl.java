@@ -66,7 +66,7 @@ public class LanguageJSONImpl implements HelpResources.Language {
     /*package*/
     static ResponseList<HelpResources.Language> createLanguageList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         try {
@@ -77,11 +77,11 @@ public class LanguageJSONImpl implements HelpResources.Language {
                 JSONObject json = list.getJSONObject(i);
                 HelpResources.Language language = new LanguageJSONImpl(json);
                 languages.add(language);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(language, json);
                 }
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(languages, list);
             }
             return languages;

@@ -42,7 +42,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }
@@ -134,7 +134,7 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     /*package*/
     static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res
             , Configuration conf) throws TwitterException {
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         try {
@@ -145,11 +145,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 JSONObject json = list.getJSONObject(i);
                 Place place = new PlaceJSONImpl(json);
                 places.add(place);
-                if (conf.isJSONStoreEnabled()) {
+                if (conf.jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(place, json);
                 }
             }
-            if (conf.isJSONStoreEnabled()) {
+            if (conf.jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(places, list);
             }
             return places;

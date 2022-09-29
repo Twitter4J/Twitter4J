@@ -74,7 +74,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
             params[1] = new HttpParameter("scope", conf.getOAuth2Scope());
         }
 
-        HttpResponse res = http.post(conf.getOAuth2TokenURL(), params, this, null);
+        HttpResponse res = http.post(conf.oAuth2TokenURL, params, this, null);
         if (res.getStatusCode() != 200) {
             throw new TwitterException("Obtaining OAuth 2 Bearer Token failed.", res);
         }
@@ -111,7 +111,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         try {
             token = null;
 
-            HttpResponse res = http.post(conf.getOAuth2InvalidateTokenURL(), params, this, null);
+            HttpResponse res = http.post(conf.oAuth2InvalidateTokenURL, params, this, null);
             if (res.getStatusCode() != 200) {
                 throw new TwitterException("Invalidating OAuth 2 Bearer Token failed.", res);
             }

@@ -45,7 +45,7 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
-        configurationBean.setApplicationOnlyAuthEnabled(applicationOnlyAuthEnabled);
+        configurationBean.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
         return this;
     }
     public ConfigurationBuilder load(Properties props){
@@ -170,109 +170,109 @@ public final class ConfigurationBuilder {
 
     public ConfigurationBuilder oAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
-        configurationBean.setOAuthRequestTokenURL(oAuthRequestTokenURL);
+        configurationBean.oAuthRequestTokenURL = oAuthRequestTokenURL;
         return this;
     }
 
     public ConfigurationBuilder oAuthAuthorizationURL(String oAuthAuthorizationURL) {
         checkNotBuilt();
-        configurationBean.setOAuthAuthorizationURL(oAuthAuthorizationURL);
+        configurationBean.oAuthAuthorizationURL =oAuthAuthorizationURL;
         return this;
     }
 
     public ConfigurationBuilder oAuthAccessTokenURL(String oAuthAccessTokenURL) {
         checkNotBuilt();
-        configurationBean.setOAuthAccessTokenURL(oAuthAccessTokenURL);
+        configurationBean.oAuthAccessTokenURL =oAuthAccessTokenURL;
         return this;
     }
 
     public ConfigurationBuilder oAuthAuthenticationURL(String oAuthAuthenticationURL) {
         checkNotBuilt();
-        configurationBean.setOAuthAuthenticationURL(oAuthAuthenticationURL);
+        configurationBean.oAuthAuthenticationURL =oAuthAuthenticationURL;
         return this;
     }
 
     public ConfigurationBuilder oAuth2TokenURL(String oAuth2TokenURL) {
         checkNotBuilt();
-        configurationBean.setOAuth2TokenURL(oAuth2TokenURL);
+        configurationBean.oAuth2TokenURL =oAuth2TokenURL;
         return this;
     }
 
     public ConfigurationBuilder oAuth2InvalidateTokenURL(String invalidateTokenURL) {
         checkNotBuilt();
-        configurationBean.setOAuth2InvalidateTokenURL(invalidateTokenURL);
+        configurationBean.oAuth2InvalidateTokenURL =invalidateTokenURL;
         return this;
     }
 
     public ConfigurationBuilder restBaseURL(String restBaseURL) {
         checkNotBuilt();
-        configurationBean.setRestBaseURL(restBaseURL);
+        configurationBean.restBaseURL =restBaseURL;
         return this;
     }
 
     public ConfigurationBuilder uploadBaseURL(String uploadBaseURL) {
         checkNotBuilt();
-        configurationBean.setUploadBaseURL(uploadBaseURL);
+        configurationBean.uploadBaseURL =uploadBaseURL;
         return this;
     }
 
     public ConfigurationBuilder streamBaseURL(String streamBaseURL) {
         checkNotBuilt();
-        configurationBean.setStreamBaseURL(streamBaseURL);
+        configurationBean.streamBaseURL =streamBaseURL;
         return this;
     }
 
     public ConfigurationBuilder contributingTo(long contributingTo) {
         checkNotBuilt();
-        configurationBean.setContributingTo(contributingTo);
+        configurationBean.contributingTo =contributingTo;
         return this;
     }
 
     public ConfigurationBuilder trimUserEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setTrimUserEnabled(enabled);
+        configurationBean.trimUserEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder includeExtAltTextEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setIncludeExtAltTextEnabled(enabled);
+        configurationBean.includeExtAltTextEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder tweetModeExtended(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setTweetModeExtended(enabled);
+        configurationBean.tweetModeExtended =enabled;
         return this;
     }
 
     public ConfigurationBuilder includeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setIncludeMyRetweetEnabled(enabled);
+        configurationBean.includeMyRetweetEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder includeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setIncludeEntitiesEnabled(enabled);
+        configurationBean.includeEntitiesEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder includeEmailEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setIncludeEmailEnabled(enabled);
+        configurationBean.includeEmailEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder jsonStoreEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setJSONStoreEnabled(enabled);
+        configurationBean.jsonStoreEnabled =enabled;
         return this;
     }
 
     public ConfigurationBuilder mBeanEnabled(boolean enabled) {
         checkNotBuilt();
-        configurationBean.setMBeanEnabled(enabled);
+        configurationBean.mbeanEnabled =enabled;
         return this;
     }
 

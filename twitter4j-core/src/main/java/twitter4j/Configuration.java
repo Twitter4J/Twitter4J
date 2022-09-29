@@ -42,36 +42,36 @@ public class Configuration implements AuthorizationConfiguration, java.io.Serial
     private String oAuth2TokenType;
     private String oAuth2AccessToken;
     private String oAuth2Scope;
-    private String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
-    private String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
-    private String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
-    private String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
-    private String oAuthInvalidateTokenURL = "https://api.twitter.com/1.1/oauth/invalidate_token";
-    private String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
-    private String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
+    String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
+    String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
+    String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
+    String oAuthAuthenticationURL = "https://api.twitter.com/oauth/authenticate";
+    String oAuthInvalidateTokenURL = "https://api.twitter.com/1.1/oauth/invalidate_token";
+    String oAuth2TokenURL = "https://api.twitter.com/oauth2/token";
+    String oAuth2InvalidateTokenURL = "https://api.twitter.com/oauth2/invalidate_token";
 
-    private String restBaseURL = "https://api.twitter.com/1.1/";
-    private String streamBaseURL = "https://stream.twitter.com/1.1/";
-    private String uploadBaseURL = "https://upload.twitter.com/1.1/";
+    String restBaseURL = "https://api.twitter.com/1.1/";
+    String streamBaseURL = "https://stream.twitter.com/1.1/";
+    String uploadBaseURL = "https://upload.twitter.com/1.1/";
 
-    private long contributingTo = -1L;
+    long contributingTo = -1L;
 
-    private boolean includeMyRetweetEnabled = true;
-    private boolean includeEntitiesEnabled = true;
-    private boolean trimUserEnabled = false;
-    private boolean includeExtAltTextEnabled = true;
-    private boolean tweetModeExtended = true;
-    private boolean includeEmailEnabled = false;
+    boolean includeMyRetweetEnabled = true;
+    boolean includeEntitiesEnabled = true;
+    boolean trimUserEnabled = false;
+    boolean includeExtAltTextEnabled = true;
+    boolean tweetModeExtended = true;
+    boolean includeEmailEnabled = false;
 
-    private boolean jsonStoreEnabled = false;
+    boolean jsonStoreEnabled = false;
 
-    private boolean mbeanEnabled = false;
+    boolean mbeanEnabled = false;
 
-    private boolean stallWarningsEnabled = true;
+    boolean stallWarningsEnabled = true;
 
-    private boolean applicationOnlyAuthEnabled = false;
+    boolean applicationOnlyAuthEnabled = false;
 
-    private String streamThreadName = "";
+    String streamThreadName = "";
 
     Configuration() {
         httpConf = new Configuration.MyHttpClientConfiguration(null // proxy host
@@ -434,183 +434,6 @@ public class Configuration implements AuthorizationConfiguration, java.io.Serial
     }
 
 
-    public long getContributingTo() {
-        return contributingTo;
-    }
-
-    void setContributingTo(long contributingTo) {
-        this.contributingTo = contributingTo;
-    }
-
-    public String getRestBaseURL() {
-        return restBaseURL;
-    }
-
-    void setRestBaseURL(String restBaseURL) {
-        this.restBaseURL = restBaseURL;
-    }
-
-    public String getUploadBaseURL() {
-        return uploadBaseURL;
-    }
-
-    void setUploadBaseURL(String uploadBaseURL) {
-        this.uploadBaseURL = uploadBaseURL;
-    }
-
-    public String getStreamBaseURL() {
-        return streamBaseURL;
-    }
-
-    void setStreamBaseURL(String streamBaseURL) {
-        this.streamBaseURL = streamBaseURL;
-    }
-
-    public String getOAuthRequestTokenURL() {
-        return oAuthRequestTokenURL;
-    }
-
-    void setOAuthRequestTokenURL(String oAuthRequestTokenURL) {
-        this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-    }
-
-    public String getOAuthAuthorizationURL() {
-        return oAuthAuthorizationURL;
-    }
-
-    void setOAuthAuthorizationURL(String oAuthAuthorizationURL) {
-        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
-    }
-
-    public String getOAuthAccessTokenURL() {
-        return oAuthAccessTokenURL;
-    }
-
-    void setOAuthAccessTokenURL(String oAuthAccessTokenURL) {
-        this.oAuthAccessTokenURL = oAuthAccessTokenURL;
-    }
-
-    public String getOAuthAuthenticationURL() {
-        return oAuthAuthenticationURL;
-    }
-
-    void setOAuthAuthenticationURL(String oAuthAuthenticationURL) {
-        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
-    }
-
-    public String getOAuth2TokenURL() {
-        return oAuth2TokenURL;
-    }
-
-    void setOAuth2TokenURL(String oAuth2TokenURL) {
-        this.oAuth2TokenURL = oAuth2TokenURL;
-    }
-
-    public String getOAuthInvalidateTokenURL() {
-        return oAuthInvalidateTokenURL;
-    }
-
-    @SuppressWarnings("unused")
-    void setOAuthInvalidateTokenURL(String oAuthInvalidateTokenURL) {
-        this.oAuthInvalidateTokenURL = oAuthInvalidateTokenURL;
-    }
-
-    public String getOAuth2InvalidateTokenURL() {
-        return oAuth2InvalidateTokenURL;
-    }
-
-    void setOAuth2InvalidateTokenURL(String oAuth2InvalidateTokenURL) {
-        this.oAuth2InvalidateTokenURL = oAuth2InvalidateTokenURL;
-    }
-
-    public boolean isIncludeEntitiesEnabled() {
-        return includeEntitiesEnabled;
-    }
-
-    void setIncludeEntitiesEnabled(boolean includeEntitiesEnabled) {
-        this.includeEntitiesEnabled = includeEntitiesEnabled;
-    }
-
-    public boolean isIncludeMyRetweetEnabled() {
-        return this.includeMyRetweetEnabled;
-    }
-
-    public void setIncludeMyRetweetEnabled(boolean enabled) {
-        this.includeMyRetweetEnabled = enabled;
-    }
-
-    public boolean isTrimUserEnabled() {
-        return this.trimUserEnabled;
-    }
-
-    public boolean isIncludeExtAltTextEnabled() {
-        return this.includeExtAltTextEnabled;
-    }
-
-    public boolean isTweetModeExtended() {
-        return this.tweetModeExtended;
-    }
-
-    public boolean isIncludeEmailEnabled() {
-        return includeEmailEnabled;
-    }
-
-    void setIncludeEmailEnabled(boolean includeEmailEnabled) {
-        this.includeEmailEnabled = includeEmailEnabled;
-    }
-
-    public void setTrimUserEnabled(boolean enabled) {
-        this.trimUserEnabled = enabled;
-    }
-
-    public void setIncludeExtAltTextEnabled(boolean enabled) {
-        this.includeExtAltTextEnabled = enabled;
-    }
-
-    public void setTweetModeExtended(boolean enabled) {
-        this.tweetModeExtended = enabled;
-    }
-
-    public boolean isJSONStoreEnabled() {
-        return this.jsonStoreEnabled;
-    }
-
-    void setJSONStoreEnabled(boolean enabled) {
-        this.jsonStoreEnabled = enabled;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isMBeanEnabled() {
-        return this.mbeanEnabled;
-    }
-
-    void setMBeanEnabled(boolean enabled) {
-        this.mbeanEnabled = enabled;
-    }
-
-    public boolean isStallWarningsEnabled() {
-        return stallWarningsEnabled;
-    }
-
-    void setStallWarningsEnabled(boolean stallWarningsEnabled) {
-        this.stallWarningsEnabled = stallWarningsEnabled;
-    }
-
-    public boolean isApplicationOnlyAuthEnabled() {
-        return applicationOnlyAuthEnabled;
-    }
-
-    void setApplicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
-        this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
-    }
-
-    public String getStreamThreadName() {
-        return this.streamThreadName;
-    }
-
-    void setStreamThreadName(String streamThreadName) {
-        this.streamThreadName = streamThreadName;
-    }
 
     @Override
     public boolean equals(Object o) {

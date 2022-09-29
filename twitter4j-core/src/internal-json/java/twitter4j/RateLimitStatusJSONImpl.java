@@ -38,7 +38,7 @@ import java.util.Map;
     static Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
         JSONObject json = res.asJSONObject();
         Map<String, RateLimitStatus> map = createRateLimitStatuses(json);
-        if (conf.isJSONStoreEnabled()) {
+        if (conf.jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(map, json);
         }
