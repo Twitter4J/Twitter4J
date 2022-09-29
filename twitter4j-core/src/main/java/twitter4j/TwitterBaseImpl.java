@@ -43,9 +43,9 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
 
     Authorization auth;
 
-    /*package*/ TwitterBaseImpl(Configuration conf, Authorization auth) {
+    /*package*/ TwitterBaseImpl(Configuration conf) {
         this.conf = conf;
-        this.auth = auth;
+        this.auth = conf.getAuthorization();
         init();
     }
 
@@ -160,7 +160,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
     }
 
     @Override
-    public Configuration getConfiguration() {
+    public Configuration<Twitter> getConfiguration() {
         return this.conf;
     }
 

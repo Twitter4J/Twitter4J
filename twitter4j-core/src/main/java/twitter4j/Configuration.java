@@ -99,6 +99,38 @@ public class Configuration<T> implements AuthorizationConfiguration, HttpClientC
         return new Configuration<>();
     }
 
+    public Authorization getAuthorization(){
+        Authorization auth = null;
+        String consumerKey = this.oAuthConsumerKey;
+        String consumerSecret = this.oAuthConsumerSecret;
+
+        if (consumerKey != null && consumerSecret != null) {
+            if (this.applicationOnlyAuthEnabled){
+                OAuth2Authorization oauth2 = new OAuth2Authorization(this);
+                String tokenType = this.oAuth2TokenType;
+                String accessToken = this.oAuth2AccessToken;
+                if (tokenType != null && accessToken != null) {
+                    oauth2.setOAuth2Token(new OAuth2Token(tokenType, accessToken));
+                }
+                auth = oauth2;
+
+            } else {
+                OAuthAuthorization oauth;
+                oauth = new OAuthAuthorization(this);
+                String accessToken = this.oAuthAccessToken;
+                String accessTokenSecret = this.oAuthAccessTokenSecret;
+                if (accessToken != null && accessTokenSecret != null) {
+                    oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
+                }
+                auth = oauth;
+            }
+        }
+        if (null == auth) {
+            auth = NullAuthorization.getInstance();
+        }
+        return auth;
+
+    }
     // oauth related setter/getters
     @Override
     public String getUser() {
