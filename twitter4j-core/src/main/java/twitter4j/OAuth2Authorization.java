@@ -24,6 +24,7 @@ import java.util.Objects;
  * @author KOMIYA Atsushi - komiya.atsushi at gmail.com
  * @see <a href="https://dev.twitter.com/docs/auth/application-only-auth">Application-only authentication</a>
  */
+@SuppressWarnings("rawtypes")
 public class OAuth2Authorization implements Authorization, java.io.Serializable {
 
     private static final long serialVersionUID = -2895232598422218647L;
@@ -39,7 +40,10 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
 
     public OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {
         this.conf = conf;
-        setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
+        setOAuthConsumer(conf.oAuthConsumerKey, conf.oAuthConsumerSecret);
+        if (conf.oAuth2TokenType != null && conf.oAuth2AccessToken != null) {
+            token = new OAuth2Token(conf.oAuth2TokenType, conf.oAuth2AccessToken);
+        }
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
     }
 
@@ -68,10 +72,10 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
             throw new IllegalStateException("OAuth 2 Bearer Token is already available.");
         }
 
-        HttpParameter[] params = new HttpParameter[conf.getOAuth2Scope() == null ? 1 : 2];
+        HttpParameter[] params = new HttpParameter[conf.oAuth2Scope == null ? 1 : 2];
         params[0] = new HttpParameter("grant_type", "client_credentials");
-        if (conf.getOAuth2Scope() != null) {
-            params[1] = new HttpParameter("scope", conf.getOAuth2Scope());
+        if (conf.oAuth2Scope != null) {
+            params[1] = new HttpParameter("scope", conf.oAuth2Scope);
         }
 
         HttpResponse res = http.post(conf.oAuth2TokenURL, params, this, null);
@@ -80,15 +84,6 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         }
         token = new OAuth2Token(res);
         return token;
-    }
-
-    /**
-     * Sets the OAuth 2 Bearer token.
-     *
-     * @param oauth2Token OAuth 2 Bearer token
-     */
-    public void setOAuth2Token(OAuth2Token oauth2Token) {
-        this.token = oauth2Token;
     }
 
     /**

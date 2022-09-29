@@ -30,6 +30,7 @@ import static twitter4j.HttpResponseCode.*;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings("rawtypes")
 abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, HttpResponseListener {
     private static final String WWW_DETAILS = "See http://twitter4j.org/en/configuration.html for details. See and register at http://apps.twitter.com/";
     private static final long serialVersionUID = -7824361938865528554L;
@@ -46,38 +47,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
     /*package*/ TwitterBaseImpl(Configuration conf) {
         this.conf = conf;
         this.auth = conf.getAuthorization();
-        init();
-    }
-
-    private void init() {
-        if (null == auth) {
-            // try to populate OAuthAuthorization if available in the configuration
-            String consumerKey = conf.getOAuthConsumerKey();
-            String consumerSecret = conf.getOAuthConsumerSecret();
-            // try to find oauth tokens in the configuration
-            if (consumerKey != null && consumerSecret != null) {
-                if (conf.applicationOnlyAuthEnabled) {
-                    OAuth2Authorization oauth2 = new OAuth2Authorization(conf);
-                    String tokenType = conf.getOAuth2TokenType();
-                    String accessToken = conf.getOAuth2AccessToken();
-                    if (tokenType != null && accessToken != null) {
-                        oauth2.setOAuth2Token(new OAuth2Token(tokenType, accessToken));
-                    }
-                    this.auth = oauth2;
-
-                } else {
-                    OAuthAuthorization oauth = new OAuthAuthorization(conf);
-                    String accessToken = conf.getOAuthAccessToken();
-                    String accessTokenSecret = conf.getOAuthAccessTokenSecret();
-                    if (accessToken != null && accessTokenSecret != null) {
-                        oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
-                    }
-                    this.auth = oauth;
-                }
-            } else {
-                this.auth = NullAuthorization.getInstance();
-            }
-        }
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();
     }
@@ -195,6 +164,7 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
 
         conf = (Configuration) stream.readObject();
         auth = (Authorization) stream.readObject();
+        //noinspection unchecked
         rateLimitStatusListeners = (List<RateLimitStatusListener>) stream.readObject();
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();

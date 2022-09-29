@@ -28,6 +28,7 @@ import java.util.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @see <a href="http://oauth.net/core/1.0a/">OAuth Core 1.0a</a>
  */
+@SuppressWarnings("rawtypes")
 public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
@@ -36,10 +37,10 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
     private static final Logger logger = Logger.getLogger();
-    private String consumerKey = "";
-    private String consumerSecret;
+    private final String consumerKey;
+    private final String consumerSecret;
 
-    private String realm = null;
+    private final String realm;
 
     private OAuthToken oauthToken = null;
 
@@ -48,13 +49,19 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     /**
      * @param conf configuration
      */
-    public OAuthAuthorization(Configuration conf) {
+    OAuthAuthorization(Configuration conf) {
         this.conf = conf;
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        setOAuthConsumer(conf.getOAuthConsumerKey(), conf.getOAuthConsumerSecret());
-        if (conf.getOAuthAccessToken() != null && conf.getOAuthAccessTokenSecret() != null) {
-            setOAuthAccessToken(new AccessToken(conf.getOAuthAccessToken(), conf.getOAuthAccessTokenSecret()));
+        this.consumerKey = conf.oAuthConsumerKey != null ? conf.oAuthConsumerKey : "";
+        this.consumerSecret = conf.oAuthConsumerSecret != null ? conf.oAuthConsumerSecret : "";
+        if (conf.oAuthAccessToken != null && conf.oAuthAccessTokenSecret != null) {
+            this.oauthToken = new AccessToken(conf.oAuthAccessToken, conf.oAuthAccessTokenSecret);
         }
+        this.realm = conf.oAuthRealm;
+    }
+
+    public static OAuthAuthorizationBuilder newBuilder() {
+        return new OAuthAuthorizationBuilder();
     }
 
     // implementations for Authorization
@@ -185,27 +192,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     public AccessToken getOAuthAccessToken(RequestToken requestToken, String oauthVerifier) throws TwitterException {
         this.oauthToken = requestToken;
         return getOAuthAccessToken(oauthVerifier);
-    }
-
-    /**
-     * Sets the access token
-     *
-     * @param accessToken accessToken
-     * @since Twitter4J 2.0.0
-     */
-    public void setOAuthAccessToken(AccessToken accessToken) {
-        this.oauthToken = accessToken;
-    }
-
-    /**
-     * Sets the OAuth realm
-     *
-     * @param realm OAuth realm
-     * @since Twitter 2.1.4
-     */
-    @SuppressWarnings("unused")
-    public void setOAuthRealm(String realm) {
-        this.realm = realm;
     }
 
     /**
@@ -458,10 +444,10 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         return url;
     }
 
-    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = consumerKey != null ? consumerKey : "";
-        this.consumerSecret = consumerSecret != null ? consumerSecret : "";
-    }
+//    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
+//        this.consumerKey = consumerKey != null ? consumerKey : "";
+//        this.consumerSecret = consumerSecret != null ? consumerSecret : "";
+//    }
 
 
     @Override
@@ -487,5 +473,13 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
                 ", consumerSecret='******************************************'" +
                 ", oauthToken=" + oauthToken +
                 '}';
+    }
+
+    public static class OAuthAuthorizationBuilder extends Configuration<OAuthAuthorization, OAuthAuthorizationBuilder> {
+        private static final long serialVersionUID = -7194823238000676626L;
+
+        OAuthAuthorizationBuilder() {
+            super(OAuthAuthorization::new);
+        }
     }
 }

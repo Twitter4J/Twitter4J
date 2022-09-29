@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
-class Configuration<T, T2 extends Configuration> implements AuthorizationConfiguration, HttpClientConfiguration, java.io.Serializable {
+class Configuration<T, T2 extends Configuration> implements HttpClientConfiguration, java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
     String user = null;
     String password = null;
@@ -47,13 +47,14 @@ class Configuration<T, T2 extends Configuration> implements AuthorizationConfigu
     private int httpRetryCount = 0;
     private int httpRetryIntervalSeconds = 5;
 
-    private String oAuthConsumerKey = null;
-    private String oAuthConsumerSecret = null;
-    private String oAuthAccessToken = null;
-    private String oAuthAccessTokenSecret = null;
-    private String oAuth2TokenType;
-    private String oAuth2AccessToken;
-    private String oAuth2Scope;
+    String oAuthConsumerKey = null;
+    String oAuthConsumerSecret = null;
+    String oAuthAccessToken = null;
+    String oAuthAccessTokenSecret = null;
+    String oAuthRealm = null;
+    String oAuth2TokenType;
+    String oAuth2AccessToken;
+    String oAuth2Scope;
     String oAuthRequestTokenURL = "https://api.twitter.com/oauth/request_token";
     String oAuthAuthorizationURL = "https://api.twitter.com/oauth/authorize";
     String oAuthAccessTokenURL = "https://api.twitter.com/oauth/access_token";
@@ -89,7 +90,7 @@ class Configuration<T, T2 extends Configuration> implements AuthorizationConfigu
         PropertyConfiguration.loadDefaultProperties(this);
     }
 
-    Function<Configuration<T,T2>, T> factory ;
+    transient Function<Configuration<T, T2>, T> factory;
     Configuration(Function<Configuration<T,T2>, T> factory){
         this();
         this.factory = factory;
@@ -106,23 +107,9 @@ class Configuration<T, T2 extends Configuration> implements AuthorizationConfigu
 
         if (consumerKey != null && consumerSecret != null) {
             if (this.applicationOnlyAuthEnabled){
-                OAuth2Authorization oauth2 = new OAuth2Authorization(this);
-                String tokenType = this.oAuth2TokenType;
-                String accessToken = this.oAuth2AccessToken;
-                if (tokenType != null && accessToken != null) {
-                    oauth2.setOAuth2Token(new OAuth2Token(tokenType, accessToken));
-                }
-                auth = oauth2;
-
+                auth = new OAuth2Authorization(this);
             } else {
-                OAuthAuthorization oauth;
-                oauth = new OAuthAuthorization(this);
-                String accessToken = this.oAuthAccessToken;
-                String accessTokenSecret = this.oAuthAccessTokenSecret;
-                if (accessToken != null && accessTokenSecret != null) {
-                    oauth.setOAuthAccessToken(new AccessToken(accessToken, accessTokenSecret));
-                }
-                auth = oauth;
+                auth = new OAuthAuthorization(this);
             }
         }
         if (null == auth) {
@@ -130,16 +117,6 @@ class Configuration<T, T2 extends Configuration> implements AuthorizationConfigu
         }
         return auth;
 
-    }
-    // oauth related setter/getters
-    @Override
-    public String getUser() {
-        return user;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     public HttpClientConfiguration getHttpClientConfiguration() {
@@ -209,40 +186,6 @@ class Configuration<T, T2 extends Configuration> implements AuthorizationConfigu
     }
 
     // oauth related setter/getters
-
-    @Override
-    public String getOAuthConsumerKey() {
-        return oAuthConsumerKey;
-    }
-
-    @Override
-    public String getOAuthConsumerSecret() {
-        return oAuthConsumerSecret;
-    }
-
-    @Override
-    public String getOAuthAccessToken() {
-        return oAuthAccessToken;
-    }
-
-    @Override
-    public String getOAuthAccessTokenSecret() {
-        return oAuthAccessTokenSecret;
-    }
-
-    @Override
-    public String getOAuth2TokenType() {
-        return oAuth2TokenType;
-    }
-
-    @Override
-    public String getOAuth2AccessToken() {
-        return oAuth2AccessToken;
-    }
-
-    public String getOAuth2Scope() {
-        return oAuth2Scope;
-    }
 
 
     @Override

@@ -63,13 +63,12 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testDesktopClient() throws Exception {
-        Twitter twitter = Twitter.getInstance();
 
         // desktop client - requiring pin
-        Configuration build = new Configuration().oAuthConsumerKey(browserConsumerKey)
-                .oAuthConsumerSecret(browserConsumerSecret).buildConfiguration();
-
-        OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(build);
+        OAuthAuthorization oAuthAuthorization = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret)
+                .build();
         RequestToken rt = oAuthAuthorization.getOAuthRequestToken();
         //noinspection ResultOfMethodCallIgnored
         rt.hashCode();
@@ -80,10 +79,13 @@ class OAuthTest extends TwitterTestBase {
         } catch (TwitterException te) {
             assertEquals(401, te.getStatusCode());
         }
-        oAuthAuthorization.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        AccessToken at = getAccessToken(oAuthAuthorization, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
+        OAuthAuthorization oAuthAuthorization2 = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey(desktopConsumerKey)
+                .oAuthConsumerSecret(desktopConsumerSecret)
+                .build();
+        AccessToken at = getAccessToken(oAuthAuthorization2, rt.getAuthorizationURL(), rt, numberId, numberPass, true);
         try {
-            oAuthAuthorization.getOAuthRequestToken();
+            oAuthAuthorization2.getOAuthRequestToken();
         } catch (TwitterException te) {
             fail("expecting IllegalStateException as access token is already available.");
         } catch (IllegalStateException ignored) {
@@ -92,16 +94,14 @@ class OAuthTest extends TwitterTestBase {
 
         assertEquals(at.getScreenName(), numberId);
         assertEquals(at.getUserId(), numberIdId);
-        AccessToken at1 = oAuthAuthorization.getOAuthAccessToken();
+        AccessToken at1 = oAuthAuthorization2.getOAuthAccessToken();
         assertEquals(at, at1);
-        TwitterResponse res = twitter.getLanguages();
-        assertEquals(TwitterResponse.AccessLevel.READ, res.getAccessLevel());
     }
 
     @Test
     void testIllegalStatus() throws Exception {
         try {
-            new OAuthAuthorization(new Configuration().buildConfiguration()).getOAuthAccessToken();
+            OAuthAuthorization.newBuilder().build().getOAuthAccessToken();
             fail("should throw IllegalStateException since request token hasn't been acquired.");
         } catch (IllegalStateException ignore) {
         }
@@ -110,9 +110,10 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testSigninWithTwitter() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new Configuration().buildConfiguration());
         // browser client - not requiring pin
-        oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build();
         RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
         AccessToken at = getAccessToken(oauth, rt.getAuthenticationURL(), rt, id1.screenName, id1.password, false);
@@ -125,10 +126,10 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testBrowserClient() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new Configuration().buildConfiguration());
-
         // browser client - not requiring pin
-        oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
+        OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build();
         RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
 
         AccessToken at = getAccessToken(oauth, rt.getAuthorizationURL(), rt, id1.screenName, id1.password, false);
@@ -167,20 +168,29 @@ class OAuthTest extends TwitterTestBase {
 
     @Test
     void testSign() throws Exception {
-        String baseStr = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
-        OAuthAuthorization oauth = new OAuthAuthorization(Configuration.getInstance());
-        oauth.setOAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44");
+
+        {     String baseStr = "GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal";
+        OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey("dpf43f3p2l4k3l03")
+                .oAuthConsumerSecret("kd94hf93k423kf44").build();
         trySerializable(oauth);
         //http://wiki.oauth.net/TestCases
         assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature(baseStr, new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
-        oauth = new OAuthAuthorization(Configuration.getInstance());
-        oauth.setOAuthConsumer(desktopConsumerKey, "cs");
-        assertEquals("egQqG5AJep5sJ7anhXju1unge2I=", oauth.generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "")));
-        assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=", oauth.generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "ts")));
-        oauth = new OAuthAuthorization(Configuration.getInstance());
-        oauth.setOAuthConsumer(desktopConsumerKey, "kd94hf93k423kf44");
 
-        assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
+    }
+        {
+            OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                    .oAuthConsumerKey(desktopConsumerKey)
+                    .oAuthConsumerSecret("cs").build();
+            assertEquals("egQqG5AJep5sJ7anhXju1unge2I=", oauth.generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "")));
+            assertEquals("VZVjXceV7JgPq/dOTnNmEfO0Fv8=", oauth.generateSignature("bs", new RequestToken("nnch734d00sl2jdk", "ts")));
+        }
+        {
+            OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                    .oAuthConsumerKey(desktopConsumerKey)
+                    .oAuthConsumerSecret("kd94hf93k423kf44").build();
+            assertEquals("tR3+Ty81lMeYAr/Fid0kMTYa/WM=", oauth.generateSignature("GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
+        }
     }
 
     @Test
@@ -188,11 +198,11 @@ class OAuthTest extends TwitterTestBase {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("file", "vacation.jpg");
         params[1] = new HttpParameter("size", "original");
-        OAuthAuthorization oauth = new OAuthAuthorization(Configuration.getInstance());
-        oauth.setOAuthConsumer("dpf43f3p2l4k3l03", "kd94hf93k423kf44");
+        OAuthAuthorization oauth = OAuthAuthorization.newBuilder()
+                .oAuthConsumerKey("dpf43f3p2l4k3l03")
+                .oAuthConsumerSecret("kd94hf93k423kf44").build();
         String expected = "OAuth oauth_consumer_key=\"dpf43f3p2l4k3l03\",oauth_signature_method=\"HMAC-SHA1\",oauth_timestamp=\"1191242096\",oauth_nonce=\"kllo9940pd9333jh\",oauth_version=\"1.0\",oauth_token=\"nnch734d00sl2jdk\",oauth_signature=\"tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D\"";
         assertEquals(expected, oauth.generateAuthorizationHeader("GET", "http://photos.example.net/photos", params, "kllo9940pd9333jh", "1191242096", new RequestToken("nnch734d00sl2jdk", "pfkkdhi9sl3r4s00")));
-
     }
 
     @Test

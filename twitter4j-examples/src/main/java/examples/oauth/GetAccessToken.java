@@ -16,7 +16,10 @@
 
 package examples.oauth;
 
-import twitter4j.*;
+import twitter4j.AccessToken;
+import twitter4j.OAuthAuthorization;
+import twitter4j.RequestToken;
+import twitter4j.TwitterException;
 
 import java.awt.*;
 import java.io.*;
@@ -61,8 +64,7 @@ public class GetAccessToken {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(twitter.getConfiguration());
+            OAuthAuthorization oAuthAuthorization = OAuthAuthorization.newBuilder().build();
             RequestToken requestToken = oAuthAuthorization.getOAuthRequestToken();
             System.out.println("Got request token.");
             System.out.println("Request token: " + requestToken.getToken());

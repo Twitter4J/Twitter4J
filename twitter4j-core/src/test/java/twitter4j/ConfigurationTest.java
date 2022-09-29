@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings("rawtypes")
 @Execution(ExecutionMode.CONCURRENT)
 public class ConfigurationTest {
 
@@ -38,6 +39,7 @@ public class ConfigurationTest {
         assertNotNull(conf);
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     void testConfiguration() throws Exception {
 
@@ -46,28 +48,28 @@ public class ConfigurationTest {
 
         System.getProperties().remove("twitter4j.user");
         Configuration conf = new Configuration();
-        assertNull(conf.getUser());
+        assertNull(conf.user);
 
         conf.user(test);
-        assertEquals(test, conf.getUser());
+        assertEquals(test, conf.user);
         System.setProperty("twitter4j.user", override);
         conf = new Configuration();
-        assertEquals(override, conf.getUser());
+        assertEquals(override, conf.user);
         conf.user(test);
-        assertEquals(test, conf.getUser());
+        assertEquals(test, conf.user);
         System.getProperties().remove("twitter4j.user");
 
         System.getProperties().remove("twitter4j.password");
         conf = new Configuration();
-        assertNull(conf.getPassword());
+        assertNull(conf.password);
 
         conf.password(test);
-        assertEquals(test, conf.getPassword());
+        assertEquals(test, conf.password);
         System.setProperty("twitter4j.password", override);
         conf = new Configuration();
-        assertEquals(override, conf.getPassword());
+        assertEquals(override, conf.password);
         conf.password(test);
-        assertEquals(test, conf.getPassword());
+        assertEquals(test, conf.password);
         System.getProperties().remove("twitter4j.password");
 
         System.getProperties().remove("twitter4j.http.proxyHost");
@@ -148,6 +150,7 @@ public class ConfigurationTest {
 
 
 
+    @SuppressWarnings("rawtypes")
     @Test
     void testConfigurationBuilder() throws Exception {
         deleteFile("./twitter4j.properties");

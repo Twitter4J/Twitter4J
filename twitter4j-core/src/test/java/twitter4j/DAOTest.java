@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "rawtypes", "UnusedAssignment", "unused", "UnusedReturnValue"})
 @Execution(ExecutionMode.CONCURRENT)
 class DAOTest extends TwitterTestBase {
     private final Configuration conf = Configuration.getInstance();
@@ -396,7 +396,7 @@ class DAOTest extends TwitterTestBase {
         return array;
     }
 
-    private static JSONArray getJSONArrayFromClassPath(String path) throws Exception {
+    private static JSONArray getJSONArrayFromClassPath(@SuppressWarnings("SameParameterValue") String path) throws Exception {
         return new JSONArray(getStringFromClassPath(path));
     }
 
@@ -442,10 +442,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     private OAuthAuthorization getOAuthOuthorization(Configuration conf) {
-        OAuthAuthorization oauth = new OAuthAuthorization(conf);
-        oauth.setOAuthConsumer(desktopConsumerKey, desktopConsumerSecret);
-        oauth.setOAuthAccessToken(new AccessToken(id1.accessToken, id1.accessTokenSecret));
-        return oauth;
+        return new OAuthAuthorization(conf);
     }
 
     private static String getStringFromClassPath(String path) throws Exception {
