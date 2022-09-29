@@ -16,7 +16,10 @@
 
 package examples.json;
 
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterObjectFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -34,9 +37,10 @@ public final class SaveRawJSON {
      * @param args String[]
      */
     public static void main(String[] args) {
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         System.out.println("Saving public timeline.");
         try {
+            //noinspection ResultOfMethodCallIgnored
             new File("statuses").mkdir();
             List<Status> statuses = twitter.getHomeTimeline();
             for (Status status : statuses) {

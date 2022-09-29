@@ -18,7 +18,6 @@ package examples.tweets;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Destroys specified status.
@@ -37,7 +36,7 @@ public final class DestroyStatus {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyStatus(Long.parseLong(args[0]));
             System.out.println("Successfully deleted status [" + args[0] + "].");
             System.exit(0);

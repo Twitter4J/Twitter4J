@@ -21,6 +21,7 @@ import twitter4j.api.*;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
  */
+@SuppressWarnings("unused")
 public interface Twitter extends java.io.Serializable,
     TwitterBase,
     TimelinesResources,
@@ -37,6 +38,21 @@ public interface Twitter extends java.io.Serializable,
     SpamReportingResource,
     HelpResources {
 
+    /**
+     * returns new Builder instance
+     * @return Builder instance
+     */
+    static ConfigurationBuilder newBuilder(){
+        return new ConfigurationBuilder();
+    }
+
+    /**
+     * equivalent to calling newBuilder().build();
+     * @return Twitter Instance
+     */
+    static Twitter getInstance(){
+        return newBuilder().build();
+    }
     /**
      * @return {@link twitter4j.api.TimelinesResources}
      * @since Twitter4J 3.0.4

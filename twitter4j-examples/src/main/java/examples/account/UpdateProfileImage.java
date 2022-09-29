@@ -18,7 +18,6 @@ package examples.account;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 import java.io.File;
 
@@ -39,7 +38,7 @@ public final class UpdateProfileImage {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.updateProfileImage(new File(args[0]));
             System.out.println("Successfully updated profile image.");
             System.exit(0);

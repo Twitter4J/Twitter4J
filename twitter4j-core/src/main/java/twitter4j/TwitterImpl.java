@@ -40,19 +40,22 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private final HttpParameter[] IMPLICIT_PARAMS;
     private final HttpParameter INCLUDE_MY_RETWEET;
     
-    private final String CHUNKED_INIT = "INIT";
-    private final String CHUNKED_APPEND = "APPEND";
-    private final String CHUNKED_FINALIZE = "FINALIZE";
-    private final String CHUNKED_STATUS = "STATUS";
+    private static final String CHUNKED_INIT = "INIT";
+    private static final String CHUNKED_APPEND = "APPEND";
+    private static final String CHUNKED_FINALIZE = "FINALIZE";
+    private static final String CHUNKED_STATUS = "STATUS";
     
-	private final int MB = 1024 * 1024; // 1 MByte
-	private final int MAX_VIDEO_SIZE = 512 * MB; // 512MB is a constraint  imposed by Twitter for video files
-	private final int CHUNK_SIZE = 2 * MB; // max chunk size
+	private static final int MB = 1024 * 1024; // 1 MByte
+	private static final int MAX_VIDEO_SIZE = 512 * MB; // 512MB is a constraint  imposed by Twitter for video files
+	private static final int CHUNK_SIZE = 2 * MB; // max chunk size
 
     private static final ConcurrentHashMap<Configuration, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Configuration, String> implicitParamsStrMap = new ConcurrentHashMap<>();
 
     /*package*/
+    TwitterImpl(Configuration conf) {
+        this(conf, AuthorizationFactory.getInstance(conf));
+    }
     TwitterImpl(Configuration conf, Authorization auth) {
         super(conf, auth);
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.isIncludeMyRetweetEnabled());

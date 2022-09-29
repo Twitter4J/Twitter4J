@@ -32,7 +32,7 @@ class AuthorizationTest extends TwitterTestBase {
 
     @Test
     void testAnonymousInstance() {
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         Authorization auth = twitter.getAuthorization();
         assertTrue(auth instanceof NullAuthorization);
     }

@@ -16,7 +16,10 @@
 
 package examples.friendship;
 
-import twitter4j.*;
+import twitter4j.Friendship;
+import twitter4j.ResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 /**
  * Looks up friendships.
@@ -36,7 +39,7 @@ public final class LookupFriendships {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             ResponseList<Friendship> friendships = twitter.lookupFriendships(args[0].split(","));
             for (Friendship friendship : friendships) {
                 System.out.println("@" + friendship.getScreenName()

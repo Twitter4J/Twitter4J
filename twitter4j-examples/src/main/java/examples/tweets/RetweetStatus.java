@@ -18,7 +18,6 @@ package examples.tweets;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Retweets specified status.
@@ -38,7 +37,7 @@ public final class RetweetStatus {
         }
         System.out.println("Retweeting the status id - [" + args[0] + "].");
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.retweetStatus(Long.parseLong(args[0]));
             System.out.println("Successfully retweeted status [" + args[0] + "].");
             System.exit(0);

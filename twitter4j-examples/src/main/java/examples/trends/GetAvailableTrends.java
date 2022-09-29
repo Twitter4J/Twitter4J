@@ -16,7 +16,10 @@
 
 package examples.trends;
 
-import twitter4j.*;
+import twitter4j.Location;
+import twitter4j.ResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 /**
  * Shows the locations that Twitter has trending topic information for.
@@ -31,7 +34,7 @@ public final class GetAvailableTrends {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             ResponseList<Location> locations;
             locations = twitter.getAvailableTrends();
             System.out.println("Showing available trends");

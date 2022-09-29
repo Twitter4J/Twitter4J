@@ -18,14 +18,13 @@ package examples.lambda;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * example code to explain lambda expression for handling rate limits
  */
 public class RateLimitLambda {
     public static void main(String... args) {
-        Twitter twitter = TwitterFactory.getSingleton();
+        Twitter twitter = Twitter.getInstance();
         twitter.onRateLimitStatus(e -> System.out.println("rate limit remaining: " + e.getRateLimitStatus().getRemaining()));
         for (int i = 0; i < 20; i++) {
             try {

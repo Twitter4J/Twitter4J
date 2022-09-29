@@ -44,8 +44,8 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private final HttpParameter stallWarningsParam;
 
     /*package*/
-    TwitterStreamImpl(Configuration conf, Authorization auth) {
-        super(conf, auth);
+    TwitterStreamImpl(Configuration conf) {
+        super(conf, AuthorizationFactory.getInstance(conf));
         http = HttpClient.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection

@@ -20,7 +20,6 @@ import twitter4j.DirectMessage;
 import twitter4j.DirectMessageList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Example application that gets all direct messages via event api.<br>
@@ -34,7 +33,7 @@ public class GetDirectMessages {
      * @param args String[]
      */
     public static void main(String[] args) {
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         try {
             String cursor = null;
             int count = 20;

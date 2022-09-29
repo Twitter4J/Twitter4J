@@ -40,7 +40,7 @@ public final class UpdateStatus {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             try {
                 // get request token.
                 // this will throw IllegalStateException if access token is already available

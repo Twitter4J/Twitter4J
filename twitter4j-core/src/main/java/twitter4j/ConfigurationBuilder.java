@@ -276,13 +276,22 @@ public final class ConfigurationBuilder {
         return this;
     }
 
-    public Configuration build() {
+    Configuration buildConfiguration() {
         checkNotBuilt();
         try {
             return configurationBean;
         } finally {
             configurationBean = null;
         }
+    }
+
+    /**
+     * Constructs Twitter instance
+     * @return Twitter instance
+     */
+    public Twitter build(){
+        Configuration conf = buildConfiguration();
+        return new TwitterImpl(conf);
     }
 
     private void checkNotBuilt() {

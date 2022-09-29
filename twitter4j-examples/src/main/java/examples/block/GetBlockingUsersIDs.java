@@ -19,7 +19,6 @@ package examples.block;
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * List blocking user ids.
@@ -34,7 +33,7 @@ public final class GetBlockingUsersIDs {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             IDs ids = twitter.getBlocksIDs();
             for (long id : ids.getIDs()) {
                 System.out.println(id);

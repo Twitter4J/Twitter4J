@@ -18,7 +18,6 @@ package examples.spamreporting;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -36,7 +35,7 @@ public class ReportSpam {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             System.out.println("Successfully reported @" + twitter.reportSpam(args[0]).getScreenName() + " as a spammer.");
         } catch (TwitterException te) {
             te.printStackTrace();

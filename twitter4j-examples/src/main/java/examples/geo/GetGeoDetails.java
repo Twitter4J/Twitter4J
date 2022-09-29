@@ -19,7 +19,6 @@ package examples.geo;
 import twitter4j.Place;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Shows specified place's detailed information
@@ -38,7 +37,7 @@ public final class GetGeoDetails {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Place place = twitter.getGeoDetails(args[0]);
             System.out.println("name: " + place.getName());
             System.out.println("country: " + place.getCountry());

@@ -16,7 +16,10 @@
 
 package examples.list;
 
-import twitter4j.*;
+import twitter4j.ResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.UserList;
 
 /**
  * List the lists of the specified user.
@@ -35,7 +38,7 @@ public final class GetUserLists {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             ResponseList<UserList> lists = twitter.getUserLists(args[0]);
             for (UserList list : lists) {
                 System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"

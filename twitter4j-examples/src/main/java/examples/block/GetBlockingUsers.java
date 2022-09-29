@@ -18,7 +18,6 @@ package examples.block;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public final class GetBlockingUsers {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             int page = 1;
             List<User> users;
             do {

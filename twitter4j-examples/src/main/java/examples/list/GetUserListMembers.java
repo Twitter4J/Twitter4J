@@ -16,7 +16,10 @@
 
 package examples.list;
 
-import twitter4j.*;
+import twitter4j.PagableResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  * Lists list members.
@@ -35,7 +38,7 @@ public final class GetUserListMembers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             long cursor = -1;
             PagableResponseList<User> usres;
             do {

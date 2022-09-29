@@ -1,6 +1,9 @@
 package examples.trends;
 
-import twitter4j.*;
+import twitter4j.Trend;
+import twitter4j.Trends;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 /**
  * Shows the trend for a place denoted by its WOEID. By default shows trends for "Worldwide" (WOEID 1).
@@ -16,7 +19,7 @@ public final class GetPlaceTrends {
     public static void main(String[] args) {
         try {
             int woeid = args.length > 0 ? Integer.parseInt(args[0]) : 1;
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Trends trends = twitter.getPlaceTrends(woeid);
 
             System.out.println("Showing trends for " + trends.getLocation().getName());

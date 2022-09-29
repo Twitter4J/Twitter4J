@@ -18,7 +18,6 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Adds multiple users to a specified list.
@@ -37,7 +36,7 @@ public final class CreateUserListMembers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.createUserListMembers(Integer.parseInt(args[0]), args[1].split(","));
             System.out.println("Successfully added the user(s) to the specified list.");
             System.exit(0);

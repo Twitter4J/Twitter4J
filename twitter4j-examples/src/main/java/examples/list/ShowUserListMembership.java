@@ -16,7 +16,10 @@
 
 package examples.list;
 
-import twitter4j.*;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
+import twitter4j.UserList;
 
 /**
  * Checks list membership.
@@ -35,7 +38,7 @@ public final class ShowUserListMembership {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             long listId = Long.parseLong(args[0]);
             UserList list = twitter.showUserList(listId);
             long userId = Integer.parseInt(args[1]);

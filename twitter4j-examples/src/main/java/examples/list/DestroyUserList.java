@@ -18,7 +18,6 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.UserList;
 
 /**
@@ -38,7 +37,7 @@ public final class DestroyUserList {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             UserList list = twitter.destroyUserList(Integer.parseInt(args[0]));
             System.out.println("Successfully deleted the list (id:" + list.getId() + ", slug:" + list.getSlug() + ").");
             System.exit(0);

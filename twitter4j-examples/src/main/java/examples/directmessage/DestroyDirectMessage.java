@@ -18,7 +18,6 @@ package examples.directmessage;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Destroys specified message.
@@ -37,7 +36,7 @@ public final class DestroyDirectMessage {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyDirectMessage(Long.parseLong(args[0]));
             System.out.println("Successfully deleted message [" + args[0] + "].");
             System.exit(0);

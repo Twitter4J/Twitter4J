@@ -35,7 +35,7 @@ public class SearchTweets {
             System.out.println("java twitter4j.examples.search.SearchTweets [query]");
             System.exit(-1);
         }
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         try {
             Query query = new Query(args[0]);
             QueryResult result;

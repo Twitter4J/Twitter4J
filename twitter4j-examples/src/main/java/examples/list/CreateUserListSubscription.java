@@ -18,7 +18,6 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Subscribes specified list.
@@ -37,7 +36,7 @@ public final class CreateUserListSubscription {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.createUserListSubscription(Integer.parseInt(args[0]));
             System.out.println("Successfully subscribed the list.");
             System.exit(0);

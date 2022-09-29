@@ -76,7 +76,7 @@ public class GetAccessToken {
             }
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(twitter.getConfiguration());
             RequestToken requestToken = oAuthAuthorization.getOAuthRequestToken();
             System.out.println("Got request token.");

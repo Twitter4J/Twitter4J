@@ -18,7 +18,6 @@ package examples.block;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Unblocks the specified user.
@@ -37,7 +36,7 @@ public final class DestroyBlock {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyBlock(args[0]);
             System.out.println("Successfully unblocked user [" + args[0] + "].");
             System.exit(0);

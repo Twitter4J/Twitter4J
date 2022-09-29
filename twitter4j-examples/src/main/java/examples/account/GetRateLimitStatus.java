@@ -19,7 +19,6 @@ package examples.account;
 import twitter4j.RateLimitStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public final class GetRateLimitStatus {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Map<String ,RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus();
             for (String endpoint : rateLimitStatus.keySet()) {
                 RateLimitStatus status = rateLimitStatus.get(endpoint);

@@ -16,7 +16,10 @@
 
 package examples.timeline;
 
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class GetHomeTimeline {
     public static void main(String[] args) {
         try {
             // gets Twitter instance with default credentials
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             User user = twitter.verifyCredentials();
             List<Status> statuses = twitter.getHomeTimeline();
             System.out.println("Showing @" + user.getScreenName() + "'s home timeline.");

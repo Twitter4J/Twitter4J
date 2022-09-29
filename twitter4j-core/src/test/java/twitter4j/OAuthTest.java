@@ -39,37 +39,35 @@ class OAuthTest extends TwitterTestBase {
 
     @Test
     void testDeterministic() {
-        Twitter twitter1 = new TwitterFactory(new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
-                .oAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
-        Twitter twitter2 = new TwitterFactory(new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
-                .oAuthConsumerSecret(browserConsumerSecret).build()).getInstance();
+        Twitter twitter1 = Twitter.newBuilder().oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build();
+        Twitter twitter2 = Twitter.newBuilder().oAuthConsumerKey(browserConsumerKey)
+                .oAuthConsumerSecret(browserConsumerSecret).build();
         assertEquals(twitter1, twitter2);
     }
 
     @Test
     void testOAuth() throws Exception {
-        ConfigurationBuilder build = new ConfigurationBuilder();
         String oAuthAccessToken = p.getProperty("id1.oauth.accessToken");
         String oAuthAccessTokenSecret = p.getProperty("id1.oauth.accessTokenSecret");
         String oAuthConsumerKey = p.getProperty("oauth.consumerKey");
         String oAuthConsumerSecret = p.getProperty("oauth.consumerSecret");
-        build.oAuthAccessToken(oAuthAccessToken);
-        build.oAuthAccessTokenSecret(oAuthAccessTokenSecret);
-        build.oAuthConsumerKey(oAuthConsumerKey);
-        build.oAuthConsumerSecret(oAuthConsumerSecret);
-        OAuthAuthorization auth = new OAuthAuthorization(build.build());
-        Twitter twitter = new TwitterFactory().getInstance(auth);
+        Twitter twitter = Twitter.newBuilder()
+        .oAuthAccessToken(oAuthAccessToken)
+        .oAuthAccessTokenSecret(oAuthAccessTokenSecret)
+        .oAuthConsumerKey(oAuthConsumerKey)
+        .oAuthConsumerSecret(oAuthConsumerSecret).build();
         twitter.verifyCredentials();
     }
 
     @Disabled
     @Test
     void testDesktopClient() throws Exception {
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
 
         // desktop client - requiring pin
         Configuration build = new ConfigurationBuilder().oAuthConsumerKey(browserConsumerKey)
-                .oAuthConsumerSecret(browserConsumerSecret).build();
+                .oAuthConsumerSecret(browserConsumerSecret).buildConfiguration();
 
         OAuthAuthorization oAuthAuthorization = new OAuthAuthorization(build);
         RequestToken rt = oAuthAuthorization.getOAuthRequestToken();
@@ -103,7 +101,7 @@ class OAuthTest extends TwitterTestBase {
     @Test
     void testIllegalStatus() throws Exception {
         try {
-            new OAuthAuthorization(new ConfigurationBuilder().build()).getOAuthAccessToken();
+            new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration()).getOAuthAccessToken();
             fail("should throw IllegalStateException since request token hasn't been acquired.");
         } catch (IllegalStateException ignore) {
         }
@@ -112,7 +110,7 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testSigninWithTwitter() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().build());
+        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration());
         // browser client - not requiring pin
         oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
         RequestToken rt = oauth.getOAuthRequestToken("http://twitter4j.org/ja/index.html");
@@ -127,7 +125,7 @@ class OAuthTest extends TwitterTestBase {
     @Disabled
     @Test
     void testBrowserClient() throws Exception {
-        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().build());
+        OAuthAuthorization oauth = new OAuthAuthorization(new ConfigurationBuilder().buildConfiguration());
 
         // browser client - not requiring pin
         oauth.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);

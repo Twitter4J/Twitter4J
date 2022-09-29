@@ -16,7 +16,10 @@
 
 package examples.list;
 
-import twitter4j.*;
+import twitter4j.PagableResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.UserList;
 
 /**
  * List the lists the specified user has been added to.
@@ -35,7 +38,7 @@ public final class GetUserListMemberships {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             long cursor = -1;
             PagableResponseList<UserList> lists;
             do {

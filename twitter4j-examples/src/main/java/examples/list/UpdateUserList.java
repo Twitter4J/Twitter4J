@@ -18,7 +18,6 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Updates the specified list.
@@ -37,7 +36,7 @@ public final class UpdateUserList {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.updateUserList(Integer.parseInt(args[0]), args[1], true, args[2]);
             System.out.println("Successfully updated list [" + args[0] + "].");
             System.exit(0);

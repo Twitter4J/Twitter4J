@@ -16,7 +16,10 @@
 
 package examples.user;
 
-import twitter4j.*;
+import twitter4j.ResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  * Search users with the specified query.
@@ -35,7 +38,7 @@ public final class SearchUsers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             int page = 1;
             ResponseList<User> users;
             do {

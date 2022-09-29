@@ -39,16 +39,6 @@ public class ConfigurationTest {
     }
 
     @Test
-    void testFixURL() {
-        assertEquals("http://www.bea.com", Configuration.fixURL(false, "http://www.bea.com"));
-        assertEquals("http://www.bea.com", Configuration.fixURL(false, "https://www.bea.com"));
-        assertEquals("https://www.bea.com", Configuration.fixURL(true, "http://www.bea.com"));
-        assertEquals("https://www.bea.com", Configuration.fixURL(true, "https://www.bea.com"));
-        assertNull(Configuration.fixURL(false, null));
-        assertNull(Configuration.fixURL(true, null));
-    }
-
-    @Test
     void testConfiguration() throws Exception {
 
         String test = "t4j";
@@ -164,7 +154,7 @@ public class ConfigurationTest {
         ConfigurationBuilder builder;
         Configuration conf;
         builder = new ConfigurationBuilder();
-        conf = builder.build();
+        conf = builder.buildConfiguration();
 
         assertEquals(conf, serializeDeserialize(conf));
 
@@ -177,7 +167,7 @@ public class ConfigurationTest {
         builder = new ConfigurationBuilder();
         builder.oAuthConsumerKey("key");
         builder.oAuthConsumerSecret("secret");
-        conf = builder.build();
+        conf = builder.buildConfiguration();
         assertEquals(0, conf.getRestBaseURL().indexOf("https://"));
         assertEquals(0, conf.getOAuthAuthenticationURL().indexOf("https://"));
         assertEquals(0, conf.getOAuthAuthorizationURL().indexOf("https://"));

@@ -18,7 +18,6 @@ package examples.favorite;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Unfavorites the specified status.
@@ -37,7 +36,7 @@ public final class DestroyFavorite {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyFavorite(Long.parseLong(args[0]));
             System.out.println("Successfully unfavorited status [" + args[0] + "].");
             System.exit(0);

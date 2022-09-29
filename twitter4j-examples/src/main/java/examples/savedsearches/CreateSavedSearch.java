@@ -19,7 +19,6 @@ package examples.savedsearches;
 import twitter4j.SavedSearch;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Creates a saved search.
@@ -38,7 +37,7 @@ public final class CreateSavedSearch {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             SavedSearch savedSearch = twitter.createSavedSearch(args[0]);
             System.out.println("Successfully created saved search [name:" + savedSearch.getName()
                     + " query:" + savedSearch.getQuery() + " id:" + savedSearch.getId() + "]");

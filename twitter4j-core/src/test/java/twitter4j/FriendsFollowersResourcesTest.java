@@ -71,7 +71,7 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
         assertFalse(obamaFriends.hasPrevious());
     }
 
-    private void assertIDExsits(String assertion, IDs ids, long idToFind) {
+    private void assertIDExsits(@SuppressWarnings("SameParameterValue") String assertion, IDs ids, long idToFind) {
         boolean found = false;
         for (long id : ids.getIDs()) {
             if (id == idToFind) {
@@ -129,13 +129,13 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
 //        User detail = twitterAPI2.showUser(id1);
 //        assertTrue(detail.isNotificationEnabled());
         try {
-            user = twitter2.createFriendship(id2.screenName);
+            twitter2.createFriendship(id2.screenName);
             fail("shouldn't be able to befrinend yourself");
         } catch (TwitterException te) {
             assertEquals(403, te.getStatusCode());
         }
         try {
-            user = twitter2.createFriendship("doesnotexist--");
+            twitter2.createFriendship("doesnotexist--");
             fail("non-existing user");
         } catch (TwitterException te) {
             //now befriending with non-existing user returns 404
@@ -149,7 +149,7 @@ class FriendsFollowersResourcesTest extends TwitterTestBase {
 
     @Test
     void testRelationship() throws Exception {
-        Twitter followsOneWay = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "followsOneWay")).build()).getInstance();
+        Twitter followsOneWay = Twitter.newBuilder().load(subProperty(p, "followsOneWay")).build();
         followsOneWay.createFriendship(id1.screenName);
         TestUserInfo followsOneWayInfo = new TestUserInfo("followsOneWay");
         //  TESTING PRECONDITIONS:

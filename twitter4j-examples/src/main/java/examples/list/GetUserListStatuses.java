@@ -35,7 +35,7 @@ public final class GetUserListStatuses {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Paging page = new Paging(1);
             ResponseList<Status> statuses;
             do {

@@ -18,7 +18,6 @@ package examples.friendship;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Unfollows the specified user.
@@ -37,7 +36,7 @@ public final class DestroyFriendship {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyFriendship(args[0]);
             System.out.println("Successfully unfollowed [" + args[0] + "].");
             System.exit(0);

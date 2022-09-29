@@ -18,7 +18,6 @@ package examples.mute;
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Lists muting users ids.
@@ -33,7 +32,7 @@ public final class GetMutingUsersIDs {
      */
 	public static void main( String[] args ) {
 		try {
-			Twitter twitter = new TwitterFactory().getInstance();
+			Twitter twitter = Twitter.getInstance();
 			IDs ids = twitter.getMutesIDs(-1L);
 			for (long id : ids.getIDs()) {
 	            System.out.println(id);

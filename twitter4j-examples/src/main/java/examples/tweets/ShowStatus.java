@@ -19,7 +19,6 @@ package examples.tweets;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Shows one single status.
@@ -38,7 +37,7 @@ public final class ShowStatus {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Status status = twitter.showStatus(Long.parseLong(args[0]));
             System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             System.exit(0);

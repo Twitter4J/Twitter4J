@@ -91,7 +91,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
                         .oAuthConsumerKey("dummy")
                         .oAuthAccessToken("dummy")
                         .oAuthAccessTokenSecret("dummy")
-                        .build()
+                        .buildConfiguration()
         ).getInstance();
         try {
             twitterStream.sample();
@@ -127,43 +127,43 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testStatusStream() throws Exception {
-        InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json");
-        StatusStream stream = new StatusStreamImpl(is, conf1);
-        stream.next(this);
-        waitForNotification();
-        assertEquals(6832057002L, deletionNotice.getStatusId());
-        assertEquals(18378841, deletionNotice.getUserId());
-        stream.next(this);
-        waitForNotification();
-        assertEquals("aaa minha irma ta enchendo aki querendo entra --'", status.getText());
-        stream.next(this);
-        waitForNotification();
-        assertEquals("Acho retartado ter que esperar para usar o script de novo, por isso só uso o Twitter Followers, o site da empresa é: http://bit.ly/5tNlDp", status.getText());
-        stream.next(this);
-        waitForNotification();
-        assertEquals(121564, trackLimit);
-        stream.next(this);
-        waitForNotification();
-        assertEquals("ngantuk banget nguap mulu", status.getText());
-        stream.next(this);
-        waitForNotification();
-        assertEquals(14090452, userId);
-        assertEquals(23260136625L, upToStatusId);
-        try {
+        try(InputStream is = TwitterTestBase.class.getResourceAsStream("/streamingapi-testcase.json")) {
+            StatusStream stream = new StatusStreamImpl(is, conf1);
             stream.next(this);
             waitForNotification();
-            fail("expecting TwitterException");
-        } catch (TwitterException ignored) {
-
-        }
-        try {
+            assertEquals(6832057002L, deletionNotice.getStatusId());
+            assertEquals(18378841, deletionNotice.getUserId());
             stream.next(this);
             waitForNotification();
-            fail("expecting IllegalStateException");
-        } catch (IllegalStateException ignored) {
+            assertEquals("aaa minha irma ta enchendo aki querendo entra --'", status.getText());
+            stream.next(this);
+            waitForNotification();
+            assertEquals("Acho retartado ter que esperar para usar o script de novo, por isso só uso o Twitter Followers, o site da empresa é: http://bit.ly/5tNlDp", status.getText());
+            stream.next(this);
+            waitForNotification();
+            assertEquals(121564, trackLimit);
+            stream.next(this);
+            waitForNotification();
+            assertEquals("ngantuk banget nguap mulu", status.getText());
+            stream.next(this);
+            waitForNotification();
+            assertEquals(14090452, userId);
+            assertEquals(23260136625L, upToStatusId);
+            try {
+                stream.next(this);
+                waitForNotification();
+                fail("expecting TwitterException");
+            } catch (TwitterException ignored) {
 
+            }
+            try {
+                stream.next(this);
+                waitForNotification();
+                fail("expecting IllegalStateException");
+            } catch (IllegalStateException ignored) {
+
+            }
         }
-        is.close();
     }
 
     @Test

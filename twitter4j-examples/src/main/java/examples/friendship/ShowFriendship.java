@@ -19,7 +19,6 @@ package examples.friendship;
 import twitter4j.Relationship;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Shows friendship between two users.
@@ -38,7 +37,7 @@ public final class ShowFriendship {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             Relationship relationship = twitter.showFriendship(args[0], args[1]);
             System.out.println("isSourceBlockingTarget: " + relationship.isSourceBlockingTarget());
             System.out.println("isSourceFollowedByTarget: " + relationship.isSourceFollowedByTarget());

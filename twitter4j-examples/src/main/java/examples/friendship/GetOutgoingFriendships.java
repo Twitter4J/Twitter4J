@@ -19,7 +19,6 @@ package examples.friendship;
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Shows outgoing friendship ids.
@@ -34,7 +33,7 @@ public final class GetOutgoingFriendships {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             long cursor = -1;
             IDs ids;
             System.out.println("Showing outgoing pending follow request(s).");

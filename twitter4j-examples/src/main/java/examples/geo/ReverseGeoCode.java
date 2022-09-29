@@ -35,7 +35,7 @@ public final class ReverseGeoCode {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             GeoQuery query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
             ResponseList<Place> places = twitter.reverseGeoCode(query);
             if (places.size() == 0) {

@@ -16,7 +16,10 @@
 
 package examples.account;
 
-import twitter4j.*;
+import twitter4j.AccountSettings;
+import twitter4j.Location;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 /**
  * Gets account settings.
@@ -31,7 +34,7 @@ public final class GetAccountSettings {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             AccountSettings settings = twitter.getAccountSettings();
             System.out.println("Sleep time enabled: " + settings.isSleepTimeEnabled());
             System.out.println("Sleep end time: " + settings.getSleepEndTime());

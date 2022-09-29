@@ -18,7 +18,6 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Deletes a user from a list.
@@ -37,7 +36,7 @@ public final class DeleteUserListMember {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.destroyUserListMember(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
             System.out.println("Successfully deleted user [" + args[1] + "] from the list.");
             System.exit(0);

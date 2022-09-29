@@ -19,7 +19,6 @@ package examples.favorite;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public final class GetFavorites {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             List<Status> statuses = twitter.getFavorites();
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());

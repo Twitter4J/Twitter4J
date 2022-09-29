@@ -19,7 +19,6 @@ package examples.directmessage;
 import twitter4j.DirectMessage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Example application that gets a specified direct message.<br>
@@ -37,7 +36,7 @@ public class ShowDirectMessage {
             System.out.println("Usage: java twitter4j.examples.directmessage.ShowDirectMessage [message id]");
             System.exit(-1);
         }
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         try {
             DirectMessage message = twitter.showDirectMessage(Long.parseLong(args[0]));
             System.out.println("From: id:" + message.getId() + " - "

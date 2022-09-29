@@ -19,7 +19,6 @@ package examples.savedsearches;
 import twitter4j.SavedSearch;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 import java.util.List;
 
@@ -36,7 +35,7 @@ public final class GetSavedSearches {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             List<SavedSearch> savedSearches = twitter.getSavedSearches();
             for (SavedSearch savedSearch : savedSearches) {
                 System.out.println("[name:" + savedSearch.getName() + " query:" + savedSearch.getQuery() + " id:"

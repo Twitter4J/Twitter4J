@@ -19,7 +19,6 @@ package examples.timeline;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class GetUserTimeline {
      */
     public static void main(String[] args) {
         // gets Twitter instance with default credentials
-        Twitter twitter = new TwitterFactory().getInstance();
+        Twitter twitter = Twitter.getInstance();
         try {
             List<Status> statuses;
             String user;

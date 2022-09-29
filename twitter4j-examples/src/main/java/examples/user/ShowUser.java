@@ -18,7 +18,6 @@ package examples.user;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 /**
@@ -38,7 +37,7 @@ public final class ShowUser {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             User user = twitter.showUser(args[0]);
             if (user.getStatus() != null) {
                 System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());

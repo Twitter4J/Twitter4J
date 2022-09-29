@@ -18,7 +18,6 @@ package examples.friendship;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Follows the specified user.
@@ -37,7 +36,7 @@ public final class CreateFriendship {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.createFriendship(args[0]);
             System.out.println("Successfully followed [" + args[0] + "].");
             System.exit(0);

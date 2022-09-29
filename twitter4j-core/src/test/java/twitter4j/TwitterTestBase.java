@@ -141,37 +141,37 @@ public class TwitterTestBase {
         browserConsumerSecret = p.getProperty("browser.oauth.consumerSecret");
         browserConsumerKey = p.getProperty("browser.oauth.consumerKey");
 
-        conf1 = new ConfigurationBuilder().load(subProperty(p, "id1")).build();
+        conf1 = new ConfigurationBuilder().load(subProperty(p, "id1")).buildConfiguration();
         id1 = new TestUserInfo("id1");
-        conf2 = new ConfigurationBuilder().load(subProperty(p, "id2")).build();
+        conf2 = new ConfigurationBuilder().load(subProperty(p, "id2")).buildConfiguration();
         id2 = new TestUserInfo("id2");
-        conf3 = new ConfigurationBuilder().load(subProperty(p, "id3")).build();
+        conf3 = new ConfigurationBuilder().load(subProperty(p, "id3")).buildConfiguration();
         id3 = new TestUserInfo("id3");
-        rwPrivateMessage = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "rwprivate")).build()).getInstance();
-        bestFriend1Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend1")).build();
+        rwPrivateMessage = Twitter.newBuilder().load(subProperty(p, "rwprivate")).build();
+        bestFriend1Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend1")).buildConfiguration();
         bestFriend1 = new TestUserInfo("bestFriend1");
-        bestFriend2Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend2")).build();
+        bestFriend2Conf = new ConfigurationBuilder().load(subProperty(p, "bestFriend2")).buildConfiguration();
         bestFriend2 = new TestUserInfo("bestFriend2");
         rwPrivate = new TestUserInfo("rwprivate");
-        rwPrivateConf = new ConfigurationBuilder().load(subProperty(p, "rwprivate")).build();
+        rwPrivateConf = new ConfigurationBuilder().load(subProperty(p, "rwprivate")).buildConfiguration();
 
         numberId = p.getProperty("numberid.user");
         numberPass = p.getProperty("numberid.password");
 //        id1id = Integer.valueOf(p.getProperty("id1id"));
         numberIdId = Long.parseLong(p.getProperty("numberid.id"));
 
-        twitter1 = new TwitterFactory(conf1).getInstance();
+        twitter1 = new TwitterImpl(conf1);
 
-        twitter2 = new TwitterFactory(conf2).getInstance();
+        twitter2 = new TwitterImpl(conf2);
 
-        twitter3 = new TwitterFactory(conf3).getInstance();
+        twitter3 = new TwitterImpl(conf3);
 
-        twitterAPIBestFriend1 = new TwitterFactory(bestFriend1Conf).getInstance();
+        twitterAPIBestFriend1 = new TwitterImpl(bestFriend1Conf);
 
-        twitterAPIBestFriend2 = new TwitterFactory(bestFriend2Conf).getInstance();
+        twitterAPIBestFriend2 = new TwitterImpl(bestFriend2Conf);
 
 
-        readonly = new TwitterFactory(new ConfigurationBuilder().load(subProperty(p, "readonly")).build()).getInstance();
+        readonly = Twitter.newBuilder().load(subProperty(p, "readonly")).build();
 
         System.out.println("twitter1:"+twitter1);
         System.out.println("twitter2:"+twitter2);

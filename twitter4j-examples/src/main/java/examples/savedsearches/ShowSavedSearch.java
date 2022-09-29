@@ -19,7 +19,6 @@ package examples.savedsearches;
 import twitter4j.SavedSearch;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Shows one single saved search.
@@ -38,7 +37,7 @@ public final class ShowSavedSearch {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             SavedSearch savedSearch = twitter.showSavedSearch(Integer.parseInt(args[0]));
             System.out.println("[name:" + savedSearch.getName() + " query:" + savedSearch.getQuery() + " id:"
                     + savedSearch.getId() + "]");

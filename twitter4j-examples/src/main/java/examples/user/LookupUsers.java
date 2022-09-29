@@ -16,7 +16,10 @@
 
 package examples.user;
 
-import twitter4j.*;
+import twitter4j.ResponseList;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  * Looks up users.
@@ -36,7 +39,7 @@ public final class LookupUsers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             ResponseList<User> users = twitter.lookupUsers(args[0].split(","));
             for (User user : users) {
                 if (user.getStatus() != null) {

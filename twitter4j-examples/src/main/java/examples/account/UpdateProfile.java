@@ -18,7 +18,6 @@ package examples.account;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 /**
  * Updates profile.
@@ -37,7 +36,7 @@ public final class UpdateProfile {
             System.exit(-1);
         }
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            Twitter twitter = Twitter.getInstance();
             twitter.updateProfile(args[0], args[1], args[2], args[3]);
             System.out.println("Successfully updated profile.");
             System.exit(0);
