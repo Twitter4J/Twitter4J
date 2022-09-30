@@ -123,11 +123,6 @@ abstract class TwitterBaseImpl implements TwitterBase, java.io.Serializable, Htt
         }
     }
 
-    @Override
-    public final Authorization getAuthorization() {
-        return auth;
-    }
-
     final void ensureAuthorizationEnabled() {
         if (!auth.isEnabled()) {
             throw new IllegalStateException(

@@ -50,12 +50,4 @@ public interface TwitterBase {
     @SuppressWarnings("unused")
     void onRateLimitReached(Consumer<RateLimitStatusEvent> action);
 
-    /**
-     * Returns the authorization scheme for this instance.<br>
-     * The returned type will be either of BasicAuthorization, OAuthAuthorization, or NullAuthorization
-     *
-     * @return the authorization scheme for this instance
-     */
-    Authorization getAuthorization();
-
 }
