@@ -47,6 +47,7 @@ public interface TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 4.0.4
      */
+    @SuppressWarnings("unused")
     void onRateLimitReached(Consumer<RateLimitStatusEvent> action);
 
     /**
@@ -57,11 +58,4 @@ public interface TwitterBase {
      */
     Authorization getAuthorization();
 
-    /**
-     * Returns the configuration associated with this instance
-     *
-     * @return configuration associated with this instance
-     * @since Twitter4J 2.1.8
-     */
-    Configuration getConfiguration();
 }

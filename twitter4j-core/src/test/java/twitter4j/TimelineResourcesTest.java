@@ -34,7 +34,6 @@ class TimelineResourcesTest extends TwitterTestBase {
     void testGetHomeTimeline() throws Exception {
         List<Status> statuses = twitter1.getHomeTimeline();
         assertTrue(0 < statuses.size());
-        assertTrue(twitter1.getConfiguration().jsonStoreEnabled);
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
     }
@@ -120,6 +119,6 @@ class TimelineResourcesTest extends TwitterTestBase {
 
     @Test
     void testRetweetsOfMe() throws Exception {
-        List<Status> statuses = twitter2.getRetweetsOfMe();
+        twitter2.getRetweetsOfMe();
     }
 }
