@@ -64,6 +64,27 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         return new OAuthAuthorizationBuilder();
     }
 
+    /**
+     * Equivalent to OAuthAuthorization.newBuilder().oAuthConsumer(key, secret).build();
+     *
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @return OAuthAuthorization
+     */
+    public static OAuthAuthorization getInstance(String consumerKey, String consumerSecret) {
+        return newBuilder().oAuthConsumer(consumerKey, consumerSecret).build();
+    }
+
+    /**
+     * Equivalent to OAuthAuthorization.newBuilder().build();
+     *
+     * @return OAuthAuthorization
+     */
+    public static OAuthAuthorization getInstance() {
+        return newBuilder().build();
+    }
+
+
     // implementations for Authorization
     @Override
     public String getAuthorizationHeader(HttpRequest req) {
@@ -198,6 +219,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      * Invalidates the OAuth token
      * <p>
      * On success, sets oauthToken to null
+     *
      * @throws TwitterException when Twitter service or network is unavailable, or the user has not authorized
      */
     @SuppressWarnings("unused")

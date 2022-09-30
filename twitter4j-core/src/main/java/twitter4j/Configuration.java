@@ -353,39 +353,37 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
         return (T2)this;
     }
 
-    public T2 oAuthConsumerKey(String oAuthConsumerKey) {
+    public T2 oAuthConsumer(String oAuthConsumerKey, String oAuthConsumerSecret) {
         checkNotBuilt();
         this.oAuthConsumerKey = oAuthConsumerKey;
-        return (T2)this;
-    }
-
-    public T2 oAuthConsumerSecret(String oAuthConsumerSecret) {
-        checkNotBuilt();
         this.oAuthConsumerSecret = oAuthConsumerSecret;
         return (T2)this;
     }
 
-    public T2 oAuthAccessToken(String oAuthAccessToken) {
+    public T2 oAuthAccessToken(String oAuthAccessToken, String oAuthAccessTokenSecret) {
         checkNotBuilt();
         this.oAuthAccessToken = oAuthAccessToken;
-        return (T2)this;
-    }
-
-    public T2 oAuthAccessTokenSecret(String oAuthAccessTokenSecret) {
-        checkNotBuilt();
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
         return (T2)this;
     }
-
-    public T2 oAuth2TokenType(String oAuth2TokenType) {
+    public T2 oAuthAccessToken(AccessToken accessToken) {
         checkNotBuilt();
-        this.oAuth2TokenType = oAuth2TokenType;
+        this.oAuthAccessToken = accessToken.getToken();
+        this.oAuthAccessTokenSecret = accessToken.getTokenSecret();
         return (T2)this;
     }
 
-    public T2 oAuth2AccessToken(String oAuth2AccessToken) {
+    public T2 oAuth2Token(String oAuth2TokenType, String oAuth2AccessToken) {
         checkNotBuilt();
+        this.oAuth2TokenType = oAuth2TokenType;
         this.oAuth2AccessToken = oAuth2AccessToken;
+        return (T2)this;
+    }
+
+    public T2 oAuth2Token(OAuth2Token oAuth2Token) {
+        checkNotBuilt();
+        this.oAuth2TokenType = oAuth2Token.getTokenType();
+        this.oAuth2AccessToken = oAuth2Token.getAccessToken();
         return (T2)this;
     }
 

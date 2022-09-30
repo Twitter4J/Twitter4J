@@ -64,7 +64,7 @@ public class GetAccessToken {
             System.exit(-1);
         }
         try {
-            OAuthAuthorization oAuthAuthorization = OAuthAuthorization.newBuilder().build();
+            OAuthAuthorization oAuthAuthorization = OAuthAuthorization.getInstance();
             RequestToken requestToken = oAuthAuthorization.getOAuthRequestToken();
             System.out.println("Got request token.");
             System.out.println("Request token: " + requestToken.getToken());

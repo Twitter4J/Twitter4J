@@ -32,32 +32,55 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
 
     private final HttpClient http;
 
-    private String consumerKey;
+    private final String consumerKey;
 
-    private String consumerSecret;
+    private final String consumerSecret;
 
     private OAuth2Token token;
 
-    public OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {
+    OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {
         this.conf = conf;
-        setOAuthConsumer(conf.oAuthConsumerKey, conf.oAuthConsumerSecret);
+        this.consumerKey = conf.oAuthConsumerKey != null ? conf.oAuthConsumerKey : "";
+        this.consumerSecret = conf.oAuthConsumerSecret != null ? conf.oAuthConsumerSecret : "";
         if (conf.oAuth2TokenType != null && conf.oAuth2AccessToken != null) {
             token = new OAuth2Token(conf.oAuth2TokenType, conf.oAuth2AccessToken);
         }
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
     }
 
-    /**
-     * Sets the OAuth consumer key and consumer secret.
-     *
-     * @param consumerKey    OAuth consumer key
-     * @param consumerSecret OAuth consumer secret
-     * @throws IllegalStateException when OAuth consumer has already been set, or the instance is using basic authorization.
-     */
-    public void setOAuthConsumer(String consumerKey, String consumerSecret) {
-        this.consumerKey = consumerKey != null ? consumerKey : "";
-        this.consumerSecret = consumerSecret != null ? consumerSecret : "";
+    public static OAuth2AuthorizationBuilder newBuilder() {
+        return new OAuth2AuthorizationBuilder();
     }
+
+    /**
+     * Equivalent to OAuth2Authorization.newBuilder().oAuthConsumer(key, secret).build();
+     *
+     * @param consumerKey    consumer key
+     * @param consumerSecret consumer secret
+     * @return OAuth2Authorization
+     */
+    public static OAuth2Authorization getInstance(String consumerKey, String consumerSecret) {
+        return newBuilder().oAuthConsumer(consumerKey, consumerSecret).build();
+    }
+
+    /**
+     * Equivalent to OAuth2Authorization.newBuilder().build();
+     *
+     * @return OAuth2Authorization
+     */
+    public static OAuth2Authorization getInstance() {
+        return newBuilder().build();
+    }
+
+    public static class OAuth2AuthorizationBuilder extends Configuration<OAuth2Authorization, OAuth2Authorization.OAuth2AuthorizationBuilder> {
+
+        private static final long serialVersionUID = 2874396111468839768L;
+
+        OAuth2AuthorizationBuilder() {
+            super(OAuth2Authorization::new);
+        }
+    }
+
 
     /**
      * Obtains an OAuth 2 Bearer token.

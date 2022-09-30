@@ -85,10 +85,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     void testNoListener() {
         try {
             TwitterStream.newBuilder()
-                    .oAuthConsumerSecret("dummy")
-                    .oAuthConsumerKey("dummy")
-                    .oAuthAccessToken("dummy")
-                    .oAuthAccessTokenSecret("dummy")
+                    .oAuthConsumer("dummy","dummy")
+                    .oAuthAccessToken("dummy", "dummy")
                     .build();
             fail("expecting IllegalStateException");
         } catch (IllegalStateException ignored) {
