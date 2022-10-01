@@ -18,6 +18,8 @@ package twitter4j;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +33,6 @@ import java.util.function.Function;
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
 class Configuration<T, T2 extends Configuration> implements HttpClientConfiguration, java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
-    List<String> hoge = new ArrayList<>();
     transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
     transient  List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
 
@@ -97,10 +98,10 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
         PropertyConfiguration.loadDefaultProperties(this);
     }
 
-    transient Function<Configuration<T, T2>, T> factory;
+    transient Function<Configuration<T, T2>, T> instanceFactory;
     Configuration(Function<Configuration<T,T2>, T> factory){
         this();
-        this.factory = factory;
+        this.instanceFactory = factory;
     }
 
     public static Configuration<Twitter, Configuration> getInstance() {
@@ -108,6 +109,9 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
     }
 
     Authorization auth;
+    transient HttpClient http;
+
+    transient ObjectFactory factory;
 
     public HttpClientConfiguration getHttpClientConfiguration() {
         return this;
@@ -183,12 +187,12 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Configuration<?, ?> that = (Configuration<?, ?>) o;
-        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeMyRetweetEnabled == that.includeMyRetweetEnabled && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && includeEmailEnabled == that.includeEmailEnabled && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && built == that.built && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName) && Objects.equals(factory, that.factory);
+        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeMyRetweetEnabled == that.includeMyRetweetEnabled && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && includeEmailEnabled == that.includeEmailEnabled && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && built == that.built && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuthRealm, that.oAuthRealm) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName) && Objects.equals(instanceFactory, that.instanceFactory) && Objects.equals(auth, that.auth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, password, httpProxyHost, httpProxyUser, httpProxyPassword, httpProxySocks, httpProxyPort, httpConnectionTimeout, httpReadTimeout, prettyDebug, gzipEnabled, httpStreamingReadTimeout, httpRetryCount, httpRetryIntervalSeconds, oAuthConsumerKey, oAuthConsumerSecret, oAuthAccessToken, oAuthAccessTokenSecret, oAuth2TokenType, oAuth2AccessToken, oAuth2Scope, oAuthRequestTokenURL, oAuthAuthorizationURL, oAuthAccessTokenURL, oAuthAuthenticationURL, oAuthInvalidateTokenURL, oAuth2TokenURL, oAuth2InvalidateTokenURL, restBaseURL, streamBaseURL, uploadBaseURL, contributingTo, includeMyRetweetEnabled, includeEntitiesEnabled, trimUserEnabled, includeExtAltTextEnabled, tweetModeExtended, includeEmailEnabled, jsonStoreEnabled, mbeanEnabled, stallWarningsEnabled, applicationOnlyAuthEnabled, streamThreadName);
+        return Objects.hash(user, password, httpProxyHost, httpProxyUser, httpProxyPassword, httpProxySocks, httpProxyPort, httpConnectionTimeout, httpReadTimeout, prettyDebug, gzipEnabled, httpStreamingReadTimeout, httpRetryCount, httpRetryIntervalSeconds, oAuthConsumerKey, oAuthConsumerSecret, oAuthAccessToken, oAuthAccessTokenSecret, oAuthRealm, oAuth2TokenType, oAuth2AccessToken, oAuth2Scope, oAuthRequestTokenURL, oAuthAuthorizationURL, oAuthAccessTokenURL, oAuthAuthenticationURL, oAuthInvalidateTokenURL, oAuth2TokenURL, oAuth2InvalidateTokenURL, restBaseURL, streamBaseURL, uploadBaseURL, contributingTo, includeMyRetweetEnabled, includeEntitiesEnabled, trimUserEnabled, includeExtAltTextEnabled, tweetModeExtended, includeEmailEnabled, jsonStoreEnabled, mbeanEnabled, stallWarningsEnabled, applicationOnlyAuthEnabled, streamThreadName, instanceFactory, auth, built);
     }
 
     @Override
@@ -518,6 +522,8 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
 
     T2 buildConfiguration() {
         checkNotBuilt();
+        factory =new JSONImplFactory(this);
+        http = HttpClient.getInstance(this);
         String consumerKey = this.oAuthConsumerKey;
         String consumerSecret = this.oAuthConsumerSecret;
 
@@ -544,7 +550,7 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
      */
     public T build(){
         buildConfiguration();
-        return factory.apply(this);
+        return instanceFactory.apply(this);
     }
 
     private boolean built = false;
@@ -552,5 +558,20 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
         if (built) {
             throw new IllegalStateException("Cannot use this builder any longer, build() has already been called");
         }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
+        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#861
+        stream.defaultWriteObject();
+    }
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
+        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
+        stream.defaultReadObject();
+
+        http = HttpClient.getInstance(this);
+        factory = new JSONImplFactory(this);
+        rateLimitReachedListeners = new ArrayList<>();
+        rateLimitStatusListeners = new ArrayList<>();
     }
 }

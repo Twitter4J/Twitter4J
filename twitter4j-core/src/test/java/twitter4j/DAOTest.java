@@ -31,29 +31,28 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"ConstantConditions", "rawtypes", "UnusedAssignment", "unused", "UnusedReturnValue"})
 @Execution(ExecutionMode.CONCURRENT)
 class DAOTest extends TwitterTestBase {
-    private final Configuration conf = Configuration.getInstance();
+    private final Configuration conf = Configuration.getInstance().buildConfiguration();
 
     @Test
     void testEmptyJSON() throws Exception {
-        HttpClient http = new HttpClient();
 
         // empty User list
-        List<User> users = UserJSONImpl.createUserList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<User> users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, users.size());
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, statuses.size());
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
         assertEquals(0, directMessages.size());
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
-        List<Trends> trends = TrendsJSONImpl.createTrendsList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.jsonStoreEnabled);
+        List<Trends> trends = TrendsJSONImpl.createTrendsList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.jsonStoreEnabled);
         assertEquals(0, trends.size());
         assertDeserializedFormIsEqual(trends);
     }
@@ -412,8 +411,8 @@ class DAOTest extends TwitterTestBase {
     }
 
     private static JSONObject getJSONObjectFromPostURL(String url, Configuration conf) throws Exception {
-        HttpClient http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        return http.post(url).asJSONObject();
+        HttpClient http = conf.http;
+        return conf.http.post(url).asJSONObject();
     }
 
     private JSONObject getJSONObjectFromPostURL(String url) throws Exception {
@@ -424,8 +423,8 @@ class DAOTest extends TwitterTestBase {
     }
 
     private JSONObject getJSONObjectFromGetURL(String url, Configuration conf) throws Exception {
-        HttpClient http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        return http.get(url, null, getOAuthOuthorization(conf), null).asJSONObject();
+        HttpClient http = conf.http;
+        return conf.http.get(url, null, getOAuthOuthorization(conf), null).asJSONObject();
     }
 
     private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
@@ -437,8 +436,8 @@ class DAOTest extends TwitterTestBase {
 
 
     private JSONArray getJSONArrayFromGetURL(String url, Configuration conf) throws Exception {
-        HttpClient http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        return http.get(url, null, getOAuthOuthorization(conf), null).asJSONArray();
+        HttpClient http = conf.http;
+        return conf.http.get(url, null, getOAuthOuthorization(conf), null).asJSONArray();
     }
 
     private OAuthAuthorization getOAuthOuthorization(Configuration conf) {
@@ -475,7 +474,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testUserAsJSON() throws Exception {
         // single User
-        HttpClient http = HttpClient.getInstance(conf.getHttpClientConfiguration());
+        HttpClient http = conf.http;
         JSONObject json = getJSONObjectFromClassPath("/dao/user.json");
         User user = new UserJSONImpl(json);
         assertTrue(user.isGeoEnabled());
@@ -517,7 +516,7 @@ class DAOTest extends TwitterTestBase {
         List<User> users;
 
         // User list
-        users = UserJSONImpl.createUserList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/followers/T4J_hudson.json"), conf);
+        users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/followers/T4J_hudson.json"), conf);
         assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
     }
@@ -525,8 +524,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testStatusAsJSON() throws Exception {
         // single Status
-        HttpClient http = new HttpClient();
-        List<Status> statuses = StatusJSONImpl.createStatusList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), conf);
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000L), status.getCreatedAt());
         assertEquals(6000554383L, status.getId());
@@ -544,8 +542,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
-        HttpClient http = new HttpClient();
-        Status status = new StatusJSONImpl(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), conf);
+        Status status = new StatusJSONImpl(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), conf);
         assertEquals(new Date(1259078050000L), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
         assertNull(status.getInReplyToScreenName());
@@ -633,8 +630,7 @@ class DAOTest extends TwitterTestBase {
 
     @Test
     void testDirectMessagesAsJSON() throws Exception {
-        HttpClient http = new HttpClient();
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), conf);
         DirectMessage dm = directMessages.get(0);
         assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());

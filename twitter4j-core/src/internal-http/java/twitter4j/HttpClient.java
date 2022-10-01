@@ -22,9 +22,6 @@ final class HttpClient implements HttpResponseCode, Serializable {
 
     private final Map<String, String> requestHeaders;
 
-    HttpClient(){
-        this(Configuration.getInstance().getHttpClientConfiguration());
-    }
     HttpClient(HttpClientConfiguration conf) {
         this.CONF = conf;
         requestHeaders = new HashMap<>();

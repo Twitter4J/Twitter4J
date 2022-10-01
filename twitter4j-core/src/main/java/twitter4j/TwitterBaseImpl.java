@@ -16,8 +16,6 @@
 
 package twitter4j;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -36,20 +34,10 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
 
     Configuration conf;
 
-    transient HttpClient http;
-
-    ObjectFactory factory;
-
-
     /*package*/ TwitterBaseImpl(Configuration conf) {
         this.conf = conf;
-        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        setFactory();
     }
 
-    void setFactory() {
-        factory = new JSONImplFactory(conf);
-    }
 
 
     @Override
@@ -99,43 +87,23 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
         }
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#861
-        out.putFields();
-        out.writeFields();
-
-        out.writeObject(conf);
-    }
-
-    private void readObject(ObjectInputStream stream)
-            throws IOException, ClassNotFoundException {
-        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
-        stream.readFields();
-
-        conf = (Configuration) stream.readObject();
-        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
-        setFactory();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TwitterBaseImpl that = (TwitterBaseImpl) o;
-        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(factory, that.factory);
+        return Objects.equals(conf, that.conf);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(conf, http, factory);
+        return Objects.hash(conf);
     }
 
     @Override
     public String toString() {
         return "TwitterBaseImpl{" +
                 "conf=" + conf +
-                ", http=" + http +
-                ", factory=" + factory +
                 '}';
     }
 }

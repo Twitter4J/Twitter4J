@@ -51,9 +51,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         Map<TwitterStream, String> map = new HashMap<>();
         TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build();
         TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build();
-        map.put(twitterStream1, "value");
-        map.put(twitterStream2, "value");
-        assertEquals(2, map.size());
+        assertEquals(twitterStream1, twitterStream2);
     }
 
     final List<String> received = new ArrayList<>();

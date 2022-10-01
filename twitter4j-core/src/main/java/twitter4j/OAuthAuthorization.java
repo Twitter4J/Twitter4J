@@ -32,7 +32,6 @@ import java.util.*;
 public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final long serialVersionUID = -886869424811858868L;
     private final Configuration conf;
-    private static HttpClient http;
 
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
@@ -51,7 +50,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      */
     OAuthAuthorization(Configuration conf) {
         this.conf = conf;
-        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         this.consumerKey = conf.oAuthConsumerKey != null ? conf.oAuthConsumerKey : "";
         this.consumerSecret = conf.oAuthConsumerSecret != null ? conf.oAuthConsumerSecret : "";
         if (conf.oAuthAccessToken != null && conf.oAuthAccessTokenSecret != null) {
@@ -140,7 +138,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
         }
-        oauthToken = new RequestToken(http.post(conf.oAuthRequestTokenURL, params.toArray(new HttpParameter[0]), this, null));
+        oauthToken = new RequestToken(conf.http.post(conf.oAuthRequestTokenURL, params.toArray(new HttpParameter[0]), this, null));
         return (RequestToken) oauthToken;
     }
 
@@ -161,7 +159,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (oauthToken instanceof AccessToken) {
             return (AccessToken) oauthToken;
         }
-        oauthToken = new AccessToken(http.post(conf.oAuthAccessTokenURL, null, this, null));
+        oauthToken = new AccessToken(conf.http.post(conf.oAuthAccessTokenURL, null, this, null));
         return (AccessToken) oauthToken;
     }
 
@@ -178,7 +176,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      */
     public AccessToken getOAuthAccessToken(String oauthVerifier) throws TwitterException {
         ensureTokenIsAvailable();
-        oauthToken = new AccessToken(http.post(conf.oAuthAccessTokenURL
+        oauthToken = new AccessToken(conf.http.post(conf.oAuthAccessTokenURL
                 , new HttpParameter[]{new HttpParameter("oauth_verifier", oauthVerifier)}, this, null));
         return (AccessToken) oauthToken;
     }
@@ -235,7 +233,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         boolean succeed = false;
 
         try {
-            HttpResponse res = http.post(conf.oAuthInvalidateTokenURL, params, this, null);
+            HttpResponse res = conf.http.post(conf.oAuthInvalidateTokenURL, params, this, null);
             if (res.getStatusCode() != 200) {
                 throw new TwitterException("Invalidating OAuth Token failed.", res);
             }
@@ -477,15 +475,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OAuthAuthorization that = (OAuthAuthorization) o;
-        return Objects.equals(conf, that.conf) && Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(realm, that.realm) && Objects.equals(oauthToken, that.oauthToken);
+        return Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(realm, that.realm) && Objects.equals(oauthToken, that.oauthToken);
     }
 
     @Override
     public int hashCode() {
-        int result = consumerKey != null ? consumerKey.hashCode() : 0;
-        result = 31 * result + (consumerSecret != null ? consumerSecret.hashCode() : 0);
-        result = 31 * result + (oauthToken != null ? oauthToken.hashCode() : 0);
-        return result;
+        return Objects.hash(consumerKey, consumerSecret, realm, oauthToken);
     }
 
     @Override

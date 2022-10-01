@@ -30,8 +30,6 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
     private static final long serialVersionUID = -2895232598422218647L;
     private final Configuration conf;
 
-    private final HttpClient http;
-
     private final String consumerKey;
 
     private final String consumerSecret;
@@ -45,7 +43,6 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         if (conf.oAuth2TokenType != null && conf.oAuth2AccessToken != null) {
             token = new OAuth2Token(conf.oAuth2TokenType, conf.oAuth2AccessToken);
         }
-        http = HttpClient.getInstance(conf.getHttpClientConfiguration());
     }
 
     public static OAuth2AuthorizationBuilder newBuilder() {
@@ -101,7 +98,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
             params[1] = new HttpParameter("scope", conf.oAuth2Scope);
         }
 
-        HttpResponse res = http.post(conf.oAuth2TokenURL, params, this, null);
+        HttpResponse res = conf.http.post(conf.oAuth2TokenURL, params, this, null);
         if (res.getStatusCode() != 200) {
             throw new TwitterException("Obtaining OAuth 2 Bearer Token failed.", res);
         }
@@ -129,7 +126,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         try {
             token = null;
 
-            HttpResponse res = http.post(conf.oAuth2InvalidateTokenURL, params, this, null);
+            HttpResponse res = conf.http.post(conf.oAuth2InvalidateTokenURL, params, this, null);
             if (res.getStatusCode() != 200) {
                 throw new TwitterException("Invalidating OAuth 2 Bearer Token failed.", res);
             }
@@ -173,15 +170,12 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OAuth2Authorization that = (OAuth2Authorization) o;
-        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(token, that.token);
+        return Objects.equals(consumerKey, that.consumerKey) && Objects.equals(consumerSecret, that.consumerSecret) && Objects.equals(token, that.token);
     }
 
     @Override
     public int hashCode() {
-        int result = consumerKey != null ? consumerKey.hashCode() : 0;
-        result = 31 * result + (consumerSecret != null ? consumerSecret.hashCode() : 0);
-        result = 31 * result + (token != null ? token.hashCode() : 0);
-        return result;
+        return Objects.hash(consumerKey, consumerSecret, token);
     }
 
     @Override

@@ -29,9 +29,9 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
+@SuppressWarnings("rawtypes")
 class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private static final long serialVersionUID = 5621090317737561048L;
-    private final HttpClient http;
     private static final Logger logger = Logger.getLogger();
 
     private TwitterStreamConsumer handler = null;
@@ -44,11 +44,10 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         super(conf);
         ensureAuthorizationEnabled();
         ensureStatusStreamListenerIsSet();
-        http = HttpClient.getInstance(new StreamingReadTimeoutConfiguration(conf));
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
         // see also - http://jira.twitter4j.org/browse/TFJ-556
-        http.addDefaultRequestHeader("Connection", "close");
+        conf.http.addDefaultRequestHeader("Connection", "close");
 
         stallWarningsGetParam = "stall_warnings=" + (conf.stallWarningsEnabled ? "true" : "false");
         stallWarningsParam = new HttpParameter("stall_warnings", conf.stallWarningsEnabled);
@@ -111,7 +110,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     private StatusStream getCountStream(String relativeUrl, int count) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.streamBaseURL + relativeUrl
+            return new StatusStreamImpl(conf.http.post(conf.streamBaseURL + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
                             , stallWarningsParam}, conf.auth, null), getConf());
         } catch (IOException e) {
@@ -142,7 +141,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getRetweetStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.streamBaseURL + "statuses/retweet.json"
+            return new StatusStreamImpl(conf.http.post(conf.streamBaseURL + "statuses/retweet.json"
                     , new HttpParameter[]{stallWarningsParam}, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -183,7 +182,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream() throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
+            return new StatusStreamImpl(conf.http.get(conf.streamBaseURL + "statuses/sample.json?"
                     + stallWarningsGetParam, null, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -204,7 +203,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getSampleStream(String language) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
+            return new StatusStreamImpl(conf.http.get(conf.streamBaseURL + "statuses/sample.json?"
                     + stallWarningsGetParam + "&language=" + language, null, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
@@ -243,7 +242,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     StatusStream getFilterStream(FilterQuery query) throws TwitterException {
         ensureAuthorizationEnabled();
         try {
-            return new StatusStreamImpl(http.post(conf.streamBaseURL
+            return new StatusStreamImpl(conf.http.post(conf.streamBaseURL
                             + "statuses/filter.json"
                     , query.asHttpParameterArray(stallWarningsParam), conf.auth, null), getConf());
         } catch (IOException e) {
@@ -485,13 +484,12 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         TwitterStreamImpl that = (TwitterStreamImpl) o;
-        return Objects.equals(http, that.http) && Objects.equals(handler, that.handler) && Objects.equals(stallWarningsGetParam, that.stallWarningsGetParam) && Objects.equals(stallWarningsParam, that.stallWarningsParam);
+        return Objects.equals(handler, that.handler) && Objects.equals(stallWarningsGetParam, that.stallWarningsGetParam) && Objects.equals(stallWarningsParam, that.stallWarningsParam);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (http != null ? http.hashCode() : 0);
         result = 31 * result + (handler != null ? handler.hashCode() : 0);
         result = 31 * result + (stallWarningsGetParam != null ? stallWarningsGetParam.hashCode() : 0);
         result = 31 * result + (stallWarningsParam != null ? stallWarningsParam.hashCode() : 0);
@@ -501,74 +499,9 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     @Override
     public String toString() {
         return "TwitterStreamImpl{" +
-                "http=" + http +
-                ", handler=" + handler +
+                "handler=" + handler +
                 ", stallWarningsGetParam='" + stallWarningsGetParam + '\'' +
                 ", stallWarningsParam=" + stallWarningsParam +
                 '}';
-    }
-}
-
-class StreamingReadTimeoutConfiguration implements HttpClientConfiguration {
-    final Configuration nestedConf;
-
-    StreamingReadTimeoutConfiguration(Configuration httpConf) {
-        this.nestedConf = httpConf;
-    }
-
-    @Override
-    public String getHttpProxyHost() {
-        return nestedConf.getHttpClientConfiguration().getHttpProxyHost();
-    }
-
-    @Override
-    public int getHttpProxyPort() {
-        return nestedConf.getHttpClientConfiguration().getHttpProxyPort();
-    }
-
-    @Override
-    public boolean isHttpProxySocks() {
-        return nestedConf.getHttpClientConfiguration().isHttpProxySocks();
-    }
-
-    @Override
-    public String getHttpProxyUser() {
-        return nestedConf.getHttpClientConfiguration().getHttpProxyUser();
-    }
-
-    @Override
-    public String getHttpProxyPassword() {
-        return nestedConf.getHttpClientConfiguration().getHttpProxyPassword();
-    }
-
-    @Override
-    public int getHttpConnectionTimeout() {
-        return nestedConf.getHttpClientConfiguration().getHttpConnectionTimeout();
-    }
-
-    @Override
-    public int getHttpReadTimeout() {
-        // this is the trick that overrides connection timeout
-        return nestedConf.getHttpStreamingReadTimeout();
-    }
-
-    @Override
-    public int getHttpRetryCount() {
-        return nestedConf.getHttpClientConfiguration().getHttpRetryCount();
-    }
-
-    @Override
-    public int getHttpRetryIntervalSeconds() {
-        return nestedConf.getHttpClientConfiguration().getHttpRetryIntervalSeconds();
-    }
-
-    @Override
-    public boolean isPrettyDebugEnabled() {
-        return nestedConf.getHttpClientConfiguration().isPrettyDebugEnabled();
-    }
-
-    @Override
-    public boolean isGZIPEnabled() {
-        return nestedConf.getHttpClientConfiguration().isGZIPEnabled();
     }
 }
