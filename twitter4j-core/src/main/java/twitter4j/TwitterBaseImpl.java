@@ -40,11 +40,9 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
 
     ObjectFactory factory;
 
-    Authorization auth;
 
     /*package*/ TwitterBaseImpl(Configuration conf) {
         this.conf = conf;
-        this.auth = conf.getAuthorization();
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();
     }
@@ -95,7 +93,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
     }
 
     final void ensureAuthorizationEnabled() {
-        if (!auth.isEnabled()) {
+        if (!conf.auth.isEnabled()) {
             throw new IllegalStateException(
                     "Authentication credentials are missing. " + WWW_DETAILS);
         }
@@ -107,7 +105,6 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
         out.writeFields();
 
         out.writeObject(conf);
-        out.writeObject(auth);
     }
 
     private void readObject(ObjectInputStream stream)
@@ -116,7 +113,6 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
         stream.readFields();
 
         conf = (Configuration) stream.readObject();
-        auth = (Authorization) stream.readObject();
         http = HttpClient.getInstance(conf.getHttpClientConfiguration());
         setFactory();
     }
@@ -126,12 +122,12 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TwitterBaseImpl that = (TwitterBaseImpl) o;
-        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(factory, that.factory) && Objects.equals(auth, that.auth);
+        return Objects.equals(conf, that.conf) && Objects.equals(http, that.http) && Objects.equals(factory, that.factory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(conf, http, factory, auth);
+        return Objects.hash(conf, http, factory);
     }
 
     @Override
@@ -140,7 +136,6 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
                 "conf=" + conf +
                 ", http=" + http +
                 ", factory=" + factory +
-                ", auth=" + auth +
                 '}';
     }
 }

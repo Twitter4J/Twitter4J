@@ -430,7 +430,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public void destroyDirectMessage(long id) throws TwitterException {
         ensureAuthorizationEnabled();
-        http.delete(conf.restBaseURL + "direct_messages/events/destroy.json?id=" + id, null, auth, null);
+        http.delete(conf.restBaseURL + "direct_messages/events/destroy.json?id=" + id, null, conf.auth, null);
     }
 
     @Override
@@ -790,7 +790,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public User verifyCredentials() throws TwitterException {
         return new UserJSONImpl(http.get(conf.restBaseURL + "account/verify_credentials.json",
-                new HttpParameter[]{new HttpParameter("include_email", conf.includeEmailEnabled)}, auth, this), conf);
+                new HttpParameter[]{new HttpParameter("include_email", conf.includeEmailEnabled)}, conf.auth, this), conf);
     }
     
     @Override
@@ -1836,13 +1836,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
             }
         }
         if (!conf.mbeanEnabled) {
-            return http.get(url, null, auth, this);
+            return http.get(url, null, conf.auth, this);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.get(url, null, auth, this);
+                response = http.get(url, null, conf.auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1854,13 +1854,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private HttpResponse get(String url, HttpParameter... params) throws TwitterException {
         ensureAuthorizationEnabled();
         if (!conf.mbeanEnabled) {
-            return http.get(url, mergeImplicitParams(params), auth, this);
+            return http.get(url, mergeImplicitParams(params), conf.auth, this);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.get(url, mergeImplicitParams(params), auth, this);
+                response = http.get(url, mergeImplicitParams(params), conf.auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1872,13 +1872,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private HttpResponse post(String url) throws TwitterException {
         ensureAuthorizationEnabled();
         if (!conf.mbeanEnabled) {
-            return http.post(url, IMPLICIT_PARAMS, auth, this);
+            return http.post(url, IMPLICIT_PARAMS, conf.auth, this);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.post(url, IMPLICIT_PARAMS, auth, this);
+                response = http.post(url, IMPLICIT_PARAMS, conf.auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1890,13 +1890,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private HttpResponse post(String url, HttpParameter... params) throws TwitterException {
         ensureAuthorizationEnabled();
         if (!conf.mbeanEnabled) {
-            return http.post(url, mergeImplicitParams(params), auth, this);
+            return http.post(url, mergeImplicitParams(params), conf.auth, this);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.post(url, mergeImplicitParams(params), auth, this);
+                response = http.post(url, mergeImplicitParams(params), conf.auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1908,13 +1908,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     private HttpResponse post(String url, JSONObject json) throws TwitterException {
         ensureAuthorizationEnabled();
         if (!conf.mbeanEnabled) {
-            return http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
+            return http.post(url, new HttpParameter[]{new HttpParameter(json)}, conf.auth, this);
         } else {
             // intercept HTTP call for monitoring purposes
             HttpResponse response = null;
             long start = System.currentTimeMillis();
             try {
-                response = http.post(url, new HttpParameter[]{new HttpParameter(json)}, auth, this);
+                response = http.post(url, new HttpParameter[]{new HttpParameter(json)}, conf.auth, this);
             } finally {
                 long elapsedTime = System.currentTimeMillis() - start;
                 TwitterAPIMonitor.getInstance().methodCalled(url, elapsedTime, isOk(response));
@@ -1971,7 +1971,6 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
                 "conf=" + conf +
                 ", http=" + http +
                 ", factory=" + factory +
-                ", auth=" + auth +
                 '}';
     }
 }

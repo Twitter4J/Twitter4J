@@ -107,24 +107,7 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
         return new Configuration<>();
     }
 
-    public Authorization getAuthorization(){
-        Authorization auth = null;
-        String consumerKey = this.oAuthConsumerKey;
-        String consumerSecret = this.oAuthConsumerSecret;
-
-        if (consumerKey != null && consumerSecret != null) {
-            if (this.applicationOnlyAuthEnabled){
-                auth = new OAuth2Authorization(this);
-            } else {
-                auth = new OAuthAuthorization(this);
-            }
-        }
-        if (null == auth) {
-            auth = NullAuthorization.getInstance();
-        }
-        return auth;
-
-    }
+    Authorization auth;
 
     public HttpClientConfiguration getHttpClientConfiguration() {
         return this;
@@ -535,6 +518,19 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
 
     T2 buildConfiguration() {
         checkNotBuilt();
+        String consumerKey = this.oAuthConsumerKey;
+        String consumerSecret = this.oAuthConsumerSecret;
+
+        if (consumerKey != null && consumerSecret != null) {
+            if (this.applicationOnlyAuthEnabled){
+                auth = new OAuth2Authorization(this);
+            } else {
+                auth = new OAuthAuthorization(this);
+            }
+        }
+        if (null == auth) {
+            auth = NullAuthorization.getInstance();
+        }
         try {
             return (T2)this;
         } finally {
@@ -547,6 +543,7 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
      * @return Twitter instance
      */
     public T build(){
+        buildConfiguration();
         return factory.apply(this);
     }
 

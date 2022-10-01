@@ -113,7 +113,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL + relativeUrl
                     , new HttpParameter[]{new HttpParameter("count", String.valueOf(count))
-                            , stallWarningsParam}, auth, null), getConf());
+                            , stallWarningsParam}, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -143,7 +143,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL + "statuses/retweet.json"
-                    , new HttpParameter[]{stallWarningsParam}, auth, null), getConf());
+                    , new HttpParameter[]{stallWarningsParam}, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -184,7 +184,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
-                    + stallWarningsGetParam, null, auth, null), getConf());
+                    + stallWarningsGetParam, null, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -205,7 +205,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         ensureAuthorizationEnabled();
         try {
             return new StatusStreamImpl(http.get(conf.streamBaseURL + "statuses/sample.json?"
-                    + stallWarningsGetParam + "&language=" + language, null, auth, null), getConf());
+                    + stallWarningsGetParam + "&language=" + language, null, conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
@@ -245,7 +245,7 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
         try {
             return new StatusStreamImpl(http.post(conf.streamBaseURL
                             + "statuses/filter.json"
-                    , query.asHttpParameterArray(stallWarningsParam), auth, null), getConf());
+                    , query.asHttpParameterArray(stallWarningsParam), conf.auth, null), getConf());
         } catch (IOException e) {
             throw new TwitterException(e);
         }
