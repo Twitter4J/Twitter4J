@@ -32,7 +32,7 @@ import java.util.Objects;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializable {
+final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializable {
     private static final long serialVersionUID = 4046908449190454692L;
     private String name = null;
     private String value = null;
@@ -184,18 +184,6 @@ public final class HttpParameter implements Comparable<HttpParameter>, java.io.S
         if (null == params) {
             return false;
         }
-        for (HttpParameter param : params) {
-            if (param.isFile()) {
-                containsFile = true;
-                break;
-            }
-        }
-        return containsFile;
-    }
-
-    /*package*/
-    static boolean containsFile(List<HttpParameter> params) {
-        boolean containsFile = false;
         for (HttpParameter param : params) {
             if (param.isFile()) {
                 containsFile = true;

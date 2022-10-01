@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * @author Andrew Hedges - andrew.hedges at gmail.com
  */
-public final class HttpResponseEvent {
+final class HttpResponseEvent {
 
     private final HttpRequest request;
 

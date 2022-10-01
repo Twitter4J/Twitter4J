@@ -20,7 +20,7 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.2
  */
-public interface HttpResponseCode {
+interface HttpResponseCode {
     int OK = 200;// OK: Success!
     int MULTIPLE_CHOICES = 300;//
     int FOUND = 302;//

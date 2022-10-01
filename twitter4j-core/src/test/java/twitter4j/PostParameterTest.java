@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package twitter4j.http;
+package twitter4j;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.HttpParameter;
 
 import java.io.File;
 

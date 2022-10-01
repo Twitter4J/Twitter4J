@@ -25,7 +25,7 @@ import java.util.Objects;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
-public final class HttpRequest implements java.io.Serializable {
+final class HttpRequest implements java.io.Serializable {
 
     private static final long serialVersionUID = 3365496352032493020L;
     private final RequestMethod method;
