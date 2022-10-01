@@ -32,9 +32,6 @@ class RateLimitStatusJSONImplTest {
     @Test
     void testGetResetTimeInSeconds() {
         RateLimitStatus status = RateLimitStatusJSONImpl.createFromResponseHeader(new MockHttpResponse());
-//        System.out.println(status.getResetTimeInSeconds());
-//        System.out.println((System.currentTimeMillis() / 1000) + 13 * 60);
-//        System.out.println(status.getResetTimeInSeconds() - (System.currentTimeMillis() / 1000) + 13 * 60);
         // test case for TFJ-699
         assertTrue(status.getResetTimeInSeconds() > (System.currentTimeMillis() / 1000) + 13 * 60);
     }
@@ -42,7 +39,7 @@ class RateLimitStatusJSONImplTest {
     static class MockHttpResponse extends HttpResponse {
 
         MockHttpResponse() {
-            super(null);
+            super(false);
         }
 
         @Override

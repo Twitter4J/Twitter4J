@@ -29,12 +29,12 @@ import java.util.Map;
  */
 class HttpResponse {
     private static final Logger logger = Logger.getLogger();
-    protected final Configuration CONF;
+    private final boolean prettyDebug;
     private HttpURLConnection con;
 
-    HttpResponse(HttpURLConnection con, Configuration conf) throws IOException {
-        this.CONF = conf;
+    HttpResponse(HttpURLConnection con, boolean prettyDebug) throws IOException {
         this.con = con;
+        this.prettyDebug = prettyDebug;
         try {
             this.statusCode = con.getResponseCode();
         } catch (IOException e) {
@@ -59,8 +59,8 @@ class HttpResponse {
         }
     }
 
-    HttpResponse(Configuration conf) {
-        this.CONF = conf;
+    HttpResponse(boolean prettyDebug) {
+        this.prettyDebug = prettyDebug;
     }
 
     protected int statusCode;
@@ -157,11 +157,11 @@ class HttpResponse {
         if (json == null) {
             try {
                 json = new JSONObject(asString());
-                if (CONF.prettyDebug) {
+                if (prettyDebug) {
                     logger.debug(json.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :
-                        json.toString());
+                            json.toString());
                 }
             } catch (JSONException jsone) {
                 if (responseAsString == null) {
@@ -189,11 +189,11 @@ class HttpResponse {
         if (jsonArray == null) {
             try {
                 jsonArray = new JSONArray(asString());
-                if (CONF.prettyDebug) {
+                if (prettyDebug) {
                     logger.debug(jsonArray.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :
-                        jsonArray.toString());
+                            jsonArray.toString());
                 }
             } catch (JSONException jsone) {
                 if (logger.isDebugEnabled()) {

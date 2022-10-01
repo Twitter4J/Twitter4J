@@ -453,13 +453,17 @@ class Configuration<T, T2 extends Configuration> implements java.io.Serializable
 
     T2 buildConfiguration() {
         checkNotBuilt();
-        factory =new JSONImplFactory(this);
-        http = HttpClient.getInstance(this);
+        factory = new JSONImplFactory(this);
+        http = new HttpClient(httpProxyHost
+                , httpProxyPort, httpProxyUser, httpProxyPassword, httpProxySocks, httpRetryCount
+                , httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug
+                ,
+                gzipEnabled);
         String consumerKey = this.oAuthConsumerKey;
         String consumerSecret = this.oAuthConsumerSecret;
 
         if (consumerKey != null && consumerSecret != null) {
-            if (this.applicationOnlyAuthEnabled){
+            if (this.applicationOnlyAuthEnabled) {
                 auth = new OAuth2Authorization(this);
             } else {
                 auth = new OAuthAuthorization(this);
@@ -500,7 +504,11 @@ class Configuration<T, T2 extends Configuration> implements java.io.Serializable
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
         stream.defaultReadObject();
 
-        http = HttpClient.getInstance(this);
+        http = new HttpClient(httpProxyHost
+                , httpProxyPort, httpProxyUser, httpProxyPassword, httpProxySocks, httpRetryCount
+                , httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug
+                ,
+                gzipEnabled);
         factory = new JSONImplFactory(this);
         rateLimitReachedListeners = new ArrayList<>();
         rateLimitStatusListeners = new ArrayList<>();
