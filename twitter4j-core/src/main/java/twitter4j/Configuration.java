@@ -31,7 +31,7 @@ import java.util.function.Function;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
-class Configuration<T, T2 extends Configuration> implements HttpClientConfiguration, java.io.Serializable {
+class Configuration<T, T2 extends Configuration> implements java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
     transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
     transient  List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
@@ -52,8 +52,8 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
 
 
     private int httpStreamingReadTimeout = 40 * 1000;
-    private int httpRetryCount = 0;
-    private int httpRetryIntervalSeconds = 5;
+    int httpRetryCount = 0;
+    int httpRetryIntervalSeconds = 5;
 
     String oAuthConsumerKey = null;
     String oAuthConsumerSecret = null;
@@ -112,75 +112,6 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
     transient HttpClient http;
 
     transient ObjectFactory factory;
-
-    public HttpClientConfiguration getHttpClientConfiguration() {
-        return this;
-    }
-
-    @Override
-    public String getHttpProxyHost() {
-        return httpProxyHost;
-    }
-
-    @Override
-    public int getHttpProxyPort() {
-        return httpProxyPort;
-    }
-
-    @Override
-    public String getHttpProxyUser() {
-        return httpProxyUser;
-    }
-
-    @Override
-    public String getHttpProxyPassword() {
-        return httpProxyPassword;
-    }
-
-    @Override
-    public boolean isHttpProxySocks() {
-        return httpProxySocks;
-    }
-
-    @Override
-    public int getHttpConnectionTimeout() {
-        return httpConnectionTimeout;
-    }
-
-    @Override
-    public int getHttpReadTimeout() {
-        return httpReadTimeout;
-    }
-
-    @Override
-    public int getHttpRetryCount() {
-        return httpRetryCount;
-    }
-
-    @Override
-    public int getHttpRetryIntervalSeconds() {
-        return httpRetryIntervalSeconds;
-    }
-
-    @Override
-    public boolean isPrettyDebugEnabled() {
-        return prettyDebug;
-    }
-
-    @Override
-    public boolean isGZIPEnabled() {
-        return gzipEnabled;
-    }
-
-    // methods for HttpClientConfiguration
-
-
-    public int getHttpStreamingReadTimeout() {
-        return httpStreamingReadTimeout;
-    }
-
-    // oauth related setter/getters
-
 
     @Override
     public boolean equals(Object o) {

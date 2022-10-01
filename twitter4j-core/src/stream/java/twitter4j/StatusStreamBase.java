@@ -99,7 +99,7 @@ abstract class StatusStreamBase implements StatusStream {
                                 JSONObject json = new JSONObject(line);
                                 JSONObjectType.Type event = JSONObjectType.determine(json);
                                 if (logger.isDebugEnabled()) {
-                                    logger.debug("Received:", CONF.getHttpClientConfiguration().isPrettyDebugEnabled() ? json.toString(1) : json.toString());
+                                    logger.debug("Received:", CONF.prettyDebug ? json.toString(1) : json.toString());
                                 }
                                 switch (event) {
                                     case SENDER:
@@ -194,7 +194,7 @@ abstract class StatusStreamBase implements StatusStream {
                                         break;
                                     case UNKNOWN:
                                     default:
-                                        logger.warn("Received unknown event:", CONF.getHttpClientConfiguration().isPrettyDebugEnabled() ? json.toString(1) : json.toString());
+                                        logger.warn("Received unknown event:", CONF.prettyDebug ? json.toString(1) : json.toString());
                                 }
                         }
                     } catch (Exception ex) {

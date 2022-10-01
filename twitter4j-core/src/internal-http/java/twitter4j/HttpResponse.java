@@ -29,10 +29,10 @@ import java.util.Map;
  */
 class HttpResponse {
     private static final Logger logger = Logger.getLogger();
-    protected final HttpClientConfiguration CONF;
+    protected final Configuration CONF;
     private HttpURLConnection con;
 
-    HttpResponse(HttpURLConnection con, HttpClientConfiguration conf) throws IOException {
+    HttpResponse(HttpURLConnection con, Configuration conf) throws IOException {
         this.CONF = conf;
         this.con = con;
         try {
@@ -59,7 +59,7 @@ class HttpResponse {
         }
     }
 
-    HttpResponse(HttpClientConfiguration conf) {
+    HttpResponse(Configuration conf) {
         this.CONF = conf;
     }
 
@@ -157,7 +157,7 @@ class HttpResponse {
         if (json == null) {
             try {
                 json = new JSONObject(asString());
-                if (CONF.isPrettyDebugEnabled()) {
+                if (CONF.prettyDebug) {
                     logger.debug(json.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :
@@ -189,7 +189,7 @@ class HttpResponse {
         if (jsonArray == null) {
             try {
                 jsonArray = new JSONArray(asString());
-                if (CONF.isPrettyDebugEnabled()) {
+                if (CONF.prettyDebug) {
                     logger.debug(jsonArray.toString(1));
                 } else {
                     logger.debug(responseAsString != null ? responseAsString :

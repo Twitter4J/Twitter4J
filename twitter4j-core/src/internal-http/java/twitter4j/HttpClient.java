@@ -10,32 +10,32 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 final class HttpClient implements HttpResponseCode, Serializable {
-    private final static ConcurrentHashMap<HttpClientConfiguration, HttpClient> confClientMap = new ConcurrentHashMap<>();
+    private final static ConcurrentHashMap<Configuration, HttpClient> confClientMap = new ConcurrentHashMap<>();
 
-    static HttpClient getInstance(HttpClientConfiguration conf) {
+    static HttpClient getInstance(Configuration conf) {
         return confClientMap.computeIfAbsent(conf, e -> new HttpClient(conf));
     }
 
     private static final Logger logger = Logger.getLogger();
     private static final long serialVersionUID = -8016974810651763053L;
-    private final HttpClientConfiguration CONF;
+    private final Configuration CONF;
 
     private final Map<String, String> requestHeaders;
 
-    HttpClient(HttpClientConfiguration conf) {
+    HttpClient(Configuration conf) {
         this.CONF = conf;
         requestHeaders = new HashMap<>();
         requestHeaders.put("X-Twitter-Client-Version", Version.getVersion());
         requestHeaders.put("X-Twitter-Client-URL", "https://twitter4j.org/en/twitter4j-" + Version.getVersion() + ".xml");
         requestHeaders.put("X-Twitter-Client", "Twitter4J");
         requestHeaders.put("User-Agent", "twitter4j https://twitter4j.org/ /" + Version.getVersion());
-        if (conf.isGZIPEnabled()) {
+        if (conf.gzipEnabled) {
             requestHeaders.put("Accept-Encoding", "gzip");
         }
     }
 
     private boolean isProxyConfigured() {
-        return CONF.getHttpProxyHost() != null && !CONF.getHttpProxyHost().equals("");
+        return CONF.httpProxyHost != null && !CONF.httpProxyHost.equals("");
     }
 
     void write(DataOutputStream out, String outStr) throws IOException {
@@ -69,7 +69,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
 
     HttpResponse handleRequest(HttpRequest req) throws TwitterException {
         int retriedCount;
-        int retry = CONF.getHttpRetryCount() + 1;
+        int retry = CONF.httpRetryCount + 1;
         HttpResponse res = null;
         for (retriedCount = 0; retriedCount < retry; retriedCount++) {
             int responseCode = -1;
@@ -155,7 +155,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
                     }
                     if (responseCode < OK || (responseCode != FOUND && MULTIPLE_CHOICES <= responseCode)) {
                         if (responseCode < INTERNAL_SERVER_ERROR ||
-                                retriedCount == CONF.getHttpRetryCount()) {
+                                retriedCount == CONF.httpRetryCount) {
                             throw new TwitterException(res.asString(), res);
                         }
                         // will retry if the status code is INTERNAL_SERVER_ERROR
@@ -172,7 +172,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
                 }
             } catch (IOException ioe) {
                 // connection timeout or read timeout
-                if (retriedCount == CONF.getHttpRetryCount()) {
+                if (retriedCount == CONF.httpRetryCount) {
                     throw new TwitterException(ioe.getMessage(), ioe, responseCode);
                 }
             }
@@ -180,8 +180,8 @@ final class HttpClient implements HttpResponseCode, Serializable {
                 if (logger.isDebugEnabled() && res != null) {
                     res.asString();
                 }
-                logger.debug("Sleeping " + CONF.getHttpRetryIntervalSeconds() + " seconds until the next retry.");
-                Thread.sleep(CONF.getHttpRetryIntervalSeconds() * 1000L);
+                logger.debug("Sleeping " + CONF.httpRetryIntervalSeconds + " seconds until the next retry.");
+                Thread.sleep(CONF.httpRetryIntervalSeconds * 1000L);
             } catch (InterruptedException ignore) {
                 //nothing to do
             }
@@ -219,11 +219,11 @@ final class HttpClient implements HttpResponseCode, Serializable {
     HttpURLConnection getConnection(String url) throws IOException {
         HttpURLConnection con;
         if (isProxyConfigured()) {
-            if (CONF.getHttpProxyUser() != null && !CONF.getHttpProxyUser().equals("")) {
+            if (CONF.httpProxyUser != null && !CONF.httpProxyUser.equals("")) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Proxy AuthUser: " + CONF.getHttpProxyUser());
+                    logger.debug("Proxy AuthUser: " + CONF.httpProxyUser);
                     //noinspection SuspiciousRegexArgument
-                    logger.debug("Proxy AuthPassword: " + CONF.getHttpProxyPassword().replaceAll(".", "*"));
+                    logger.debug("Proxy AuthPassword: " + CONF.httpProxyPassword.replaceAll(".", "*"));
                 }
                 Authenticator.setDefault(new Authenticator() {
                     @Override
@@ -231,28 +231,28 @@ final class HttpClient implements HttpResponseCode, Serializable {
                     getPasswordAuthentication() {
                         //respond only to proxy auth requests
                         if (getRequestorType().equals(RequestorType.PROXY)) {
-                            return new PasswordAuthentication(CONF.getHttpProxyUser(),
-                                    CONF.getHttpProxyPassword().toCharArray());
+                            return new PasswordAuthentication(CONF.httpProxyUser,
+                                    CONF.httpProxyPassword.toCharArray());
                         } else {
                             return null;
                         }
                     }
                 });
             }
-            final Proxy proxy = new Proxy(CONF.isHttpProxySocks() ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
-                    InetSocketAddress.createUnresolved(CONF.getHttpProxyHost(), CONF.getHttpProxyPort()));
+            final Proxy proxy = new Proxy(CONF.httpProxySocks ? Proxy.Type.SOCKS : Proxy.Type.HTTP,
+                    InetSocketAddress.createUnresolved(CONF.httpProxyHost, CONF.httpProxyPort));
             if (logger.isDebugEnabled()) {
-                logger.debug("Opening proxied connection(" + CONF.getHttpProxyHost() + ":" + CONF.getHttpProxyPort() + ")");
+                logger.debug("Opening proxied connection(" + CONF.httpProxyHost + ":" + CONF.httpProxyPort + ")");
             }
             con = (HttpURLConnection) new URL(url).openConnection(proxy);
         } else {
             con = (HttpURLConnection) new URL(url).openConnection();
         }
-        if (CONF.getHttpConnectionTimeout() > 0) {
-            con.setConnectTimeout(CONF.getHttpConnectionTimeout());
+        if (CONF.httpConnectionTimeout > 0) {
+            con.setConnectTimeout(CONF.httpConnectionTimeout);
         }
-        if (CONF.getHttpReadTimeout() > 0) {
-            con.setReadTimeout(CONF.getHttpReadTimeout());
+        if (CONF.httpReadTimeout > 0) {
+            con.setReadTimeout(CONF.httpReadTimeout);
         }
         con.setInstanceFollowRedirects(false);
         return con;

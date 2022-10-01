@@ -74,76 +74,76 @@ public class ConfigurationTest {
 
         System.getProperties().remove("twitter4j.http.proxyHost");
         conf = new Configuration();
-        assertNull(conf.getHttpClientConfiguration().getHttpProxyHost());
+        assertNull(conf.httpProxyHost);
 
         System.setProperty("twitter4j.http.proxyHost", override);
         conf = new Configuration();
-        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyHost());
+        assertEquals(override, conf.httpProxyHost);
         System.getProperties().remove("twitter4j.http.proxyHost");
 
         System.getProperties().remove("twitter4j.http.proxyPort");
         conf = new Configuration();
-        assertEquals(-1, conf.getHttpClientConfiguration().getHttpProxyPort());
+        assertEquals(-1, conf.httpProxyPort);
 
         System.setProperty("twitter4j.http.proxyPort", "100");
         conf = new Configuration();
-        assertEquals(100, conf.getHttpClientConfiguration().getHttpProxyPort());
+        assertEquals(100, conf.httpProxyPort);
         System.getProperties().remove("twitter4j.http.proxyPort");
 
 
         System.getProperties().remove("twitter4j.http.proxyUser");
         conf = new Configuration();
-        assertNull(conf.getHttpClientConfiguration().getHttpProxyUser());
+        assertNull(conf.httpProxyUser);
 
         System.setProperty("twitter4j.http.proxyUser", override);
         conf = new Configuration();
-        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyUser());
+        assertEquals(override, conf.httpProxyUser);
         System.getProperties().remove("twitter4j.http.proxyUser");
 
 
         System.getProperties().remove("twitter4j.http.proxyPassword");
         conf = new Configuration();
-        assertNull(conf.getHttpClientConfiguration().getHttpProxyPassword());
+        assertNull(conf.httpProxyPassword);
 
         System.setProperty("twitter4j.http.proxyPassword", override);
         conf = new Configuration();
-        assertEquals(override, conf.getHttpClientConfiguration().getHttpProxyPassword());
+        assertEquals(override, conf.httpProxyPassword);
         System.getProperties().remove("twitter4j.http.proxyPassword");
 
 
         System.getProperties().remove("twitter4j.http.connectionTimeout");
         conf = new Configuration();
-        assertEquals(20000, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
+        assertEquals(20000, conf.httpConnectionTimeout);
 
         conf.httpConnectionTimeout(10);
-        assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
+        assertEquals(10, conf.httpConnectionTimeout);
         System.setProperty("twitter4j.http.connectionTimeout", "100");
         conf = new Configuration();
-        assertEquals(100, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
+        assertEquals(100, conf.httpConnectionTimeout);
         conf.httpConnectionTimeout(10);
-        assertEquals(10, conf.getHttpClientConfiguration().getHttpConnectionTimeout());
+        assertEquals(10, conf.httpConnectionTimeout);
         System.getProperties().remove("twitter4j.http.connectionTimeout");
 
 
         System.getProperties().remove("twitter4j.http.readTimeout");
         conf = new Configuration();
-        assertEquals(120000, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(120000, conf.httpReadTimeout);
 
         conf.httpReadTimeout(10);
-        assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(10, conf.httpReadTimeout);
         System.setProperty("twitter4j.http.readTimeout", "100");
         conf = new Configuration();
-        assertEquals(100, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(100, conf.httpReadTimeout);
         conf.httpReadTimeout(10);
-        assertEquals(10, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(10, conf.httpReadTimeout);
         System.getProperties().remove("twitter4j.http.readTimeout");
 
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=1234");
         conf = new Configuration();
-        assertEquals(1234, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(1234, conf.httpReadTimeout);
         writeFile("./twitter4j.properties", "twitter4j.http.readTimeout=4321");
         conf = new Configuration();
-        assertEquals(4321, conf.getHttpClientConfiguration().getHttpReadTimeout());
+        assertEquals(4321, conf.httpReadTimeout);
         deleteFile("./twitter4j.properties");
     }
 
