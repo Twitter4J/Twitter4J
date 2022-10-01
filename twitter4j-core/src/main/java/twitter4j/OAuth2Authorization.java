@@ -28,16 +28,21 @@ import java.util.Objects;
 public class OAuth2Authorization implements Authorization, java.io.Serializable {
 
     private static final long serialVersionUID = -2895232598422218647L;
-    private final Configuration conf;
 
     private final String consumerKey;
-
     private final String consumerSecret;
-
     private OAuth2Token token;
+    private final String oAuth2Scope;
+    private final HttpClient http;
+    private final String oAuth2TokenURL;
+    private final String oAuth2InvalidateTokenURL;
 
     OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {
-        this.conf = conf;
+        oAuth2Scope = conf.oAuth2Scope;
+        http = conf.http;
+        oAuth2TokenURL = conf.oAuth2TokenURL;
+        oAuth2InvalidateTokenURL = conf.oAuth2InvalidateTokenURL;
+
         this.consumerKey = conf.oAuthConsumerKey != null ? conf.oAuthConsumerKey : "";
         this.consumerSecret = conf.oAuthConsumerSecret != null ? conf.oAuthConsumerSecret : "";
         if (conf.oAuth2TokenType != null && conf.oAuth2AccessToken != null) {
@@ -92,13 +97,13 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
             throw new IllegalStateException("OAuth 2 Bearer Token is already available.");
         }
 
-        HttpParameter[] params = new HttpParameter[conf.oAuth2Scope == null ? 1 : 2];
+        HttpParameter[] params = new HttpParameter[oAuth2Scope == null ? 1 : 2];
         params[0] = new HttpParameter("grant_type", "client_credentials");
-        if (conf.oAuth2Scope != null) {
-            params[1] = new HttpParameter("scope", conf.oAuth2Scope);
+        if (oAuth2Scope != null) {
+            params[1] = new HttpParameter("scope", oAuth2Scope);
         }
 
-        HttpResponse res = conf.http.post(conf.oAuth2TokenURL, params, this, null);
+        HttpResponse res = http.post(oAuth2TokenURL, params, this, null);
         if (res.getStatusCode() != 200) {
             throw new TwitterException("Obtaining OAuth 2 Bearer Token failed.", res);
         }
@@ -126,7 +131,7 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         try {
             token = null;
 
-            HttpResponse res = conf.http.post(conf.oAuth2InvalidateTokenURL, params, this, null);
+            HttpResponse res = http.post(oAuth2InvalidateTokenURL, params, this, null);
             if (res.getStatusCode() != 200) {
                 throw new TwitterException("Invalidating OAuth 2 Bearer Token failed.", res);
             }
