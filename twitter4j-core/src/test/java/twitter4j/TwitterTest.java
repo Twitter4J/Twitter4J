@@ -41,7 +41,13 @@ class TwitterTest extends TwitterTestBase {
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     @Test
     void testRateLimitStatus() throws Exception {
-        Map<String, RateLimitStatus> rateLimitStatus = twitter1.getRateLimitStatus();
+        Twitter twitter = Twitter.newBuilder().load(subProperty(p, "id1")).onRateLimitStatus(event-> {
+            System.out.println("onRateLimitStatus" + event);
+            accountLimitStatusAcquired = event.isAccountRateLimitStatus();
+            ipLimitStatusAcquired = event.isIPRateLimitStatus();
+            TwitterTest.this.rateLimitStatus = event.getRateLimitStatus();
+        }).build();
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus();
         assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
         assertEquals(rateLimitStatus, TwitterObjectFactory.createRateLimitStatus(TwitterObjectFactory.getRawJSON(rateLimitStatus)));
         RateLimitStatus status = rateLimitStatus.values().iterator().next();
@@ -49,43 +55,17 @@ class TwitterTest extends TwitterTestBase {
         assertTrue(10 < status.getRemaining());
         assertTrue(0 < status.getSecondsUntilReset());
 
-        rateLimitStatus = twitter1.getRateLimitStatus("block", "statuses");
+        rateLimitStatus = twitter.getRateLimitStatus("block", "statuses");
         assertTrue(rateLimitStatus.values().size() > 5);
 
-        twitter1.addRateLimitStatusListener(new RateLimitStatusListener() {
-            public void onRateLimitStatus(RateLimitStatusEvent event) {
-                System.out.println("onRateLimitStatus" + event);
-                accountLimitStatusAcquired = event.isAccountRateLimitStatus();
-                ipLimitStatusAcquired = event.isIPRateLimitStatus();
-                TwitterTest.this.rateLimitStatus = event.getRateLimitStatus();
-            }
-
-            public void onRateLimitReached(RateLimitStatusEvent event) {
-
-            }
-
-        });
         // the listener doesn't implement serializable and deserialized form should not be equal to the original object
-        assertDeserializedFormIsNotEqual(twitter1);
+        assertDeserializedFormIsNotEqual(twitter);
 
-        twitter1.addRateLimitStatusListener(new RateLimitStatusListener() {
-            public void onRateLimitStatus(RateLimitStatusEvent event) {
-                accountLimitStatusAcquired = event.isAccountRateLimitStatus();
-                ipLimitStatusAcquired = event.isIPRateLimitStatus();
-                TwitterTest.this.rateLimitStatus = event.getRateLimitStatus();
-            }
-
-            public void onRateLimitReached(RateLimitStatusEvent event) {
-            }
-        });
-        // the listener doesn't implement serializable and deserialized form should not be equal to the original object
-        assertDeserializedFormIsNotEqual(twitter1);
-
-        twitter1.getMentionsTimeline();
+        twitter.getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         RateLimitStatus previous = this.rateLimitStatus;
-        twitter1.getMentionsTimeline();
+        twitter.getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         assertTrue(previous.getRemaining() > this.rateLimitStatus.getRemaining());
@@ -99,7 +79,7 @@ class TwitterTest extends TwitterTestBase {
         assertEquals(TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
     }
 
-    public static Object assertDeserializedFormIsNotEqual(Object obj) throws Exception {
+    public static void assertDeserializedFormIsNotEqual(Object obj) throws Exception {
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
         oos.writeObject(obj);
@@ -110,6 +90,5 @@ class TwitterTest extends TwitterTestBase {
         byteInputStream.close();
         ois.close();
         assertNotEquals(obj, that);
-        return that;
     }
 }

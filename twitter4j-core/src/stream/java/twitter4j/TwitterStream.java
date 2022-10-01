@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
  */
-public interface TwitterStream extends TwitterBase {
+public interface TwitterStream {
     /**
      * returns new Builder instance
      * @return Builder instance
@@ -50,6 +50,7 @@ public interface TwitterStream extends TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
+    @SuppressWarnings("UnusedReturnValue")
     TwitterStream firehose(final int count);
 
     /**
@@ -60,6 +61,7 @@ public interface TwitterStream extends TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
+    @SuppressWarnings("UnusedReturnValue")
     TwitterStream links(final int count);
 
     /**
@@ -90,6 +92,7 @@ public interface TwitterStream extends TwitterBase {
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
+    @SuppressWarnings("unused")
     TwitterStream sample(final String language);
 
     /**
@@ -117,14 +120,15 @@ public interface TwitterStream extends TwitterBase {
      *
      * @since Twitter4J 2.1.7
      */
-    TwitterStream cleanUp();
+
+    void cleanUp();
 
     /**
      * Shuts down internal dispatcher thread shared by all TwitterStream instances.<br>
      *
      * @since Twitter4J 2.1.9
      */
-    TwitterStream shutdown();
+    void shutdown();
 
     class TwitterStreamBuilder extends Configuration<TwitterStream, TwitterStreamBuilder> {
         private static final long serialVersionUID = -7194823238000676626L;

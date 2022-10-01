@@ -18,8 +18,11 @@ package twitter4j;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -28,6 +31,10 @@ import java.util.function.Function;
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
 class Configuration<T, T2 extends Configuration> implements HttpClientConfiguration, java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
+    List<String> hoge = new ArrayList<>();
+    transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
+    transient  List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
+
     String user = null;
     String password = null;
 
@@ -498,6 +505,31 @@ class Configuration<T, T2 extends Configuration> implements HttpClientConfigurat
     public T2 mBeanEnabled(boolean enabled) {
         checkNotBuilt();
         this.mbeanEnabled =enabled;
+        return (T2)this;
+    }
+
+    /**
+     * Registers a lambda action for account associated rate limits
+     *
+     * @param action the action to be added
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    public T2 onRateLimitStatus(final Consumer<RateLimitStatusEvent> action) {
+        checkNotBuilt();
+        rateLimitStatusListeners.add(action);
+        return (T2)this;
+    }
+
+    /**
+     * Registers a RateLimitStatusListener for account associated rate limits
+     *
+     * @param action the action to be added
+     * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
+     * @since Twitter4J 4.0.4
+     */
+    public T2 onRateLimitReached(final Consumer<RateLimitStatusEvent> action) {
+        rateLimitReachedListeners.add(action);
         return (T2)this;
     }
 

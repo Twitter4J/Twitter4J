@@ -23,7 +23,6 @@ import twitter4j.api.*;
  */
 @SuppressWarnings("unused")
 public interface Twitter extends java.io.Serializable,
-    TwitterBase,
     TimelinesResources,
     TweetsResources,
     SearchResource,

@@ -274,18 +274,16 @@ class TwitterStreamImpl extends TwitterBaseImpl implements TwitterStream {
     }
 
     @Override
-    public synchronized TwitterStream cleanUp() {
+    public synchronized void cleanUp() {
         if (handler != null) {
             handler.close();
             numberOfHandlers--;
         }
-        return this;
     }
 
     @Override
-    public synchronized TwitterStream shutdown() {
+    public synchronized void shutdown() {
         cleanUp();
-        return this;
     }
 
 
