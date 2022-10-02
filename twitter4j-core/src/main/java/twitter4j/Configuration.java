@@ -95,15 +95,11 @@ class Configuration<T, T2 extends Configuration> {
         PropertyConfiguration.loadDefaultProperties(this);
     }
 
-    transient Function<Configuration<T, T2>, T> instanceFactory;
+    Function<Configuration<T, T2>, T> instanceFactory;
 
     Configuration(Function<Configuration<T, T2>, T> factory) {
         this();
         this.instanceFactory = factory;
-    }
-
-    public static Configuration<Twitter, Configuration> getInstance() {
-        return new Configuration<>();
     }
 
     Authorization auth;

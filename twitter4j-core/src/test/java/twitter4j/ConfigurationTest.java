@@ -21,9 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
@@ -32,12 +36,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Execution(ExecutionMode.CONCURRENT)
 public class ConfigurationTest {
 
-
-    @Test
-    void testGetInstance() {
-        Configuration conf = Configuration.getInstance();
-        assertNotNull(conf);
-    }
 
     @SuppressWarnings("rawtypes")
     @Test
@@ -156,20 +154,6 @@ public class ConfigurationTest {
         assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
         deleteFile("./twitter4j.properties");
-    }
-
-
-    private static Object serializeDeserialize(Object obj) throws Exception {
-        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(byteOutputStream);
-        oos.writeObject(obj);
-        byteOutputStream.close();
-        ByteArrayInputStream byteInputStream = new ByteArrayInputStream(byteOutputStream.toByteArray());
-        ObjectInputStream ois = new ObjectInputStream(byteInputStream);
-        Object that = ois.readObject();
-        byteInputStream.close();
-        ois.close();
-        return that;
     }
 
     private void writeFile(@SuppressWarnings("SameParameterValue") String path, String content) throws IOException {
