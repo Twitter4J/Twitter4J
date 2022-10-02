@@ -142,22 +142,22 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     User getUser();
 
     /**
-     * @since Twitter4J 2.0.10
      * @return if the status is retweet or not
+     * @since Twitter4J 2.0.10
      */
     boolean isRetweet();
 
     /**
-     * @since Twitter4J 2.1.0
      * @return retweeted status
+     * @since Twitter4J 2.1.0
      */
     Status getRetweetedStatus();
 
     /**
      * Returns an array of contributors, or null if no contributor is associated with this status.
      *
-     * @since Twitter4J 2.2.3
      * @return contributors
+     * @since Twitter4J 2.2.3
      */
     long[] getContributors();
 
@@ -212,10 +212,10 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     Scopes getScopes();
 
     /**
-     *  Returns the list of country codes where the tweet is withheld
+     * Returns the list of country codes where the tweet is withheld
      *
-     *  @return list of country codes where the tweet is withheld - null if not withheld
-     *  @since Twitter4j 4.0.3
+     * @return list of country codes where the tweet is withheld - null if not withheld
+     * @since Twitter4j 4.0.3
      */
     String[] getWithheldInCountries();
 
@@ -237,7 +237,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
 
     /**
      * Returns the URLEntity object that represents the permalink of the quoted Tweet.
-     *
+     * <p>
      * Note that "text" and an indices of "start", "end" are not provided.
      *
      * @return the URLEntity object that represents the permalink of the quoted Tweet. - null if not presents

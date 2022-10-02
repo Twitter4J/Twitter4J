@@ -47,56 +47,57 @@ public final class Query implements java.io.Serializable {
     public Query(String query) {
         this.query = query;
     }
-    
-    /* package */ static Query createWithNextPageQuery(String nextPageQuery) {
+
+    /* package */
+    static Query createWithNextPageQuery(String nextPageQuery) {
         Query query = new Query();
         query.nextPageQuery = nextPageQuery;
-        
-        if(nextPageQuery != null) {
-            String nextPageParameters=nextPageQuery.substring(1);
-            
-            Map<String,String> params= new LinkedHashMap<>();
-            for(HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
+
+        if (nextPageQuery != null) {
+            String nextPageParameters = nextPageQuery.substring(1);
+
+            Map<String, String> params = new LinkedHashMap<>();
+            for (HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
                 // Yes, we'll overwrite duplicate parameters, but we should not
                 // get duplicate parameters from this endpoint.
                 params.put(param.getName(), param.getValue());
             }
-            
-            if(params.containsKey("q"))
+
+            if (params.containsKey("q"))
                 query.setQuery(params.get("q"));
-            if(params.containsKey("lang"))
+            if (params.containsKey("lang"))
                 query.setLang(params.get("lang"));
-            if(params.containsKey("locale"))
+            if (params.containsKey("locale"))
                 query.setLocale(params.get("locale"));
-            if(params.containsKey("max_id"))
+            if (params.containsKey("max_id"))
                 query.setMaxId(Long.parseLong(params.get("max_id")));
-            if(params.containsKey("count"))
+            if (params.containsKey("count"))
                 query.setCount(Integer.parseInt(params.get("count")));
-            if(params.containsKey("geocode")) {
-                String[] parts=params.get("geocode").split(",");
-                double latitude=Double.parseDouble(parts[0]);
-                double longitude=Double.parseDouble(parts[1]);
-                
-                double radius=0.0;
-                Query.Unit unit=null;
-                String radiusstr=parts[2];
-                for(Query.Unit value : Query.Unit.values())
-                    if(radiusstr.endsWith(value.name())) {
-                        radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length()-2));
-                        unit   = value;
+            if (params.containsKey("geocode")) {
+                String[] parts = params.get("geocode").split(",");
+                double latitude = Double.parseDouble(parts[0]);
+                double longitude = Double.parseDouble(parts[1]);
+
+                double radius = 0.0;
+                Query.Unit unit = null;
+                String radiusstr = parts[2];
+                for (Query.Unit value : Query.Unit.values())
+                    if (radiusstr.endsWith(value.name())) {
+                        radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
+                        unit = value;
                         break;
                     }
-                if(unit == null)
-                    throw new IllegalArgumentException("unrecognized geocode radius: "+radiusstr);
-                
+                if (unit == null)
+                    throw new IllegalArgumentException("unrecognized geocode radius: " + radiusstr);
+
                 query.setGeoCode(new GeoLocation(latitude, longitude), radius, unit);
             }
-            if(params.containsKey("result_type"))
+            if (params.containsKey("result_type"))
                 query.setResultType(Query.ResultType.valueOf(params.get("result_type")));
-            
+
             // We don't pull out since, until -- they get pushed into the query
         }
-        
+
         return query;
     }
 

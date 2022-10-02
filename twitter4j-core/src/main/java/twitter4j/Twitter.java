@@ -23,22 +23,23 @@ import twitter4j.api.*;
  */
 @SuppressWarnings("unused")
 public interface Twitter extends java.io.Serializable,
-    TimelinesResources,
-    TweetsResources,
-    SearchResource,
-    DirectMessagesResources,
-    FriendsFollowersResources,
-    UsersResources,
-    FavoritesResources,
-    ListsResources,
-    SavedSearchesResources,
-    PlacesGeoResources,
-    TrendsResources,
-    SpamReportingResource,
-    HelpResources {
+        TimelinesResources,
+        TweetsResources,
+        SearchResource,
+        DirectMessagesResources,
+        FriendsFollowersResources,
+        UsersResources,
+        FavoritesResources,
+        ListsResources,
+        SavedSearchesResources,
+        PlacesGeoResources,
+        TrendsResources,
+        SpamReportingResource,
+        HelpResources {
 
     /**
      * returns new Builder instance
+     *
      * @return Builder instance
      */
     static TwitterBuilder newBuilder() {
@@ -47,11 +48,13 @@ public interface Twitter extends java.io.Serializable,
 
     /**
      * equivalent to calling newBuilder().build();
+     *
      * @return Twitter Instance
      */
-    static Twitter getInstance(){
+    static Twitter getInstance() {
         return newBuilder().build();
     }
+
     /**
      * @return {@link twitter4j.api.TimelinesResources}
      * @since Twitter4J 3.0.4

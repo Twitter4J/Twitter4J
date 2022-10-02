@@ -16,13 +16,7 @@
 
 package twitter4j;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 // Note: this class was written without inspecting the non-free org.json sourcecode.
 
@@ -318,7 +312,7 @@ public class JSONObject {
      * and new values are inserted in order into a new array which is itself
      * mapped to {@code name}. In aggregate, this allows values to be added to a
      * mapping one at a time.
-     *
+     * <p>
      * Note that {@code append(String, Object)} provides better semantics.
      * In particular, the mapping for {@code name} will <b>always</b> be a
      * {@link JSONArray}. Using {@code accumulate} will result in either a
@@ -583,7 +577,7 @@ public class JSONObject {
      * Returns the value mapped by {@code name} if it exists and is a long or
      * can be coerced to a long, or throws otherwise.
      * Note that JSON represents numbers as doubles,
-     *
+     * <p>
      * so this is <a href="#lossy">lossy</a>; use strings to transfer numbers
      * via JSON without loss.
      *
@@ -774,7 +768,7 @@ public class JSONObject {
      * is a view of the keys in this object. {@link Set#remove(Object)} will remove
      * the corresponding mapping from this object and set iterator behaviour
      * is undefined if this object is modified after it is returned.
-     *
+     * <p>
      * See {@link #keys()}.
      *
      * @return The names in this object.

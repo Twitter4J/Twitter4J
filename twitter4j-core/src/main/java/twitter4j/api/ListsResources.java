@@ -34,7 +34,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -49,7 +49,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     ResponseList<UserList> getUserLists(String listOwnerScreenName, boolean reverse)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -62,7 +62,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists of the specified user. Private lists will be included if the authenticated users is the same as the user whose lists are being returned.
@@ -76,7 +76,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     ResponseList<UserList> getUserLists(long listOwnerUserId, boolean reverse)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -90,7 +90,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     ResponseList<Status> getUserListStatuses(long listId, Paging paging)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -105,7 +105,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Show tweet timeline for members of the specified list.
@@ -120,7 +120,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     ResponseList<Status> getUserListStatuses(String ownerScreenName, String slug, Paging paging)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Removes the specified member from the list. The authenticated user must be the list's owner to remove members from the list.
@@ -228,7 +228,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the authenticating user has been added to.
@@ -243,7 +243,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListMemberships(int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -257,7 +257,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -272,7 +272,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -286,7 +286,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -301,7 +301,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -317,7 +317,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, long cursor, boolean filterToOwnedLists)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -334,7 +334,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListMemberships(String listMemberScreenName, int count, long cursor, boolean filterToOwnedLists)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -350,7 +350,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, long cursor, boolean filterToOwnedLists)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user has been added to.
@@ -367,7 +367,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.4
      */
     PagableResponseList<UserList> getUserListMemberships(long listMemberId, int count, long cursor, boolean filterToOwnedLists)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the subscribers of the specified list.
@@ -759,7 +759,7 @@ public interface ListsResources {
      * @since Twitter4J 2.2.3
      */
     PagableResponseList<User> getUserListMembers(long listId, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -774,7 +774,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(long listId, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -790,7 +790,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(long listId, int count, long cursor, boolean skipStatus)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -805,7 +805,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -821,7 +821,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -838,7 +838,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(long ownerId, String slug, int count, long cursor, boolean skipStatus)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -853,7 +853,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -869,7 +869,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the members of the specified list.
@@ -886,7 +886,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<User> getUserListMembers(String ownerScreenName, String slug, int count, long cursor, boolean skipStatus)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Adds a member to a list. The authenticated user must own the list to be able to add members to it. Lists are limited to having 5000 members.
@@ -981,7 +981,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     UserList updateUserList(long listId, String newListName, boolean isPublicList, String newDescription)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -998,7 +998,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.0
      */
     UserList updateUserList(long ownerId, String slug, String newListName, boolean isPublicList, String newDescription)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Updates the specified list.
@@ -1015,7 +1015,7 @@ public interface ListsResources {
      * @since Twitter4J 3.0.2
      */
     UserList updateUserList(String ownerScreenName, String slug, String newListName, boolean isPublicList, String newDescription)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Creates a new list for the authenticated user. Accounts are limited to 20 lists.
@@ -1030,7 +1030,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     UserList createUserList(String listName, boolean isPublicList, String description)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Show the specified list. Private lists will only be shown if the authenticated user owns the specified list.
@@ -1082,7 +1082,7 @@ public interface ListsResources {
      * @since Twitter4J 2.1.0
      */
     PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user follows.
@@ -1097,7 +1097,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListSubscriptions(String listSubscriberScreenName, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user follows.
@@ -1111,7 +1111,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * List the lists the specified user follows.
@@ -1126,7 +1126,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListSubscriptions(long listSubscriberId, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -1139,7 +1139,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -1153,7 +1153,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(String listOwnerScreenName, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -1166,7 +1166,7 @@ public interface ListsResources {
      * @since Twitter4J 4.0.4
      */
     PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns the lists owned by the specified Twitter user. Private lists will only be shown if the authenticated user is also the owner of the lists.
@@ -1180,5 +1180,5 @@ public interface ListsResources {
      * @since Twitter4J 4.0.1
      */
     PagableResponseList<UserList> getUserListsOwnerships(long listOwnerId, int count, long cursor)
-        throws TwitterException;
+            throws TwitterException;
 }

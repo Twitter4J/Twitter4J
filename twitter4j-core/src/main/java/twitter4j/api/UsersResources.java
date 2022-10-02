@@ -72,11 +72,11 @@ public interface UsersResources {
      * <br>This method calls https://api.twitter.com/1.1/account/settings.json
      * <br>This method requires whitelisting from Twitter: https://twittercommunity.com/t/api-updates-for-direct-messages-rules/36061
      *
-     * @param allowDmsFrom       Optional. "all" for anyone, "followers" for friends only
+     * @param allowDmsFrom Optional. "all" for anyone, "followers" for friends only
      * @return the current trend, geo and sleep time information for the authenticating user.
      * @throws TwitterException when Twitter service or network is unavailable
      * @since Twitter4J 4.0.7
-    */
+     */
     AccountSettings updateAllowDmsFrom(String allowDmsFrom) throws TwitterException;
 
     // update delivery device
@@ -95,7 +95,7 @@ public interface UsersResources {
      * @since Twitter4J 2.1.8
      */
     User updateProfile(String name, String url, String location, String description)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Updates the authenticating user's profile image.
@@ -399,9 +399,9 @@ public interface UsersResources {
      * Removes the uploaded profile banner for the authenticating user. Returns HTTP 200 upon success.
      * <br>This method calls https://api.twitter.com/1.1/account/remove_profile_banner.json
      *
+     * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/account/remove_profile_banner">POST account/remove_profile_banner | Twitter Developers</a>
      * @since Twitter4J 3.0.0
-     * @throws TwitterException when Twitter service or network is unavailable
      */
     void removeProfileBanner() throws TwitterException;
 

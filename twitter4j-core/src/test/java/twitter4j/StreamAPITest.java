@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @Execution(ExecutionMode.SAME_THREAD)
 public class StreamAPITest extends TwitterTestBase implements StatusListener, ConnectionLifeCycleListener {
     private long userId;
@@ -83,7 +84,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     void testNoListener() {
         try {
             TwitterStream.newBuilder()
-                    .oAuthConsumer("dummy","dummy")
+                    .oAuthConsumer("dummy", "dummy")
                     .oAuthAccessToken("dummy", "dummy")
                     .build();
             fail("expecting IllegalStateException");
@@ -94,7 +95,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testSample() {
-        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p,"id3"))
+        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "id3"))
                 .listener(this).build();
         twitterStream2.sample();
         waitForStatus();
@@ -104,7 +105,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testShutdownAndRestart() {
-        TwitterStream twitterStream3 = TwitterStream.newBuilder().load(subProperty(p,"id3"))
+        TwitterStream twitterStream3 = TwitterStream.newBuilder().load(subProperty(p, "id3"))
                 .listener(this)
                 .build().sample();
         waitForStatus();
@@ -118,7 +119,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testFilterTrackPush() throws Exception {
-        TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p,"id2"))
+        TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p, "id2"))
                 .listener(this)
                 .connectionLifeCycleListener(this).build();
         assertFalse(onConnectCalled);
@@ -152,7 +153,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.ex = null;
 
         FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
-        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p,"id2"))
+        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "id2"))
                 .listener(this).build();
         twitterStream2.filter(query);
 

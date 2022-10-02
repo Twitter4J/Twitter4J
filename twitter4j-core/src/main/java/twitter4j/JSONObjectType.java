@@ -127,15 +127,15 @@ public final class JSONObjectType {
                     return Type.BLOCK;
                 } else if ("unblock".equals(event)) {
                     return Type.UNBLOCK;
-                } else if("retweeted_retweet".equals(event)){
+                } else if ("retweeted_retweet".equals(event)) {
                     return Type.RETWEETED_RETWEET;
-                } else if("favorited_retweet".equals(event)){
+                } else if ("favorited_retweet".equals(event)) {
                     return Type.FAVORITED_RETWEET;
-                } else if("quoted_tweet".equals(event)){
+                } else if ("quoted_tweet".equals(event)) {
                     return Type.QUOTED_TWEET;
-                } else if("mute".equals(event)) {
+                } else if ("mute".equals(event)) {
                     return Type.MUTE;
-                } else if("unmute".equals(event)) {
+                } else if ("unmute".equals(event)) {
                     return Type.UNMUTE;
                 }
 

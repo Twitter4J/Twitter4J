@@ -41,7 +41,7 @@ class TwitterTest extends TwitterTestBase {
     //need to think of a way to test this, perhaps mocking out Twitter is the way to go
     @Test
     void testRateLimitStatus() throws Exception {
-        Twitter twitter = Twitter.newBuilder().load(subProperty(p, "id1")).onRateLimitStatus(event-> {
+        Twitter twitter = Twitter.newBuilder().load(subProperty(p, "id1")).onRateLimitStatus(event -> {
             System.out.println("onRateLimitStatus" + event);
             accountLimitStatusAcquired = event.isAccountRateLimitStatus();
             ipLimitStatusAcquired = event.isIPRateLimitStatus();

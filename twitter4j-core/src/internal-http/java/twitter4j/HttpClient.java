@@ -202,6 +202,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
         }
         return res;
     }
+
     /**
      * sets HTTP headers
      *
@@ -285,6 +286,7 @@ final class HttpClient implements HttpResponseCode, Serializable {
             , Authorization authorization, HttpResponseListener listener) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, parameters, authorization, this.requestHeaders), listener);
     }
+
     @SuppressWarnings("unused")
     HttpResponse post(String url, HttpParameter[] params) throws TwitterException {
         return request(new HttpRequest(RequestMethod.POST, url, params, null, null));

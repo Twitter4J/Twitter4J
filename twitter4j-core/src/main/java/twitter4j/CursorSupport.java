@@ -26,26 +26,26 @@ public interface CursorSupport {
     long START = -1L;
 
     /**
-     * @since Twitter4J 2.0.10
      * @return has previous page
+     * @since Twitter4J 2.0.10
      */
     boolean hasPrevious();
 
     /**
-     * @since Twitter4J 2.0.10
      * @return previous cursor
+     * @since Twitter4J 2.0.10
      */
     long getPreviousCursor();
 
     /**
-     * @since Twitter4J 2.0.10
      * @return has next
+     * @since Twitter4J 2.0.10
      */
     boolean hasNext();
 
     /**
-     * @since Twitter4J 2.0.10
      * @return next cursor
+     * @since Twitter4J 2.0.10
      */
     long getNextCursor();
 }

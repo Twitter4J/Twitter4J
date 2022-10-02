@@ -52,7 +52,7 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertEquals(9737332, statuses.get(0).getUser().getId());
             try {
                 twitter1.getUserTimeline(1000);
-            }catch(TwitterException te){
+            } catch (TwitterException te) {
                 // id 1000 / @percep2al is now protected
                 assertEquals(401, te.getStatusCode());
             }

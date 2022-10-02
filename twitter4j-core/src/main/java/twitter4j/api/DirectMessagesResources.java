@@ -16,7 +16,10 @@
 
 package twitter4j.api;
 
-import twitter4j.*;
+import twitter4j.DirectMessage;
+import twitter4j.DirectMessageList;
+import twitter4j.QuickReply;
+import twitter4j.TwitterException;
 
 import java.io.InputStream;
 
@@ -44,7 +47,7 @@ public interface DirectMessagesResources {
      * Returns all Direct Message events (both sent and received) within the last 30 days. Sorted in reverse-chronological order.
      * <br>This method calls https://api.twitter.com/1.1/direct_messages/events/list.json
      *
-     * @param count Max number of events to be returned. 20 default. 50 max.
+     * @param count  Max number of events to be returned. 20 default. 50 max.
      * @param cursor For paging through result sets greater than 1 page, use the “next_cursor” property from the previous request.
      * @return List
      * @throws TwitterException when Twitter service or network is unavailable
@@ -77,15 +80,15 @@ public interface DirectMessagesResources {
      * @since Twitter4J 2.0.1
      */
     void destroyDirectMessage(long id)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
      *
-     * @param userId the user id of the user to whom send the direct message
-     * @param text   The text of your direct message.
+     * @param userId       the user id of the user to whom send the direct message
+     * @param text         The text of your direct message.
      * @param quickReplies Quick Replies
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
@@ -93,15 +96,15 @@ public interface DirectMessagesResources {
      * @since Twitter4j 2.1.0
      */
     DirectMessage sendDirectMessage(long userId, String text, QuickReply... quickReplies)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
      *
-     * @param userId the user id of the user to whom send the direct message
-     * @param text   The text of your direct message.
+     * @param userId             the user id of the user to whom send the direct message
+     * @param text               The text of your direct message.
      * @param quickReplyResponse Quick Reply response
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
@@ -116,8 +119,8 @@ public interface DirectMessagesResources {
      * The text will be trimmed if the length of the text is exceeding 140 characters.
      * <br>This method calls https://dev.twitter.com/rest/reference/post/direct_messages/events/new
      *
-     * @param userId the user id of the user to whom send the direct message
-     * @param text   The text of your direct message.
+     * @param userId  the user id of the user to whom send the direct message
+     * @param text    The text of your direct message.
      * @param mediaId id of media attachment
      * @return DirectMessage
      * @throws TwitterException when Twitter service or network is unavailable
@@ -126,6 +129,7 @@ public interface DirectMessagesResources {
      */
     DirectMessage sendDirectMessage(long userId, String text, long mediaId)
             throws TwitterException;
+
     /**
      * Sends a new direct message to the specified user from the authenticating user.  Requires both the user and text parameters below.
      * The text will be trimmed if the length of the text is exceeding 140 characters.
@@ -154,7 +158,7 @@ public interface DirectMessagesResources {
      * @see <a href="https://developer.twitter.com/en/docs/direct-messages/sending-and-receiving/api-reference/new-event">POST direct_messages/events/new (message_create) — Twitter Developers</a>
      */
     DirectMessage sendDirectMessage(String screenName, String text)
-        throws TwitterException;
+            throws TwitterException;
 
     /**
      * Returns a stream of the image included in direct messages.
@@ -166,5 +170,5 @@ public interface DirectMessagesResources {
      * @since Twitter4J 3.0.6
      */
     InputStream getDMImageAsStream(String url)
-        throws TwitterException;
+            throws TwitterException;
 }

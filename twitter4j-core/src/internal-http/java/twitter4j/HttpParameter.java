@@ -309,7 +309,7 @@ final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializ
         value = value.replace("%2A", "*");
         value = value.replace("%2a", "*");
         value = value.replace("%20", " ");
-        
+
         String decoded;
         try {
             decoded = URLDecoder.decode(value, "UTF-8");
@@ -327,13 +327,13 @@ final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializ
      * @return decoded parameters
      */
     public static List<HttpParameter> decodeParameters(String queryParameters) {
-        List<HttpParameter> result= new ArrayList<>();
+        List<HttpParameter> result = new ArrayList<>();
         for (String pair : queryParameters.split("&")) {
-            String[] parts=pair.split("=", 2);
-            if(parts.length == 2) {
-                String name=decode(parts[0]);
-                String value=decode(parts[1]);
-                if(!name.equals("") && !value.equals(""))
+            String[] parts = pair.split("=", 2);
+            if (parts.length == 2) {
+                String name = decode(parts[0]);
+                String value = decode(parts[1]);
+                if (!name.equals("") && !value.equals(""))
                     result.add(new HttpParameter(name, value));
             }
         }

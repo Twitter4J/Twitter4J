@@ -148,8 +148,6 @@ public class ConfigurationTest {
     }
 
 
-
-
     @SuppressWarnings("rawtypes")
     @Test
     void testConfigurationBuilder() {

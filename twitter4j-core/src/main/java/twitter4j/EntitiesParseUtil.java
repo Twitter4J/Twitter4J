@@ -2,7 +2,8 @@ package twitter4j;
 
 /*package*/ class EntitiesParseUtil {
 
-    /*package*/ static UserMentionEntity[] getUserMentions(JSONObject entities) throws JSONException, TwitterException {
+    /*package*/
+    static UserMentionEntity[] getUserMentions(JSONObject entities) throws JSONException, TwitterException {
         if (!entities.isNull("user_mentions")) {
             JSONArray userMentionsArray = entities.getJSONArray("user_mentions");
             int len = userMentionsArray.length();
@@ -16,7 +17,8 @@ package twitter4j;
         }
     }
 
-    /*package*/ static URLEntity[] getUrls(JSONObject entities) throws JSONException, TwitterException {
+    /*package*/
+    static URLEntity[] getUrls(JSONObject entities) throws JSONException, TwitterException {
         if (!entities.isNull("urls")) {
             JSONArray urlsArray = entities.getJSONArray("urls");
             int len = urlsArray.length();
@@ -30,7 +32,8 @@ package twitter4j;
         }
     }
 
-    /*package*/ static HashtagEntity[] getHashtags(JSONObject entities) throws JSONException, TwitterException {
+    /*package*/
+    static HashtagEntity[] getHashtags(JSONObject entities) throws JSONException, TwitterException {
         if (!entities.isNull("hashtags")) {
             JSONArray hashtagsArray = entities.getJSONArray("hashtags");
             int len = hashtagsArray.length();
@@ -44,7 +47,8 @@ package twitter4j;
         }
     }
 
-    /*package*/ static SymbolEntity[] getSymbols(JSONObject entities) throws JSONException, TwitterException {
+    /*package*/
+    static SymbolEntity[] getSymbols(JSONObject entities) throws JSONException, TwitterException {
         if (!entities.isNull("symbols")) {
             JSONArray symbolsArray = entities.getJSONArray("symbols");
             int len = symbolsArray.length();
@@ -59,7 +63,8 @@ package twitter4j;
         }
     }
 
-    /*package*/ static MediaEntity[] getMedia(JSONObject entities) throws JSONException, TwitterException {
+    /*package*/
+    static MediaEntity[] getMedia(JSONObject entities) throws JSONException, TwitterException {
         if (!entities.isNull("media")) {
             JSONArray mediaArray = entities.getJSONArray("media");
             int len = mediaArray.length();

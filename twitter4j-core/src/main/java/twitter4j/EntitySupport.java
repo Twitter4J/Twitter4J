@@ -46,6 +46,7 @@ public interface EntitySupport {
 
     /**
      * Returns an array of MediaEntities if medias are available in the tweet. This method will return an empty array if no medias were mentioned.
+     *
      * @return an array of MediaEntities.
      * @since Twitter4J 2.2.3
      */

@@ -21,9 +21,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

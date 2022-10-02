@@ -98,7 +98,8 @@ class Configuration<T, T2 extends Configuration> {
     }
 
     transient Function<Configuration<T, T2>, T> instanceFactory;
-    Configuration(Function<Configuration<T,T2>, T> factory){
+
+    Configuration(Function<Configuration<T, T2>, T> factory) {
         this();
         this.instanceFactory = factory;
     }
@@ -185,244 +186,246 @@ class Configuration<T, T2 extends Configuration> {
     public T2 prettyDebugEnabled(boolean prettyDebugEnabled) {
         checkNotBuilt();
         this.prettyDebug = prettyDebugEnabled;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 gzipEnabled(boolean gzipEnabled) {
         checkNotBuilt();
         this.gzipEnabled = gzipEnabled;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         checkNotBuilt();
         this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
-        return (T2)this;
+        return (T2) this;
     }
-    public T2 load(Properties props){
+
+    public T2 load(Properties props) {
         checkNotBuilt();
         PropertyConfiguration.load(this, props);
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 user(String user) {
         checkNotBuilt();
         this.user = user;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 password(String password) {
         checkNotBuilt();
         this.password = password;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpProxyHost(String httpProxyHost) {
         checkNotBuilt();
         this.httpProxyHost = httpProxyHost;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpProxyUser(String httpProxyUser) {
         checkNotBuilt();
         this.httpProxyUser = httpProxyUser;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpProxyPassword(String httpProxyPassword) {
         checkNotBuilt();
         this.httpProxyPassword = httpProxyPassword;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpProxyPort(int httpProxyPort) {
         checkNotBuilt();
         this.httpProxyPort = httpProxyPort;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpProxySocks(boolean httpProxySocks) {
         checkNotBuilt();
         this.httpProxySocks = httpProxySocks;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpConnectionTimeout(int httpConnectionTimeout) {
         checkNotBuilt();
         this.httpConnectionTimeout = httpConnectionTimeout;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpReadTimeout(int httpReadTimeout) {
         checkNotBuilt();
         this.httpReadTimeout = httpReadTimeout;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpStreamingReadTimeout(int httpStreamingReadTimeout) {
         checkNotBuilt();
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpRetryCount(int httpRetryCount) {
         checkNotBuilt();
         this.httpRetryCount = httpRetryCount;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
         checkNotBuilt();
         this.httpRetryIntervalSeconds = httpRetryIntervalSeconds;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuthConsumer(String oAuthConsumerKey, String oAuthConsumerSecret) {
         checkNotBuilt();
         this.oAuthConsumerKey = oAuthConsumerKey;
         this.oAuthConsumerSecret = oAuthConsumerSecret;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuthAccessToken(String oAuthAccessToken, String oAuthAccessTokenSecret) {
         checkNotBuilt();
         this.oAuthAccessToken = oAuthAccessToken;
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
-        return (T2)this;
+        return (T2) this;
     }
+
     public T2 oAuthAccessToken(AccessToken accessToken) {
         checkNotBuilt();
         this.oAuthAccessToken = accessToken.getToken();
         this.oAuthAccessTokenSecret = accessToken.getTokenSecret();
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuth2Token(String oAuth2TokenType, String oAuth2AccessToken) {
         checkNotBuilt();
         this.oAuth2TokenType = oAuth2TokenType;
         this.oAuth2AccessToken = oAuth2AccessToken;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuth2Token(OAuth2Token oAuth2Token) {
         checkNotBuilt();
         this.oAuth2TokenType = oAuth2Token.getTokenType();
         this.oAuth2AccessToken = oAuth2Token.getAccessToken();
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuth2Scope(String oAuth2Scope) {
         checkNotBuilt();
         this.oAuth2Scope = oAuth2Scope;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuthRequestTokenURL(String oAuthRequestTokenURL) {
         checkNotBuilt();
         this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-        return (T2)this;
+        return (T2) this;
     }
 
     public T2 oAuthAuthorizationURL(String oAuthAuthorizationURL) {
         checkNotBuilt();
-        this.oAuthAuthorizationURL =oAuthAuthorizationURL;
-        return (T2)this;
+        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
+        return (T2) this;
     }
 
     public T2 oAuthAccessTokenURL(String oAuthAccessTokenURL) {
         checkNotBuilt();
-        this.oAuthAccessTokenURL =oAuthAccessTokenURL;
-        return (T2)this;
+        this.oAuthAccessTokenURL = oAuthAccessTokenURL;
+        return (T2) this;
     }
 
     public T2 oAuthAuthenticationURL(String oAuthAuthenticationURL) {
         checkNotBuilt();
-        this.oAuthAuthenticationURL =oAuthAuthenticationURL;
-        return (T2)this;
+        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
+        return (T2) this;
     }
 
     public T2 oAuth2TokenURL(String oAuth2TokenURL) {
         checkNotBuilt();
-        this.oAuth2TokenURL =oAuth2TokenURL;
-        return (T2)this;
+        this.oAuth2TokenURL = oAuth2TokenURL;
+        return (T2) this;
     }
 
     public T2 oAuth2InvalidateTokenURL(String invalidateTokenURL) {
         checkNotBuilt();
-        this.oAuth2InvalidateTokenURL =invalidateTokenURL;
-        return (T2)this;
+        this.oAuth2InvalidateTokenURL = invalidateTokenURL;
+        return (T2) this;
     }
 
     public T2 restBaseURL(String restBaseURL) {
         checkNotBuilt();
-        this.restBaseURL =restBaseURL;
-        return (T2)this;
+        this.restBaseURL = restBaseURL;
+        return (T2) this;
     }
 
     public T2 uploadBaseURL(String uploadBaseURL) {
         checkNotBuilt();
-        this.uploadBaseURL =uploadBaseURL;
-        return (T2)this;
+        this.uploadBaseURL = uploadBaseURL;
+        return (T2) this;
     }
 
     public T2 streamBaseURL(String streamBaseURL) {
         checkNotBuilt();
-        this.streamBaseURL =streamBaseURL;
-        return (T2)this;
+        this.streamBaseURL = streamBaseURL;
+        return (T2) this;
     }
 
     public T2 contributingTo(long contributingTo) {
         checkNotBuilt();
-        this.contributingTo =contributingTo;
-        return (T2)this;
+        this.contributingTo = contributingTo;
+        return (T2) this;
     }
 
     public T2 trimUserEnabled(boolean enabled) {
         checkNotBuilt();
-        this.trimUserEnabled =enabled;
-        return (T2)this;
+        this.trimUserEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 includeExtAltTextEnabled(boolean enabled) {
         checkNotBuilt();
-        this.includeExtAltTextEnabled =enabled;
-        return (T2)this;
+        this.includeExtAltTextEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 tweetModeExtended(boolean enabled) {
         checkNotBuilt();
-        this.tweetModeExtended =enabled;
-        return (T2)this;
+        this.tweetModeExtended = enabled;
+        return (T2) this;
     }
 
     public T2 includeMyRetweetEnabled(boolean enabled) {
         checkNotBuilt();
-        this.includeMyRetweetEnabled =enabled;
-        return (T2)this;
+        this.includeMyRetweetEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 includeEntitiesEnabled(boolean enabled) {
         checkNotBuilt();
-        this.includeEntitiesEnabled =enabled;
-        return (T2)this;
+        this.includeEntitiesEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 includeEmailEnabled(boolean enabled) {
         checkNotBuilt();
-        this.includeEmailEnabled =enabled;
-        return (T2)this;
+        this.includeEmailEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 jsonStoreEnabled(boolean enabled) {
         checkNotBuilt();
-        this.jsonStoreEnabled =enabled;
-        return (T2)this;
+        this.jsonStoreEnabled = enabled;
+        return (T2) this;
     }
 
     public T2 mBeanEnabled(boolean enabled) {
         checkNotBuilt();
-        this.mbeanEnabled =enabled;
-        return (T2)this;
+        this.mbeanEnabled = enabled;
+        return (T2) this;
     }
 
     /**
@@ -435,7 +438,7 @@ class Configuration<T, T2 extends Configuration> {
     public T2 onRateLimitStatus(final Consumer<RateLimitStatusEvent> action) {
         checkNotBuilt();
         rateLimitStatusListeners.add(action);
-        return (T2)this;
+        return (T2) this;
     }
 
     /**
@@ -447,7 +450,7 @@ class Configuration<T, T2 extends Configuration> {
      */
     public T2 onRateLimitReached(final Consumer<RateLimitStatusEvent> action) {
         rateLimitReachedListeners.add(action);
-        return (T2)this;
+        return (T2) this;
     }
 
     T2 buildConfiguration() {
@@ -498,6 +501,7 @@ class Configuration<T, T2 extends Configuration> {
     }
 
     private boolean built = false;
+
     private void checkNotBuilt() {
         if (built) {
             throw new IllegalStateException("Cannot use this builder any longer, build() has already been called");
@@ -508,6 +512,7 @@ class Configuration<T, T2 extends Configuration> {
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#861
         stream.defaultWriteObject();
     }
+
     private void readObject(ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
         // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971

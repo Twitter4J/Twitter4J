@@ -54,8 +54,9 @@ public final class GeoQuery implements java.io.Serializable {
 
     /**
      * Creates a GeoQuery with the specified query, ip and location
-     * @param query free-form text to match
-     * @param ip IP address
+     *
+     * @param query    free-form text to match
+     * @param ip       IP address
      * @param location geo location
      */
     public GeoQuery(String query, String ip, GeoLocation location) {
@@ -70,6 +71,7 @@ public final class GeoQuery implements java.io.Serializable {
 
     /**
      * Gets the query to filter Place results from geo/search
+     *
      * @return the query
      */
     public String getQuery() {

@@ -28,17 +28,19 @@ import java.util.function.Consumer;
 public interface TwitterStream {
     /**
      * returns new Builder instance
+     *
      * @return Builder instance
      */
-    static TwitterStreamBuilder newBuilder(){
+    static TwitterStreamBuilder newBuilder() {
         return new TwitterStreamBuilder();
     }
 
     /**
      * equivalent to calling newBuilder().build();
+     *
      * @return TwitterStream Instance
      */
-    static TwitterStream getInstance(){
+    static TwitterStream getInstance() {
         return newBuilder().build();
     }
 
@@ -160,7 +162,7 @@ public interface TwitterStream {
 
 
         public TwitterStreamBuilder onStatus(@NotNull Consumer<Status> onStatus) {
-            this.streamListeners.add(new StatusAdapter(){
+            this.streamListeners.add(new StatusAdapter() {
                 @Override
                 public void onStatus(Status status) {
                     onStatus.accept(status);
@@ -171,7 +173,7 @@ public interface TwitterStream {
         }
 
         public TwitterStreamBuilder onException(Consumer<Exception> onException) {
-            this.streamListeners.add(new StatusAdapter(){
+            this.streamListeners.add(new StatusAdapter() {
                 @Override
                 public void onException(Exception ex) {
                     onException.accept(ex);

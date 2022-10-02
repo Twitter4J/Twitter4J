@@ -71,8 +71,8 @@ public interface HelpResources {
      * &quot;trends&quot;,&quot;application&quot;,&quot;users&quot;,&quot;saved_searches&quot;,&quot;geo&quot;,&quot;direct_messages&quot;,&quot;blocks&quot;,&quot;favorites&quot;,&quot;statuses&quot;,&quot;followers&quot;,&quot;help&quot;,&quot;friends&quot;,&quot;search&quot;,&quot;friendships&quot;,&quot;account&quot;,&quot;lists&quot;
      * <br>This method calls https://api.twitter.com/1.1/application/rate_limit_status.json
      *
-     * @return the rate limit statuses
      * @param resources resources
+     * @return the rate limit statuses
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/application/rate_limit_status">GET application/rate_limit_status</a>
      * @since Twitter4J 3.0.0

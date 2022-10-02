@@ -185,7 +185,7 @@ public interface TweetsResources {
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *
      * @param fileName media file name
-     * @param media media body as stream
+     * @param media    media body as stream
      * @return upload result
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/statuses/update">POST statuses/update | Twitter Developers</a>
@@ -193,14 +193,14 @@ public interface TweetsResources {
      * @since Twitter4J 4.0.3
      */
     UploadedMedia uploadMedia(String fileName, InputStream media) throws TwitterException;
-    
+
     /**
-     * Uploads media using chunked approach to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}. 
+     * Uploads media using chunked approach to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}.
      * This should be used for videos.
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *
      * @param fileName media file name
-     * @param media media body as stream
+     * @param media    media body as stream
      * @return upload result
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/rest/public/uploading-media#chunkedupload">Uploading Media | Twitter Developers</a>

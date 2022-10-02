@@ -58,7 +58,7 @@ class UsersResourcesTest extends TwitterTestBase {
             http.head(user.getProfileBannerIPadRetinaURL());
             http.head(user.getProfileBannerMobileURL());
             http.head(user.getProfileBannerMobileRetinaURL());
-        }catch (TwitterException te){
+        } catch (TwitterException te) {
             // head request sometime fails with 503
             if (te.getStatusCode() != 503) {
                 fail(te);

@@ -34,6 +34,7 @@ class DirectMessageListImpl extends ResponseListImpl<DirectMessage> implements D
         super(size, res);
         this.nextCursor = ParseUtil.getRawString("next_cursor", json);
     }
+
     DirectMessageListImpl(int size, HttpResponse res) {
         super(size, res);
         this.nextCursor = null;

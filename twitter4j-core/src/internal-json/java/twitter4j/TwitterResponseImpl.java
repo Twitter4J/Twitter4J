@@ -17,7 +17,6 @@
 package twitter4j;
 
 
-
 import static twitter4j.TwitterResponse.AccessLevel.NONE;
 
 /**

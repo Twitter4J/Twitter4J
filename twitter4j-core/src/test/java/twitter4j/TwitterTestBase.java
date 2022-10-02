@@ -173,17 +173,17 @@ public class TwitterTestBase {
 
         readonly = Twitter.newBuilder().load(subProperty(p, "readonly")).build();
 
-        System.out.println("twitter1:"+twitter1);
-        System.out.println("twitter2:"+twitter2);
-        System.out.println("twitter3:"+twitter3);
-        System.out.println("twitter readoonly:"+readonly);
+        System.out.println("twitter1:" + twitter1);
+        System.out.println("twitter2:" + twitter2);
+        System.out.println("twitter3:" + twitter3);
+        System.out.println("twitter readoonly:" + readonly);
     }
 
-    static Properties subProperty(Properties p, String path){
+    static Properties subProperty(Properties p, String path) {
         Properties p1 = new Properties((Properties) p.clone());
         p.keySet().forEach(key -> {
             String ks = (String) key;
-            if (ks.startsWith(path+".")) {
+            if (ks.startsWith(path + ".")) {
                 p1.setProperty(ks.replaceFirst("^" + path + "\\.", ""), (String) p.get(key));
             }
         });

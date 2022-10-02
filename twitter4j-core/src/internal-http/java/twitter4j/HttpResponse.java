@@ -227,10 +227,10 @@ class HttpResponse {
     @Override
     public String toString() {
         return "HttpResponse{" +
-            "statusCode=" + statusCode +
-            ", responseAsString='" + responseAsString + '\'' +
-            ", is=" + is +
-            ", streamConsumed=" + streamConsumed +
-            '}';
+                "statusCode=" + statusCode +
+                ", responseAsString='" + responseAsString + '\'' +
+                ", is=" + is +
+                ", streamConsumed=" + streamConsumed +
+                '}';
     }
 }

@@ -27,6 +27,7 @@ public interface FriendsFollowersResources {
     /**
      * Returns a collection of user IDs that the currently authenticated user does not want to receive retweets from.
      * <br>This method calls https://api.twitter.com/1.1/friendships/no_retweets/ids.json
+     *
      * @return a collection of numeric IDs that the currently authenticated user does not want to receive retweets from.
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friendships/no_retweets/ids">GET friendships/no_retweets/ids | Twitter Developers</a>
@@ -76,7 +77,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/ids">GET friends/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    IDs getFriendsIDs(long userId, long cursor,int count) throws TwitterException;
+    IDs getFriendsIDs(long userId, long cursor, int count) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is following.
@@ -107,7 +108,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/ids">GET friends/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    IDs getFriendsIDs(String screenName, long cursor,int count) throws TwitterException;
+    IDs getFriendsIDs(String screenName, long cursor, int count) throws TwitterException;
 
     /**
      * Returns an array of numeric IDs for every user the specified user is followed by.
@@ -182,7 +183,7 @@ public interface FriendsFollowersResources {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/ids">GET followers/ids | Twitter Developers</a>
      * @since Twitter4J 4.0.2
      */
-    IDs getFollowersIDs(String screenName, long cursor,int count) throws TwitterException;
+    IDs getFollowersIDs(String screenName, long cursor, int count) throws TwitterException;
 
 
     /**
@@ -404,7 +405,7 @@ public interface FriendsFollowersResources {
      *
      * @param userId The ID of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
-     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param count  The number of users to return per page, up to a maximum of 200. Defaults to 20.
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
@@ -417,7 +418,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
-     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param cursor     Causes the results to be broken into pages of no more than 20 records at a time.
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
@@ -431,8 +432,8 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
-     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
-     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param cursor     Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count      The number of users to return per page, up to a maximum of 200. Defaults to 20.
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/friends/list">GET friends/list | Twitter Developers</a>
@@ -445,10 +446,10 @@ public interface FriendsFollowersResources {
      * At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 20 users and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See <a href="https://dev.twitter.com/docs/misc/cursoring">Using cursors to navigate collections</a> for more information.
      * <br>This method calls https://api.twitter.com/1.1/friends/list.json
      *
-     * @param userId The ID of the user for whom to return results for.
-     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
-     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
-     * @param skipStatus When set to either true, statuses will not be included in the returned user objects.
+     * @param userId              The ID of the user for whom to return results for.
+     * @param cursor              Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count               The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param skipStatus          When set to either true, statuses will not be included in the returned user objects.
      * @param includeUserEntities The user object entities node will be disincluded when set to false.
      * @return list of friends
      * @throws TwitterException when Twitter service or network is unavailable
@@ -496,7 +497,7 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/followers/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
-     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param cursor     Causes the results to be broken into pages of no more than 20 records at a time.
      * @return list of followers
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
@@ -511,7 +512,7 @@ public interface FriendsFollowersResources {
      *
      * @param userId The ID of the user for whom to return results for.
      * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
-     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param count  The number of users to return per page, up to a maximum of 200. Defaults to 20.
      * @return list of followers
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>
@@ -525,8 +526,8 @@ public interface FriendsFollowersResources {
      * <br>This method calls https://api.twitter.com/1.1/followers/list.json
      *
      * @param screenName The screen name of the user for whom to return results for.
-     * @param cursor Causes the results to be broken into pages of no more than 20 records at a time.
-     * @param count The number of users to return per page, up to a maximum of 200. Defaults to 20.
+     * @param cursor     Causes the results to be broken into pages of no more than 20 records at a time.
+     * @param count      The number of users to return per page, up to a maximum of 200. Defaults to 20.
      * @return list of followers
      * @throws TwitterException when Twitter service or network is unavailable
      * @see <a href="https://dev.twitter.com/docs/api/1.1/get/followers/list">GET followers/list | Twitter Developers</a>

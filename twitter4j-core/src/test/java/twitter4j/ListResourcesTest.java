@@ -254,7 +254,7 @@ class ListResourcesTest extends TwitterTestBase {
 
         try {
             userList = twitter1.destroyUserList(userList.getId());
-        }catch (TwitterException ignore){
+        } catch (TwitterException ignore) {
             // in some case destroying user list returns 404
         }
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));

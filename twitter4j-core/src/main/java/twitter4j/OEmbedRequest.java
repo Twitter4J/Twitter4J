@@ -151,7 +151,7 @@ public final class OEmbedRequest implements Serializable {
             appendParameter("related", StringUtil.join(related), params);
         }
         appendParameter("lang", lang, params);
-        if(widgetType != WidgetType.NONE) {
+        if (widgetType != WidgetType.NONE) {
             params.add(new HttpParameter("widget_type", widgetType.name().toLowerCase()));
             params.add(new HttpParameter("hide_tweet", hideTweet));
         }

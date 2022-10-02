@@ -16,7 +16,10 @@
 
 package twitter4j.api;
 
-import twitter4j.*;
+import twitter4j.GeoQuery;
+import twitter4j.Place;
+import twitter4j.ResponseList;
+import twitter4j.TwitterException;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -29,7 +29,7 @@ import java.util.List;
  * Booleans, Integers, Longs, Doubles, {@code null} or {@link JSONObject#NULL}.
  * Values may not be {@link Double#isNaN() NaNs}, {@link Double#isInfinite()
  * infinities}, or of any type not listed here.
- *
+ * <p>
  * {@code JSONArray} has the same type coercion behavior and
  * optional/mandatory accessors as {@link JSONObject}. See that class'
  * documentation for details.
@@ -38,7 +38,7 @@ import java.util.List;
  * ways: the standard Java {@code null} reference, and the sentinel value {@link
  * JSONObject#NULL}. In particular, {@code get} fails if the requested index
  * holds the null reference, but succeeds if it holds {@code JSONObject.NULL}.
- *
+ * <p>
  * Instances of this class are not thread safe. Although this class is
  * non-final, it was not designed for inheritance and should not be subclassed.
  * In particular, self-use by overridable methods is not specified. See

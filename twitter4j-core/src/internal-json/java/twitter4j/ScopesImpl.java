@@ -26,7 +26,7 @@ public class ScopesImpl implements Scopes {
     private static final long serialVersionUID = -6301829625595514787L;
 
     private final String[] placeIds;
-    
+
     /* Only for serialization purposes. */
     /*package*/ ScopesImpl() {
         this.placeIds = new String[0];

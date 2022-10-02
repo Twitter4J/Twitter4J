@@ -39,8 +39,8 @@ public class APIStatistics implements APIStatisticsMBean {
     }
 
     /**
-     * @param method   the method invoked
-     * @param time     the method execution time
+     * @param method  the method invoked
+     * @param time    the method execution time
      * @param success success
      */
     public synchronized void methodCalled(String method, long time, boolean success) {

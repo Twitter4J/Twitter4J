@@ -78,7 +78,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
 
                 JSONArray variants = videoInfo.getJSONArray("variants");
                 this.videoVariants = new Variant[variants.length()];
-                for (int i=0; i<variants.length(); i++) {
+                for (int i = 0; i < variants.length(); i++) {
                     this.videoVariants[i] = new Variant(variants.getJSONObject(i));
                 }
             } else {
@@ -161,15 +161,15 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     static class Size implements MediaEntity.Size {
-            private static final long serialVersionUID = -2515842281909325169L;
+        private static final long serialVersionUID = -2515842281909325169L;
         int width;
         int height;
         int resize;
-        
+
         /* For serialization purposes only. */
-		/* package */
-		Size() {
-		}
+        /* package */
+        Size() {
+        }
 
         Size(JSONObject json) throws JSONException {
             width = json.getInt("w");
@@ -244,7 +244,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     }
 
     static class Variant implements MediaEntity.Variant {
-            private static final long serialVersionUID = 1027236588556797980L;
+        private static final long serialVersionUID = 1027236588556797980L;
         int bitrate;
         String contentType;
         String url;
@@ -252,7 +252,7 @@ public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
         Variant(JSONObject json) throws JSONException {
             bitrate = json.has("bitrate") ? json.getInt("bitrate") : 0;
             contentType = json.getString("content_type");
-            url =json.getString("url");
+            url = json.getString("url");
         }
 
         /* For serialization purposes only. */

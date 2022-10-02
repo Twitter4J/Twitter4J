@@ -37,7 +37,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
 
             places = twitter1.reverseGeoCode(query);
             assertEquals(0, places.size());
-        }catch(TwitterException te){
+        } catch (TwitterException te) {
             // no data for this place
         }
 
