@@ -18,8 +18,6 @@ package twitter4j;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,8 +30,8 @@ import java.util.function.Function;
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
 class Configuration<T, T2 extends Configuration> {
-    transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
-    transient List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
+    List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
+    List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
 
     String user = null;
     String password = null;
@@ -109,9 +107,9 @@ class Configuration<T, T2 extends Configuration> {
     }
 
     Authorization auth;
-    transient HttpClient http;
+    HttpClient http;
 
-    transient ObjectFactory factory;
+    ObjectFactory factory;
 
     @Override
     public boolean equals(Object o) {
@@ -440,25 +438,5 @@ class Configuration<T, T2 extends Configuration> {
         if (built) {
             throw new IllegalStateException("Cannot use this builder any longer, build() has already been called");
         }
-    }
-
-    private void writeObject(java.io.ObjectOutputStream stream) throws IOException {
-        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/output.html#861
-        stream.defaultWriteObject();
-    }
-
-    private void readObject(ObjectInputStream stream)
-            throws IOException, ClassNotFoundException {
-        // http://docs.oracle.com/javase/6/docs/platform/serialization/spec/input.html#2971
-        stream.defaultReadObject();
-
-        http = new HttpClient(httpProxyHost
-                , httpProxyPort, httpProxyUser, httpProxyPassword, httpProxySocks, httpRetryCount
-                , httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug
-                ,
-                gzipEnabled);
-        factory = new JSONImplFactory(this.jsonStoreEnabled);
-        rateLimitReachedListeners = new ArrayList<>();
-        rateLimitStatusListeners = new ArrayList<>();
     }
 }

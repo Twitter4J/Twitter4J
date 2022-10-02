@@ -76,8 +76,6 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
 
     public static class OAuth2AuthorizationBuilder extends Configuration<OAuth2Authorization, OAuth2Authorization.OAuth2AuthorizationBuilder> {
 
-        private static final long serialVersionUID = 2874396111468839768L;
-
         OAuth2AuthorizationBuilder() {
             super(OAuth2Authorization::new);
         }
