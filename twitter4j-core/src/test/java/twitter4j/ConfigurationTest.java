@@ -43,37 +43,11 @@ public class ConfigurationTest {
     @Test
     void testConfiguration() throws Exception {
 
-        String test = "t4j";
         String override = "system property";
 
-        System.getProperties().remove("twitter4j.user");
-        Configuration conf = new Configuration();
-        assertNull(conf.user);
-
-        conf.user(test);
-        assertEquals(test, conf.user);
-        System.setProperty("twitter4j.user", override);
-        conf = new Configuration();
-        assertEquals(override, conf.user);
-        conf.user(test);
-        assertEquals(test, conf.user);
-        System.getProperties().remove("twitter4j.user");
-
-        System.getProperties().remove("twitter4j.password");
-        conf = new Configuration();
-        assertNull(conf.password);
-
-        conf.password(test);
-        assertEquals(test, conf.password);
-        System.setProperty("twitter4j.password", override);
-        conf = new Configuration();
-        assertEquals(override, conf.password);
-        conf.password(test);
-        assertEquals(test, conf.password);
-        System.getProperties().remove("twitter4j.password");
 
         System.getProperties().remove("twitter4j.http.proxyHost");
-        conf = new Configuration();
+        Configuration conf = new Configuration();
         assertNull(conf.httpProxyHost);
 
         System.setProperty("twitter4j.http.proxyHost", override);
@@ -172,7 +146,8 @@ public class ConfigurationTest {
         assertEquals(0, conf.oAuthAccessTokenURL.indexOf("https://"));
         assertEquals(0, conf.oAuthRequestTokenURL.indexOf("https://"));
 
-        RequestToken rt = new RequestToken("key", "secret");
+        RequestToken rt = new RequestToken("key", "secret"
+                , conf.oAuthAuthorizationURL, conf.oAuthAuthenticationURL);
 
         // TFJ-328 RequestToken.getAuthenticationURL()/getAuthorizationURL() should return URLs starting with https:// for security reasons
         assertEquals(0, rt.getAuthenticationURL().indexOf("https://"));

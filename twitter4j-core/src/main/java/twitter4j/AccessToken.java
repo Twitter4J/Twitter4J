@@ -42,7 +42,7 @@ public class AccessToken extends OAuthToken implements java.io.Serializable {
         }
     }
 
-    public AccessToken(String token, String tokenSecret) {
+    AccessToken(String token, String tokenSecret) {
         super(token, tokenSecret);
         String sUserId;
         int dashIndex = token.indexOf("-");

@@ -22,16 +22,19 @@ package twitter4j;
  */
 public final class RequestToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = -8806439091674811734L;
-    private final Configuration conf;
+    private final String oAuthAuthorizationURL;
+    private final String oAuthAuthenticationURL;
 
-    RequestToken(HttpResponse res) throws TwitterException {
+    RequestToken(HttpResponse res, String oAuthAuthorizationURL, String oAuthAuthenticationURL) throws TwitterException {
         super(res);
-        conf = Configuration.getInstance();
+        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
+        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
     }
 
-    public RequestToken(String token, String tokenSecret) {
+    public RequestToken(String token, String tokenSecret, String oAuthAuthorizationURL, String oAuthAuthenticationURL) {
         super(token, tokenSecret);
-        conf = Configuration.getInstance();
+        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
+        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
     }
 
     /**
@@ -39,7 +42,7 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
      * since Twitter4J 2.0.0
      */
     public String getAuthorizationURL() {
-        return conf.oAuthAuthorizationURL + "?oauth_token=" + getToken();
+        return oAuthAuthorizationURL + "?oauth_token=" + getToken();
     }
 
     /**
@@ -47,7 +50,7 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
      * since Twitter4J 2.0.10
      */
     public String getAuthenticationURL() {
-        return conf.oAuthAuthenticationURL + "?oauth_token=" + getToken();
+        return oAuthAuthenticationURL + "?oauth_token=" + getToken();
     }
 
 }

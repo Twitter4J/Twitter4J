@@ -81,7 +81,7 @@ class Configuration<T, T2 extends Configuration> {
     boolean trimUserEnabled = false;
     boolean includeExtAltTextEnabled = true;
     boolean tweetModeExtended = true;
-    boolean includeEmailEnabled = false;
+    boolean includeEmailEnabled = true;
 
     boolean jsonStoreEnabled = false;
 
@@ -207,18 +207,6 @@ class Configuration<T, T2 extends Configuration> {
         return (T2) this;
     }
 
-    public T2 user(String user) {
-        checkNotBuilt();
-        this.user = user;
-        return (T2) this;
-    }
-
-    public T2 password(String password) {
-        checkNotBuilt();
-        this.password = password;
-        return (T2) this;
-    }
-
     public T2 httpProxyHost(String httpProxyHost) {
         checkNotBuilt();
         this.httpProxyHost = httpProxyHost;
@@ -317,60 +305,6 @@ class Configuration<T, T2 extends Configuration> {
     public T2 oAuth2Scope(String oAuth2Scope) {
         checkNotBuilt();
         this.oAuth2Scope = oAuth2Scope;
-        return (T2) this;
-    }
-
-    public T2 oAuthRequestTokenURL(String oAuthRequestTokenURL) {
-        checkNotBuilt();
-        this.oAuthRequestTokenURL = oAuthRequestTokenURL;
-        return (T2) this;
-    }
-
-    public T2 oAuthAuthorizationURL(String oAuthAuthorizationURL) {
-        checkNotBuilt();
-        this.oAuthAuthorizationURL = oAuthAuthorizationURL;
-        return (T2) this;
-    }
-
-    public T2 oAuthAccessTokenURL(String oAuthAccessTokenURL) {
-        checkNotBuilt();
-        this.oAuthAccessTokenURL = oAuthAccessTokenURL;
-        return (T2) this;
-    }
-
-    public T2 oAuthAuthenticationURL(String oAuthAuthenticationURL) {
-        checkNotBuilt();
-        this.oAuthAuthenticationURL = oAuthAuthenticationURL;
-        return (T2) this;
-    }
-
-    public T2 oAuth2TokenURL(String oAuth2TokenURL) {
-        checkNotBuilt();
-        this.oAuth2TokenURL = oAuth2TokenURL;
-        return (T2) this;
-    }
-
-    public T2 oAuth2InvalidateTokenURL(String invalidateTokenURL) {
-        checkNotBuilt();
-        this.oAuth2InvalidateTokenURL = invalidateTokenURL;
-        return (T2) this;
-    }
-
-    public T2 restBaseURL(String restBaseURL) {
-        checkNotBuilt();
-        this.restBaseURL = restBaseURL;
-        return (T2) this;
-    }
-
-    public T2 uploadBaseURL(String uploadBaseURL) {
-        checkNotBuilt();
-        this.uploadBaseURL = uploadBaseURL;
-        return (T2) this;
-    }
-
-    public T2 streamBaseURL(String streamBaseURL) {
-        checkNotBuilt();
-        this.streamBaseURL = streamBaseURL;
         return (T2) this;
     }
 

@@ -44,6 +44,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private final String oAuthAccessTokenURL;
     private final String oAuthInvalidateTokenURL;
 
+    private final String oAuthAuthorizationURL;
+    private final String oAuthAuthenticationURL;
     // constructors
 
     /**
@@ -51,10 +53,11 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      */
     OAuthAuthorization(Configuration conf) {
         http = conf.http;
-        oAuthRequestTokenURL = conf.oAuthRequestTokenURL;
-        oAuthAccessTokenURL = conf.oAuthAccessTokenURL;
-        oAuthInvalidateTokenURL = conf.oAuthInvalidateTokenURL;
-
+        this.oAuthRequestTokenURL = conf.oAuthRequestTokenURL;
+        this.oAuthAccessTokenURL = conf.oAuthAccessTokenURL;
+        this.oAuthInvalidateTokenURL = conf.oAuthInvalidateTokenURL;
+        this.oAuthAuthorizationURL = conf.oAuthAuthorizationURL;
+        this.oAuthAuthenticationURL = conf.oAuthAuthenticationURL;
         this.consumerKey = conf.oAuthConsumerKey != null ? conf.oAuthConsumerKey : "";
         this.consumerSecret = conf.oAuthConsumerSecret != null ? conf.oAuthConsumerSecret : "";
         if (conf.oAuthAccessToken != null && conf.oAuthAccessTokenSecret != null) {
@@ -143,7 +146,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         if (callbackURL != null) {
             params.add(new HttpParameter("oauth_callback", callbackURL));
         }
-        oauthToken = new RequestToken(http.post(oAuthRequestTokenURL, params.toArray(new HttpParameter[0]), this, null));
+        oauthToken = new RequestToken(http.post(oAuthRequestTokenURL, params.toArray(new HttpParameter[0]),
+                this, null), oAuthAuthorizationURL, oAuthAuthenticationURL);
         return (RequestToken) oauthToken;
     }
 
@@ -498,7 +502,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     }
 
     public static class OAuthAuthorizationBuilder extends Configuration<OAuthAuthorization, OAuthAuthorizationBuilder> {
-        private static final long serialVersionUID = -7194823238000676626L;
 
         OAuthAuthorizationBuilder() {
             super(OAuthAuthorization::new);

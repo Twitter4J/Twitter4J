@@ -404,9 +404,7 @@ class DAOTest extends TwitterTestBase {
     }
 
     private JSONObject getJSONObjectFromGetURL(String url) throws Exception {
-        Configuration builder = new Configuration()
-                .user(id1.screenName)
-                .password(id1.password);
+        Configuration builder = new Configuration();
         return getJSONObjectFromGetURL(url, builder.buildConfiguration());
     }
 
@@ -417,8 +415,6 @@ class DAOTest extends TwitterTestBase {
 
     private JSONObject getJSONObjectFromPostURL(String url) throws Exception {
         Configuration builder = new Configuration();
-        builder.user(id1.screenName);
-        builder.password(id1.password);
         return getJSONObjectFromPostURL(url, builder.buildConfiguration());
     }
 
@@ -429,8 +425,6 @@ class DAOTest extends TwitterTestBase {
 
     private JSONArray getJSONArrayFromGetURL(String url) throws Exception {
         Configuration builder = new Configuration();
-        builder.user(id1.screenName);
-        builder.password(id1.password);
         return getJSONArrayFromGetURL(url, builder.buildConfiguration());
     }
 
