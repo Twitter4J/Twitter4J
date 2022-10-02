@@ -38,11 +38,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     private GeoLocation[][] geometryCoordinates;
     private Place[] containedWithIn;
 
-    /*package*/ PlaceJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ PlaceJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }
@@ -121,20 +121,20 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
     }
 
     /*package*/
-    static ResponseList<Place> createPlaceList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<Place> createPlaceList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         JSONObject json = null;
         try {
             json = res.asJSONObject();
-            return createPlaceList(json.getJSONObject("result").getJSONArray("places"), res, conf);
+            return createPlaceList(json.getJSONObject("result").getJSONArray("places"), res, jsonStoreEnabled);
         } catch (JSONException jsone) {
-            throw new TwitterException(jsone.getMessage() + ":" + json.toString(), jsone);
+            throw new TwitterException(jsone.getMessage() + ":" + json, jsone);
         }
     }
 
     /*package*/
     static ResponseList<Place> createPlaceList(JSONArray list, HttpResponse res
-            , Configuration conf) throws TwitterException {
-        if (conf.jsonStoreEnabled) {
+            , boolean jsonStoreEnabled) throws TwitterException {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         try {
@@ -145,11 +145,11 @@ final class PlaceJSONImpl extends TwitterResponseImpl implements Place, java.io.
                 JSONObject json = list.getJSONObject(i);
                 Place place = new PlaceJSONImpl(json);
                 places.add(place);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(place, json);
                 }
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(places, list);
             }
             return places;

@@ -42,7 +42,7 @@ abstract class TwitterBaseImpl implements java.io.Serializable, HttpResponseList
 
     @Override
     public void httpResponseReceived(HttpResponseEvent event) {
-        if (conf.rateLimitStatusListeners.size() != 0) {
+        if (conf.rateLimitStatusListeners.size() != 0 || conf.rateLimitReachedListeners.size() != 0) {
             HttpResponse res = event.getResponse();
             TwitterException te = event.getTwitterException();
             RateLimitStatus rateLimitStatus;

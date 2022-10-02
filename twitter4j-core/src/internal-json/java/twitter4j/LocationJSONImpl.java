@@ -52,11 +52,11 @@ import java.util.Objects;
     }
 
     /*package*/
-    static ResponseList<Location> createLocationList(HttpResponse res, Configuration conf) throws TwitterException {
-        if (conf.jsonStoreEnabled) {
+    static ResponseList<Location> createLocationList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
-        return createLocationList(res.asJSONArray(), conf.jsonStoreEnabled);
+        return createLocationList(res.asJSONArray(), jsonStoreEnabled);
     }
 
     /*package*/

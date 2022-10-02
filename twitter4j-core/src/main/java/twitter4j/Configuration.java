@@ -34,7 +34,7 @@ import java.util.function.Function;
 class Configuration<T, T2 extends Configuration> implements java.io.Serializable {
     private static final long serialVersionUID = 2235370978558949003L;
     transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
-    transient  List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
+    transient List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
 
     String user = null;
     String password = null;
@@ -453,7 +453,7 @@ class Configuration<T, T2 extends Configuration> implements java.io.Serializable
 
     T2 buildConfiguration() {
         checkNotBuilt();
-        factory = new JSONImplFactory(this);
+        factory = new JSONImplFactory(this.jsonStoreEnabled);
         http = new HttpClient(httpProxyHost
                 , httpProxyPort, httpProxyUser, httpProxyPassword, httpProxySocks, httpRetryCount
                 , httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug
@@ -509,7 +509,7 @@ class Configuration<T, T2 extends Configuration> implements java.io.Serializable
                 , httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug
                 ,
                 gzipEnabled);
-        factory = new JSONImplFactory(this);
+        factory = new JSONImplFactory(this.jsonStoreEnabled);
         rateLimitReachedListeners = new ArrayList<>();
         rateLimitStatusListeners = new ArrayList<>();
     }

@@ -36,10 +36,10 @@ import java.util.*;
         return this.trendAt.compareTo(that.getTrendAt());
     }
 
-    TrendsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    TrendsJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
-        init(res.asString(), conf.jsonStoreEnabled);
-        if (conf.jsonStoreEnabled) {
+        init(res.asString(), jsonStoreEnabled);
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asString());
         }

@@ -30,11 +30,11 @@ import java.util.Arrays;
     private long previousCursor = -1;
     private long nextCursor = -1;
 
-    /*package*/ IDsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ IDsJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         String json = res.asString();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }

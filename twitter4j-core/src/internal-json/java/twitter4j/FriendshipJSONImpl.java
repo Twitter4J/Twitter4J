@@ -50,9 +50,9 @@ class FriendshipJSONImpl implements Friendship {
     }
 
     /*package*/
-    static ResponseList<Friendship> createFriendshipList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<Friendship> createFriendshipList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -61,12 +61,12 @@ class FriendshipJSONImpl implements Friendship {
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Friendship friendship = new FriendshipJSONImpl(json);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(friendship, json);
                 }
                 friendshipList.add(friendship);
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(friendshipList, list);
             }
             return friendshipList;

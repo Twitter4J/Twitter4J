@@ -31,11 +31,11 @@ public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.
     private String authorURL;
     private int width;
 
-    /*package*/ OEmbedJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ OEmbedJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }

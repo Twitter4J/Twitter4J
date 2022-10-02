@@ -41,14 +41,14 @@ import java.util.Date;
     private boolean following;
     private Date createdAt;
 
-    /*package*/ UserListJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ UserListJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -156,9 +156,9 @@ import java.util.Date;
     }
 
     /*package*/
-    static PagableResponseList<UserList> createPagableUserListList(HttpResponse res, Configuration conf) throws TwitterException {
+    static PagableResponseList<UserList> createPagableUserListList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONObject json = res.asJSONObject();
@@ -170,11 +170,11 @@ import java.util.Date;
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(userList, userListJson);
                 }
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(users, json);
             }
             return users;
@@ -184,9 +184,9 @@ import java.util.Date;
     }
 
     /*package*/
-    static ResponseList<UserList> createUserListList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<UserList> createUserListList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -197,11 +197,11 @@ import java.util.Date;
                 JSONObject userListJson = list.getJSONObject(i);
                 UserList userList = new UserListJSONImpl(userListJson);
                 users.add(userList);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(userList, userListJson);
                 }
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(users, list);
             }
             return users;

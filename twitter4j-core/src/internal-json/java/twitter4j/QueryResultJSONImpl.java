@@ -36,7 +36,7 @@ import java.util.List;
     private final List<Status> tweets;
     private String nextResults;
 
-    /*package*/ QueryResultJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ QueryResultJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         try {
@@ -51,12 +51,12 @@ import java.util.List;
 
             JSONArray array = json.getJSONArray("statuses");
             tweets = new ArrayList<>(array.length());
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             for (int i = 0; i < array.length(); i++) {
                 JSONObject tweet = array.getJSONObject(i);
-                tweets.add(new StatusJSONImpl(tweet, conf));
+                tweets.add(new StatusJSONImpl(tweet, jsonStoreEnabled));
             }
         } catch (JSONException jsone) {
             throw new TwitterException(jsone.getMessage() + ":" + json, jsone);

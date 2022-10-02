@@ -52,10 +52,13 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     private static final ConcurrentHashMap<Configuration<Twitter, Configuration>, HttpParameter[]> implicitParamsMap = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Configuration<Twitter, Configuration>, String> implicitParamsStrMap = new ConcurrentHashMap<>();
+    private final String restBaseURL;
 
     /*package*/
     TwitterImpl(Configuration conf) {
         super(conf);
+        restBaseURL = conf.restBaseURL;
+
         INCLUDE_MY_RETWEET = new HttpParameter("include_my_retweet", conf.includeEmailEnabled);
         if (implicitParamsMap.containsKey(conf)) {
             this.IMPLICIT_PARAMS = implicitParamsMap.get(conf);
@@ -207,7 +210,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
 
     @Override
     public IDs getRetweeterIds(long statusId, int count, long cursor) throws TwitterException {
-        return conf.factory.createIDs(get(conf.restBaseURL + "statuses/retweeters/ids.json?id=" + statusId
+        return conf.factory.createIDs(get(restBaseURL + "statuses/retweeters/ids.json?id=" + statusId
                 + "&cursor=" + cursor + "&count=" + count));
     }
 
@@ -791,7 +794,7 @@ class TwitterImpl extends TwitterBaseImpl implements Twitter {
     @Override
     public User verifyCredentials() throws TwitterException {
         return new UserJSONImpl(conf.http.get(conf.restBaseURL + "account/verify_credentials.json",
-                new HttpParameter[]{new HttpParameter("include_email", conf.includeEmailEnabled)}, conf.auth, this), conf);
+                new HttpParameter[]{new HttpParameter("include_email", conf.includeEmailEnabled)}, conf.auth, this), conf.jsonStoreEnabled);
     }
     
     @Override

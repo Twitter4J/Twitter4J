@@ -39,13 +39,13 @@ import java.util.*;
     private QuickReply[] quickReplies;
     private String quickReplyResponse;
 
-    /*package*/DirectMessageJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/DirectMessageJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         try {
             JSONObject event = json.getJSONObject("event");
             init(event);
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
                 TwitterObjectFactory.registerJSONObject(this, event);
             }
@@ -70,7 +70,7 @@ import java.util.*;
                 senderId = ParseUtil.getLong("sender_id", messageCreate);
                 messageData = messageCreate.getJSONObject("message_data");
 
-            }else{
+            } else {
                 // raw JSON data from Twitter4J 4.0.6 or before
                 createdAt = ParseUtil.getDate("created_at", json);
                 senderId = ParseUtil.getLong("sender_id", json);
@@ -103,12 +103,12 @@ import java.util.*;
                 List<QuickReply> quickReplyList = new ArrayList<>();
                 for (int i = 0; i < options.length(); i++) {
                     JSONObject option = options.getJSONObject(i);
-                    String description = option.isNull("description") ? null :option.getString("description");
-                    String metadata = option.isNull("metadata") ? null :option.getString("metadata");
+                    String description = option.isNull("description") ? null : option.getString("description");
+                    String metadata = option.isNull("metadata") ? null : option.getString("metadata");
                     quickReplyList.add(new QuickReply(option.getString("label"), description, metadata));
                 }
                 quickReplies = quickReplyList.toArray(new QuickReply[0]);
-            }else{
+            } else {
                 quickReplies = new QuickReply[0];
             }
             if (!messageData.isNull("quick_reply_response") && !messageData.getJSONObject("quick_reply_response").isNull("metadata")) {
@@ -122,9 +122,9 @@ import java.util.*;
         }
     }
 
-    static DirectMessageList createDirectMessageList(HttpResponse res, Configuration conf) throws TwitterException {
+    static DirectMessageList createDirectMessageList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list;
@@ -133,29 +133,29 @@ import java.util.*;
                 JSONObject jsonObject = res.asJSONObject();
                 list = jsonObject.getJSONArray("events");
                 directMessages = new DirectMessageListImpl(list.length(), jsonObject, res);
-            }catch(TwitterException te){
+            } catch (TwitterException te) {
                 if (te.getCause() != null && te.getCause() instanceof JSONException) {
                     // serialized form from Twitter4J 4.0.6 or before
                     list = res.asJSONArray();
                     int size = list.length();
                     directMessages = new DirectMessageListImpl(size, res);
 
-                }else{
-                  throw  te;
+                } else {
+                    throw te;
                 }
             }
             for (int i = 0; i < list.length(); i++) {
-                    JSONObject json = list.getJSONObject(i);
-                    DirectMessage directMessage = new DirectMessageJSONImpl(json);
-                    directMessages.add(directMessage);
-                    if (conf.jsonStoreEnabled) {
-                        TwitterObjectFactory.registerJSONObject(directMessage, json);
-                    }
+                JSONObject json = list.getJSONObject(i);
+                DirectMessage directMessage = new DirectMessageJSONImpl(json);
+                directMessages.add(directMessage);
+                if (jsonStoreEnabled) {
+                    TwitterObjectFactory.registerJSONObject(directMessage, json);
                 }
-                if (conf.jsonStoreEnabled) {
-                    TwitterObjectFactory.registerJSONObject(directMessages, list);
-                }
-                return directMessages;
+            }
+            if (jsonStoreEnabled) {
+                TwitterObjectFactory.registerJSONObject(directMessages, list);
+            }
+            return directMessages;
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }

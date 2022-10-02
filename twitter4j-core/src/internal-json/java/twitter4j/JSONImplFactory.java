@@ -27,10 +27,10 @@ import java.util.Objects;
  */
 class JSONImplFactory implements ObjectFactory {
     private static final long serialVersionUID = -1853541456182663343L;
-    private final Configuration conf;
+    private final boolean jsonStoreEnabled;
 
-    public JSONImplFactory(Configuration conf) {
-        this.conf = conf;
+    public JSONImplFactory(boolean jsonStoreEnabled) {
+        this.jsonStoreEnabled = jsonStoreEnabled;
     }
 
     @Override
@@ -51,17 +51,17 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res) throws TwitterException {
-        return RateLimitStatusJSONImpl.createRateLimitStatuses(res, conf);
+        return RateLimitStatusJSONImpl.createRateLimitStatuses(res, jsonStoreEnabled);
     }
 
     @Override
     public Status createStatus(HttpResponse res) throws TwitterException {
-        return new StatusJSONImpl(res, conf);
+        return new StatusJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<Status> createStatusList(HttpResponse res) throws TwitterException {
-        return StatusJSONImpl.createStatusList(res, conf);
+        return StatusJSONImpl.createStatusList(res, jsonStoreEnabled);
     }
 
     /**
@@ -112,28 +112,28 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public Trends createTrends(HttpResponse res) throws TwitterException {
-        return new TrendsJSONImpl(res, conf);
+        return new TrendsJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public User createUser(HttpResponse res) throws TwitterException {
-        return new UserJSONImpl(res, conf);
+        return new UserJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<User> createUserList(HttpResponse res) throws TwitterException {
-        return UserJSONImpl.createUserList(res, conf);
+        return UserJSONImpl.createUserList(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<User> createUserListFromJSONArray(HttpResponse res) throws TwitterException {
-        return UserJSONImpl.createUserList(res.asJSONArray(), res, conf);
+        return UserJSONImpl.createUserList(res.asJSONArray(), res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<User> createUserListFromJSONArray_Users(HttpResponse res) throws TwitterException {
         try {
-            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res, conf);
+            return UserJSONImpl.createUserList(res.asJSONObject().getJSONArray("users"), res, jsonStoreEnabled);
         } catch (JSONException jsone) {
             throw new TwitterException(jsone);
         }
@@ -142,7 +142,7 @@ class JSONImplFactory implements ObjectFactory {
     @Override
     public QueryResult createQueryResult(HttpResponse res, Query query) throws TwitterException {
         try {
-            return new QueryResultJSONImpl(res, conf);
+            return new QueryResultJSONImpl(res, jsonStoreEnabled);
         } catch (TwitterException te) {
             if (404 == te.getStatusCode()) {
                 return new QueryResultJSONImpl(query);
@@ -154,83 +154,83 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public IDs createIDs(HttpResponse res) throws TwitterException {
-        return new IDsJSONImpl(res, conf);
+        return new IDsJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public PagableResponseList<User> createPagableUserList(HttpResponse res) throws TwitterException {
-        return UserJSONImpl.createPagableUserList(res, conf);
+        return UserJSONImpl.createPagableUserList(res, jsonStoreEnabled);
     }
 
     @Override
     public UserList createAUserList(HttpResponse res) throws TwitterException {
-        return new UserListJSONImpl(res, conf);
+        return new UserListJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public PagableResponseList<UserList> createPagableUserListList(HttpResponse res) throws TwitterException {
-        return UserListJSONImpl.createPagableUserListList(res, conf);
+        return UserListJSONImpl.createPagableUserListList(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<UserList> createUserListList(HttpResponse res) throws TwitterException {
-        return UserListJSONImpl.createUserListList(res, conf);
+        return UserListJSONImpl.createUserListList(res, jsonStoreEnabled);
     }
 
     @Override
     public DirectMessage createDirectMessage(HttpResponse res) throws TwitterException {
-        return new DirectMessageJSONImpl(res, conf);
+        return new DirectMessageJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public DirectMessageList createDirectMessageList(HttpResponse res) throws TwitterException {
-        return DirectMessageJSONImpl.createDirectMessageList(res, conf);
+        return DirectMessageJSONImpl.createDirectMessageList(res, jsonStoreEnabled);
     }
 
     @Override
     public Relationship createRelationship(HttpResponse res) throws TwitterException {
-        return new RelationshipJSONImpl(res, conf);
+        return new RelationshipJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<Friendship> createFriendshipList(HttpResponse res) throws TwitterException {
-        return FriendshipJSONImpl.createFriendshipList(res, conf);
+        return FriendshipJSONImpl.createFriendshipList(res, jsonStoreEnabled);
     }
 
     @Override
     public AccountTotals createAccountTotals(HttpResponse res) throws TwitterException {
-        return new AccountTotalsJSONImpl(res, conf);
+        return new AccountTotalsJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public AccountSettings createAccountSettings(HttpResponse res) throws TwitterException {
-        return new AccountSettingsJSONImpl(res, conf);
+        return new AccountSettingsJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public SavedSearch createSavedSearch(HttpResponse res) throws TwitterException {
-        return new SavedSearchJSONImpl(res, conf);
+        return new SavedSearchJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<SavedSearch> createSavedSearchList(HttpResponse res) throws TwitterException {
-        return SavedSearchJSONImpl.createSavedSearchList(res, conf);
+        return SavedSearchJSONImpl.createSavedSearchList(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<Location> createLocationList(HttpResponse res) throws TwitterException {
-        return LocationJSONImpl.createLocationList(res, conf);
+        return LocationJSONImpl.createLocationList(res, jsonStoreEnabled);
     }
 
     @Override
     public Place createPlace(HttpResponse res) throws TwitterException {
-        return new PlaceJSONImpl(res, conf);
+        return new PlaceJSONImpl(res, jsonStoreEnabled);
     }
 
     @Override
     public ResponseList<Place> createPlaceList(HttpResponse res) throws TwitterException {
         try {
-            return PlaceJSONImpl.createPlaceList(res, conf);
+            return PlaceJSONImpl.createPlaceList(res, jsonStoreEnabled);
         } catch (TwitterException te) {
             if (te.getStatusCode() == 404) {
                 return new ResponseListImpl<>(0, null);
@@ -242,7 +242,7 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public ResponseList<HelpResources.Language> createLanguageList(HttpResponse res) throws TwitterException {
-        return LanguageJSONImpl.createLanguageList(res, conf);
+        return LanguageJSONImpl.createLanguageList(res, jsonStoreEnabled);
     }
 
     @Override
@@ -252,7 +252,7 @@ class JSONImplFactory implements ObjectFactory {
 
     @Override
     public OEmbed createOEmbed(HttpResponse res) throws TwitterException {
-        return new OEmbedJSONImpl(res, conf);
+        return new OEmbedJSONImpl(res, jsonStoreEnabled);
     }
 
     /**
@@ -291,18 +291,18 @@ class JSONImplFactory implements ObjectFactory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JSONImplFactory that = (JSONImplFactory) o;
-        return Objects.equals(conf, that.conf);
+        return jsonStoreEnabled == that.jsonStoreEnabled;
     }
 
     @Override
     public int hashCode() {
-        return conf != null ? conf.hashCode() : 0;
+        return Objects.hash(jsonStoreEnabled);
     }
 
     @Override
     public String toString() {
         return "JSONImplFactory{" +
-                "conf=" + conf +
+                "jsonStoreEnabled=" + jsonStoreEnabled +
                 '}';
     }
 }

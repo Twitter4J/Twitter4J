@@ -34,14 +34,14 @@ import java.util.Objects;
     private String name;
     private long id;
 
-    /*package*/ SavedSearchJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ SavedSearchJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -51,8 +51,8 @@ import java.util.Objects;
     }
 
     /*package*/
-    static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, Configuration conf) throws TwitterException {
-        if (conf.jsonStoreEnabled) {
+    static ResponseList<SavedSearch> createSavedSearchList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
         }
         JSONArray json = res.asJSONArray();
@@ -63,11 +63,11 @@ import java.util.Objects;
                 JSONObject savedSearchesJSON = json.getJSONObject(i);
                 SavedSearch savedSearch = new SavedSearchJSONImpl(savedSearchesJSON);
                 savedSearches.add(savedSearch);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(savedSearch, savedSearchesJSON);
                 }
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(savedSearches, json);
             }
             return savedSearches;
@@ -86,7 +86,7 @@ import java.util.Objects;
 
     @Override
     public int compareTo(SavedSearch that) {
-        return (int)(this.id - that.getId());
+        return (int) (this.id - that.getId());
     }
 
     @Override
@@ -128,7 +128,7 @@ import java.util.Objects;
         result = 31 * result + query.hashCode();
         result = 31 * result + position;
         result = 31 * result + name.hashCode();
-        result = 31 * result + (int)id;
+        result = 31 * result + (int) id;
         return result;
     }
 

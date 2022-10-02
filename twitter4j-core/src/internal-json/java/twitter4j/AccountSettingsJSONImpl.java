@@ -68,16 +68,12 @@ class AccountSettingsJSONImpl extends TwitterResponseImpl implements AccountSett
         }
     }
 
-    /*package*/ AccountSettingsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ AccountSettingsJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         this(res, res.asJSONObject());
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
-    }
-
-    /*package*/ AccountSettingsJSONImpl(JSONObject json) throws TwitterException {
-        this(null, json);
     }
 
     @Override

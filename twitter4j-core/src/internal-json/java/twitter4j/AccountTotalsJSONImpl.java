@@ -37,15 +37,15 @@ class AccountTotalsJSONImpl extends TwitterResponseImpl implements AccountTotals
         friends = ParseUtil.getInt("friends", json);
     }
 
-    /*package*/ AccountTotalsJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ AccountTotalsJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         this(res, res.asJSONObject());
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
     }
 
-    /*package*/ AccountTotalsJSONImpl(JSONObject json) throws TwitterException {
+    /*package*/ AccountTotalsJSONImpl(JSONObject json) {
         this(null, json);
     }
 

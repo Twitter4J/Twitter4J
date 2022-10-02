@@ -37,22 +37,22 @@ class DAOTest extends TwitterTestBase {
     void testEmptyJSON() throws Exception {
 
         // empty User list
-        List<User> users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<User> users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), true);
         assertEquals(0, users.size());
         assertDeserializedFormIsEqual(users);
 
         // empty Status list
-        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), true);
         assertEquals(0, statuses.size());
         assertDeserializedFormIsEqual(statuses);
 
         // empty DirectMessages list
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/friends/T4J_hudson.json"), true);
         assertEquals(0, directMessages.size());
         assertDeserializedFormIsEqual(directMessages);
 
         // empty Trends list
-        List<Trends> trends = TrendsJSONImpl.createTrendsList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), conf.jsonStoreEnabled);
+        List<Trends> trends = TrendsJSONImpl.createTrendsList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/trends/daily-empty.json"), true);
         assertEquals(0, trends.size());
         assertDeserializedFormIsEqual(trends);
     }
@@ -60,7 +60,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testLocation() throws Exception {
         JSONArray array = getJSONArrayFromClassPath("/dao/trends-available.json");
-        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, conf.jsonStoreEnabled);
+        ResponseList<Location> locations = LocationJSONImpl.createLocationList(array, true);
         assertEquals(23, locations.size());
         Location location = locations.get(0);
         assertEquals("GB", location.getCountryCode());
@@ -516,7 +516,7 @@ class DAOTest extends TwitterTestBase {
         List<User> users;
 
         // User list
-        users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/followers/T4J_hudson.json"), conf);
+        users = UserJSONImpl.createUserList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/followers/T4J_hudson.json"), true);
         assertTrue(users.size() > 0);
         assertDeserializedFormIsEqual(users);
     }
@@ -524,7 +524,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testStatusAsJSON() throws Exception {
         // single Status
-        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), conf);
+        List<Status> statuses = StatusJSONImpl.createStatusList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), true);
         Status status = statuses.get(0);
         assertEquals(new Date(1259041785000L), status.getCreatedAt());
         assertEquals(6000554383L, status.getId());
@@ -542,7 +542,7 @@ class DAOTest extends TwitterTestBase {
     @Test
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
-        Status status = new StatusJSONImpl(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), conf);
+        Status status = new StatusJSONImpl(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), true);
         assertEquals(new Date(1259078050000L), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
         assertNull(status.getInReplyToScreenName());
@@ -561,7 +561,7 @@ class DAOTest extends TwitterTestBase {
     void testPlaceAsJSON() throws Exception {
         List<Place> places = PlaceJSONImpl.createPlaceList(
                 getJSONObjectFromClassPath("/dao/reverse-geocode.json")
-                        .getJSONObject("result").getJSONArray("places"), null, conf
+                        .getJSONObject("result").getJSONArray("places"), null, true
         );
         Place place = places.get(0);
         assertEquals("SoMa", place.getName());
@@ -630,7 +630,7 @@ class DAOTest extends TwitterTestBase {
 
     @Test
     void testDirectMessagesAsJSON() throws Exception {
-        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), conf);
+        List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), true);
         DirectMessage dm = directMessages.get(0);
         assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());

@@ -65,20 +65,20 @@ import static twitter4j.ParseUtil.getDate;
     private long quotedStatusId = -1L;
     private URLEntity quotedStatusPermalink;
 
-    /*package*/StatusJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/StatusJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
         JSONObject json = res.asJSONObject();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
 
-    /*package*/StatusJSONImpl(JSONObject json, Configuration conf) throws TwitterException {
+    /*package*/StatusJSONImpl(JSONObject json, boolean jsonStoreEnabled) throws TwitterException {
         super();
         init(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(this, json);
         }
     }
@@ -179,11 +179,11 @@ import static twitter4j.ParseUtil.getDate;
                     scopes = new ScopesImpl(placeIds);
                 }
             }
-            if (!json.isNull("withheld_in_countries")){
+            if (!json.isNull("withheld_in_countries")) {
                 JSONArray withheld_in_countries = json.getJSONArray("withheld_in_countries");
                 int length = withheld_in_countries.length();
                 withheldInCountries = new String[length];
-                for (int i = 0 ; i < length; i ++) {
+                for (int i = 0; i < length; i++) {
                     withheldInCountries[i] = withheld_in_countries.getString(i);
                 }
             }
@@ -430,9 +430,9 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     /*package*/
-    static ResponseList<Status> createStatusList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<Status> createStatusList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -441,12 +441,12 @@ import static twitter4j.ParseUtil.getDate;
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Status status = new StatusJSONImpl(json);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(status, json);
                 }
                 statuses.add(status);
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(statuses, list);
             }
             return statuses;
@@ -499,7 +499,7 @@ import static twitter4j.ParseUtil.getDate;
                 ", symbolEntities=" + Arrays.toString(symbolEntities) +
                 ", currentUserRetweetId=" + currentUserRetweetId +
                 ", user=" + user +
-                ", withHeldInCountries=" + Arrays.toString(withheldInCountries)+
+                ", withHeldInCountries=" + Arrays.toString(withheldInCountries) +
                 ", quotedStatusId=" + quotedStatusId +
                 ", quotedStatus=" + quotedStatus +
                 '}';

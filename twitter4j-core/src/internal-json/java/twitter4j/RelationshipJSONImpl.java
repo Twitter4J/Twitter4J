@@ -40,9 +40,9 @@ import java.util.Objects;
     private final String sourceUserScreenName;
     private final boolean wantRetweets;
 
-    /*package*/ RelationshipJSONImpl(HttpResponse res, Configuration conf) throws TwitterException {
+    /*package*/ RelationshipJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         this(res, res.asJSONObject());
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(this, res.asJSONObject());
         }
@@ -75,9 +75,9 @@ import java.util.Objects;
     }
 
     /*package*/
-    static ResponseList<Relationship> createRelationshipList(HttpResponse res, Configuration conf) throws TwitterException {
+    static ResponseList<Relationship> createRelationshipList(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         try {
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.clearThreadLocalMap();
             }
             JSONArray list = res.asJSONArray();
@@ -86,12 +86,12 @@ import java.util.Objects;
             for (int i = 0; i < size; i++) {
                 JSONObject json = list.getJSONObject(i);
                 Relationship relationship = new RelationshipJSONImpl(json);
-                if (conf.jsonStoreEnabled) {
+                if (jsonStoreEnabled) {
                     TwitterObjectFactory.registerJSONObject(relationship, json);
                 }
                 relationships.add(relationship);
             }
-            if (conf.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(relationships, list);
             }
             return relationships;
@@ -115,7 +115,7 @@ import java.util.Objects;
     public boolean isSourceBlockingTarget() {
         return sourceBlockingTarget;
     }
-    
+
     @Override
     public String getSourceUserScreenName() {
         return sourceUserScreenName;

@@ -37,16 +37,20 @@ abstract class StatusStreamBase implements StatusStream {
     private final InputStream is;
     private HttpResponse response;
     private final ExecutorService dispatcher = Executors.newFixedThreadPool(1);
-    final TwitterStream.TwitterStreamBuilder CONF;
-    private final ObjectFactory factory;
+    private final boolean jsonStoreEnabled;
+    private final boolean prettyDebug;
+    private final List<StreamListener> streamListeners;
+    private final List<RawStreamListener> rawStreamListeners;
 
     /*package*/
 
     StatusStreamBase(InputStream stream, TwitterStream.TwitterStreamBuilder conf) {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        this.CONF = conf;
-        this.factory = new JSONImplFactory(conf);
+        streamListeners = conf.streamListeners;
+        rawStreamListeners = conf.rawStreamListeners;
+        this.jsonStoreEnabled = conf.jsonStoreEnabled;
+        prettyDebug = conf.prettyDebug;
     }
     /*package*/
 
@@ -93,19 +97,19 @@ abstract class StatusStreamBase implements StatusStream {
                         line = parseLine(line);
                         if (line != null && line.length() > 0) {
                             // parsing JSON is an expensive process and can be avoided when all listener are instanceof RawStreamListener
-                                if (CONF.jsonStoreEnabled) {
-                                    TwitterObjectFactory.clearThreadLocalMap();
-                                }
-                                JSONObject json = new JSONObject(line);
-                                JSONObjectType.Type event = JSONObjectType.determine(json);
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("Received:", CONF.prettyDebug ? json.toString(1) : json.toString());
-                                }
-                                switch (event) {
-                                    case SENDER:
-                                        onSender(json, listeners);
-                                        break;
-                                    case STATUS:
+                            if (jsonStoreEnabled) {
+                                TwitterObjectFactory.clearThreadLocalMap();
+                            }
+                            JSONObject json = new JSONObject(line);
+                            JSONObjectType.Type event = JSONObjectType.determine(json);
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Received:", prettyDebug ? json.toString(1) : json.toString());
+                            }
+                            switch (event) {
+                                case SENDER:
+                                    onSender(json, listeners);
+                                    break;
+                                case STATUS:
                                         onStatus(json, listeners);
                                         break;
                                     case DIRECT_MESSAGE:
@@ -194,7 +198,7 @@ abstract class StatusStreamBase implements StatusStream {
                                         break;
                                     case UNKNOWN:
                                     default:
-                                        logger.warn("Received unknown event:", CONF.prettyDebug ? json.toString(1) : json.toString());
+                                        logger.warn("Received unknown event:", prettyDebug ? json.toString(1) : json.toString());
                                 }
                         }
                     } catch (Exception ex) {
@@ -361,7 +365,7 @@ abstract class StatusStreamBase implements StatusStream {
     Status asStatus(JSONObject json) throws TwitterException {
         Status status = new StatusJSONImpl(json);
 
-        if (CONF.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(status, json);
         }
         return status;
@@ -371,7 +375,7 @@ abstract class StatusStreamBase implements StatusStream {
         try {
             JSONObject dmJSON = json.getJSONObject("direct_message");
             DirectMessage directMessage = new DirectMessageJSONImpl(dmJSON);
-            if (CONF.jsonStoreEnabled) {
+            if (jsonStoreEnabled) {
                 TwitterObjectFactory.registerJSONObject(directMessage, dmJSON);
             }
             return directMessage;
@@ -396,7 +400,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     User asUser(JSONObject json) throws TwitterException {
         User user = new UserJSONImpl(json);
-        if (CONF.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(user, json);
         }
         return user;
@@ -404,7 +408,7 @@ abstract class StatusStreamBase implements StatusStream {
 
     UserList asUserList(JSONObject json) throws TwitterException {
         UserList userList = new UserListJSONImpl(json);
-        if (CONF.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.registerJSONObject(userList, json);
         }
         return userList;
@@ -416,14 +420,14 @@ abstract class StatusStreamBase implements StatusStream {
     public abstract void next(List<StreamListener> listeners, List<RawStreamListener> rawStreamListeners) throws TwitterException;
 
     public void onException(Exception e) {
-        CONF.streamListeners.forEach(listener -> {
+        streamListeners.forEach(listener -> {
             try {
                 listener.onException(e);
             } catch (Exception ex) {
                 logger.warn(ex.getMessage());
             }
         });
-        CONF.rawStreamListeners.forEach(listener -> {
+        rawStreamListeners.forEach(listener -> {
             try {
                 listener.onException(e);
             } catch (Exception ex) {

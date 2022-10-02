@@ -35,10 +35,10 @@ import java.util.Map;
     private int resetTimeInSeconds;
     private int secondsUntilReset;
 
-    static Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res, Configuration conf) throws TwitterException {
+    static Map<String, RateLimitStatus> createRateLimitStatuses(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         JSONObject json = res.asJSONObject();
         Map<String, RateLimitStatus> map = createRateLimitStatuses(json);
-        if (conf.jsonStoreEnabled) {
+        if (jsonStoreEnabled) {
             TwitterObjectFactory.clearThreadLocalMap();
             TwitterObjectFactory.registerJSONObject(map, json);
         }
