@@ -39,8 +39,8 @@ class OAuthTest extends TwitterTestBase {
 
     @Test
     void testDeterministic() {
-        Twitter twitter1 = Twitter.newBuilder().oAuthConsumer(browserConsumerKey, browserConsumerSecret).build();
-        Twitter twitter2 = Twitter.newBuilder().oAuthConsumer(browserConsumerKey, browserConsumerSecret).build();
+        Twitter twitter1 = Twitter.newBuilder().load(subProperty(p, "id1")).build();
+        Twitter twitter2 = Twitter.newBuilder().load(subProperty(p, "id1")).build();
         assertEquals(twitter1, twitter2);
     }
 

@@ -152,14 +152,12 @@ public class ConfigurationTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    void testConfigurationBuilder() throws Exception {
+    void testConfigurationBuilder() {
         deleteFile("./twitter4j.properties");
         Configuration builder;
         Configuration conf;
         builder = new Configuration();
         conf = builder.buildConfiguration();
-
-        assertEquals(conf, serializeDeserialize(conf));
 
         assertEquals(0, conf.restBaseURL.indexOf("https://"));
         assertEquals(0, conf.oAuthAuthenticationURL.indexOf("https://"));

@@ -31,8 +31,7 @@ import java.util.function.Function;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 @SuppressWarnings({"UnusedReturnValue", "unused", "unchecked", "rawtypes"})
-class Configuration<T, T2 extends Configuration> implements java.io.Serializable {
-    private static final long serialVersionUID = 2235370978558949003L;
+class Configuration<T, T2 extends Configuration> {
     transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners = new ArrayList<>(0);
     transient List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners = new ArrayList<>(0);
 
@@ -473,17 +472,27 @@ class Configuration<T, T2 extends Configuration> implements java.io.Serializable
             auth = NullAuthorization.getInstance();
         }
         try {
-            return (T2)this;
+            return (T2) this;
         } finally {
             built = true;
         }
     }
 
+    private static final String WWW_DETAILS = "See https://twitter4j.org/en/configuration.html for details. See and register at https://apps.twitter.com/";
+
+    void ensureAuthorizationEnabled() {
+        if (!auth.isEnabled()) {
+            throw new IllegalStateException(
+                    "Authentication credentials are missing. " + WWW_DETAILS);
+        }
+    }
+
     /**
      * Constructs Twitter instance
+     *
      * @return Twitter instance
      */
-    public T build(){
+    public T build() {
         buildConfiguration();
         return instanceFactory.apply(this);
     }

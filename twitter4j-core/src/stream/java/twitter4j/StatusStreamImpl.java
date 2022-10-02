@@ -29,20 +29,25 @@ import java.util.List;
 class StatusStreamImpl extends StatusStreamBase {
     /*package*/
 
-    StatusStreamImpl(InputStream stream, TwitterStream.TwitterStreamBuilder conf) {
-        super(stream, conf);
+    StatusStreamImpl(InputStream stream, List<StreamListener> streamListeners
+            , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) {
+        super(stream, streamListeners
+                , rawStreamListeners, jsonStoreEnabled, prettyDebug);
     }
     /*package*/
 
-    StatusStreamImpl(HttpResponse response, TwitterStream.TwitterStreamBuilder conf) throws IOException {
-        super(response, conf);
+    StatusStreamImpl(HttpResponse response, List<StreamListener> streamListeners
+            , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) throws IOException {
+        super(response, streamListeners
+                , rawStreamListeners, jsonStoreEnabled, prettyDebug);
     }
 
     String line;
 
 
     @Override
-    protected void onClose(){}
+    protected void onClose() {
+    }
 
     @Override
     public void next(List<StreamListener> listeners) throws TwitterException {

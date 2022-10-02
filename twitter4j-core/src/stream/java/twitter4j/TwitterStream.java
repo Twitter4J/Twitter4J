@@ -131,7 +131,6 @@ public interface TwitterStream {
     void shutdown();
 
     class TwitterStreamBuilder extends Configuration<TwitterStream, TwitterStreamBuilder> {
-        private static final long serialVersionUID = -7194823238000676626L;
 
         TwitterStreamBuilder() {
             super(TwitterStreamImpl::new);

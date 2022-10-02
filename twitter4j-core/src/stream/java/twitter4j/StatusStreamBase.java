@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.8
  */
+@SuppressWarnings({"unused", "RedundantThrows"})
 abstract class StatusStreamBase implements StatusStream {
     static final Logger logger = Logger.getLogger();
 
@@ -44,18 +45,21 @@ abstract class StatusStreamBase implements StatusStream {
 
     /*package*/
 
-    StatusStreamBase(InputStream stream, TwitterStream.TwitterStreamBuilder conf) {
+    StatusStreamBase(InputStream stream, List<StreamListener> streamListeners
+            , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) {
         this.is = stream;
         this.br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
-        streamListeners = conf.streamListeners;
-        rawStreamListeners = conf.rawStreamListeners;
-        this.jsonStoreEnabled = conf.jsonStoreEnabled;
-        prettyDebug = conf.prettyDebug;
+        this.streamListeners = streamListeners;
+        this.rawStreamListeners = rawStreamListeners;
+        this.jsonStoreEnabled = jsonStoreEnabled;
+        this.prettyDebug = prettyDebug;
     }
     /*package*/
 
-    StatusStreamBase(HttpResponse response, TwitterStream.TwitterStreamBuilder conf) {
-        this(response.asStream(), conf);
+    StatusStreamBase(HttpResponse response, List<StreamListener> streamListeners
+            , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) {
+        this(response.asStream(), streamListeners
+                , rawStreamListeners, jsonStoreEnabled, prettyDebug);
         this.response = response;
     }
 
