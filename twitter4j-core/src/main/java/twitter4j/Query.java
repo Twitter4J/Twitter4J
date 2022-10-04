@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -29,307 +32,102 @@ import java.util.*;
  */
 public final class Query implements java.io.Serializable {
     private static final long serialVersionUID = 7196404519192910019L;
-    private String query = null;
-    private String lang = null;
-    private String locale = null;
-    private long maxId = -1L;
-    private int count = -1;
-    private String since = null;
-    private long sinceId = -1;
-    private String geocode = null;
-    private String until = null;
-    private ResultType resultType = null;
-    private String nextPageQuery = null;
+    @NotNull
+    final String query;
+    String lang;
+    String locale;
+    long maxId;
+    int count;
+    @Nullable
+    String since;
+    long sinceId;
+    @Nullable
+    String geocode;
+    @Nullable
+    String until;
+    @Nullable
+    ResultType resultType;
+    String nextPageQuery;
 
-    public Query() {
+    Query(@NotNull String query, String lang, String locale, long maxId, int count, @Nullable String since,
+          long sinceId, @Nullable String geocode, @Nullable String until, @Nullable ResultType resultType, String nextPageQuery) {
+        this.query = query;
+        this.lang = lang;
+        this.locale = locale;
+        this.maxId = maxId;
+        this.count = count;
+        this.since = since;
+        this.sinceId = sinceId;
+        this.geocode = geocode;
+        this.until = until;
+        this.resultType = resultType;
+        this.nextPageQuery = nextPageQuery;
     }
 
-    public Query(String query) {
-        this.query = query;
+
+    public static QueryBuilder newBuilder(@NotNull String query) {
+        return new QueryBuilder(query);
+    }
+
+    /**
+     * Equivalent to calling newBuilder(query).build();
+     * @param query query
+     * @return Query
+     */
+    public static Query getInstance(String query) {
+        return new QueryBuilder(query).build();
     }
 
     /* package */
-    static Query createWithNextPageQuery(String nextPageQuery) {
-        Query query = new Query();
-        query.nextPageQuery = nextPageQuery;
+    static Query createWithNextPageQuery(@NotNull String nextPageQuery) {
 
-        if (nextPageQuery != null) {
-            String nextPageParameters = nextPageQuery.substring(1);
+        String nextPageParameters = nextPageQuery.substring(1);
 
-            Map<String, String> params = new LinkedHashMap<>();
-            for (HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
-                // Yes, we'll overwrite duplicate parameters, but we should not
-                // get duplicate parameters from this endpoint.
-                params.put(param.getName(), param.getValue());
-            }
-
-            if (params.containsKey("q"))
-                query.setQuery(params.get("q"));
-            if (params.containsKey("lang"))
-                query.setLang(params.get("lang"));
-            if (params.containsKey("locale"))
-                query.setLocale(params.get("locale"));
-            if (params.containsKey("max_id"))
-                query.setMaxId(Long.parseLong(params.get("max_id")));
-            if (params.containsKey("count"))
-                query.setCount(Integer.parseInt(params.get("count")));
-            if (params.containsKey("geocode")) {
-                String[] parts = params.get("geocode").split(",");
-                double latitude = Double.parseDouble(parts[0]);
-                double longitude = Double.parseDouble(parts[1]);
-
-                double radius = 0.0;
-                Query.Unit unit = null;
-                String radiusstr = parts[2];
-                for (Query.Unit value : Query.Unit.values())
-                    if (radiusstr.endsWith(value.name())) {
-                        radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
-                        unit = value;
-                        break;
-                    }
-                if (unit == null)
-                    throw new IllegalArgumentException("unrecognized geocode radius: " + radiusstr);
-
-                query.setGeoCode(new GeoLocation(latitude, longitude), radius, unit);
-            }
-            if (params.containsKey("result_type"))
-                query.setResultType(Query.ResultType.valueOf(params.get("result_type")));
-
-            // We don't pull out since, until -- they get pushed into the query
+        Map<String, String> params = new LinkedHashMap<>();
+        for (HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
+            // Yes, we'll overwrite duplicate parameters, but we should not
+            // get duplicate parameters from this endpoint.
+            params.put(param.getName(), param.getValue());
         }
 
-        return query;
+        QueryBuilder query = new QueryBuilder(params.getOrDefault("q", ""));
+        if (params.containsKey("lang"))
+            query.lang(params.get("lang"));
+        if (params.containsKey("locale"))
+            query.locale(params.get("locale"));
+        if (params.containsKey("max_id"))
+            query.maxId(Long.parseLong(params.get("max_id")));
+        if (params.containsKey("count"))
+            query.count(Integer.parseInt(params.get("count")));
+        if (params.containsKey("geocode")) {
+            String[] parts = params.get("geocode").split(",");
+            double latitude = Double.parseDouble(parts[0]);
+            double longitude = Double.parseDouble(parts[1]);
+
+            double radius = 0.0;
+            Query.Unit unit = null;
+            String radiusstr = parts[2];
+            for (Query.Unit value : Query.Unit.values())
+                if (radiusstr.endsWith(value.name())) {
+                    radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
+                    unit = value;
+                    break;
+                }
+            if (unit == null)
+                throw new IllegalArgumentException("unrecognized geocode radius: " + radiusstr);
+
+            query.geoCode(new GeoLocation(latitude, longitude), radius, unit);
+        }
+        if (params.containsKey("result_type"))
+            query.resultType(Query.ResultType.valueOf(params.get("result_type")));
+
+        query.nextPageQuery = nextPageQuery;
+        // We don't pull out since, until -- they get pushed into the query
+        return query.build();
     }
 
-    /**
-     * Returns the specified query
-     *
-     * @return query
-     */
-    public String getQuery() {
-        return query;
-    }
 
-    /**
-     * Sets the query string
-     *
-     * @param query the query string
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/search">GET search | Twitter Developers</a>
-     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
-     */
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    /**
-     * Sets the query string
-     *
-     * @param query the query string
-     * @return the instance
-     * @see <a href="https://dev.twitter.com/docs/api/1.1/get/search">GET search | Twitter Developers</a>
-     * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
-     * @since Twitter4J 2.1.0
-     */
-    public Query query(String query) {
-        setQuery(query);
-        return this;
-    }
-
-    /**
-     * Returns the lang
-     *
-     * @return lang
-     */
-    public String getLang() {
-        return lang;
-    }
-
-    /**
-     * restricts tweets to the given language, given by an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
-     *
-     * @param lang an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
-     */
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    /**
-     * restricts tweets to the given language, given by an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
-     *
-     * @param lang an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
-     * @return the instance
-     * @since Twitter4J 2.1.0
-     */
-    public Query lang(String lang) {
-        setLang(lang);
-        return this;
-    }
-
-    /**
-     * Returns the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
-     *
-     * @return locale
-     * @since Twitter4J 2.1.1
-     */
-    public String getLocale() {
-        return locale;
-    }
-
-    /**
-     * Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
-     *
-     * @param locale the locale
-     * @since Twitter4J 2.1.1
-     */
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    /**
-     * Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
-     *
-     * @param locale the locale
-     * @return the instance
-     * @since Twitter4J 2.1.1
-     */
-    public Query locale(String locale) {
-        setLocale(locale);
-        return this;
-    }
-
-    /**
-     * Returns tweets with status ids less than the given id.
-     *
-     * @return maxId
-     * @since Twitter4J 2.1.1
-     */
-    public long getMaxId() {
-        return maxId;
-    }
-
-    /**
-     * If specified, returns tweets with status ids less than the given id.
-     *
-     * @param maxId maxId
-     * @since Twitter4J 2.1.1
-     */
-    public void setMaxId(long maxId) {
-        this.maxId = maxId;
-    }
-
-    /**
-     * If specified, returns tweets with status ids less than the given id.
-     *
-     * @param maxId maxId
-     * @return this instance
-     * @since Twitter4J 2.1.1
-     */
-    public Query maxId(long maxId) {
-        setMaxId(maxId);
-        return this;
-    }
-
-    /**
-     * Returns the number of tweets to return per page, up to a max of 100
-     *
-     * @return count
-     */
-    public int getCount() {
-        return count;
-    }
-
-    /**
-     * sets the number of tweets to return per page, up to a max of 100
-     *
-     * @param count the number of tweets to return per page
-     */
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    /**
-     * sets the number of tweets to return per page, up to a max of 100
-     *
-     * @param count the number of tweets to return per page
-     * @return the instance
-     * @since Twitter4J 2.1.0
-     */
-    public Query count(int count) {
-        setCount(count);
-        return this;
-    }
-
-    /**
-     * Returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
-     *
-     * @return since
-     * @since Twitter4J 2.1.1
-     */
-    public String getSince() {
-        return since;
-    }
-
-    /**
-     * If specified, returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
-     *
-     * @param since since
-     * @since Twitter4J 2.1.1
-     */
-    public void setSince(String since) {
-        this.since = since;
-    }
-
-    /**
-     * If specified, returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
-     *
-     * @param since since
-     * @return since
-     * @since Twitter4J 2.1.1
-     */
-    public Query since(String since) {
-        setSince(since);
-        return this;
-    }
-
-    /**
-     * returns sinceId
-     *
-     * @return sinceId
-     */
-    public long getSinceId() {
-        return sinceId;
-    }
-
-    /**
-     * returns tweets with status ids greater than the given id.
-     *
-     * @param sinceId returns tweets with status ids greater than the given id
-     */
-    public void setSinceId(long sinceId) {
-        this.sinceId = sinceId;
-    }
-
-    /**
-     * returns tweets with status ids greater than the given id.
-     *
-     * @param sinceId returns tweets with status ids greater than the given id
-     * @return the instance
-     * @since Twitter4J 2.1.0
-     */
-    public Query sinceId(long sinceId) {
-        setSinceId(sinceId);
-        return this;
-    }
-
-    /**
-     * Returns the specified geocode
-     *
-     * @return geocode
-     */
-    public String getGeocode() {
-        return geocode;
-    }
-
+    @SuppressWarnings("unused")
     public static final Unit MILES = Unit.mi;
     public static final Unit KILOMETERS = Unit.km;
 
@@ -337,69 +135,11 @@ public final class Query implements java.io.Serializable {
         mi, km
     }
 
-    /**
-     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
-     *
-     * @param location geo location
-     * @param radius   radius
-     * @param unit     Query.MILES or Query.KILOMETERS
-     * @since Twitter4J 4.0.1
-     */
-    public void setGeoCode(GeoLocation location, double radius
-            , Unit unit) {
-        this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
-    }
-
-    /**
-     * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
-     *
-     * @param location geo location
-     * @param radius   radius
-     * @param unit     Query.MILES or Query.KILOMETERS
-     * @return the instance
-     * @since Twitter4J 4.0.7
-     */
-    public Query geoCode(GeoLocation location, double radius
-            , Unit unit) {
-        setGeoCode(location, radius, unit);
-        return this;
-    }
-
-    /**
-     * Returns until
-     *
-     * @return until
-     * @since Twitter4J 2.1.1
-     */
-    public String getUntil() {
-        return until;
-    }
-
-    /**
-     * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
-     *
-     * @param until until
-     * @since Twitter4J 2.1.1
-     */
-    public void setUntil(String until) {
-        this.until = until;
-    }
-
-    /**
-     * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
-     *
-     * @param until until
-     * @return the instance
-     * @since Twitter4J 2.1.1
-     */
-    public Query until(String until) {
-        setUntil(until);
-        return this;
-    }
 
     /**
      * mixed: Include both popular and real time results in the response.
      */
+    @SuppressWarnings("unused")
     public final static ResultType MIXED = ResultType.mixed;
     /**
      * popular: return only the most popular results in the response.
@@ -408,43 +148,13 @@ public final class Query implements java.io.Serializable {
     /**
      * recent: return only the most recent results in the response
      */
+    @SuppressWarnings("unused")
     public final static ResultType RECENT = ResultType.recent;
 
     public enum ResultType {
         popular, mixed, recent
     }
 
-    /**
-     * Returns resultType
-     *
-     * @return the resultType
-     * @since Twitter4J 2.1.3
-     */
-    public ResultType getResultType() {
-        return resultType;
-    }
-
-    /**
-     * Default value is Query.MIXED if parameter not specified
-     *
-     * @param resultType Query.MIXED or Query.POPULAR or Query.RECENT
-     * @since Twitter4J 2.1.3
-     */
-    public void setResultType(ResultType resultType) {
-        this.resultType = resultType;
-    }
-
-    /**
-     * If specified, returns tweets included popular or real time or both in the response
-     *
-     * @param resultType resultType
-     * @return the instance
-     * @since Twitter4J 2.1.3
-     */
-    public Query resultType(ResultType resultType) {
-        setResultType(resultType);
-        return this;
-    }
 
     private static final HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
 
@@ -487,37 +197,13 @@ public final class Query implements java.io.Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Query query1 = (Query) o;
-
-        if (maxId != query1.maxId) return false;
-        if (count != query1.count) return false;
-        if (sinceId != query1.sinceId) return false;
-        if (!Objects.equals(geocode, query1.geocode)) return false;
-        if (!Objects.equals(lang, query1.lang)) return false;
-        if (!Objects.equals(locale, query1.locale)) return false;
-        if (!Objects.equals(nextPageQuery, query1.nextPageQuery))
-            return false;
-        if (!Objects.equals(query, query1.query)) return false;
-        if (!Objects.equals(resultType, query1.resultType)) return false;
-        if (!Objects.equals(since, query1.since)) return false;
-        return Objects.equals(until, query1.until);
+        return maxId == query1.maxId && count == query1.count && sinceId == query1.sinceId && query.equals(query1.query) && Objects.equals(lang, query1.lang) && Objects.equals(locale, query1.locale) && Objects.equals(since, query1.since) && Objects.equals(geocode, query1.geocode) && Objects.equals(until, query1.until) && resultType == query1.resultType && Objects.equals(nextPageQuery, query1.nextPageQuery);
     }
 
     @Override
     public int hashCode() {
-        int result = query != null ? query.hashCode() : 0;
-        result = 31 * result + (lang != null ? lang.hashCode() : 0);
-        result = 31 * result + (locale != null ? locale.hashCode() : 0);
-        result = 31 * result + (int) (maxId ^ (maxId >>> 32));
-        result = 31 * result + count;
-        result = 31 * result + (since != null ? since.hashCode() : 0);
-        result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
-        result = 31 * result + (geocode != null ? geocode.hashCode() : 0);
-        result = 31 * result + (until != null ? until.hashCode() : 0);
-        result = 31 * result + (resultType != null ? resultType.hashCode() : 0);
-        result = 31 * result + (nextPageQuery != null ? nextPageQuery.hashCode() : 0);
-        return result;
+        return Objects.hash(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
     @Override
@@ -532,8 +218,144 @@ public final class Query implements java.io.Serializable {
                 ", sinceId=" + sinceId +
                 ", geocode='" + geocode + '\'' +
                 ", until='" + until + '\'' +
-                ", resultType='" + resultType + '\'' +
+                ", resultType=" + resultType +
                 ", nextPageQuery='" + nextPageQuery + '\'' +
                 '}';
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public static class QueryBuilder {
+        private final String query;
+        private String lang = null;
+        private String locale = null;
+        private long maxId = -1L;
+        private int count = -1;
+        private String since = null;
+        private long sinceId = -1;
+        private String geocode = null;
+        private String until = null;
+        private ResultType resultType = null;
+        private String nextPageQuery = null;
+
+        private QueryBuilder(String query) {
+            this.query = query;
+        }
+
+        /**
+         * restricts tweets to the given language, given by an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
+         *
+         * @param lang an <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1 code</a>
+         * @return the instance
+         * @since Twitter4J 2.1.0
+         */
+        public QueryBuilder lang(String lang) {
+            this.lang = lang;
+            return this;
+        }
+
+        /**
+         * Specify the language of the query you are sending (only ja is currently effective). This is intended for language-specific clients and the default should work in the majority of cases.
+         *
+         * @param locale the locale
+         * @return the instance
+         * @since Twitter4J 2.1.1
+         */
+        public QueryBuilder locale(String locale) {
+            this.locale = locale;
+            return this;
+        }
+
+        /**
+         * If specified, returns tweets with status ids less than the given id.
+         *
+         * @param maxId maxId
+         * @return this instance
+         * @since Twitter4J 2.1.1
+         */
+        public QueryBuilder maxId(long maxId) {
+            this.maxId = maxId;
+            return this;
+        }
+
+        /**
+         * sets the number of tweets to return per page, up to a max of 100
+         *
+         * @param count the number of tweets to return per page
+         * @return the instance
+         * @since Twitter4J 2.1.0
+         */
+        public QueryBuilder count(int count) {
+            this.count = count;
+            return this;
+        }
+
+        /**
+         * If specified, returns tweets with since the given date.  Date should be formatted as YYYY-MM-DD
+         *
+         * @param since since
+         * @return since
+         * @since Twitter4J 2.1.1
+         */
+        public QueryBuilder since(String since) {
+            this.since = since;
+            return this;
+        }
+
+        /**
+         * returns tweets with status ids greater than the given id.
+         *
+         * @param sinceId returns tweets with status ids greater than the given id
+         * @return the instance
+         * @since Twitter4J 2.1.0
+         */
+        public QueryBuilder sinceId(long sinceId) {
+            this.sinceId = sinceId;
+            return this;
+        }
+
+        /**
+         * returns tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+         *
+         * @param location geo location
+         * @param radius   radius
+         * @param unit     Query.MILES or Query.KILOMETERS
+         * @return the instance
+         * @since Twitter4J 4.0.7
+         */
+        public QueryBuilder geoCode(GeoLocation location, double radius
+                , Unit unit) {
+            this.geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+            return this;
+        }
+
+        /**
+         * If specified, returns tweets with generated before the given date.  Date should be formatted as YYYY-MM-DD
+         *
+         * @param until until
+         * @return the instance
+         * @since Twitter4J 2.1.1
+         */
+        public QueryBuilder until(String until) {
+            this.until = until;
+            return this;
+        }
+
+
+        /**
+         * If specified, returns tweets included popular or real time or both in the response
+         *
+         * @param resultType resultType
+         * @return the instance
+         * @since Twitter4J 2.1.3
+         */
+        public QueryBuilder resultType(ResultType resultType) {
+            this.resultType = resultType;
+            return this;
+        }
+
+        public Query build() {
+            return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
+        }
+
     }
 }
