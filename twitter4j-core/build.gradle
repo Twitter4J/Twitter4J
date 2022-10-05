@@ -13,10 +13,10 @@ repositories {
 sourceSets {
     main {
         java {
-            srcDirs(['src/internal-http/java',
+            srcDirs(['src/http/java',
                      'src/jmx/java',
-                     'src/internal-json/java',
-                     'src/internal-logging/java',
+                     'src/json/java',
+                     'src/logging/java',
                      'src/stream/java',
                      'src/main/java'])
         }
