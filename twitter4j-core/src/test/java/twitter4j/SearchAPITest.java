@@ -34,8 +34,8 @@ class SearchAPITest extends TwitterTestBase {
     @Test
     void testQuery() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Query query = Query.newBuilder("test")
-                .until(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24))).build();
+        Query query = Query.of("test")
+                .withUntil(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
         HttpParameter[] params = query.asHttpParameterArray();
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
@@ -57,7 +57,7 @@ class SearchAPITest extends TwitterTestBase {
         String queryStr = "test";
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
-        Query query = Query.newBuilder(queryStr).until(dateStr).build();
+        Query query = Query.of(queryStr).withUntil(dateStr);
         QueryResult queryResult = twitter1.search(query);
         RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
         assertTrue(-1 != queryResult.getSinceId(), "sinceId");
@@ -79,7 +79,7 @@ class SearchAPITest extends TwitterTestBase {
         assertTrue(source.contains("<a href=\"") || "web".equals(source) || "API".equals(source));
 
 
-        query = Query.getInstance("from:twit4j doesnothit");
+        query = Query.of("from:twit4j doesnothit");
         queryResult = twitter1.search(query);
         assertTrue(5 > (queryResult.getRateLimitStatus().getRemaining() - rateLimitStatus.getRemaining()));
         assertEquals(0, queryResult.getSinceId());
@@ -90,33 +90,33 @@ class SearchAPITest extends TwitterTestBase {
         queryStr = "%... 日本語";
 
         twitter1.updateStatus(queryStr + new Date());
-        query = Query.getInstance(queryStr);
+        query = Query.of(queryStr);
         queryResult = twitter1.search(query);
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
-        query = Query.newBuilder("starbucks")
-                .geoCode(new GeoLocation(47.6094651, -122.3411666), 10, Query.KILOMETERS).build();
+        query = Query.of("starbucks")
+                .withGeoCode(new GeoLocation(47.6094651, -122.3411666), 10, Query.KILOMETERS);
         queryResult = twitter1.search(query);
         assertTrue(0 < queryResult.getTweets().size());
 
-        query = Query.newBuilder("from:tsuda").sinceId(1671199128).build();
+        query = Query.of("from:tsuda").withSinceId(1671199128);
         queryResult = twitter1.search(query);
         assertTrue(0 < queryResult.getTweets().size());
         assertEquals(4171231, queryResult.getTweets().get(0).getUser().getId());
         assertTrue(queryResult.hasNext());
         assertNotNull(queryResult.nextQuery());
 
-        query = Query.newBuilder("\\u5e30%u5e30 <%}& foobar").count(100).build();
+        query = Query.of("\\u5e30%u5e30 <%}& foobar").withCount(100);
         twitter1.search(query);
     }
 
     @Test
     void testEasyPaging() throws Exception {
-        Query query = Query.newBuilder("from:twit4j doesnothit").resultType(Query.POPULAR).build();
+        Query query = Query.of("from:twit4j doesnothit").withResultType(Query.POPULAR);
         QueryResult result = twitter1.search(query);
         assertFalse(result.hasNext());
 
-        query = Query.newBuilder("from:yusukey").build();
+        query = Query.of("from:yusukey");
         do {
             result = twitter1.search(query);
             // do something
@@ -130,11 +130,11 @@ class SearchAPITest extends TwitterTestBase {
         String until = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
 
         String lang = "en";
-        Query query = Query.newBuilder("twitter")
-                .lang(lang)
-                .resultType(Query.ResultType.recent)
-                .since("2017-01-01")
-                .until(until).build();
+        Query query = Query.of("twitter")
+                .withLang(lang)
+                .withResultType(Query.ResultType.recent)
+                .withSince("2017-01-01")
+                .withUntil(until);
         assertEquals(lang, query.lang);
         QueryResult qr = twitter1.search(query);
         Query nextQuery = qr.nextQuery();

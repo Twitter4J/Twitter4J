@@ -37,7 +37,7 @@ public class SearchTweets {
         }
         Twitter twitter = Twitter.getInstance();
         try {
-            Query query = Query.getInstance(args[0]);
+            Query query = Query.of(args[0]);
             QueryResult result;
             do {
                 result = twitter.search(query);
