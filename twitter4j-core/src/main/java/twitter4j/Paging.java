@@ -18,22 +18,54 @@ package twitter4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * Controls pagination.<br>
- * It is possible to use the same Paging instance in a multi-threaded
- * context only if the instance is treated immutably.<br>
- * But basically instance of this class is NOT thread safe.
- * A client should instantiate Paging class per thread.<br>
+ * Controls pagination.
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings({"unused", "SameParameterValue", "UnusedReturnValue"})
 public final class Paging implements java.io.Serializable {
     private static final long serialVersionUID = -7226113618341047983L;
-    private int page = -1;
-    private int count = -1;
-    private long sinceId = -1;
-    private long maxId = -1;
+    public final int page;
+    public final int count;
+    public final long sinceId;
+    public final long maxId;
+
+    public static Paging ofPage(int page) {
+        return new PagingBuilder().page(page).build();
+    }
+
+    public Paging withPage(int page) {
+        return new Paging(page, this.count, this.sinceId, this.maxId);
+    }
+
+
+    public static Paging ofCount(int count) {
+        return new PagingBuilder().count(count).build();
+    }
+
+    public Paging withCount(int count) {
+        return new Paging(this.page, count, this.sinceId, this.maxId);
+    }
+
+    public static Paging ofSinceId(long sinceId) {
+        return new PagingBuilder().sinceId(sinceId).build();
+    }
+
+    public Paging withSinceId(long sinceId) {
+        return new Paging(this.page, this.count, sinceId, this.maxId);
+    }
+
+
+    public static Paging ofMaxId(long maxId) {
+        return new PagingBuilder().maxId(maxId).build();
+    }
+
+    public Paging withMaxId(long maxId) {
+        return new Paging(this.page, this.count, this.sinceId, maxId);
+    }
 
     // since only
     static final char[] S = new char[]{'s'};
@@ -45,7 +77,7 @@ public final class Paging implements java.io.Serializable {
     // @see <a href="https://dev.twitter.com/docs/api/1.1/get/:user/lists/:id/statuses">GET :user/lists/:id/statuses | Twitter Developers</a>
     static final String PER_PAGE = "per_page";
 
-    /*package*/ List<HttpParameter> asPostParameterList() {
+    List<HttpParameter> asPostParameterList() {
         return asPostParameterList(SMCP, COUNT);
     }
 
@@ -76,16 +108,12 @@ public final class Paging implements java.io.Serializable {
      * @return list of PostParameter
      */
     /*package*/ List<HttpParameter> asPostParameterList(char[] supportedParams, String perPageParamName) {
-        java.util.List<HttpParameter> pagingParams = new ArrayList<>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
-        if (pagingParams.size() == 0) {
-            return NULL_PARAMETER_LIST;
-        } else {
-            return pagingParams;
-        }
+        List<HttpParameter> pagingParams = new ArrayList<>(supportedParams.length);
+        addPostParameter(supportedParams, 's', pagingParams, "since_id", sinceId);
+        addPostParameter(supportedParams, 'm', pagingParams, "max_id", maxId);
+        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, count);
+        addPostParameter(supportedParams, 'p', pagingParams, "page", page);
+        return pagingParams;
     }
 
     /**
@@ -98,16 +126,7 @@ public final class Paging implements java.io.Serializable {
      * @return list of PostParameter
      */
     /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
-        java.util.List<HttpParameter> pagingParams = new ArrayList<>(supportedParams.length);
-        addPostParameter(supportedParams, 's', pagingParams, "since_id", getSinceId());
-        addPostParameter(supportedParams, 'm', pagingParams, "max_id", getMaxId());
-        addPostParameter(supportedParams, 'c', pagingParams, perPageParamName, getCount());
-        addPostParameter(supportedParams, 'p', pagingParams, "page", getPage());
-        if (pagingParams.size() == 0) {
-            return NULL_PARAMETER_ARRAY;
-        } else {
-            return pagingParams.toArray(new HttpParameter[0]);
-        }
+        return asPostParameterList(supportedParams, perPageParamName).toArray(new HttpParameter[0]);
     }
 
     private void addPostParameter(char[] supportedParams, char paramKey
@@ -128,94 +147,12 @@ public final class Paging implements java.io.Serializable {
         }
     }
 
-    public Paging() {
-    }
 
-    public Paging(int page) {
-        setPage(page);
-    }
-
-    public Paging(long sinceId) {
-        setSinceId(sinceId);
-    }
-
-    public Paging(int page, int count) {
-        this(page);
-        setCount(count);
-    }
-
-    public Paging(int page, long sinceId) {
-        this(page);
-        setSinceId(sinceId);
-    }
-
-    public Paging(int page, int count, long sinceId) {
-        this(page, count);
-        setSinceId(sinceId);
-    }
-
-    public Paging(int page, int count, long sinceId, long maxId) {
-        this(page, count, sinceId);
-        setMaxId(maxId);
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        if (page < 1) {
-            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
-        }
+    private Paging(int page, int count, long sinceId, long maxId) {
         this.page = page;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        if (count < 1) {
-            throw new IllegalArgumentException("count should be positive integer. passed:" + count);
-        }
         this.count = count;
-    }
-
-    public Paging count(int count) {
-        setCount(count);
-        return this;
-    }
-
-    public long getSinceId() {
-        return sinceId;
-    }
-
-    public void setSinceId(long sinceId) {
-        if (sinceId < 1) {
-            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
-        }
         this.sinceId = sinceId;
-    }
-
-    public Paging sinceId(long sinceId) {
-        setSinceId(sinceId);
-        return this;
-    }
-
-    public long getMaxId() {
-        return maxId;
-    }
-
-    public void setMaxId(long maxId) {
-        if (maxId < 1) {
-            throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
-        }
         this.maxId = maxId;
-    }
-
-    public Paging maxId(long maxId) {
-        setMaxId(maxId);
-        return this;
     }
 
     @Override
@@ -228,11 +165,7 @@ public final class Paging implements java.io.Serializable {
 
     @Override
     public int hashCode() {
-        int result = page;
-        result = 31 * result + count;
-        result = 31 * result + (int) (sinceId ^ (sinceId >>> 32));
-        result = 31 * result + (int) (maxId ^ (maxId >>> 32));
-        return result;
+        return Objects.hash(page, count, sinceId, maxId);
     }
 
     @Override
@@ -243,5 +176,62 @@ public final class Paging implements java.io.Serializable {
                 ", sinceId=" + sinceId +
                 ", maxId=" + maxId +
                 '}';
+    }
+
+    public static PagingBuilder newBuilder() {
+        return new PagingBuilder();
+    }
+
+    public static Paging getInstance() {
+        return new PagingBuilder().build();
+    }
+
+    @SuppressWarnings("unused")
+    public static class PagingBuilder {
+        private int page = -1;
+        private int count = -1;
+        private long sinceId = -1;
+        private long maxId = -1;
+
+
+        PagingBuilder() {
+        }
+
+        public PagingBuilder page(int page) {
+            if (page < 1) {
+                throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+            }
+            this.page = page;
+            return this;
+        }
+
+        public PagingBuilder count(int count) {
+            if (count < 1) {
+                throw new IllegalArgumentException("count should be positive integer. passed:" + count);
+            }
+            this.count = count;
+            return this;
+        }
+
+        public PagingBuilder sinceId(long sinceId) {
+            if (sinceId < 1) {
+                throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
+            }
+            this.sinceId = sinceId;
+            return this;
+        }
+
+        public PagingBuilder maxId(long maxId) {
+            if (maxId < 1) {
+                throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
+            }
+            this.maxId = maxId;
+            return this;
+        }
+
+        public Paging build() {
+            return new Paging(page, count, sinceId, maxId);
+        }
+
     }
 }

@@ -63,11 +63,11 @@ class ListResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
 
-        List<Status> statuses = twitter1.getUserListStatuses(userList.getId(), new Paging());
+        List<Status> statuses = twitter1.getUserListStatuses(userList.getId(), Paging.getInstance());
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         }
-        statuses = twitter1.getUserListStatuses(userList.getId(), new Paging());
+        statuses = twitter1.getUserListStatuses(userList.getId(), Paging.getInstance());
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         }
@@ -267,8 +267,7 @@ class ListResourcesTest extends TwitterTestBase {
     void testPagingCountDosentWork1() throws TwitterException {
         final int COUNT = 10;
 
-        Paging paging = new Paging();
-        paging.count(COUNT);
+        Paging paging = Paging.ofCount(COUNT);
 
         // twitterapi/team
         ResponseList<Status> res =
@@ -291,8 +290,7 @@ class ListResourcesTest extends TwitterTestBase {
     void testPagingCountDosentWork2() throws TwitterException {
         final int COUNT = 10;
 
-        Paging paging = new Paging();
-        paging.count(COUNT);
+        Paging paging = Paging.ofCount(COUNT);
 
         // twitterapi/team
         ResponseList<Status> res =

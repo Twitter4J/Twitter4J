@@ -204,18 +204,18 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
 
     @Override
     public ResponseList<Status> getUserTimeline(String screenName) throws TwitterException {
-        return getUserTimeline(screenName, new Paging());
+        return getUserTimeline(screenName, Paging.getInstance());
     }
 
     @Override
     public ResponseList<Status> getUserTimeline(long userId) throws TwitterException {
-        return getUserTimeline(userId, new Paging());
+        return getUserTimeline(userId, Paging.getInstance());
     }
 
     @Override
     public ResponseList<Status> getUserTimeline() throws
             TwitterException {
-        return getUserTimeline(new Paging());
+        return getUserTimeline(Paging.getInstance());
     }
 
     @Override

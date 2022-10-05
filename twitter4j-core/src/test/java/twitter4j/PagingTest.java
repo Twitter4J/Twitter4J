@@ -29,7 +29,7 @@ class PagingTest {
     @Test
     void testPaging() {
         java.util.List<HttpParameter> params;
-        Paging paging = new Paging();
+        Paging paging = Paging.getInstance();
         params = paging.asPostParameterList();
         assertEquals(0, params.size());
         // parameter validation test
@@ -38,7 +38,7 @@ class PagingTest {
 
         // setter validation test
         try {
-            paging.setSinceId(-1L);
+            Paging.ofSinceId(-1L);
             fail("sinceId should not accept negative value");
         } catch (IllegalArgumentException ignore) {
         }
@@ -50,18 +50,18 @@ class PagingTest {
         }
         params = paging.asPostParameterList();
         assertEquals(0, params.size());
-        paging.setSinceId(2000L);
+        paging = Paging.ofSinceId(2000L);
         params = paging.asPostParameterList();
         assertEquals(1, params.size());
         assertContains(params, "since_id", 2000L);
 
         // setter validation test
         try {
-            paging.setPage(-1);
+            Paging.ofPage(-1);
             fail("page should not accept negative value");
         } catch (IllegalArgumentException ignore) {
         }
-        paging.setPage(10);
+        paging = paging.withPage(10);
         params = paging.asPostParameterList();
         assertEquals(2, params.size());
         assertContains(params, "page", 10);
@@ -69,7 +69,7 @@ class PagingTest {
 
         // setter validation test
         try {
-            paging.setMaxId(-1L);
+            Paging.ofMaxId(-1L);
             fail("maxId should not accept negative value");
         } catch (IllegalArgumentException ignore) {
         }
@@ -81,7 +81,7 @@ class PagingTest {
         }
         params = paging.asPostParameterList();
         assertEquals(2, params.size());
-        paging.setMaxId(1000L);
+        paging = paging.withMaxId(1000L);
         params = paging.asPostParameterList();
         assertEquals(3, params.size());
         assertContains(params, "page", 10);
@@ -91,7 +91,7 @@ class PagingTest {
 
         // setter validation test
         try {
-            paging.setCount(-1);
+            Paging.ofCount(-1);
             fail("count should not accept negative value");
         } catch (IllegalArgumentException ignore) {
         }
@@ -103,7 +103,7 @@ class PagingTest {
         }
         params = paging.asPostParameterList();
         assertEquals(3, params.size());
-        paging.setCount(3000);
+        paging = paging.withCount(3000);
         params = paging.asPostParameterList();
         assertEquals(4, params.size());
         assertContains(params, "page", 10);

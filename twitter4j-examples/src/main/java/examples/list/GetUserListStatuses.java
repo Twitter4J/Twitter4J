@@ -36,15 +36,15 @@ public final class GetUserListStatuses {
         }
         try {
             Twitter twitter = Twitter.getInstance();
-            Paging page = new Paging(1);
+            Paging page = Paging.ofPage(1);
             ResponseList<Status> statuses;
             do {
                 statuses = twitter.getUserListStatuses(Integer.parseInt(args[0]), page);
                 for (Status status : statuses) {
                     System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
                 }
-                page.setPage(page.getPage() + 1);
-            } while (statuses.size() > 0 && page.getPage() <= 10);
+                page = page.withPage(page.page + 1);
+            } while (statuses.size() > 0 && page.page <= 10);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {
