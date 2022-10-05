@@ -29,7 +29,7 @@ class PagingTest {
     @Test
     void testPaging() {
         java.util.List<HttpParameter> params;
-        Paging paging = Paging.getInstance();
+        Paging paging = Paging.empty;
         params = paging.asPostParameterList();
         assertEquals(0, params.size());
         // parameter validation test

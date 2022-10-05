@@ -33,37 +33,63 @@ public final class Paging implements java.io.Serializable {
     public final long sinceId;
     public final long maxId;
 
+    static Paging empty = new Paging(-1,-1,-1,-1);
+
     public static Paging ofPage(int page) {
-        return new PagingBuilder().page(page).build();
+        if (page < 1) {
+            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+        }
+        return new Paging(page, -1,-1,-1);
     }
 
     public Paging withPage(int page) {
+        if (page < 1) {
+            throw new IllegalArgumentException("page should be positive integer. passed:" + page);
+        }
         return new Paging(page, this.count, this.sinceId, this.maxId);
     }
 
 
     public static Paging ofCount(int count) {
-        return new PagingBuilder().count(count).build();
+        if (count < 1) {
+            throw new IllegalArgumentException("count should be positive integer. passed:" + count);
+        }
+        return new Paging(-1, count,-1,-1);
     }
 
     public Paging withCount(int count) {
+        if (count < 1) {
+            throw new IllegalArgumentException("count should be positive integer. passed:" + count);
+        }
         return new Paging(this.page, count, this.sinceId, this.maxId);
     }
 
     public static Paging ofSinceId(long sinceId) {
-        return new PagingBuilder().sinceId(sinceId).build();
+        if (sinceId < 1) {
+            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
+        }
+        return new Paging(-1, -1,sinceId,-1);
     }
 
     public Paging withSinceId(long sinceId) {
+        if (sinceId < 1) {
+            throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
+        }
         return new Paging(this.page, this.count, sinceId, this.maxId);
     }
 
 
     public static Paging ofMaxId(long maxId) {
-        return new PagingBuilder().maxId(maxId).build();
+        if (maxId < 1) {
+            throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
+        }
+        return new Paging(-1, -1,-1,maxId);
     }
 
     public Paging withMaxId(long maxId) {
+        if (maxId < 1) {
+            throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
+        }
         return new Paging(this.page, this.count, this.sinceId, maxId);
     }
 
@@ -123,7 +149,7 @@ public final class Paging implements java.io.Serializable {
      *
      * @param supportedParams  char array representation of supported parameters
      * @param perPageParamName name used for per-page parameter. getUserListStatuses() requires "per_page" instead of "count".
-     * @return list of PostParameter
+     * @return array of PostParameter
      */
     /*package*/ HttpParameter[] asPostParameterArray(char[] supportedParams, String perPageParamName) {
         return asPostParameterList(supportedParams, perPageParamName).toArray(new HttpParameter[0]);
@@ -176,62 +202,5 @@ public final class Paging implements java.io.Serializable {
                 ", sinceId=" + sinceId +
                 ", maxId=" + maxId +
                 '}';
-    }
-
-    public static PagingBuilder newBuilder() {
-        return new PagingBuilder();
-    }
-
-    public static Paging getInstance() {
-        return new PagingBuilder().build();
-    }
-
-    @SuppressWarnings("unused")
-    public static class PagingBuilder {
-        private int page = -1;
-        private int count = -1;
-        private long sinceId = -1;
-        private long maxId = -1;
-
-
-        PagingBuilder() {
-        }
-
-        public PagingBuilder page(int page) {
-            if (page < 1) {
-                throw new IllegalArgumentException("page should be positive integer. passed:" + page);
-            }
-            this.page = page;
-            return this;
-        }
-
-        public PagingBuilder count(int count) {
-            if (count < 1) {
-                throw new IllegalArgumentException("count should be positive integer. passed:" + count);
-            }
-            this.count = count;
-            return this;
-        }
-
-        public PagingBuilder sinceId(long sinceId) {
-            if (sinceId < 1) {
-                throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
-            }
-            this.sinceId = sinceId;
-            return this;
-        }
-
-        public PagingBuilder maxId(long maxId) {
-            if (maxId < 1) {
-                throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
-            }
-            this.maxId = maxId;
-            return this;
-        }
-
-        public Paging build() {
-            return new Paging(page, count, sinceId, maxId);
-        }
-
     }
 }

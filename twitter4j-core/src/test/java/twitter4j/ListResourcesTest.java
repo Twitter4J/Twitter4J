@@ -63,11 +63,11 @@ class ListResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(userList));
         assertNotNull(userList);
 
-        List<Status> statuses = twitter1.getUserListStatuses(userList.getId(), Paging.getInstance());
+        List<Status> statuses = twitter1.getUserListStatuses(userList.getId(), Paging.empty);
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         }
-        statuses = twitter1.getUserListStatuses(userList.getId(), Paging.getInstance());
+        statuses = twitter1.getUserListStatuses(userList.getId(), Paging.empty);
         if (statuses.size() > 0) {
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         }
