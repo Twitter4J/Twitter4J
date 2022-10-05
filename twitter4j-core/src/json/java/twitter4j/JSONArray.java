@@ -45,7 +45,7 @@ import java.util.List;
  * <i>Effective Java</i> Item 17, "Design and Document or inheritance or else
  * prohibit it" for further information.
  */
-public class JSONArray {
+class JSONArray {
 
     private final List<Object> values;
 

@@ -65,7 +65,7 @@ import java.nio.charset.StandardCharsets;
  * Item 17, "Design and Document or inheritance or else prohibit it" for further
  * information.
  */
-public class JSONTokener {
+class JSONTokener {
 
     /**
      * The input JSON.

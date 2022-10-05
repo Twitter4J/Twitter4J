@@ -1,10 +1,8 @@
-package twitter4j.json;
+package twitter4j;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.JSONObject;
-import twitter4j.JSONObjectType;
 
 /**
  * Unit test for JSONObjectType

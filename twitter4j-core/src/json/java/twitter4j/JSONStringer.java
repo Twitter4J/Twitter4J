@@ -58,7 +58,7 @@ import java.util.List;
  * Item 17, "Design and Document or inheritance or else prohibit it" for further
  * information.
  */
-public class JSONStringer {
+class JSONStringer {
 
     /**
      * The output data, containing at most one top-level array or object.
