@@ -74,10 +74,12 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         return newBuilder().build();
     }
 
-    public static class OAuth2AuthorizationBuilder extends Configuration<OAuth2Authorization, OAuth2Authorization.OAuth2AuthorizationBuilder> {
-
+    static class OAuth2AuthorizationBuilder extends Configuration<OAuth2AuthorizationBuilder> {
         OAuth2AuthorizationBuilder() {
-            super(OAuth2Authorization::new);
+        }
+
+        public OAuth2Authorization build() {
+            return new OAuth2Authorization(buildConfiguration());
         }
     }
 

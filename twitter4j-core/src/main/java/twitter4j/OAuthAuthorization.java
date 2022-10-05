@@ -501,10 +501,12 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
                 '}';
     }
 
-    public static class OAuthAuthorizationBuilder extends Configuration<OAuthAuthorization, OAuthAuthorizationBuilder> {
+    static class OAuthAuthorizationBuilder extends Configuration<OAuthAuthorizationBuilder> {
+        private OAuthAuthorizationBuilder() {
+        }
 
-        OAuthAuthorizationBuilder() {
-            super(OAuthAuthorization::new);
+        public OAuthAuthorization build() {
+            return new OAuthAuthorization(buildConfiguration());
         }
     }
 }

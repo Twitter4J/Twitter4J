@@ -133,11 +133,12 @@ public interface Twitter extends java.io.Serializable,
      */
     HelpResources help();
 
-    class TwitterBuilder extends Configuration<Twitter, TwitterBuilder> {
-        private static final long serialVersionUID = -7194823238000676626L;
+    class TwitterBuilder extends Configuration<TwitterBuilder> {
+        private TwitterBuilder() {
+        }
 
-        TwitterBuilder() {
-            super(TwitterImpl::new);
+        public Twitter build() {
+            return new TwitterImpl(buildConfiguration());
         }
     }
 }

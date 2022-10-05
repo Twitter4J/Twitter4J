@@ -132,11 +132,12 @@ public interface TwitterStream {
      */
     void shutdown();
 
-    class TwitterStreamBuilder extends Configuration<TwitterStream, TwitterStreamBuilder> {
+    class TwitterStreamBuilder extends Configuration<TwitterStreamBuilder> {
+        private TwitterStreamBuilder(){
+        }
 
-        TwitterStreamBuilder() {
-            super(TwitterStreamImpl::new);
-
+        public TwitterStream build(){
+            return new TwitterStreamImpl(buildConfiguration());
         }
 
         final List<ConnectionLifeCycleListener> connectionLifeCycleListeners = new ArrayList<>();
