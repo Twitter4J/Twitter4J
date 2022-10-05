@@ -30,6 +30,7 @@ import java.util.*;
  * @see <a href="https://dev.twitter.com/docs/api/1.1/get/search">GET search | Twitter Developers</a>
  * @see <a href="http://search.twitter.com/operators">Twitter API / Search Operators</a>
  */
+@SuppressWarnings("unused")
 public final class Query implements java.io.Serializable {
     private static final long serialVersionUID = 7196404519192910019L;
     @NotNull
@@ -50,40 +51,50 @@ public final class Query implements java.io.Serializable {
     @Nullable
     final String nextPageQuery;
 
-    public Query withLang(String lang) {
+    @NotNull
+    public Query withLang(@NotNull String lang) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
-    public Query withLocale(String locale) {
+    @NotNull
+    public Query withLocale(@NotNull String locale) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
+    @NotNull
     public Query withMaxId(long maxId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+    @NotNull
     public Query withCount(int count) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
-    public Query withSince(String since) {
+    @NotNull
+    public Query withSince(@NotNull String since) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, null, resultType, nextPageQuery);
     }
+    @NotNull
     public Query withSinceId(long sinceId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
-    public Query withGeoCode(GeoLocation location, double radius
+    @NotNull
+    public Query withGeoCode(@NotNull GeoLocation location, double radius
                 , Unit unit) {
           String geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
-    public Query withUntil(String until) {
+    @NotNull
+    public Query withUntil(@NotNull String until) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
-    public Query withResultType(ResultType resultType) {
+    @NotNull
+    public Query withResultType(@NotNull ResultType resultType) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
     Query(@NotNull String query, String lang, String locale, long maxId, int count, @Nullable String since,
-          long sinceId, @Nullable String geocode, @Nullable String until, @Nullable ResultType resultType, String nextPageQuery) {
+          long sinceId, @Nullable String geocode, @Nullable String until, @Nullable ResultType resultType,
+          @Nullable String nextPageQuery) {
         this.query = query;
         this.lang = lang;
         this.locale = locale;

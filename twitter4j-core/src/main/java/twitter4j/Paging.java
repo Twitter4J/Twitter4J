@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +37,7 @@ public final class Paging implements java.io.Serializable {
 
     static Paging empty = new Paging(-1,-1,-1,-1);
 
+    @NotNull
     public static Paging ofPage(int page) {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
@@ -42,6 +45,7 @@ public final class Paging implements java.io.Serializable {
         return new Paging(page, -1,-1,-1);
     }
 
+    @NotNull
     public Paging withPage(int page) {
         if (page < 1) {
             throw new IllegalArgumentException("page should be positive integer. passed:" + page);
@@ -50,6 +54,7 @@ public final class Paging implements java.io.Serializable {
     }
 
 
+    @NotNull
     public static Paging ofCount(int count) {
         if (count < 1) {
             throw new IllegalArgumentException("count should be positive integer. passed:" + count);
@@ -57,6 +62,7 @@ public final class Paging implements java.io.Serializable {
         return new Paging(-1, count,-1,-1);
     }
 
+    @NotNull
     public Paging withCount(int count) {
         if (count < 1) {
             throw new IllegalArgumentException("count should be positive integer. passed:" + count);
@@ -64,6 +70,7 @@ public final class Paging implements java.io.Serializable {
         return new Paging(this.page, count, this.sinceId, this.maxId);
     }
 
+    @NotNull
     public static Paging ofSinceId(long sinceId) {
         if (sinceId < 1) {
             throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
@@ -71,6 +78,7 @@ public final class Paging implements java.io.Serializable {
         return new Paging(-1, -1,sinceId,-1);
     }
 
+    @NotNull
     public Paging withSinceId(long sinceId) {
         if (sinceId < 1) {
             throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
@@ -79,6 +87,7 @@ public final class Paging implements java.io.Serializable {
     }
 
 
+    @NotNull
     public static Paging ofMaxId(long maxId) {
         if (maxId < 1) {
             throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
@@ -86,6 +95,7 @@ public final class Paging implements java.io.Serializable {
         return new Paging(-1, -1,-1,maxId);
     }
 
+    @NotNull
     public Paging withMaxId(long maxId) {
         if (maxId < 1) {
             throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
