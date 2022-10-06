@@ -34,9 +34,9 @@ public final class GetAvailableTrends {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = Twitter.getInstance();
+            var trends = Twitter.getInstance().trends();
             ResponseList<Location> locations;
-            locations = twitter.getAvailableTrends();
+            locations = trends.getAvailableTrends();
             System.out.println("Showing available trends");
             for (Location location : locations) {
                 System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");

@@ -37,8 +37,8 @@ public final class ShowUser {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            User user = twitter.showUser(args[0]);
+            var users = Twitter.getInstance().users();
+            User user = users.showUser(args[0]);
             if (user.getStatus() != null) {
                 System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
             } else {

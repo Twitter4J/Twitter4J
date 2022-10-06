@@ -37,8 +37,8 @@ public final class DestroySavedSearch {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            SavedSearch savedSearch = twitter.destroySavedSearch(Integer.parseInt(args[0]));
+            var savedSearches = Twitter.getInstance().savedSearches();
+            SavedSearch savedSearch = savedSearches.destroySavedSearch(Integer.parseInt(args[0]));
             System.out.println("Successfully deleted saved search [name:" + savedSearch.getName()
                     + " query:" + savedSearch.getQuery() + " id:" + savedSearch.getId() + "]");
             System.exit(0);

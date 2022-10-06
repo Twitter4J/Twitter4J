@@ -70,7 +70,6 @@ final class PropertyConfiguration {
     private static final String CONTRIBUTING_TO = "contributingTo";
     private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     private static final String INCLUDE_ENTITIES = "includeEntities";
-    private static final String INCLUDE_EMAIL = "includeEmail";
     private static final String INCLUDE_EXT_ALT_TEXT = "includeExtAltText";
     private static final String TWEET_MODE_EXTENDED = "tweetModeExtended";
     private static final String JSON_STORE_ENABLED = "jsonStoreEnabled";
@@ -261,9 +260,6 @@ final class PropertyConfiguration {
         }
         if (notNull(props, INCLUDE_ENTITIES)) {
             conf.includeEntitiesEnabled = getBoolean(props, INCLUDE_ENTITIES);
-        }
-        if (notNull(props, INCLUDE_EMAIL)) {
-            conf.includeEmailEnabled = getBoolean(props, INCLUDE_EMAIL);
         }
         if (notNull(props, INCLUDE_EXT_ALT_TEXT)) {
             conf.includeExtAltTextEnabled = getBoolean(props, INCLUDE_EXT_ALT_TEXT);

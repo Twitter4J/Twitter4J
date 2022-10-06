@@ -37,8 +37,8 @@ public final class ShowSavedSearch {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            SavedSearch savedSearch = twitter.showSavedSearch(Integer.parseInt(args[0]));
+            var savedSearches = Twitter.getInstance().savedSearches();
+            SavedSearch savedSearch = savedSearches.showSavedSearch(Integer.parseInt(args[0]));
             System.out.println("[name:" + savedSearch.getName() + " query:" + savedSearch.getQuery() + " id:"
                     + savedSearch.getId() + "]");
             System.exit(0);

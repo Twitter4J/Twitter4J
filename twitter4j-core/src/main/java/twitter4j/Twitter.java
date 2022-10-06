@@ -22,20 +22,7 @@ import twitter4j.api.*;
  * @since Twitter4J 2.2.0
  */
 @SuppressWarnings("unused")
-public interface Twitter extends java.io.Serializable,
-        TimelinesResources,
-        TweetsResources,
-        SearchResource,
-        DirectMessagesResources,
-        FriendsFollowersResources,
-        UsersResources,
-        FavoritesResources,
-        ListsResources,
-        SavedSearchesResources,
-        PlacesGeoResources,
-        TrendsResources,
-        SpamReportingResource,
-        HelpResources {
+public interface Twitter extends java.io.Serializable {
 
     /**
      * returns new Builder instance

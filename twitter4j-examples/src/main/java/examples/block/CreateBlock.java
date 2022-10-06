@@ -36,8 +36,8 @@ public final class CreateBlock {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.createBlock(args[0]);
+            var users = Twitter.getInstance().users();
+            users.createBlock(args[0]);
             System.out.println("Successfully blocked user [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

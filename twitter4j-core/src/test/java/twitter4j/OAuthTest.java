@@ -53,7 +53,7 @@ class OAuthTest extends TwitterTestBase {
         Twitter twitter = Twitter.newBuilder()
                 .oAuthAccessToken(oAuthAccessToken, oAuthAccessTokenSecret)
                 .oAuthConsumer(oAuthConsumerKey, oAuthConsumerSecret).build();
-        twitter.verifyCredentials();
+        twitter.users().verifyCredentials();
     }
 
     @Disabled
@@ -205,9 +205,11 @@ class OAuthTest extends TwitterTestBase {
         assertEquals("%2B", HttpParameter.encode("+"));
         assertEquals("%26%3D%2A", HttpParameter.encode("&=*"));
         assertEquals("%0A", HttpParameter.encode("\n"));
+        //noinspection UnnecessaryUnicodeEscape
         assertEquals("%20", HttpParameter.encode("\u0020"));
         assertEquals("%7F", HttpParameter.encode("\u007F"));
         assertEquals("%C2%80", HttpParameter.encode("\u0080"));
+        //noinspection UnnecessaryUnicodeEscape
         assertEquals("%E3%80%81", HttpParameter.encode("\u3001"));
 
         String unreserved = "abcdefghijklmnopqrstuvwzyxABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";

@@ -38,11 +38,11 @@ public final class GetUserLists {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            ResponseList<UserList> lists = twitter.getUserLists(args[0]);
-            for (UserList list : lists) {
-                System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
-                        + list.getDescription() + ", slug:" + list.getSlug() + "");
+            var list = Twitter.getInstance().list();
+            ResponseList<UserList> lists = list.getUserLists(args[0]);
+            for (UserList userList : lists) {
+                System.out.println("id:" + userList.getId() + ", name:" + userList.getName() + ", description:"
+                        + userList.getDescription() + ", slug:" + userList.getSlug() + "");
             }
             System.exit(0);
         } catch (TwitterException te) {

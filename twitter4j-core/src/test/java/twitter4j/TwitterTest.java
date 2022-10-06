@@ -47,7 +47,11 @@ class TwitterTest extends TwitterTestBase {
             ipLimitStatusAcquired = event.isIPRateLimitStatus();
             TwitterTest.this.rateLimitStatus = event.getRateLimitStatus();
         }).build();
-        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus();
+
+        // the listener doesn't implement serializable and deserialized form should not be equal to the original object
+        assertDeserializedFormIsNotEqual(twitter);
+
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus();
         assertNotNull(TwitterObjectFactory.getRawJSON(rateLimitStatus));
         assertEquals(rateLimitStatus, TwitterObjectFactory.createRateLimitStatus(TwitterObjectFactory.getRawJSON(rateLimitStatus)));
         RateLimitStatus status = rateLimitStatus.values().iterator().next();
@@ -55,17 +59,17 @@ class TwitterTest extends TwitterTestBase {
         assertTrue(10 < status.getRemaining());
         assertTrue(0 < status.getSecondsUntilReset());
 
-        rateLimitStatus = twitter.getRateLimitStatus("block", "statuses");
+        rateLimitStatus = twitter.help().getRateLimitStatus("block", "statuses");
         assertTrue(rateLimitStatus.values().size() > 5);
 
         // the listener doesn't implement serializable and deserialized form should not be equal to the original object
         assertDeserializedFormIsNotEqual(twitter);
 
-        twitter.getMentionsTimeline();
+        twitter.timelines().getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         RateLimitStatus previous = this.rateLimitStatus;
-        twitter.getMentionsTimeline();
+        twitter.timelines().getMentionsTimeline();
         assertTrue(accountLimitStatusAcquired);
         assertFalse(ipLimitStatusAcquired);
         assertTrue(previous.getRemaining() > this.rateLimitStatus.getRemaining());
@@ -75,7 +79,7 @@ class TwitterTest extends TwitterTestBase {
     @Test
     void testGetAccessLevel() throws Exception {
         TwitterResponse response;
-        response = rwPrivateMessage.verifyCredentials();
+        response = rwPrivateMessage.users().verifyCredentials();
         assertEquals(TwitterResponse.AccessLevel.READ_WRITE_DIRECTMESSAGES, response.getAccessLevel());
     }
 

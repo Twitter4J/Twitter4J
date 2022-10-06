@@ -38,12 +38,12 @@ public final class SearchUsers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var users = Twitter.getInstance().users();
             int page = 1;
-            ResponseList<User> users;
+            ResponseList<User> usersList;
             do {
-                users = twitter.searchUsers(args[0], page);
-                for (User user : users) {
+                usersList = users.searchUsers(args[0], page);
+                for (User user : usersList) {
                     if (user.getStatus() != null) {
                         System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
                     } else {
@@ -52,7 +52,7 @@ public final class SearchUsers {
                     }
                 }
                 page++;
-            } while (users.size() != 0 && page < 50);
+            } while (usersList.size() != 0 && page < 50);
             System.out.println("done.");
             System.exit(0);
         } catch (TwitterException te) {

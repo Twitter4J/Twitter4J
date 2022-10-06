@@ -38,15 +38,15 @@ public final class GetUserListMembers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var list = Twitter.getInstance().list();
             long cursor = -1;
-            PagableResponseList<User> usres;
+            PagableResponseList<User> users;
             do {
-                usres = twitter.getUserListMembers(Integer.parseInt(args[0]), cursor);
-                for (User list : usres) {
-                    System.out.println("@" + list.getScreenName());
+                users = list.getUserListMembers(Integer.parseInt(args[0]), cursor);
+                for (User user : users) {
+                    System.out.println("@" + user.getScreenName());
                 }
-            } while ((cursor = usres.getNextCursor()) != 0);
+            } while ((cursor = users.getNextCursor()) != 0);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HelpResoursesTest extends TwitterTestBase {
     @Test
     void testHelpMethods() throws Exception {
-        ResponseList<HelpResources.Language> languages = twitter1.getLanguages();
+        ResponseList<HelpResources.Language> languages = twitter1.help().getLanguages();
         assertTrue(languages.size() > 5);
         HelpResources.Language language = languages.get(0);
         assertNotNull(language.getCode());

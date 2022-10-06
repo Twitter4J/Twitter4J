@@ -19,8 +19,8 @@ public final class GetPlaceTrends {
     public static void main(String[] args) {
         try {
             int woeid = args.length > 0 ? Integer.parseInt(args[0]) : 1;
-            Twitter twitter = Twitter.getInstance();
-            Trends trends = twitter.getPlaceTrends(woeid);
+            var twitter = Twitter.getInstance();
+            Trends trends = twitter.trends().getPlaceTrends(woeid);
 
             System.out.println("Showing trends for " + trends.getLocation().getName());
 

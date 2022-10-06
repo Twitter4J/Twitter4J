@@ -46,13 +46,13 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
                 .oAuthConsumer(browserConsumerKey, browserConsumerSecret)
                 .oAuth2Token(token).build();
 
-        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
         assertNotNull(searchTweetsRateLimit);
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
 
         try {
-            twitter.getAccountSettings();
+            twitter.users().getAccountSettings();
             fail("should throw TwitterException");
 
         } catch (TwitterException e) {
@@ -73,7 +73,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
                 .oAuthConsumer(browserConsumerKey, browserConsumerSecret)
                 .oAuth2Token(token).build();
 
-        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
         assertNotNull(searchTweetsRateLimit);
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
@@ -93,7 +93,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 //        oAuth2Authorization.setOAuthConsumer(browserConsumerKey, browserConsumerSecret);
 //        oAuth2Authorization.setOAuth2Token(token);
 
-        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
         assertNotNull(searchTweetsRateLimit);
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
@@ -110,7 +110,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
                 .oAuthConsumer(browserConsumerKey, browserConsumerSecret)
                 .oAuth2Token(token).build();
 
-        Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+        Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
         RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
         assertNotNull(searchTweetsRateLimit);
         assertEquals(searchTweetsRateLimit.getLimit(), 450);
@@ -129,7 +129,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
                 .oAuth2Token(token).build();
 
         try {
-            twitter.getRateLimitStatus();
+            twitter.help().getRateLimitStatus();
             fail("show throw IllegalStateException");
         } catch (TwitterException expected) {
         }
@@ -156,7 +156,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
 
             Twitter twitter = Twitter.newBuilder().oAuth2Token(token).build();
             // verify
-            Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+            Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
             RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
             assertNotNull(searchTweetsRateLimit);
             assertEquals(searchTweetsRateLimit.getLimit(), 450);
@@ -185,7 +185,7 @@ public class ApplicationOnlyAuthTest extends TwitterTestBase {
             Twitter twitter = Twitter.newBuilder().build();
 
             // exercise & verify
-            Map<String, RateLimitStatus> rateLimitStatus = twitter.getRateLimitStatus("search");
+            Map<String, RateLimitStatus> rateLimitStatus = twitter.help().getRateLimitStatus("search");
             RateLimitStatus searchTweetsRateLimit = rateLimitStatus.get("/search/tweets");
             assertNotNull(searchTweetsRateLimit);
             assertEquals(searchTweetsRateLimit.getLimit(), 450);

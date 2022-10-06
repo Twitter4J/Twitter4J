@@ -36,8 +36,8 @@ public final class UpdateUserList {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.updateUserList(Integer.parseInt(args[0]), args[1], true, args[2]);
+            var list = Twitter.getInstance().list();
+            list.updateUserList(Integer.parseInt(args[0]), args[1], true, args[2]);
             System.out.println("Successfully updated list [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

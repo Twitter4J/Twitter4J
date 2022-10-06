@@ -38,17 +38,17 @@ public final class ShowUserListMembership {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var twitter = Twitter.getInstance();
             long listId = Long.parseLong(args[0]);
-            UserList list = twitter.showUserList(listId);
+            UserList userList = twitter.list().showUserList(listId);
             long userId = Integer.parseInt(args[1]);
-            User user = twitter.showUser(userId);
+            User user = twitter.users().showUser(userId);
             try {
-                twitter.showUserListMembership(listId, userId);
-                System.out.println("@" + user.getScreenName() + " is in the list:" + list.getName());
+                twitter.list().showUserListMembership(listId, userId);
+                System.out.println("@" + user.getScreenName() + " is in the list:" + userList.getName());
             } catch (TwitterException te) {
                 if (te.getStatusCode() == 404) {
-                    System.out.println("@" + user.getScreenName() + " is not in the list:" + list.getName());
+                    System.out.println("@" + user.getScreenName() + " is not in the list:" + user.getName());
                 }
             }
             System.exit(0);

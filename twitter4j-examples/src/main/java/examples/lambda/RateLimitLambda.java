@@ -24,12 +24,12 @@ import twitter4j.TwitterException;
  */
 public class RateLimitLambda {
     public static void main(String... args) {
-        Twitter twitter = Twitter.newBuilder()
+        var timelines = Twitter.newBuilder()
                 .onRateLimitStatus(e -> System.out.println("rate limit remaining: " + e.getRateLimitStatus().getRemaining()))
-                .build();
+                .build().timelines();
         for (int i = 0; i < 20; i++) {
             try {
-                System.out.println(twitter.getHomeTimeline());
+                System.out.println(timelines.getHomeTimeline());
             } catch (TwitterException e) {
                 e.printStackTrace();
             }

@@ -38,7 +38,7 @@ public final class UpdateStatus {
             System.exit(-1);
         }
         try {
-            Status status = Twitter.getInstance().updateStatus(args[0]);
+            Status status = Twitter.getInstance().tweets().updateStatus(args[0]);
             System.out.println("Successfully updated the status to [" + status.getText() + "].");
             System.exit(0);
         } catch (TwitterException te) {

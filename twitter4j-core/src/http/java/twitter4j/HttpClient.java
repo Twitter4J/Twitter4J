@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 final class HttpClient implements HttpResponseCode, Serializable {
     private final String httpProxyHost;
@@ -321,5 +322,35 @@ final class HttpClient implements HttpResponseCode, Serializable {
     @SuppressWarnings("unused")
     HttpResponse put(String url) throws TwitterException {
         return request(new HttpRequest(RequestMethod.PUT, url, null, null, this.requestHeaders));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HttpClient that = (HttpClient) o;
+        return httpProxyPort == that.httpProxyPort && httpProxySocks == that.httpProxySocks && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(requestHeaders, that.requestHeaders);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(httpProxyHost, httpProxyPort, httpProxyUser, httpProxyPassword, httpProxySocks, httpRetryCount, httpRetryIntervalSeconds, httpConnectionTimeout, httpReadTimeout, prettyDebug, requestHeaders);
+    }
+
+    @Override
+    public String toString() {
+        return "HttpClient{" +
+                "httpProxyHost='" + httpProxyHost + '\'' +
+                ", httpProxyPort=" + httpProxyPort +
+                ", httpProxyUser='" + httpProxyUser + '\'' +
+                ", httpProxyPassword='" + httpProxyPassword + '\'' +
+                ", httpProxySocks=" + httpProxySocks +
+                ", httpRetryCount=" + httpRetryCount +
+                ", httpRetryIntervalSeconds=" + httpRetryIntervalSeconds +
+                ", httpConnectionTimeout=" + httpConnectionTimeout +
+                ", httpReadTimeout=" + httpReadTimeout +
+                ", prettyDebug=" + prettyDebug +
+                ", requestHeaders=" + requestHeaders +
+                '}';
     }
 }

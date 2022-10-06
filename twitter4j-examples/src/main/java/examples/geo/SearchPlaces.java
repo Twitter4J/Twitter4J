@@ -35,14 +35,14 @@ public final class SearchPlaces {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var placesGeo = Twitter.getInstance().placesGeo();
             GeoQuery query;
             if (args.length == 2) {
                 query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
             } else {
                 query = new GeoQuery(args[0]);
             }
-            ResponseList<Place> places = twitter.searchPlaces(query);
+            ResponseList<Place> places = placesGeo.searchPlaces(query);
             if (places.size() == 0) {
                 System.out.println("No location associated with the specified IP address or lat/lang");
             } else {

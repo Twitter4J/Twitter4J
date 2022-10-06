@@ -38,14 +38,14 @@ public final class GetUserListMemberships {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var list = Twitter.getInstance().list();
             long cursor = -1;
             PagableResponseList<UserList> lists;
             do {
-                lists = twitter.getUserListMemberships(args[0], cursor);
-                for (UserList list : lists) {
-                    System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
-                            + list.getDescription() + ", slug:" + list.getSlug() + "");
+                lists = list.getUserListMemberships(args[0], cursor);
+                for (UserList userList : lists) {
+                    System.out.println("id:" + userList.getId() + ", name:" + userList.getName() + ", description:"
+                            + userList.getDescription() + ", slug:" + userList.getSlug() + "");
                 }
             } while ((cursor = lists.getNextCursor()) != 0);
             System.exit(0);

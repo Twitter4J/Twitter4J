@@ -18,6 +18,7 @@ sourceSets {
                      'src/json/java',
                      'src/logging/java',
                      'src/stream/java',
+                     'src/v1/java',
                      'src/main/java'])
         }
     }

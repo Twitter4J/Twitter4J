@@ -36,8 +36,8 @@ public final class CreateFavorite {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.createFavorite(Long.parseLong(args[0]));
+            var favorites = Twitter.getInstance().favorites();
+            favorites.createFavorite(Long.parseLong(args[0]));
             System.out.println("Successfully favorited status [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

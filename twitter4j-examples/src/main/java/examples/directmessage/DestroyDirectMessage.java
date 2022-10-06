@@ -36,8 +36,8 @@ public final class DestroyDirectMessage {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.destroyDirectMessage(Long.parseLong(args[0]));
+            var directMessages = Twitter.getInstance().directMessages();
+            directMessages.destroyDirectMessage(Long.parseLong(args[0]));
             System.out.println("Successfully deleted message [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

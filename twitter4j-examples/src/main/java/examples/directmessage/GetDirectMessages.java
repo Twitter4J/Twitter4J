@@ -33,14 +33,14 @@ public class GetDirectMessages {
      * @param args String[]
      */
     public static void main(String[] args) {
-        Twitter twitter = Twitter.getInstance();
+        var directMessages = Twitter.getInstance().directMessages();
         try {
             String cursor = null;
             int count = 20;
             DirectMessageList messages;
             do {
                 System.out.println("* cursor:" + cursor);
-                messages = cursor == null ? twitter.getDirectMessages(count) : twitter.getDirectMessages(count, cursor);
+                messages = cursor == null ? directMessages.getDirectMessages(count) : directMessages.getDirectMessages(count, cursor);
                 for (DirectMessage message : messages) {
                     System.out.println("From: " + message.getSenderId() + " id:" + message.getId()
                             + " [" + message.getCreatedAt() + "]"

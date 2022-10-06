@@ -37,12 +37,12 @@ public final class SaveRawJSON {
      * @param args String[]
      */
     public static void main(String[] args) {
-        Twitter twitter = Twitter.getInstance();
+        var timelines = Twitter.getInstance().timelines();
         System.out.println("Saving public timeline.");
         try {
             //noinspection ResultOfMethodCallIgnored
             new File("statuses").mkdir();
-            List<Status> statuses = twitter.getHomeTimeline();
+            List<Status> statuses = timelines.getHomeTimeline();
             for (Status status : statuses) {
                 String rawJSON = TwitterObjectFactory.getRawJSON(status);
                 String fileName = "statuses/" + status.getId() + ".json";

@@ -36,8 +36,8 @@ public final class DestroyBlock {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.destroyBlock(args[0]);
+            var users = Twitter.getInstance().users();
+            users.destroyBlock(args[0]);
             System.out.println("Successfully unblocked user [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

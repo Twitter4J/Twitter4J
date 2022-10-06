@@ -38,16 +38,16 @@ public final class GetUserListSubscriptions {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var list = Twitter.getInstance().list();
             long cursor = -1;
-            PagableResponseList<UserList> lists;
+            PagableResponseList<UserList> userLists;
             do {
-                lists = twitter.getUserListSubscriptions(args[0], cursor);
-                for (UserList list : lists) {
-                    System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
-                            + list.getDescription() + ", slug:" + list.getSlug() + "");
+                userLists = list.getUserListSubscriptions(args[0], cursor);
+                for (UserList userList : userLists) {
+                    System.out.println("id:" + userList.getId() + ", name:" + userList.getName() + ", description:"
+                            + userList.getDescription() + ", slug:" + userList.getSlug() + "");
                 }
-            } while ((cursor = lists.getNextCursor()) != 0);
+            } while ((cursor = userLists.getNextCursor()) != 0);
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

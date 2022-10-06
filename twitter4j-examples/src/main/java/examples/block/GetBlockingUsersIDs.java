@@ -33,8 +33,8 @@ public final class GetBlockingUsersIDs {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = Twitter.getInstance();
-            IDs ids = twitter.getBlocksIDs();
+            var users = Twitter.getInstance().users();
+            IDs ids = users.getBlocksIDs();
             for (long id : ids.getIDs()) {
                 System.out.println(id);
             }

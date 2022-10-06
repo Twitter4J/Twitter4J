@@ -164,15 +164,13 @@ final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializ
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         HttpParameter that = (HttpParameter) o;
+        return Objects.equals(name, that.name) && Objects.equals(value, that.value) && Objects.equals(jsonObject, that.jsonObject) && Objects.equals(file, that.file) && Objects.equals(fileBody, that.fileBody);
+    }
 
-        if (!Objects.equals(name, that.name)) return false;
-        if (!Objects.equals(value, that.value)) return false;
-        if (!Objects.equals(jsonObject, that.jsonObject)) return false;
-        if (!Objects.equals(file, that.file)) return false;
-        return Objects.equals(fileBody, that.fileBody);
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, value, jsonObject, file, fileBody);
     }
 
     public static boolean containsJson(HttpParameter[] params) {
@@ -212,15 +210,6 @@ final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializ
         return getParameterArray(name1, String.valueOf(value1), name2, String.valueOf(value2));
     }
 
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
-        result = 31 * result + (jsonObject != null ? jsonObject.hashCode() : 0);
-        result = 31 * result + (file != null ? file.hashCode() : 0);
-        result = 31 * result + (fileBody != null ? fileBody.hashCode() : 0);
-        return result;
-    }
 
     @Override
     public String toString() {

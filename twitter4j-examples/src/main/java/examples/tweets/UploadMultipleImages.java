@@ -37,12 +37,12 @@ public final class UploadMultipleImages {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var tweets = Twitter.getInstance().tweets();
             
             long[] mediaIds = new long[args.length-1];
             for (int i=1; i<args.length; i++) {
                 System.out.println("Uploading...[" + i + "/" + (args.length-1) + "][" + args[i] + "]");
-                UploadedMedia media = twitter.uploadMedia(new File(args[i]));
+                UploadedMedia media = tweets.uploadMedia(new File(args[i]));
                 System.out.println("Uploaded: id=" + media.getMediaId()
                         + ", w=" + media.getImageWidth() + ", h=" + media.getImageHeight()
                         + ", type=" + media.getImageType() + ", size=" + media.getSize());
@@ -51,7 +51,7 @@ public final class UploadMultipleImages {
             
             StatusUpdate update = new StatusUpdate(args[0]);
             update.setMediaIds(mediaIds);
-            Status status = twitter.updateStatus(update);
+            Status status = tweets.updateStatus(update);
             System.out.println("Successfully updated the status to [" + status.getText() + "][" + status.getId() + "].");
             System.exit(0);
         } catch (TwitterException te) {

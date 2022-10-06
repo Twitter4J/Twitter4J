@@ -35,8 +35,8 @@ public class ReportSpam {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            System.out.println("Successfully reported @" + twitter.reportSpam(args[0]).getScreenName() + " as a spammer.");
+            var spamReporting = Twitter.getInstance().spamReporting();
+            System.out.println("Successfully reported @" + spamReporting.reportSpam(args[0]).getScreenName() + " as a spammer.");
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to report spam: " + te.getMessage());

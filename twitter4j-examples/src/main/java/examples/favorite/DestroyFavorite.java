@@ -36,8 +36,8 @@ public final class DestroyFavorite {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.destroyFavorite(Long.parseLong(args[0]));
+            var favorites = Twitter.getInstance().favorites();
+            favorites.destroyFavorite(Long.parseLong(args[0]));
             System.out.println("Successfully unfavorited status [" + args[0] + "].");
             System.exit(0);
         } catch (TwitterException te) {

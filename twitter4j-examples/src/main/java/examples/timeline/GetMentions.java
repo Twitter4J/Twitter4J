@@ -37,8 +37,8 @@ public class GetMentions {
         // gets Twitter instance with default credentials
         Twitter twitter = Twitter.getInstance();
         try {
-            User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getMentionsTimeline();
+            User user = twitter.users().verifyCredentials();
+            List<Status> statuses = twitter.timelines().getMentionsTimeline();
             System.out.println("Showing @" + user.getScreenName() + "'s mentions.");
             for (Status status : statuses) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());

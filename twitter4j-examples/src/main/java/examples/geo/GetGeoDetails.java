@@ -37,8 +37,8 @@ public final class GetGeoDetails {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            Place place = twitter.getGeoDetails(args[0]);
+            var placesGeo = Twitter.getInstance().placesGeo();
+            Place place = placesGeo.getGeoDetails(args[0]);
             System.out.println("name: " + place.getName());
             System.out.println("country: " + place.getCountry());
             System.out.println("country code: " + place.getCountryCode());

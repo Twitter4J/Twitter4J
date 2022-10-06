@@ -36,8 +36,8 @@ public final class CreateUserListSubscription {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.createUserListSubscription(Integer.parseInt(args[0]));
+            var list = Twitter.getInstance().list();
+            list.createUserListSubscription(Integer.parseInt(args[0]));
             System.out.println("Successfully subscribed the list.");
             System.exit(0);
         } catch (TwitterException te) {

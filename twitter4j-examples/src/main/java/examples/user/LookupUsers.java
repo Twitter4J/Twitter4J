@@ -39,9 +39,9 @@ public final class LookupUsers {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            ResponseList<User> users = twitter.lookupUsers(args[0].split(","));
-            for (User user : users) {
+            var users = Twitter.getInstance().users();
+            ResponseList<User> usersList = users.lookupUsers(args[0].split(","));
+            for (User user : usersList) {
                 if (user.getStatus() != null) {
                     System.out.println("@" + user.getScreenName() + " - " + user.getStatus().getText());
                 } else {

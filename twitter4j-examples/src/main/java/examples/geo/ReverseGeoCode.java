@@ -35,9 +35,9 @@ public final class ReverseGeoCode {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var placesGeo = Twitter.getInstance().placesGeo();
             GeoQuery query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
-            ResponseList<Place> places = twitter.reverseGeoCode(query);
+            ResponseList<Place> places = placesGeo.reverseGeoCode(query);
             if (places.size() == 0) {
                 System.out.println("No location associated with the specified lat/lang");
             } else {

@@ -34,8 +34,8 @@ public final class GetAccountSettings {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = Twitter.getInstance();
-            AccountSettings settings = twitter.getAccountSettings();
+            var users = Twitter.getInstance().users();
+            AccountSettings settings = users.getAccountSettings();
             System.out.println("Sleep time enabled: " + settings.isSleepTimeEnabled());
             System.out.println("Sleep end time: " + settings.getSleepEndTime());
             System.out.println("Sleep start time: " + settings.getSleepStartTime());

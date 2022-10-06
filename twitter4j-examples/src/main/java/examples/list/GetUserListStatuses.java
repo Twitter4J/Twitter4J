@@ -35,11 +35,11 @@ public final class GetUserListStatuses {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
+            var list = Twitter.getInstance().list();
             Paging page = Paging.ofPage(1);
             ResponseList<Status> statuses;
             do {
-                statuses = twitter.getUserListStatuses(Integer.parseInt(args[0]), page);
+                statuses = list.getUserListStatuses(Integer.parseInt(args[0]), page);
                 for (Status status : statuses) {
                     System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
                 }

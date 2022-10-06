@@ -33,15 +33,15 @@ public final class GetFriendsIDs {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = Twitter.getInstance();
+            var friendsFollowers = Twitter.getInstance().friendsFollowers();
             long cursor = -1;
             IDs ids;
             System.out.println("Listing following ids.");
             do {
                 if (0 < args.length) {
-                    ids = twitter.getFriendsIDs(args[0], cursor);
+                    ids = friendsFollowers.getFriendsIDs(args[0], cursor);
                 } else {
-                    ids = twitter.getFriendsIDs(cursor);
+                    ids = friendsFollowers.getFriendsIDs(cursor);
                 }
                 for (long id : ids.getIDs()) {
                     System.out.println(id);

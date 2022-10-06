@@ -23,6 +23,7 @@ sourceSets {
                      '../src/logging/java',
                      '../src/stream/java',
                      '../src/main/java',
+                     '../src/v1/java',
                      'src/main/java'])
         }
     }

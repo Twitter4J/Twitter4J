@@ -37,9 +37,9 @@ public final class SendDirectMessage {
             System.out.println("Usage: java twitter4j.examples.directmessage.SendDirectMessage [recipient id] [message]");
             System.exit(-1);
         }
-        Twitter twitter = Twitter.getInstance();
+        var directMessages = Twitter.getInstance().directMessages();
         try {
-            DirectMessage message = twitter.sendDirectMessage(Long.parseLong(args[0]), args[1]);
+            DirectMessage message = directMessages.sendDirectMessage(Long.parseLong(args[0]), args[1]);
             System.out.println("Direct message successfully sent to " + message.getId());
             System.out.println(" details:" + message);
             System.exit(0);

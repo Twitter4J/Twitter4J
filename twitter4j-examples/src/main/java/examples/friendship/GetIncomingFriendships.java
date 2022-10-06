@@ -33,12 +33,12 @@ public final class GetIncomingFriendships {
      */
     public static void main(String[] args) {
         try {
-            Twitter twitter = Twitter.getInstance();
+            var friendsFollowers = Twitter.getInstance().friendsFollowers();
             long cursor = -1;
             IDs ids;
             System.out.println("Showing incoming pending follow request(s).");
             do {
-                ids = twitter.getIncomingFriendships(cursor);
+                ids = friendsFollowers.getIncomingFriendships(cursor);
                 for (long id : ids.getIDs()) {
                     System.out.println(id);
                 }

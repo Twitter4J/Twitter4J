@@ -37,10 +37,10 @@ public final class ShowUserList {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            UserList list = twitter.showUserList(Integer.parseInt(args[0]));
-            System.out.println("id:" + list.getId() + ", name:" + list.getName() + ", description:"
-                    + list.getDescription() + ", slug:" + list.getSlug() + "");
+            var list = Twitter.getInstance().list();
+            UserList userList = list.showUserList(Integer.parseInt(args[0]));
+            System.out.println("id:" + userList.getId() + ", name:" + userList.getName() + ", description:"
+                    + userList.getDescription() + ", slug:" + userList.getSlug() + "");
             System.exit(0);
         } catch (TwitterException te) {
             te.printStackTrace();

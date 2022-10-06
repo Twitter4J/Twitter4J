@@ -38,8 +38,8 @@ public final class UpdateProfileImage {
             System.exit(-1);
         }
         try {
-            Twitter twitter = Twitter.getInstance();
-            twitter.updateProfileImage(new File(args[0]));
+            var users = Twitter.getInstance().users();
+            users.updateProfileImage(new File(args[0]));
             System.out.println("Successfully updated profile image.");
             System.exit(0);
         } catch (TwitterException te) {
