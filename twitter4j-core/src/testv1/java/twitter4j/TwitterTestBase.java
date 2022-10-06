@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+@SuppressWarnings("rawtypes")
 public class TwitterTestBase {
 
     static Twitter twitter1, twitter2, twitter3,

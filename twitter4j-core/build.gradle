@@ -22,6 +22,13 @@ sourceSets {
                      'src/main/java'])
         }
     }
+    test {
+        java {
+            srcDirs(['src/test/java',
+                     'src/testv1/java'])
+        }
+    }
+
 }
 
 task sourcesJar(type: Jar) {
