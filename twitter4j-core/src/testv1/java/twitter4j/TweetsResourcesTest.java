@@ -76,7 +76,7 @@ class TweetsResourcesTest extends TwitterTestBase {
         Status retweeted = twitter2.tweets().retweetStatus(status.getId());
         assertTrue(retweeted.getText().endsWith(status.getText()));
 
-        Status status2 = twitter2.tweets().updateStatus(new StatusUpdate("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
+        Status status2 = twitter2.tweets().updateStatus(StatusUpdate.of("@" + id1.screenName + " " + date).inReplyToStatusId(status.getId()));
         assertNotNull(TwitterObjectFactory.getRawJSON(status2));
         assertEquals(status2, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status2)));
         assertTrue(status2.getText().contains("#twitter4jtest"));
@@ -88,7 +88,7 @@ class TweetsResourcesTest extends TwitterTestBase {
 
         date = new java.util.Date().toString();
         String tweet = date + "test @" + id2.screenName + " #twitter4jtest";
-        status = twitter1.tweets().updateStatus(new StatusUpdate(tweet).possiblySensitive(false).media(getRandomlyChosenFile()));
+        status = twitter1.tweets().updateStatus(StatusUpdate.of(tweet).possiblySensitive(false).media(getRandomlyChosenFile()));
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
 

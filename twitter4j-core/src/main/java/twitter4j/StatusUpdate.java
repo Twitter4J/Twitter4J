@@ -32,165 +32,126 @@ public final class StatusUpdate implements java.io.Serializable {
 
     private static final long serialVersionUID = 7422094739799350035L;
     /**
-     * String
+     * status tweet text
      */
-    private final String status;
+    public final String status;
     /**
-     * inReplyToStatusId
+     * in reply to status id
      */
-    private long inReplyToStatusId = -1L;
+    public final long inReplyToStatusId;
     /**
      * location
      */
-    private GeoLocation location = null;
+    public final GeoLocation location;
     /**
-     * placeId
+     * place id
      */
-    private String placeId = null;
+    public final String placeId;
     /**
-     * displayCoordinates
+     * display coordinates
      */
-    private boolean displayCoordinates = true;
+    public final boolean displayCoordinates;
     /**
-     * possiblySensitive
+     * possibly sensitive
      */
-    private boolean possiblySensitive;
+    public final boolean possiblySensitive;
     /**
      * mediaName
      */
-    private String mediaName;
-    private transient InputStream mediaBody;
+    public final String mediaName;
+    /**
+     * mediaBody
+     */
+    public final transient InputStream mediaBody;
     /**
      * mediaFile
      */
-    private File mediaFile;
+    public final File mediaFile;
     /**
      * mediaIds
      */
-    private long[] mediaIds;
+    public final long[] mediaIds;
     /**
      * autoPopulateReplyMetadata
      */
-    private boolean autoPopulateReplyMetadata;
+    public final boolean autoPopulateReplyMetadata;
     /**
-     * attachmentUrl
+     * attachment URL
      */
-    private String attachmentUrl = null;
+    public final String attachmentUrl;
 
     /**
-     * @param status tweet text
+     * @param tweetText tweet text
+     * @return StatusUpdate
      */
-    public StatusUpdate(String status) {
+    public static StatusUpdate of(String tweetText) {
+        return new StatusUpdate(tweetText, -1L, null, null, false, false, null, null, null, null, false, null);
+    }
+
+    private StatusUpdate(String status, long inReplyToStatusId, GeoLocation location, String placeId, boolean displayCoordinates, boolean possiblySensitive, String mediaName, InputStream mediaBody, File mediaFile, long[] mediaIds, boolean autoPopulateReplyMetadata, String attachmentUrl) {
         this.status = status;
+        this.inReplyToStatusId = inReplyToStatusId;
+        this.location = location;
+        this.placeId = placeId;
+        this.displayCoordinates = displayCoordinates;
+        this.possiblySensitive = possiblySensitive;
+        this.mediaName = mediaName;
+        this.mediaBody = mediaBody;
+        this.mediaFile = mediaFile;
+        this.mediaIds = mediaIds;
+        this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
+        this.attachmentUrl = attachmentUrl;
     }
-
-    /**
-     * @return status
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @return in reply to status id
-     */
-    public long getInReplyToStatusId() {
-        return inReplyToStatusId;
-    }
-
 
     /**
      * @param inReplyToStatusId in reply to status id
-     * @return this instance
+     * @return new instance with the specified value
      */
     public StatusUpdate inReplyToStatusId(long inReplyToStatusId) {
-        this.inReplyToStatusId = inReplyToStatusId;
-        return this;
+        return new StatusUpdate(this.status, inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
-
-    /**
-     * @return location
-     */
-    public GeoLocation getLocation() {
-        return location;
-    }
-
 
     /**
      * @param location location
-     * @return this instance
+     * @return new instance with the specified value
      */
     public StatusUpdate location(GeoLocation location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * @return place id
-     */
-    public String getPlaceId() {
-        return placeId;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
      * @param placeId place id
-     * @return this instance
+     * @return new instance with the specified value
      */
     public StatusUpdate placeId(String placeId) {
-        this.placeId = placeId;
-        return this;
-    }
-
-    /**
-     * @return display coordinates
-     */
-    public boolean isDisplayCoordinates() {
-        return displayCoordinates;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
      * @param displayCoordinates display coordinates
-     * @return this instance
+     * @return new instance with the specified value
      */
     public StatusUpdate displayCoordinates(boolean displayCoordinates) {
-        this.displayCoordinates = displayCoordinates;
-        return this;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
-     * @param file media file
-     * @return this instance
+     * @param mediaFile media file
+     * @return new instance with the specified value
      * @since Twitter4J 2.2.5
      */
-    public StatusUpdate media(File file) {
-        this.mediaFile = file;
-        return this;
+    public StatusUpdate media(File mediaFile) {
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
-    /**
-     * @param name name
-     * @param body media body as stream
-     * @since Twitter4J 2.2.5
-     */
-    public void setMedia(String name, InputStream body) {
-        this.mediaName = name;
-        this.mediaBody = body;
-    }
 
     /**
      * @param mediaIds media ids
+     * @return new instance with the specified value
      * @since Twitter4J 4.0.2
      */
-    public void setMediaIds(long... mediaIds) {
-        this.mediaIds = mediaIds;
-    }
-
-    /**
-     * @return attachment url
-     * @since Twitter4J 4.0.7
-     */
-    public String getAttachmentUrl() {
-        return attachmentUrl;
+    public StatusUpdate mediaIds(long... mediaIds) {
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
@@ -199,8 +160,7 @@ public final class StatusUpdate implements java.io.Serializable {
      * @since Twitter4J 4.0.7
      */
     public StatusUpdate attachmentUrl(String attachmentUrl) {
-        this.attachmentUrl = attachmentUrl;
-        return this;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, attachmentUrl);
     }
 
     /*package*/ boolean isForUpdateWithMedia() {
@@ -208,50 +168,31 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
-     * @param name media name
-     * @param body media body
-     * @return this instance
+     * @param mediaName media name
+     * @param mediaBody media body
+     * @return new instance with the specified value
      * @since Twitter4J 2.2.5
      */
-    public StatusUpdate media(String name, InputStream body) {
-        setMedia(name, body);
-        return this;
+    public StatusUpdate media(String mediaName, InputStream mediaBody) {
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, mediaName, mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
      * @param possiblySensitive possibly sensitive
-     * @return this instance
+     * @return new instance with the specified value
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate possiblySensitive(boolean possiblySensitive) {
-        this.possiblySensitive = possiblySensitive;
-        return this;
-    }
-
-    /**
-     * @return possibly sensitive
-     * @since Twitter4J 2.2.5
-     */
-    public boolean isPossiblySensitive() {
-        return possiblySensitive;
-    }
-
-    /**
-     * @return autoPopulateReplyMetadata
-     * @since Twitter4J 4.0.7
-     */
-    public boolean isAutoPopulateReplyMetadata() {
-        return autoPopulateReplyMetadata;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**
      * @param autoPopulateReplyMetadata auto reply meta data
-     * @return this instance
+     * @return new instance with the specified value
      * @since Twitter4J 4.0.7
      */
     public StatusUpdate autoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
-        this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
-        return this;
+        return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
@@ -304,37 +245,14 @@ public final class StatusUpdate implements java.io.Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         StatusUpdate that = (StatusUpdate) o;
-
-        if (inReplyToStatusId != that.inReplyToStatusId) return false;
-        if (displayCoordinates != that.displayCoordinates) return false;
-        if (possiblySensitive != that.possiblySensitive) return false;
-        if (autoPopulateReplyMetadata != that.autoPopulateReplyMetadata) return false;
-        if (!Objects.equals(status, that.status)) return false;
-        if (!Objects.equals(location, that.location)) return false;
-        if (!Objects.equals(placeId, that.placeId)) return false;
-        if (!Objects.equals(mediaName, that.mediaName)) return false;
-        if (!Objects.equals(mediaBody, that.mediaBody)) return false;
-        if (!Objects.equals(mediaFile, that.mediaFile)) return false;
-        if (!Arrays.equals(mediaIds, that.mediaIds)) return false;
-        return Objects.equals(attachmentUrl, that.attachmentUrl);
+        return inReplyToStatusId == that.inReplyToStatusId && displayCoordinates == that.displayCoordinates && possiblySensitive == that.possiblySensitive && autoPopulateReplyMetadata == that.autoPopulateReplyMetadata && Objects.equals(status, that.status) && Objects.equals(location, that.location) && Objects.equals(placeId, that.placeId) && Objects.equals(mediaName, that.mediaName) && Objects.equals(mediaBody, that.mediaBody) && Objects.equals(mediaFile, that.mediaFile) && Arrays.equals(mediaIds, that.mediaIds) && Objects.equals(attachmentUrl, that.attachmentUrl);
     }
 
     @Override
     public int hashCode() {
-        int result = status != null ? status.hashCode() : 0;
-        result = 31 * result + (int) (inReplyToStatusId ^ (inReplyToStatusId >>> 32));
-        result = 31 * result + (location != null ? location.hashCode() : 0);
-        result = 31 * result + (placeId != null ? placeId.hashCode() : 0);
-        result = 31 * result + (displayCoordinates ? 1 : 0);
-        result = 31 * result + (possiblySensitive ? 1 : 0);
-        result = 31 * result + (mediaName != null ? mediaName.hashCode() : 0);
-        result = 31 * result + (mediaBody != null ? mediaBody.hashCode() : 0);
-        result = 31 * result + (mediaFile != null ? mediaFile.hashCode() : 0);
+        int result = Objects.hash(status, inReplyToStatusId, location, placeId, displayCoordinates, possiblySensitive, mediaName, mediaBody, mediaFile, autoPopulateReplyMetadata, attachmentUrl);
         result = 31 * result + Arrays.hashCode(mediaIds);
-        result = 31 * result + (autoPopulateReplyMetadata ? 1 : 0);
-        result = 31 * result + (attachmentUrl != null ? attachmentUrl.hashCode() : 0);
         return result;
     }
 

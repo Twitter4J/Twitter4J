@@ -49,9 +49,9 @@ public final class UploadMultipleImages {
                 mediaIds[i-1] = media.getMediaId();
             }
             
-            StatusUpdate update = new StatusUpdate(args[0]);
-            update.setMediaIds(mediaIds);
-            Status status = tweets.updateStatus(update);
+            StatusUpdate statusUpdate = StatusUpdate.of(args[0]);
+            statusUpdate = statusUpdate.mediaIds(mediaIds);
+            Status status = tweets.updateStatus(statusUpdate);
             System.out.println("Successfully updated the status to [" + status.getText() + "][" + status.getId() + "].");
             System.exit(0);
         } catch (TwitterException te) {
