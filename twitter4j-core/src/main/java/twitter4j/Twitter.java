@@ -120,10 +120,16 @@ public interface Twitter extends java.io.Serializable {
      */
     HelpResources help();
 
+    /**
+     * builder for Twitter
+     */
     class TwitterBuilder extends Configuration<TwitterBuilder> {
         private TwitterBuilder() {
         }
 
+        /**
+         * @return constructs Twitter instance
+         */
         public Twitter build() {
             return new TwitterImpl(buildConfiguration());
         }

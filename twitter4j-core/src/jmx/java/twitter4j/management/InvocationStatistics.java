@@ -16,18 +16,42 @@
 package twitter4j.management;
 
 /**
+ * InvocationStatistics
  * @author Nick Dellamaggiore (nick.dellamaggiore at gmail.com)
  */
 public interface InvocationStatistics {
+    /**
+     * return name
+     * @return name
+     */
     String getName();
 
+    /**
+     * return call count
+     * @return call count
+     */
     long getCallCount();
 
+    /**
+     * return error count
+     * @return  error count
+     */
     long getErrorCount();
 
+    /**
+     * returns total time
+     * @return total time
+     */
     long getTotalTime();
 
+    /**
+     * return average time
+     * @return average time
+     */
     long getAverageTime();
 
+    /**
+     * reset statistics
+     */
     void reset();
 }

@@ -51,6 +51,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
+     * @return this instance
      */
     @SuppressWarnings("UnusedReturnValue")
     TwitterStream firehose(final int count);
@@ -62,6 +63,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
      * @since Twitter4J 2.1.1
+     * @return this instance
      */
     @SuppressWarnings("UnusedReturnValue")
     TwitterStream links(final int count);
@@ -72,6 +74,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/retweet</a>
      * @since Twitter4J 2.0.10
+     * @return this instance
      */
     TwitterStream retweet();
 
@@ -81,6 +84,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
+     * @return this instance
      */
     TwitterStream sample();
 
@@ -93,6 +97,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
+     * @return this instance
      */
     @SuppressWarnings("unused")
     TwitterStream sample(final String language);
@@ -105,6 +110,7 @@ public interface TwitterStream {
      * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/filter</a>
      * @since Twitter4J 2.1.2
+     * @return this instance
      */
     TwitterStream filter(final FilterQuery query);
 
@@ -114,6 +120,7 @@ public interface TwitterStream {
      *
      * @param track words to be filtered
      * @since Twitter4J 4.0.4
+     * @return this instance
      */
     TwitterStream filter(final String... track);
 
@@ -132,10 +139,16 @@ public interface TwitterStream {
      */
     void shutdown();
 
+    /**
+     * builder for TwitterStream
+     */
     class TwitterStreamBuilder extends Configuration<TwitterStreamBuilder> {
         private TwitterStreamBuilder(){
         }
 
+        /**
+         * @return constructs TwitterStream
+         */
         public TwitterStream build(){
             return new TwitterStreamImpl(buildConfiguration());
         }
@@ -145,23 +158,39 @@ public interface TwitterStream {
         final List<StreamListener> streamListeners = new ArrayList<>();
         final List<RawStreamListener> rawStreamListeners = new ArrayList<>();
 
+        /**
+         * @param listener listener
+         * @return this instance
+         */
         public TwitterStreamBuilder connectionLifeCycleListener(@NotNull ConnectionLifeCycleListener listener) {
             this.connectionLifeCycleListeners.add(listener);
             return this;
         }
 
 
+        /**
+         * @param streamListener adds listener
+         * @return this instance
+         */
         public TwitterStreamBuilder listener(@NotNull StreamListener streamListener) {
             this.streamListeners.add(streamListener);
             return this;
         }
 
+        /**
+         * @param rawStreamListener listener
+         * @return this instance
+         */
         public TwitterStreamBuilder listener(@NotNull RawStreamListener rawStreamListener) {
             this.rawStreamListeners.add(rawStreamListener);
             return this;
         }
 
 
+        /**
+         * @param onStatus listener
+         * @return this instance
+         */
         public TwitterStreamBuilder onStatus(@NotNull Consumer<Status> onStatus) {
             this.streamListeners.add(new StatusAdapter() {
                 @Override
@@ -173,6 +202,10 @@ public interface TwitterStream {
             return this;
         }
 
+        /**
+         * @param onException listener
+         * @return this instance
+         */
         public TwitterStreamBuilder onException(Consumer<Exception> onException) {
             this.streamListeners.add(new StatusAdapter() {
                 @Override

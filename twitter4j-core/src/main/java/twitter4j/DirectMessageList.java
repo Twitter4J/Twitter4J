@@ -10,5 +10,8 @@ package twitter4j;
  */
 public interface DirectMessageList extends ResponseList<DirectMessage> {
 
+    /**
+     * @return next cursor
+     */
     String getNextCursor();
 }

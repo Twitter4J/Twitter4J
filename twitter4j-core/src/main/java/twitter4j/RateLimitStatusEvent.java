@@ -36,14 +36,23 @@ public final class RateLimitStatusEvent extends java.util.EventObject {
         this.isAccountRateLimitStatus = isAccountRateLimitStatus;
     }
 
+    /**
+     * @return rate limit status
+     */
     public RateLimitStatus getRateLimitStatus() {
         return rateLimitStatus;
     }
 
+    /**
+     * @return returns true if it's an account based rate limit status
+     */
     public boolean isAccountRateLimitStatus() {
         return isAccountRateLimitStatus;
     }
 
+    /**
+     * @return returns true if it's an IP based rate limit status
+     */
     public boolean isIPRateLimitStatus() {
         return !isAccountRateLimitStatus;
     }

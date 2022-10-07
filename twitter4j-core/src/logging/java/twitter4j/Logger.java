@@ -23,7 +23,7 @@ import java.util.function.Function;
  * @since Twitter4J 2.1.0
  */
 @SuppressWarnings("unused")
-public abstract class Logger {
+abstract class Logger {
     private static final Function<String, Logger> factory;
 
     static {

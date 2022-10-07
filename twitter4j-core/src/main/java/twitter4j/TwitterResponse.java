@@ -40,10 +40,25 @@ public interface TwitterResponse extends java.io.Serializable {
      */
     AccessLevel getAccessLevel();
 
+    /**
+     * access level
+     */
     enum AccessLevel {
+        /**
+         * none
+         */
         NONE,
+        /**
+         * read
+         */
         READ,
+        /**
+         * read and write
+         */
         READ_WRITE,
+        /**
+         * read, write and direct messages
+         */
         READ_WRITE_DIRECTMESSAGES
     }
 

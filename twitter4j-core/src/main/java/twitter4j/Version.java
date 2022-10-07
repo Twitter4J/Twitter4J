@@ -27,6 +27,9 @@ public final class Version {
         throw new AssertionError();
     }
 
+    /**
+     * @return version string
+     */
     public static String getVersion() {
         return VERSION;
     }

@@ -33,60 +33,161 @@ import java.util.*;
 @SuppressWarnings("unused")
 public final class Query implements java.io.Serializable {
     private static final long serialVersionUID = 7196404519192910019L;
+    /**
+     * query
+     */
     @NotNull
     public final String query;
+    /**
+     * lang
+     */
     public final String lang;
+    /**
+     * locale
+     */
     public final String locale;
+    /**
+     * maxId
+     */
     public final long maxId;
+    /**
+     * count
+     */
     public final int count;
+    /**
+     * since
+     */
     @Nullable
     public final String since;
+    /**
+     * sinceId
+     */
     public final long sinceId;
+    /**
+     * geocode
+     */
     @Nullable
     public final String geocode;
+    /**
+     * until
+     */
     @Nullable
     public final String until;
+    /**
+     * result type
+     */
     @Nullable
     public final ResultType resultType;
+    /**
+     * next page query
+     */
     @Nullable
     final String nextPageQuery;
 
+    /**
+     * creates a new Query instance with the specified lang
+     *
+     * @param lang lang
+     * @return new Query instance
+     */
     @NotNull
     public Query withLang(@NotNull String lang) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
+    /**
+     * creates a new Query instance with the specified locale
+     *
+     * @param locale locale
+     * @return new Query instance
+     */
     @NotNull
     public Query withLocale(@NotNull String locale) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
+    /**
+     * creates a new Query instance with the specified maxId
+     *
+     * @param maxId maxId
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withMaxId(long maxId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified count
+     *
+     * @param count count
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withCount(int count) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified since
+     *
+     * @param since since
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withSince(@NotNull String since) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, null, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified sinceId
+     *
+     * @param sinceId sinceId
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withSinceId(long sinceId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified geolocation
+     *
+     * @param location geolocation
+     * @param radius   radius
+     * @param unit     unit
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withGeoCode(@NotNull GeoLocation location, double radius
-                , Unit unit) {
-          String geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+            , Unit unit) {
+        String geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified until
+     *
+     * @param until until
+     * @return new Query instance
+     */
+
     @NotNull
     public Query withUntil(@NotNull String until) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
+
+    /**
+     * creates a new Query instance with the specified result type
+     *
+     * @param resultType result type
+     * @return new Query instance
+     */
     @NotNull
     public Query withResultType(@NotNull ResultType resultType) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
@@ -108,6 +209,10 @@ public final class Query implements java.io.Serializable {
         this.nextPageQuery = nextPageQuery;
     }
 
+    /**
+     * @param query query
+     * @return Query
+     */
     @NotNull
     public static Query of(@NotNull String query) {
         return new Query(query, null, null, -1, -1, null, -1, null, null, null, null);
@@ -161,12 +266,28 @@ public final class Query implements java.io.Serializable {
     }
 
 
+    /**
+     * miles
+     */
     @SuppressWarnings("unused")
     public static final Unit MILES = Unit.mi;
+    /**
+     * kilo meters
+     */
     public static final Unit KILOMETERS = Unit.km;
 
+    /**
+     * unit
+     */
     public enum Unit {
-        mi, km
+        /**
+         * miles
+         */
+        mi,
+        /**
+         * kilo meters
+         */
+        km
     }
 
 
@@ -185,8 +306,22 @@ public final class Query implements java.io.Serializable {
     @SuppressWarnings("unused")
     public final static ResultType RECENT = ResultType.recent;
 
+    /**
+     * result type
+     */
     public enum ResultType {
-        popular, mixed, recent
+        /**
+         * popular
+         */
+        popular,
+        /**
+         * mixed
+         */
+        mixed,
+        /**
+         * recent
+         */
+        recent
     }
 
 

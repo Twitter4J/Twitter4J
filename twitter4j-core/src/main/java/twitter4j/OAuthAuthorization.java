@@ -46,7 +46,6 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
 
     private final String oAuthAuthorizationURL;
     private final String oAuthAuthenticationURL;
-    // constructors
 
     /**
      * @param conf configuration
@@ -66,6 +65,9 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         this.realm = conf.oAuthRealm;
     }
 
+    /**
+     * @return builder for {@link OAuthAuthorization}
+     */
     public static OAuthAuthorizationBuilder newBuilder() {
         return new OAuthAuthorizationBuilder();
     }
@@ -377,8 +379,8 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
      * 1.	Parameters are sorted by name, using lexicographical byte value ordering. If two or more parameters share the same name, they are sorted by their value. For example:<br>
      * 2.	                    a=1, c=hi%20there, f=25, f=50, f=a, z=p, z=t<br>
      * 3.	<br>
-     * 4.	Parameters are concatenated in their sorted order into a single string. For each parameter, the name is separated from the corresponding value by an ‘=’ character (ASCII code 61), even if the value is empty. Each name-value pair is separated by an ‘&’ character (ASCII code 38). For example:<br>
-     * 5.	                    a=1&c=hi%20there&f=25&f=50&f=a&z=p&z=t<br>
+     * 4.	Parameters are concatenated in their sorted order into a single string. For each parameter, the name is separated from the corresponding value by an ‘=’ character (ASCII code 61), even if the value is empty. Each name-value pair is separated by an ‘&amp;’ character (ASCII code 38). For example:<br>
+     * 5.	                    a=1&amp;c=hi%20there&amp;f=25&amp;f=50&amp;f=a&amp;z=p&amp;z=t<br>
      * 6.	<br>
      *
      * @param params parameters to be normalized and concatenated
@@ -410,7 +412,7 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
         return encodeParameters(httpParams, "&", false);
     }
 
-    public static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
+    static String encodeParameters(List<HttpParameter> httpParams, String splitter, boolean quot) {
         StringBuilder buf = new StringBuilder();
         for (HttpParameter param : httpParams) {
             if (!param.isFile() && !param.isJson()) {

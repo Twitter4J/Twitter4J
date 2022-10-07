@@ -23,6 +23,7 @@ import twitter4j.TwitterException;
 import java.util.List;
 
 /**
+ * GetUserTimeline
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */

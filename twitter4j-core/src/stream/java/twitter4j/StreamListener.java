@@ -21,5 +21,8 @@ package twitter4j;
  * @since Twitter4J 2.1.8
  */
 public interface StreamListener {
+    /**
+     * @param ex exception
+     */
     void onException(Exception ex);
 }

@@ -50,6 +50,9 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
         }
     }
 
+    /**
+     * @return builder for {@link OAuth2Authorization}
+     */
     public static OAuth2AuthorizationBuilder newBuilder() {
         return new OAuth2AuthorizationBuilder();
     }

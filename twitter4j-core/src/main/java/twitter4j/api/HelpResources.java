@@ -38,11 +38,23 @@ public interface HelpResources {
      */
     ResponseList<Language> getLanguages() throws TwitterException;
 
+    /**
+     * represents language
+     */
     interface Language extends Serializable {
+        /**
+         * @return language name
+         */
         String getName();
 
+        /**
+         * @return language code
+         */
         String getCode();
 
+        /**
+         * @return status
+         */
         String getStatus();
     }
 

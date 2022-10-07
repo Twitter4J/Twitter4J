@@ -27,6 +27,7 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
+@SuppressWarnings("unused")
 public final class StatusUpdate implements java.io.Serializable {
 
     private static final long serialVersionUID = 7422094739799350035L;
@@ -43,72 +44,84 @@ public final class StatusUpdate implements java.io.Serializable {
     private boolean autoPopulateReplyMetadata;
     private String attachmentUrl = null;
 
+    /**
+     * @param status tweet text
+     */
     public StatusUpdate(String status) {
         this.status = status;
     }
 
+    /**
+     * @return status
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * @return in reply to status id
+     */
     public long getInReplyToStatusId() {
         return inReplyToStatusId;
     }
 
-    public void setInReplyToStatusId(long inReplyToStatusId) {
-        this.inReplyToStatusId = inReplyToStatusId;
-    }
 
+    /**
+     * @param inReplyToStatusId in reply to status id
+     * @return this instance
+     */
     public StatusUpdate inReplyToStatusId(long inReplyToStatusId) {
-        setInReplyToStatusId(inReplyToStatusId);
-        return this;
-    }
-
-    public GeoLocation getLocation() {
-        return location;
-    }
-
-    public void setLocation(GeoLocation location) {
-        this.location = location;
-    }
-
-    public StatusUpdate location(GeoLocation location) {
-        setLocation(location);
-        return this;
-    }
-
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
-    public StatusUpdate placeId(String placeId) {
-        setPlaceId(placeId);
-        return this;
-    }
-
-    public boolean isDisplayCoordinates() {
-        return displayCoordinates;
-    }
-
-    public void setDisplayCoordinates(boolean displayCoordinates) {
-        this.displayCoordinates = displayCoordinates;
-    }
-
-    public StatusUpdate displayCoordinates(boolean displayCoordinates) {
-        setDisplayCoordinates(displayCoordinates);
+        this.inReplyToStatusId = inReplyToStatusId;
         return this;
     }
 
     /**
-     * @param file media file
-     * @since Twitter4J 2.2.5
+     * @return location
      */
-    public void setMedia(File file) {
-        this.mediaFile = file;
+    public GeoLocation getLocation() {
+        return location;
+    }
+
+
+    /**
+     * @param location location
+     * @return this instance
+     */
+    public StatusUpdate location(GeoLocation location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * @return place id
+     */
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    /**
+     * @param placeId place id
+     * @return this instance
+     */
+    public StatusUpdate placeId(String placeId) {
+        this.placeId = placeId;
+        return this;
+    }
+
+    /**
+     * @return display coordinates
+     */
+    public boolean isDisplayCoordinates() {
+        return displayCoordinates;
+    }
+
+    /**
+     * @param displayCoordinates display coordinates
+     * @return this instance
+     */
+    public StatusUpdate displayCoordinates(boolean displayCoordinates) {
+        this.displayCoordinates = displayCoordinates;
+        return this;
     }
 
     /**
@@ -117,7 +130,7 @@ public final class StatusUpdate implements java.io.Serializable {
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate media(File file) {
-        setMedia(file);
+        this.mediaFile = file;
         return this;
     }
 
@@ -149,19 +162,11 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      * @param attachmentUrl attachment url
-     * @since Twitter4J 4.0.7
-     */
-    public void setAttachmentUrl(String attachmentUrl) {
-        this.attachmentUrl = attachmentUrl;
-    }
-
-    /**
-     * @param attachmentUrl attachment url
      * @return status update
      * @since Twitter4J 4.0.7
      */
     public StatusUpdate attachmentUrl(String attachmentUrl) {
-        setAttachmentUrl(attachmentUrl);
+        this.attachmentUrl = attachmentUrl;
         return this;
     }
 
@@ -182,19 +187,11 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      * @param possiblySensitive possibly sensitive
-     * @since Twitter4J 2.2.5
-     */
-    public void setPossiblySensitive(boolean possiblySensitive) {
-        this.possiblySensitive = possiblySensitive;
-    }
-
-    /**
-     * @param possiblySensitive possibly sensitive
      * @return this instance
      * @since Twitter4J 2.2.5
      */
     public StatusUpdate possiblySensitive(boolean possiblySensitive) {
-        setPossiblySensitive(possiblySensitive);
+        this.possiblySensitive = possiblySensitive;
         return this;
     }
 
@@ -216,19 +213,11 @@ public final class StatusUpdate implements java.io.Serializable {
 
     /**
      * @param autoPopulateReplyMetadata auto reply meta data
-     * @since Twitter4J 4.0.7
-     */
-    public void setAutoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
-        this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
-    }
-
-    /**
-     * @param autoPopulateReplyMetadata auto reply meta data
      * @return this instance
      * @since Twitter4J 4.0.7
      */
     public StatusUpdate autoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
-        setAutoPopulateReplyMetadata(autoPopulateReplyMetadata);
+        this.autoPopulateReplyMetadata = autoPopulateReplyMetadata;
         return this;
     }
 
@@ -274,7 +263,7 @@ public final class StatusUpdate implements java.io.Serializable {
         params.add(new HttpParameter(name, String.valueOf(value)));
     }
 
-    private void appendParameter(String name, long value, List<HttpParameter> params) {
+    private void appendParameter(@SuppressWarnings("SameParameterValue") String name, long value, List<HttpParameter> params) {
         params.add(new HttpParameter(name, String.valueOf(value)));
     }
 

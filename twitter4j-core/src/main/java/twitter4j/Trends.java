@@ -26,6 +26,9 @@ import java.util.Date;
  */
 
 public interface Trends extends TwitterResponse, Comparable<Trends>, java.io.Serializable {
+    /**
+     * @return trends
+     */
     Trend[] getTrends();
 
     /**
@@ -38,8 +41,15 @@ public interface Trends extends TwitterResponse, Comparable<Trends>, java.io.Ser
      */
     Location getLocation();
 
+    /**
+     * @return as of date
+     */
+    @SuppressWarnings("unused")
     Date getAsOf();
 
+    /**
+     * @return date trending at
+     */
     Date getTrendAt();
 
 }

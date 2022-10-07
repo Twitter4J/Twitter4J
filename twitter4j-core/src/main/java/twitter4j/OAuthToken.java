@@ -48,10 +48,17 @@ abstract class OAuthToken implements java.io.Serializable {
         token = getParameter("oauth_token");
     }
 
+    /**
+     * returns token
+     * @return token
+     */
     public String getToken() {
         return token;
     }
 
+    /**
+     * @return token secret
+     */
     public String getTokenSecret() {
         return tokenSecret;
     }
@@ -64,7 +71,7 @@ abstract class OAuthToken implements java.io.Serializable {
         return secretKeySpec;
     }
 
-    public String getParameter(String parameter) {
+    String getParameter(String parameter) {
         String value = null;
         for (String str : responseStr) {
             if (str.startsWith(parameter + '=')) {

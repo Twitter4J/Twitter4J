@@ -22,6 +22,9 @@ package twitter4j.util;
  */
 public final class CharacterUtil {
 
+    /**
+     * max tweet length
+     */
     public static final int MAX_TWEET_LENGTH = 280;
 
     private CharacterUtil() {

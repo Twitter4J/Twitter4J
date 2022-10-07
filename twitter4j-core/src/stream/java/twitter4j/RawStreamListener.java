@@ -20,5 +20,8 @@ package twitter4j;
  * @since Twitter4J 3.0.2
  */
 public interface RawStreamListener extends StreamListener {
+    /**
+     * @param rawString ras string
+     */
     void onMessage(String rawString);
 }

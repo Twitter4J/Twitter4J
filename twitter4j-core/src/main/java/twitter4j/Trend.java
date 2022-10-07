@@ -24,10 +24,19 @@ package twitter4j;
  * @since Twitter4J 2.0.2
  */
 public interface Trend extends java.io.Serializable {
+    /**
+     * @return name
+     */
     String getName();
 
+    /**
+     * @return url
+     */
     String getURL();
 
+    /**
+     * @return query
+     */
     String getQuery();
 
     /**

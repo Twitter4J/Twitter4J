@@ -22,6 +22,9 @@ import java.net.URLEncoder;
 import java.util.Objects;
 
 
+/**
+ * OAuth2Token
+ */
 public class OAuth2Token implements java.io.Serializable {
 
     private static final long serialVersionUID = -8985359441959903216L;
@@ -39,15 +42,25 @@ public class OAuth2Token implements java.io.Serializable {
         }
     }
 
+    /**
+     * @param tokenType token type
+     * @param accessToken access token
+     */
     public OAuth2Token(String tokenType, String accessToken) {
         this.tokenType = tokenType;
         this.accessToken = accessToken;
     }
 
+    /**
+     * @return token type
+     */
     public String getTokenType() {
         return tokenType;
     }
 
+    /**
+     * @return access token
+     */
     public String getAccessToken() {
         return accessToken;
     }

@@ -22,6 +22,11 @@ import twitter4j.TwitterStream;
  * example code to explain lambda expression. Prints tweets containing twitter4j or #twitter4j.
  */
 public class TwitterStreamLambda {
+    /**
+     * example code to explain lambda expression. Prints tweets containing twitter4j or #twitter4j.
+     *
+     * @param args not used
+     */
     public static void main(String... args) {
         TwitterStream.newBuilder()
                 .onStatus(e -> System.out.printf("@%s %s%n", e.getUser().getScreenName(), e.getText()))

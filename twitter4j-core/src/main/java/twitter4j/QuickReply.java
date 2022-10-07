@@ -17,6 +17,9 @@ package twitter4j;
 
 import java.util.Objects;
 
+/**
+ * Quick reply
+ */
 public final class QuickReply implements java.io.Serializable {
     private static final long serialVersionUID = 2928983476392757806L;
     private final String label;
@@ -34,14 +37,23 @@ public final class QuickReply implements java.io.Serializable {
         this.metadata = metadata;
     }
 
+    /**
+     * @return label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @return meta data
+     */
     public String getMetadata() {
         return metadata;
     }

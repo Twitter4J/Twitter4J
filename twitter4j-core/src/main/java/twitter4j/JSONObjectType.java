@@ -20,7 +20,10 @@ package twitter4j;
  * @author Dan Checkoway - dcheckoway at gmail.com
  * @since Twitter4J 2.1.9
  */
-public final class JSONObjectType {
+final class JSONObjectType {
+    /**
+     * type of json object
+     */
     public enum Type {
         SENDER,
         STATUS,

@@ -68,7 +68,6 @@ final class PropertyConfiguration {
     private static final String STREAM_THREAD_NAME = "streamThreadName";
 
     private static final String CONTRIBUTING_TO = "contributingTo";
-    private static final String INCLUDE_MY_RETWEET = "includeMyRetweet";
     private static final String INCLUDE_ENTITIES = "includeEntities";
     private static final String INCLUDE_EXT_ALT_TEXT = "includeExtAltText";
     private static final String TWEET_MODE_EXTENDED = "tweetModeExtended";
@@ -254,9 +253,6 @@ final class PropertyConfiguration {
 
         if (notNull(props, STREAM_BASE_URL)) {
             conf.streamBaseURL = getString(props, STREAM_BASE_URL);
-        }
-        if (notNull(props, INCLUDE_MY_RETWEET)) {
-            conf.includeMyRetweetEnabled = getBoolean(props, INCLUDE_MY_RETWEET);
         }
         if (notNull(props, INCLUDE_ENTITIES)) {
             conf.includeEntitiesEnabled = getBoolean(props, INCLUDE_ENTITIES);

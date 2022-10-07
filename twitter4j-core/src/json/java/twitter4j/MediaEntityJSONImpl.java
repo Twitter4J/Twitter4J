@@ -24,7 +24,7 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.3
  */
-public class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
+class MediaEntityJSONImpl extends EntityIndex implements MediaEntity {
     private static final long serialVersionUID = 1571961225214439778L;
     protected long id;
     protected String url;

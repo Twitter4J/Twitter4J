@@ -73,7 +73,6 @@ class Configuration<T2 extends Configuration> {
 
     long contributingTo = -1L;
 
-    boolean includeMyRetweetEnabled = true;
     boolean includeEntitiesEnabled = true;
     boolean trimUserEnabled = false;
     boolean includeExtAltTextEnabled = true;
@@ -102,12 +101,12 @@ class Configuration<T2 extends Configuration> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Configuration<?> that = (Configuration<?>) o;
-        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeMyRetweetEnabled == that.includeMyRetweetEnabled && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && Objects.equals(rateLimitStatusListeners, that.rateLimitStatusListeners) && Objects.equals(rateLimitReachedListeners, that.rateLimitReachedListeners) && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuthRealm, that.oAuthRealm) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName) && Objects.equals(auth, that.auth) && Objects.equals(http, that.http) && Objects.equals(factory, that.factory);
+        return httpProxySocks == that.httpProxySocks && httpProxyPort == that.httpProxyPort && httpConnectionTimeout == that.httpConnectionTimeout && httpReadTimeout == that.httpReadTimeout && prettyDebug == that.prettyDebug && gzipEnabled == that.gzipEnabled && httpStreamingReadTimeout == that.httpStreamingReadTimeout && httpRetryCount == that.httpRetryCount && httpRetryIntervalSeconds == that.httpRetryIntervalSeconds && contributingTo == that.contributingTo && includeEntitiesEnabled == that.includeEntitiesEnabled && trimUserEnabled == that.trimUserEnabled && includeExtAltTextEnabled == that.includeExtAltTextEnabled && tweetModeExtended == that.tweetModeExtended && jsonStoreEnabled == that.jsonStoreEnabled && mbeanEnabled == that.mbeanEnabled && stallWarningsEnabled == that.stallWarningsEnabled && applicationOnlyAuthEnabled == that.applicationOnlyAuthEnabled && Objects.equals(rateLimitStatusListeners, that.rateLimitStatusListeners) && Objects.equals(rateLimitReachedListeners, that.rateLimitReachedListeners) && Objects.equals(user, that.user) && Objects.equals(password, that.password) && Objects.equals(httpProxyHost, that.httpProxyHost) && Objects.equals(httpProxyUser, that.httpProxyUser) && Objects.equals(httpProxyPassword, that.httpProxyPassword) && Objects.equals(oAuthConsumerKey, that.oAuthConsumerKey) && Objects.equals(oAuthConsumerSecret, that.oAuthConsumerSecret) && Objects.equals(oAuthAccessToken, that.oAuthAccessToken) && Objects.equals(oAuthAccessTokenSecret, that.oAuthAccessTokenSecret) && Objects.equals(oAuthRealm, that.oAuthRealm) && Objects.equals(oAuth2TokenType, that.oAuth2TokenType) && Objects.equals(oAuth2AccessToken, that.oAuth2AccessToken) && Objects.equals(oAuth2Scope, that.oAuth2Scope) && Objects.equals(oAuthRequestTokenURL, that.oAuthRequestTokenURL) && Objects.equals(oAuthAuthorizationURL, that.oAuthAuthorizationURL) && Objects.equals(oAuthAccessTokenURL, that.oAuthAccessTokenURL) && Objects.equals(oAuthAuthenticationURL, that.oAuthAuthenticationURL) && Objects.equals(oAuthInvalidateTokenURL, that.oAuthInvalidateTokenURL) && Objects.equals(oAuth2TokenURL, that.oAuth2TokenURL) && Objects.equals(oAuth2InvalidateTokenURL, that.oAuth2InvalidateTokenURL) && Objects.equals(restBaseURL, that.restBaseURL) && Objects.equals(streamBaseURL, that.streamBaseURL) && Objects.equals(uploadBaseURL, that.uploadBaseURL) && Objects.equals(streamThreadName, that.streamThreadName) && Objects.equals(auth, that.auth) && Objects.equals(http, that.http) && Objects.equals(factory, that.factory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rateLimitStatusListeners, rateLimitReachedListeners, user, password, httpProxyHost, httpProxyUser, httpProxyPassword, httpProxySocks, httpProxyPort, httpConnectionTimeout, httpReadTimeout, prettyDebug, gzipEnabled, httpStreamingReadTimeout, httpRetryCount, httpRetryIntervalSeconds, oAuthConsumerKey, oAuthConsumerSecret, oAuthAccessToken, oAuthAccessTokenSecret, oAuthRealm, oAuth2TokenType, oAuth2AccessToken, oAuth2Scope, oAuthRequestTokenURL, oAuthAuthorizationURL, oAuthAccessTokenURL, oAuthAuthenticationURL, oAuthInvalidateTokenURL, oAuth2TokenURL, oAuth2InvalidateTokenURL, restBaseURL, streamBaseURL, uploadBaseURL, contributingTo, includeMyRetweetEnabled, includeEntitiesEnabled, trimUserEnabled, includeExtAltTextEnabled, tweetModeExtended, jsonStoreEnabled, mbeanEnabled, stallWarningsEnabled, applicationOnlyAuthEnabled, streamThreadName, auth, http, factory);
+        return Objects.hash(rateLimitStatusListeners, rateLimitReachedListeners, user, password, httpProxyHost, httpProxyUser, httpProxyPassword, httpProxySocks, httpProxyPort, httpConnectionTimeout, httpReadTimeout, prettyDebug, gzipEnabled, httpStreamingReadTimeout, httpRetryCount, httpRetryIntervalSeconds, oAuthConsumerKey, oAuthConsumerSecret, oAuthAccessToken, oAuthAccessTokenSecret, oAuthRealm, oAuth2TokenType, oAuth2AccessToken, oAuth2Scope, oAuthRequestTokenURL, oAuthAuthorizationURL, oAuthAccessTokenURL, oAuthAuthenticationURL, oAuthInvalidateTokenURL, oAuth2TokenURL, oAuth2InvalidateTokenURL, restBaseURL, streamBaseURL, uploadBaseURL, contributingTo, includeEntitiesEnabled, trimUserEnabled, includeExtAltTextEnabled, tweetModeExtended, jsonStoreEnabled, mbeanEnabled, stallWarningsEnabled, applicationOnlyAuthEnabled, streamThreadName, auth, http, factory);
     }
 
     @Override
@@ -145,7 +144,6 @@ class Configuration<T2 extends Configuration> {
                 ", streamBaseURL='" + streamBaseURL + '\'' +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
                 ", contributingTo=" + contributingTo +
-                ", includeMyRetweetEnabled=" + includeMyRetweetEnabled +
                 ", includeEntitiesEnabled=" + includeEntitiesEnabled +
                 ", trimUserEnabled=" + trimUserEnabled +
                 ", includeExtAltTextEnabled=" + includeExtAltTextEnabled +
@@ -166,146 +164,252 @@ class Configuration<T2 extends Configuration> {
         return strToMask.replaceAll(".", "*");
     }
 
+    /**
+     * @param prettyDebugEnabled enabled
+     * @return this instance
+     */
     public T2 prettyDebugEnabled(boolean prettyDebugEnabled) {
         this.prettyDebug = prettyDebugEnabled;
         return (T2) this;
     }
 
+    /**
+     * @param gzipEnabled enabled
+     * @return this instance
+     */
     public T2 gzipEnabled(boolean gzipEnabled) {
         this.gzipEnabled = gzipEnabled;
         return (T2) this;
     }
 
+    /**
+     * @param applicationOnlyAuthEnabled applicationOnlyAuthEnabled
+     * @return this instance
+     */
     public T2 applicationOnlyAuthEnabled(boolean applicationOnlyAuthEnabled) {
         this.applicationOnlyAuthEnabled = applicationOnlyAuthEnabled;
         return (T2) this;
     }
 
+    /**
+     * @param props props
+     * @return this instance
+     */
     public T2 load(Properties props) {
         PropertyConfiguration.load(this, props);
         return (T2) this;
     }
 
+    /**
+     * @param httpProxyHost http proxy host
+     * @return this instance
+     */
     public T2 httpProxyHost(String httpProxyHost) {
         this.httpProxyHost = httpProxyHost;
         return (T2) this;
     }
 
+    /**
+     * @param httpProxyUser http proxy user
+     * @return this instance
+     */
     public T2 httpProxyUser(String httpProxyUser) {
         this.httpProxyUser = httpProxyUser;
         return (T2) this;
     }
 
+    /**
+     * @param httpProxyPassword http proxy password
+     * @return this instance
+     */
     public T2 httpProxyPassword(String httpProxyPassword) {
         this.httpProxyPassword = httpProxyPassword;
         return (T2) this;
     }
 
+    /**
+     * @param httpProxyPort http proxy port
+     * @return this instance
+     */
     public T2 httpProxyPort(int httpProxyPort) {
         this.httpProxyPort = httpProxyPort;
         return (T2) this;
     }
 
+    /**
+     * @param httpProxySocks http proxy socks
+     * @return this instance
+     */
     public T2 httpProxySocks(boolean httpProxySocks) {
         this.httpProxySocks = httpProxySocks;
         return (T2) this;
     }
 
+    /**
+     * @param httpConnectionTimeout http connection timeout in milliseconds
+     * @return this instance
+     */
     public T2 httpConnectionTimeout(int httpConnectionTimeout) {
         this.httpConnectionTimeout = httpConnectionTimeout;
         return (T2) this;
     }
 
+    /**
+     * @param httpReadTimeout http read timeout in milliseconds
+     * @return this instance
+     */
     public T2 httpReadTimeout(int httpReadTimeout) {
         this.httpReadTimeout = httpReadTimeout;
         return (T2) this;
     }
 
+    /**
+     * @param httpStreamingReadTimeout http streaming timeout in milliseconds
+     * @return this instance
+     */
     public T2 httpStreamingReadTimeout(int httpStreamingReadTimeout) {
         this.httpStreamingReadTimeout = httpStreamingReadTimeout;
         return (T2) this;
     }
 
+    /**
+     * @param httpRetryCount http retry count
+     * @return this instance
+     */
     public T2 httpRetryCount(int httpRetryCount) {
         this.httpRetryCount = httpRetryCount;
         return (T2) this;
     }
 
+    /**
+     * @param httpRetryIntervalSeconds http retry interval in seconds
+     * @return this instance
+     */
     public T2 httpRetryIntervalSeconds(int httpRetryIntervalSeconds) {
         this.httpRetryIntervalSeconds = httpRetryIntervalSeconds;
         return (T2) this;
     }
 
+    /**
+     * @param oAuthConsumerKey OAuth consumer key
+     * @param oAuthConsumerSecret OAuth consumer secret
+     * @return this instance
+     */
     public T2 oAuthConsumer(String oAuthConsumerKey, String oAuthConsumerSecret) {
         this.oAuthConsumerKey = oAuthConsumerKey;
         this.oAuthConsumerSecret = oAuthConsumerSecret;
         return (T2) this;
     }
 
+    /**
+     * @param oAuthAccessToken OAuth access token
+     * @param oAuthAccessTokenSecret OAuth access token secret
+     * @return this instance
+     */
     public T2 oAuthAccessToken(String oAuthAccessToken, String oAuthAccessTokenSecret) {
         this.oAuthAccessToken = oAuthAccessToken;
         this.oAuthAccessTokenSecret = oAuthAccessTokenSecret;
         return (T2) this;
     }
 
+    /**
+     * @param accessToken access token
+     * @return this instance
+     */
     public T2 oAuthAccessToken(AccessToken accessToken) {
         this.oAuthAccessToken = accessToken.getToken();
         this.oAuthAccessTokenSecret = accessToken.getTokenSecret();
         return (T2) this;
     }
 
+    /**
+     * @param oAuth2TokenType OAuth2 token type
+     * @param oAuth2AccessToken OAuth2 access token
+     * @return this instance
+     */
     public T2 oAuth2Token(String oAuth2TokenType, String oAuth2AccessToken) {
         this.oAuth2TokenType = oAuth2TokenType;
         this.oAuth2AccessToken = oAuth2AccessToken;
         return (T2) this;
     }
 
+    /**
+     * @param oAuth2Token OAuth2 token
+     * @return this instance
+     */
     public T2 oAuth2Token(OAuth2Token oAuth2Token) {
         this.oAuth2TokenType = oAuth2Token.getTokenType();
         this.oAuth2AccessToken = oAuth2Token.getAccessToken();
         return (T2) this;
     }
 
+    /**
+     * @param oAuth2Scope OAuth2 scope
+     * @return this instance
+     */
     public T2 oAuth2Scope(String oAuth2Scope) {
         this.oAuth2Scope = oAuth2Scope;
         return (T2) this;
     }
 
+    /**
+     * @param contributingTo contributing to user id
+     * @return this instance
+     */
     public T2 contributingTo(long contributingTo) {
         this.contributingTo = contributingTo;
         return (T2) this;
     }
 
+    /**
+     * @param enabled trim user enabled
+     * @return this instance
+     */
     public T2 trimUserEnabled(boolean enabled) {
         this.trimUserEnabled = enabled;
         return (T2) this;
     }
 
+    /**
+     * @param enabled include ext alt text enabled
+     * @return this instance
+     */
     public T2 includeExtAltTextEnabled(boolean enabled) {
         this.includeExtAltTextEnabled = enabled;
         return (T2) this;
     }
 
+    /**
+     * @param enabled tweet mode extended
+     * @return this instance
+     */
     public T2 tweetModeExtended(boolean enabled) {
         this.tweetModeExtended = enabled;
         return (T2) this;
     }
 
-    public T2 includeMyRetweetEnabled(boolean enabled) {
-        this.includeMyRetweetEnabled = enabled;
-        return (T2) this;
-    }
-
+    /**
+     * @param enabled enabled
+     * @return this instance
+     */
     public T2 includeEntitiesEnabled(boolean enabled) {
         this.includeEntitiesEnabled = enabled;
         return (T2) this;
     }
 
+    /**
+     * @param enabled enabled
+     * @return this instance
+     */
     public T2 jsonStoreEnabled(boolean enabled) {
         this.jsonStoreEnabled = enabled;
         return (T2) this;
     }
 
+    /**
+     * @param enabled mbean enabled
+     * @return this instance
+     */
     public T2 mBeanEnabled(boolean enabled) {
         this.mbeanEnabled = enabled;
         return (T2) this;
@@ -317,6 +421,7 @@ class Configuration<T2 extends Configuration> {
      * @param action the action to be added
      * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 4.0.4
+     * @return this instance
      */
     public T2 onRateLimitStatus(final Consumer<RateLimitStatusEvent> action) {
         rateLimitStatusListeners.add(action);
@@ -329,6 +434,7 @@ class Configuration<T2 extends Configuration> {
      * @param action the action to be added
      * @see <a href="https://dev.twitter.com/docs/rate-limiting">Rate Limiting | Twitter Developers</a>
      * @since Twitter4J 4.0.4
+     * @return this instance
      */
     public T2 onRateLimitReached(final Consumer<RateLimitStatusEvent> action) {
         rateLimitReachedListeners.add(action);

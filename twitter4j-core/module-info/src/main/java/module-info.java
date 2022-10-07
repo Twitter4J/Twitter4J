@@ -1,3 +1,6 @@
+/**
+ * Twitter4J
+ */
 module org.twitter4j {
     requires java.management;
     requires java.logging;

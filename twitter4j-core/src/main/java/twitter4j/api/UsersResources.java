@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
+ * interface for user resources
  * @author Joern Huxhorn - jhuxhorn at googlemail.com
  */
 public interface UsersResources {

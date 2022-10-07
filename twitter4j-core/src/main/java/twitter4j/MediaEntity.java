@@ -50,18 +50,48 @@ public interface MediaEntity extends URLEntity {
      */
     Map<Integer, Size> getSizes();
 
+    /**
+     * size
+     */
     interface Size extends java.io.Serializable {
+        /**
+         * thumbnail
+         */
         Integer THUMB = 0;
+        /**
+         * small
+         */
         Integer SMALL = 1;
+        /**
+         * medium
+         */
         Integer MEDIUM = 2;
+        /**
+         * large
+         */
         Integer LARGE = 3;
+        /**
+         * fit
+         */
         int FIT = 100;
+        /**
+         * crop
+         */
         int CROP = 101;
 
+        /**
+         * @return width
+         */
         int getWidth();
 
+        /**
+         * @return height
+         */
         int getHeight();
 
+        /**
+         * @return resize
+         */
         int getResize();
     }
 
@@ -72,22 +102,49 @@ public interface MediaEntity extends URLEntity {
      */
     String getType();
 
+    /**
+     * @return video aspect ratio width
+     */
     int getVideoAspectRatioWidth();
 
+    /**
+     * @return video aspect ratio height
+     */
     int getVideoAspectRatioHeight();
 
+    /**
+     * @return video duration in milliseconds
+     */
     long getVideoDurationMillis();
 
+    /**
+     * Variant
+     */
     interface Variant extends java.io.Serializable {
 
+        /**
+         * @return bit rate
+         */
         int getBitrate();
 
+        /**
+         * @return content type
+         */
         String getContentType();
 
+        /**
+         * @return url
+         */
         String getUrl();
     }
 
+    /**
+     * @return array of video variants
+     */
     Variant[] getVideoVariants();
 
+    /**
+     * @return alt text
+     */
     String getExtAltText();
 }

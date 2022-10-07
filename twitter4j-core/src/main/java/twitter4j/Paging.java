@@ -30,13 +30,29 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "SameParameterValue", "UnusedReturnValue"})
 public final class Paging implements java.io.Serializable {
     private static final long serialVersionUID = -7226113618341047983L;
+    /**
+     * page
+     */
     public final int page;
+    /**
+     * count
+     */
     public final int count;
+    /**
+     * since id
+     */
     public final long sinceId;
+    /**
+     * max id
+     */
     public final long maxId;
 
     static Paging empty = new Paging(-1,-1,-1,-1);
 
+    /**
+     * @param page page
+     * @return Paging instance
+     */
     @NotNull
     public static Paging ofPage(int page) {
         if (page < 1) {
@@ -45,6 +61,11 @@ public final class Paging implements java.io.Serializable {
         return new Paging(page, -1,-1,-1);
     }
 
+    /**
+     * creates a new Paging instance with the specified page
+     * @param page page
+     * @return new Paging instance
+     */
     @NotNull
     public Paging withPage(int page) {
         if (page < 1) {
@@ -54,6 +75,11 @@ public final class Paging implements java.io.Serializable {
     }
 
 
+    /**
+     * creates a new Paging instance with the specified count
+     * @param count count
+     * @return new Paging instance
+     */
     @NotNull
     public static Paging ofCount(int count) {
         if (count < 1) {
@@ -62,6 +88,11 @@ public final class Paging implements java.io.Serializable {
         return new Paging(-1, count,-1,-1);
     }
 
+    /**
+     * creates a new Paging instance with the specified count
+     * @param count count
+     * @return new Paging instance
+     */
     @NotNull
     public Paging withCount(int count) {
         if (count < 1) {
@@ -70,6 +101,11 @@ public final class Paging implements java.io.Serializable {
         return new Paging(this.page, count, this.sinceId, this.maxId);
     }
 
+    /**
+     * creates a new Paging instance with the specified sinceId
+     * @param sinceId page
+     * @return new Paging instance
+     */
     @NotNull
     public static Paging ofSinceId(long sinceId) {
         if (sinceId < 1) {
@@ -78,6 +114,11 @@ public final class Paging implements java.io.Serializable {
         return new Paging(-1, -1,sinceId,-1);
     }
 
+    /**
+     * creates a new Paging instance with the specified sinceId
+     * @param sinceId page
+     * @return new Paging instance
+     */
     @NotNull
     public Paging withSinceId(long sinceId) {
         if (sinceId < 1) {
@@ -87,6 +128,11 @@ public final class Paging implements java.io.Serializable {
     }
 
 
+    /**
+     * creates a new Paging instance with the specified maxId
+     * @param maxId maxId
+     * @return new Paging instance
+     */
     @NotNull
     public static Paging ofMaxId(long maxId) {
         if (maxId < 1) {
@@ -94,7 +140,11 @@ public final class Paging implements java.io.Serializable {
         }
         return new Paging(-1, -1,-1,maxId);
     }
-
+    /**
+     * creates a new Paging instance with the specified maxId
+     * @param maxId maxId
+     * @return new Paging instance
+     */
     @NotNull
     public Paging withMaxId(long maxId) {
         if (maxId < 1) {

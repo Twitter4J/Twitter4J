@@ -23,6 +23,11 @@ import twitter4j.TwitterException;
  * example code to explain lambda expression for handling rate limits
  */
 public class RateLimitLambda {
+    /**
+     * example code to explain lambda expression for handling rate limits
+     *
+     * @param args not used
+     */
     public static void main(String... args) {
         var timelines = Twitter.newBuilder()
                 .onRateLimitStatus(e -> System.out.println("rate limit remaining: " + e.getRateLimitStatus().getRemaining()))

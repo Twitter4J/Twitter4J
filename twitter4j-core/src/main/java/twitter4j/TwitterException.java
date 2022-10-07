@@ -35,16 +35,26 @@ public class TwitterException extends Exception implements TwitterResponse, Http
     private HttpResponse response;
     private String errorMessage = null;
 
+    /**
+     * @param message message
+     * @param cause cause
+     */
     public TwitterException(String message, Throwable cause) {
         super(message, cause);
         decode(message);
     }
 
+    /**
+     * @param message message
+     */
     public TwitterException(String message) {
         this(message, (Throwable) null);
     }
 
 
+    /**
+     * @param cause cause
+     */
     public TwitterException(Exception cause) {
         this(cause.getMessage(), cause);
         if (cause instanceof TwitterException) {
@@ -52,12 +62,21 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         }
     }
 
+    /**
+     * @param message message
+     * @param res response
+     */
     public TwitterException(String message, HttpResponse res) {
         this(message);
         response = res;
         this.statusCode = res.getStatusCode();
     }
 
+    /**
+     * @param message message
+     * @param cause cause
+     * @param statusCode status code
+     */
     public TwitterException(String message, Exception cause, int statusCode) {
         this(message, cause);
         this.statusCode = statusCode;
@@ -95,14 +114,24 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         }
     }
 
+    /**
+     * @return status code
+     */
     public int getStatusCode() {
         return this.statusCode;
     }
 
+    /**
+     * @return error code
+     */
     public int getErrorCode() {
         return this.errorCode;
     }
 
+    /**
+     * @param name header name
+     * @return response header
+     */
     public String getResponseHeader(String name) {
         String value = null;
         if (response != null) {

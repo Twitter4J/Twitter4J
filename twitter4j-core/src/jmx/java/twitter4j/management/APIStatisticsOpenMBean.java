@@ -113,6 +113,9 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         return info;
     }
 
+    /**
+     * @return TabularDataSupport
+     */
     public synchronized TabularDataSupport getStatistics() {
         TabularDataSupport apiStatisticsTable = new TabularDataSupport(API_STATISTICS_TYPE);
 
@@ -137,6 +140,9 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
         return apiStatisticsTable;
     }
 
+    /**
+     * reset statistics
+     */
     public void reset() {
         API_STATISTICS.reset();
     }

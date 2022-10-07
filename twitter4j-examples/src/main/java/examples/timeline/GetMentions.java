@@ -24,6 +24,7 @@ import twitter4j.User;
 import java.util.List;
 
 /**
+ * GetMentions
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */

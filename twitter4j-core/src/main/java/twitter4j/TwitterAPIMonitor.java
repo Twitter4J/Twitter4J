@@ -63,10 +63,16 @@ public class TwitterAPIMonitor {
     private TwitterAPIMonitor() {
     }
 
+    /**
+     * @return TwitterAPIMonitor
+     */
     public static TwitterAPIMonitor getInstance() {
         return SINGLETON;
     }
 
+    /**
+     * @return statistics
+     */
     public APIStatisticsMBean getStatistics() {
         return STATISTICS;
     }

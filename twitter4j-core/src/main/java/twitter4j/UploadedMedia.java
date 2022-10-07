@@ -41,34 +41,58 @@ public final class UploadedMedia implements java.io.Serializable {
         init(json);
     }
 
+    /**
+     * @return image width
+     */
     public int getImageWidth() {
         return imageWidth;
     }
 
+    /**
+     * @return image height
+     */
     public int getImageHeight() {
         return imageHeight;
     }
 
+    /**
+     * @return image type
+     */
     public String getImageType() {
         return imageType;
     }
 
+    /**
+     * @return media id
+     */
     public long getMediaId() {
         return mediaId;
     }
 
+    /**
+     * @return size
+     */
     public long getSize() {
         return size;
     }
 
+    /**
+     * @return processing state
+     */
     public String getProcessingState() {
         return processingState;
     }
 
+    /**
+     * @return processingCheckAfterSecs
+     */
     public int getProcessingCheckAfterSecs() {
         return processingCheckAfterSecs;
     }
 
+    /**
+     * @return progressPercent
+     */
     public int getProgressPercent() {
         return progressPercent;
     }

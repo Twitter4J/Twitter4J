@@ -22,7 +22,7 @@ package twitter4j;
  * @author Aaron Rankin - aaron at sproutsocial.com
  * @since Twitter4J 3.0.6
  */
-public class ScopesImpl implements Scopes {
+class ScopesImpl implements Scopes {
     private static final long serialVersionUID = -6301829625595514787L;
 
     private final String[] placeIds;

@@ -27,6 +27,7 @@ import java.util.Locale;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.0
  */
+@SuppressWarnings("unused")
 public final class TimeSpanConverter implements Serializable {
     private static final int ONE_HOUR_IN_SECONDS = 60 * 60;
     private static final int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
@@ -46,6 +47,7 @@ public final class TimeSpanConverter implements Serializable {
     /**
      * Constructs an instance with default locale
      */
+    @SuppressWarnings("unused")
     public TimeSpanConverter() {
         this(Locale.getDefault());
     }
@@ -123,10 +125,18 @@ public final class TimeSpanConverter implements Serializable {
         }
     }
 
+    /**
+     * @param date date
+     * @return time span string
+     */
     public String toTimeSpanString(Date date) {
         return toTimeSpanString(date.getTime());
     }
 
+    /**
+     * @param milliseconds time to span in milliseconds
+     * @return relative time
+     */
     public String toTimeSpanString(long milliseconds) {
         int deltaInSeconds = (int) ((System.currentTimeMillis() - milliseconds) / 1000);
         if (deltaInSeconds >= ONE_DAY_IN_SECONDS) {

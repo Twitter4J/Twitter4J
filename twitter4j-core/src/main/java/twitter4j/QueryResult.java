@@ -24,18 +24,39 @@ import java.util.List;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface QueryResult extends TwitterResponse, java.io.Serializable {
+    /**
+     * @return sinceId
+     */
     long getSinceId();
 
+    /**
+     * @return maxId
+     */
     long getMaxId();
 
+    /**
+     * @return refresh URL
+     */
     String getRefreshURL();
 
+    /**
+     * @return count
+     */
     int getCount();
 
+    /**
+     * @return completed in
+     */
     double getCompletedIn();
 
+    /**
+     * @return query
+     */
     String getQuery();
 
+    /**
+     * @return tweets
+     */
     List<Status> getTweets();
 
     /**

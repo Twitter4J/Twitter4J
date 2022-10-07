@@ -26,6 +26,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @author Yusuke Yamamoto - yusuke at twitter.com
  * @since Twitter4J 3.0.0
  */
+@SuppressWarnings("unused")
 public final class StallWarning implements Serializable {
     private static final long serialVersionUID = -4294628635422470314L;
     private final String code;
@@ -40,14 +41,23 @@ public final class StallWarning implements Serializable {
 
     }
 
+    /**
+     * @return code
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * @return message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * @return percent full
+     */
     public int getPercentFull() {
         return percentFull;
     }

@@ -43,6 +43,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return the email of the user
      */
+    @SuppressWarnings("unused")
     String getEmail();
 
     /**
@@ -72,6 +73,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return if the user is enabling contributors
      * @since Twitter4J 2.1.2
      */
+    @SuppressWarnings("unused")
     boolean isContributorsEnabled();
 
     /**
@@ -81,30 +83,53 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     String getProfileImageURL();
 
+    /**
+     * @return bigger profile image URL
+     */
     String getBiggerProfileImageURL();
 
+    /**
+     * @return mini profile image URL
+     */
     String getMiniProfileImageURL();
 
+    /**
+     * @return original profile image URL
+     */
     String getOriginalProfileImageURL();
 
     /**
      * @return profile image url
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     String get400x400ProfileImageURL();
 
+    /**
+     * @return profile image URL
+     */
     String getProfileImageURLHttps();
 
+    /**
+     * @return profile image URL
+     */
     String getBiggerProfileImageURLHttps();
 
+    /**
+     * @return mini profile image URL
+     */
     String getMiniProfileImageURLHttps();
 
+    /**
+     * @return original profile image URL
+     */
     String getOriginalProfileImageURLHttps();
 
     /**
      * @return profile image url
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     String get400x400ProfileImageURLHttps();
 
     /**
@@ -145,16 +170,35 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     Status getStatus();
 
+    /**
+     * @return profile background color
+     */
     String getProfileBackgroundColor();
 
+    /**
+     * @return profile text color
+     */
     String getProfileTextColor();
 
+    /**
+     * @return profile link color
+     */
     String getProfileLinkColor();
 
+    /**
+     * @return profile sidebar fill color
+     */
     String getProfileSidebarFillColor();
 
+    /**
+     * @return profile sidebar border color
+     */
     String getProfileSidebarBorderColor();
 
+    /**
+     * @return profile use background image
+     */
+    @SuppressWarnings("unused")
     boolean isProfileUseBackgroundImage();
 
     /**
@@ -162,8 +206,13 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      *
      * @return if the user has not altered the theme or background
      */
+    @SuppressWarnings("unused")
     boolean isDefaultProfile();
 
+    /**
+     * @return show all inline media
+     */
+    @SuppressWarnings("unused")
     boolean isShowAllInlineMedia();
 
     /**
@@ -173,16 +222,36 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     int getFriendsCount();
 
+    /**
+     * @return created at
+     */
     Date getCreatedAt();
 
+    /**
+     * @return favorites count
+     */
     int getFavouritesCount();
 
+    /**
+     * @return UTC offset
+     */
+    @SuppressWarnings("unused")
     int getUtcOffset();
 
+    /**
+     * @return time zone
+     */
     String getTimeZone();
 
+    /**
+     * @return profile background image URL
+     */
     String getProfileBackgroundImageURL();
 
+    /**
+     * @return profile background image URL
+     */
+    @SuppressWarnings("unused")
     String getProfileBackgroundImageUrlHttps();
 
     /**
@@ -225,20 +294,27 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return profile banner 300x100 URL
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     String getProfileBanner300x100URL();
 
     /**
      * @return profile banner 600x200 URL
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     String getProfileBanner600x200URL();
 
     /**
      * @return profile banner 1500x500 URL
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     String getProfileBanner1500x500URL();
 
+    /**
+     * @return profile background tiled
+     */
+    @SuppressWarnings("unused")
     boolean isProfileBackgroundTiled();
 
     /**
@@ -249,6 +325,9 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      */
     String getLang();
 
+    /**
+     * @return status count
+     */
     int getStatusesCount();
 
     /**
@@ -267,6 +346,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return returns true if the user is a translator
      * @since Twitter4J 2.1.9
      */
+    @SuppressWarnings("unused")
     boolean isTranslator();
 
     /**
@@ -309,6 +389,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
      * @return list of country codes where the tweet is withheld - null if not withheld
      * @since Twitter4j 4.0.3
      */
+    @SuppressWarnings("MismatchedJavadocCode")
     String[] getWithheldInCountries();
 
 }

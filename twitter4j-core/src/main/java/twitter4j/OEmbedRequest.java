@@ -25,6 +25,7 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.2
  */
+@SuppressWarnings("unused")
 public final class OEmbedRequest implements Serializable {
     private static final long serialVersionUID = 7454130135274547901L;
     private final long statusId;
@@ -44,97 +45,184 @@ public final class OEmbedRequest implements Serializable {
         this.url = url;
     }
 
+    /**
+     * @param maxWidth max width
+     */
     public void setMaxWidth(int maxWidth) {
         this.maxWidth = maxWidth;
     }
 
+    /**
+     * @param maxWidth max width
+     * @return this instance
+     */
     public OEmbedRequest MaxWidth(int maxWidth) {
         this.maxWidth = maxWidth;
         return this;
     }
 
+    /**
+     * @param hideMedia hide media
+     */
     public void setHideMedia(boolean hideMedia) {
         this.hideMedia = hideMedia;
     }
 
+    /**
+     * @param hideMedia hide media
+     * @return this instance
+     */
     public OEmbedRequest HideMedia(boolean hideMedia) {
         this.hideMedia = hideMedia;
         return this;
     }
 
+    /**
+     * @param hideThread hide thread
+     */
     public void setHideThread(boolean hideThread) {
         this.hideThread = hideThread;
     }
 
+    /**
+     * @param hideThread hide thread
+     * @return this instance
+     */
     public OEmbedRequest HideThread(boolean hideThread) {
         this.hideThread = hideThread;
         return this;
     }
 
+    /**
+     * @param omitScript omit script
+     */
     public void setOmitScript(boolean omitScript) {
         this.omitScript = omitScript;
     }
 
+    /**
+     * @param omitScript omit script
+     * @return this instance
+     */
     public OEmbedRequest omitScript(boolean omitScript) {
         this.omitScript = omitScript;
         return this;
     }
 
+    /**
+     * @param align align
+     */
     public void setAlign(Align align) {
         this.align = align;
     }
 
+    /**
+     * @param align align
+     * @return this instance
+     */
     public OEmbedRequest align(Align align) {
         this.align = align;
         return this;
     }
 
+    /**
+     * @param related related
+     */
     public void setRelated(String[] related) {
         this.related = related;
     }
 
+    /**
+     * @param related related
+     * @return this instance
+     */
     public OEmbedRequest related(String[] related) {
         this.related = related;
         return this;
     }
 
+    /**
+     * @param lang language
+     */
     public void setLang(String lang) {
         this.lang = lang;
     }
 
+    /**
+     * @param lang language
+     * @return this instance
+     */
     public OEmbedRequest lang(String lang) {
         this.lang = lang;
         return this;
     }
 
+    /**
+     * @param widgetType widget type
+     */
     public void setWidgetType(WidgetType widgetType) {
         this.widgetType = widgetType;
     }
 
+    /**
+     * @param widgetType widget type
+     * @return this instance
+     */
     public OEmbedRequest widgetType(WidgetType widgetType) {
         this.widgetType = widgetType;
         return this;
     }
 
+    /**
+     * @param hideTweet hide tweet
+     */
     public void setHideTweet(boolean hideTweet) {
         this.hideTweet = hideTweet;
     }
 
+    /**
+     * @param hideTweet hide tweet
+     * @return this instance
+     */
     public OEmbedRequest hideTweet(boolean hideTweet) {
         this.hideTweet = hideTweet;
         return this;
     }
 
 
+    /**
+     * align
+     */
     public enum Align {
+        /**
+         * left
+         */
         LEFT,
+        /**
+         * center
+         */
         CENTER,
+        /**
+         * right
+         */
         RIGHT,
+        /**
+         * none
+         */
         NONE
     }
 
+    /**
+     * widget type
+     */
     public enum WidgetType {
+        /**
+         * video
+         */
         VIDEO,
+        /**
+         * none
+         */
         NONE
     }
 

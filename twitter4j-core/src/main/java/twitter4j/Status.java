@@ -24,6 +24,7 @@ import java.util.Date;
  *
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
+@SuppressWarnings("unused")
 public interface Status extends Comparable<Status>, TwitterResponse,
         EntitySupport, java.io.Serializable {
     /**
@@ -48,8 +49,14 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      */
     String getText();
 
+    /**
+     * @return display text range end
+     */
     int getDisplayTextRangeStart();
 
+    /**
+     * @return display text range end
+     */
     int getDisplayTextRangeEnd();
 
     /**

@@ -21,7 +21,7 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 3.0.2
  */
-public class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.io.Serializable {
+class OEmbedJSONImpl extends TwitterResponseImpl implements OEmbed, java.io.Serializable {
     private static final long serialVersionUID = -2207801480251709819L;
     private String html;
     private String authorName;

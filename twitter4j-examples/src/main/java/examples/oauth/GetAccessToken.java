@@ -28,6 +28,7 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
+ * Acquire access token
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.7
  */

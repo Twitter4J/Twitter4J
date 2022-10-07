@@ -20,17 +20,38 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Location extends java.io.Serializable {
+    /**
+     * @return woe id
+     */
     int getWoeid();
 
+    /**
+     * @return country name
+     */
     String getCountryName();
 
+    /**
+     * @return country code
+     */
     String getCountryCode();
 
+    /**
+     * @return place name
+     */
     String getPlaceName();
 
+    /**
+     * @return place code
+     */
     int getPlaceCode();
 
+    /**
+     * @return name
+     */
     String getName();
 
+    /**
+     * @return url
+     */
     String getURL();
 }

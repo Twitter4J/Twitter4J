@@ -22,6 +22,10 @@ package twitter4j;
  * @author Yusuke Yamamoto - yusuke at mac.com
  */
 public interface Authorization extends java.io.Serializable {
+    /**
+     * @param req request
+     * @return header
+     */
     String getAuthorizationHeader(HttpRequest req);
 
     /**

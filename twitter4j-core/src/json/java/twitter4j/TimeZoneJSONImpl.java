@@ -20,7 +20,7 @@ package twitter4j;
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com
  */
-public class TimeZoneJSONImpl implements TimeZone {
+class TimeZoneJSONImpl implements TimeZone {
     private static final long serialVersionUID = 81958969762484144L;
     private final String NAME;
     private final String TZINFO_NAME;

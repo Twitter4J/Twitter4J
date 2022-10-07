@@ -19,10 +19,20 @@ package twitter4j;
 /**
  * @author Alessandro Bahgat - ale.bahgat at gmail.com
  */
+@SuppressWarnings("unused")
 public interface TimeZone extends java.io.Serializable {
+    /**
+     * @return name
+     */
     String getName();
 
+    /**
+     * @return time zone info name
+     */
     String tzinfoName();
 
+    /**
+     * @return UTC offset
+     */
     int utcOffset();
 }

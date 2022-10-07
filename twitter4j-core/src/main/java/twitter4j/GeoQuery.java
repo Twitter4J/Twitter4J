@@ -24,6 +24,7 @@ import java.util.Objects;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.1.1
  */
+@SuppressWarnings("unused")
 public final class GeoQuery implements java.io.Serializable {
 
     private static final long serialVersionUID = 5434503339001056634L;
@@ -65,6 +66,9 @@ public final class GeoQuery implements java.io.Serializable {
         this.location = location;
     }
 
+    /**
+     * @return geo location
+     */
     public GeoLocation getLocation() {
         return location;
     }
@@ -78,14 +82,23 @@ public final class GeoQuery implements java.io.Serializable {
         return query;
     }
 
+    /**
+     * @param query query
+     */
     public void setQuery(String query) {
         this.query = query;
     }
 
+    /**
+     * @return ip
+     */
     public String getIp() {
         return ip;
     }
 
+    /**
+     * @return accuracy
+     */
     public String getAccuracy() {
         return accuracy;
     }
@@ -99,11 +112,22 @@ public final class GeoQuery implements java.io.Serializable {
         this.accuracy = accuracy;
     }
 
+
+    /**
+     * Sets a hint on the "region" in which to search.  If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet.  If this is not passed in, then it is assumed to be 0m.  If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
+     *
+     * @param accuracy a hint on the "region" in which to search.
+     * @return this instance
+     */
     public GeoQuery accuracy(String accuracy) {
         setAccuracy(accuracy);
         return this;
     }
 
+    /**
+     * returns granularity
+     * @return granularity
+     */
     public String getGranularity() {
         return granularity;
     }
@@ -117,11 +141,21 @@ public final class GeoQuery implements java.io.Serializable {
         this.granularity = granularity;
     }
 
+
+    /**
+     * Sets the minimal granularity of data to return.  If this is not passed in, then neighborhood is assumed.  city can also be passed.
+     *
+     * @param granularity the minimal granularity of data to return
+     * @return this instance
+     */
     public GeoQuery granularity(String granularity) {
         setGranularity(granularity);
         return this;
     }
 
+    /**
+     * @return max results
+     */
     public int getMaxResults() {
         return maxResults;
     }
@@ -135,6 +169,12 @@ public final class GeoQuery implements java.io.Serializable {
         this.maxResults = maxResults;
     }
 
+    /**
+     * Sets a hint as to the number of results to return.  This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return.  Ideally, only pass in the number of places you intend to display to the user here.
+     *
+     * @param maxResults A hint as to the number of results to return.
+     * @return this instance
+     */
     public GeoQuery maxResults(int maxResults) {
         setMaxResults(maxResults);
         return this;
@@ -165,7 +205,7 @@ public final class GeoQuery implements java.io.Serializable {
         }
     }
 
-    private void appendParameter(String name, int value, List<HttpParameter> params) {
+    private void appendParameter(@SuppressWarnings("SameParameterValue") String name, int value, List<HttpParameter> params) {
         if (0 < value) {
             params.add(new HttpParameter(name, String.valueOf(value)));
         }

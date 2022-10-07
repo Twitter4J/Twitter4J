@@ -31,7 +31,7 @@ public final class RequestToken extends OAuthToken implements java.io.Serializab
         this.oAuthAuthenticationURL = oAuthAuthenticationURL;
     }
 
-    public RequestToken(String token, String tokenSecret, String oAuthAuthorizationURL, String oAuthAuthenticationURL) {
+    RequestToken(String token, String tokenSecret, String oAuthAuthorizationURL, String oAuthAuthenticationURL) {
         super(token, tokenSecret);
         this.oAuthAuthorizationURL = oAuthAuthorizationURL;
         this.oAuthAuthenticationURL = oAuthAuthenticationURL;
