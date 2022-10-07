@@ -25,12 +25,24 @@ import java.util.Date;
  */
 public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.Serializable {
 
+    /**
+     * @return id
+     */
     long getId();
 
+    /**
+     * @return text
+     */
     String getText();
 
+    /**
+     * @return sender id
+     */
     long getSenderId();
 
+    /**
+     * @return recipient id
+     */
     long getRecipientId();
 
     /**

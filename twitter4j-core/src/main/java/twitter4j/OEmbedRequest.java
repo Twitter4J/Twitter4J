@@ -40,6 +40,10 @@ public final class OEmbedRequest implements Serializable {
     private WidgetType widgetType = WidgetType.NONE;
     private boolean hideTweet = false;
 
+    /**
+     * @param statusId status id
+     * @param url URL
+     */
     public OEmbedRequest(long statusId, String url) {
         this.statusId = statusId;
         this.url = url;

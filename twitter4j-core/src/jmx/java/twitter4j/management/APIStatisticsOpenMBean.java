@@ -41,6 +41,9 @@ public class APIStatisticsOpenMBean implements DynamicMBean {
     private final APIStatisticsMBean API_STATISTICS;
     private final TabularType API_STATISTICS_TYPE;
 
+    /**
+     * @param apiStatistics api statistics
+     */
     public APIStatisticsOpenMBean(APIStatistics apiStatistics) {
         API_STATISTICS = apiStatistics;
 
