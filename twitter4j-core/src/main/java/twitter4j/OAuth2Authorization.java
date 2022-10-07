@@ -29,12 +29,33 @@ public class OAuth2Authorization implements Authorization, java.io.Serializable 
 
     private static final long serialVersionUID = -2895232598422218647L;
 
+    /**
+     * consumerKey
+     */
     private final String consumerKey;
+    /**
+     * consumerSecret
+     */
     private final String consumerSecret;
+    /**
+     * token
+     */
     private OAuth2Token token;
+    /**
+     * oAuth2Scope
+     */
     private final String oAuth2Scope;
+    /**
+     * http
+     */
     private final HttpClient http;
+    /**
+     * oAuth2TokenURL
+     */
     private final String oAuth2TokenURL;
+    /**
+     * oAuth2InvalidateTokenURL
+     */
     private final String oAuth2InvalidateTokenURL;
 
     OAuth2Authorization(@SuppressWarnings("rawtypes") Configuration conf) {

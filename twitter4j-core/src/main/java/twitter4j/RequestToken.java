@@ -22,7 +22,13 @@ package twitter4j;
  */
 public final class RequestToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = -8806439091674811734L;
+    /**
+     * oAuthAuthorizationURL
+     */
     private final String oAuthAuthorizationURL;
+    /**
+     * oAuthAuthenticationURL
+     */
     private final String oAuthAuthenticationURL;
 
     RequestToken(HttpResponse res, String oAuthAuthorizationURL, String oAuthAuthenticationURL) throws TwitterException {

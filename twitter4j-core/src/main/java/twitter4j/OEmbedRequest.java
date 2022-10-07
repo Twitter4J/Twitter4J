@@ -28,16 +28,49 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public final class OEmbedRequest implements Serializable {
     private static final long serialVersionUID = 7454130135274547901L;
+    /**
+     * statusId
+     */
     private final long statusId;
+    /**
+     * URL
+     */
     private final String url;
+    /**
+     * maxWidth
+     */
     private int maxWidth;
+    /**
+     * hideMedia
+     */
     private boolean hideMedia = true;
+    /**
+     * hideThread
+     */
     private boolean hideThread = true;
+    /**
+     * omitScript
+     */
     private boolean omitScript = false;
+    /**
+     * align
+     */
     private Align align = Align.NONE;
+    /**
+     * related
+     */
     private String[] related = {};
+    /**
+     * lang
+     */
     private String lang;
+    /**
+     * widgetType
+     */
     private WidgetType widgetType = WidgetType.NONE;
+    /**
+     * hideTweet
+     */
     private boolean hideTweet = false;
 
     /**

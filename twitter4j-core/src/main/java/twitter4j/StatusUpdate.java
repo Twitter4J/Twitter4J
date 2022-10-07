@@ -31,17 +31,50 @@ import java.util.Objects;
 public final class StatusUpdate implements java.io.Serializable {
 
     private static final long serialVersionUID = 7422094739799350035L;
+    /**
+     * String
+     */
     private final String status;
+    /**
+     * inReplyToStatusId
+     */
     private long inReplyToStatusId = -1L;
+    /**
+     * location
+     */
     private GeoLocation location = null;
+    /**
+     * placeId
+     */
     private String placeId = null;
+    /**
+     * displayCoordinates
+     */
     private boolean displayCoordinates = true;
+    /**
+     * possiblySensitive
+     */
     private boolean possiblySensitive;
+    /**
+     * mediaName
+     */
     private String mediaName;
     private transient InputStream mediaBody;
+    /**
+     * mediaFile
+     */
     private File mediaFile;
+    /**
+     * mediaIds
+     */
     private long[] mediaIds;
+    /**
+     * autoPopulateReplyMetadata
+     */
     private boolean autoPopulateReplyMetadata;
+    /**
+     * attachmentUrl
+     */
     private String attachmentUrl = null;
 
     /**

@@ -28,13 +28,37 @@ public final class UploadedMedia implements java.io.Serializable {
 
     private static final long serialVersionUID = 5393092535610604718L;
 
+    /**
+     * imageWidth
+     */
     private int imageWidth;
+    /**
+     * imageHeight
+     */
     private int imageHeight;
+    /**
+     * imageType
+     */
     private String imageType;
+    /**
+     * mediaId
+     */
     private long mediaId;
+    /**
+     * size
+     */
     private long size;
+    /**
+     * processingState
+     */
     private String processingState;
+    /**
+     * processingCheckAfterSecs
+     */
     private int processingCheckAfterSecs;
+    /**
+     * progressPercent
+     */
     private int progressPercent;
 
     /*package*/ UploadedMedia(JSONObject json) throws TwitterException {

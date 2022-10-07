@@ -22,8 +22,17 @@ import java.util.Objects;
  */
 public final class QuickReply implements java.io.Serializable {
     private static final long serialVersionUID = 2928983476392757806L;
+    /**
+     * label
+     */
     private final String label;
+    /**
+     * description
+     */
     private final String description;
+    /**
+     * metadata
+     */
     private final String metadata;
 
     /**

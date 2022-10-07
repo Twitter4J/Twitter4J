@@ -28,8 +28,14 @@ import java.util.Objects;
 public class OAuth2Token implements java.io.Serializable {
 
     private static final long serialVersionUID = -8985359441959903216L;
+    /**
+     * token type
+     */
     private final String tokenType;
 
+    /**
+     * access token
+     */
     private final String accessToken;
 
     OAuth2Token(HttpResponse res) throws TwitterException {

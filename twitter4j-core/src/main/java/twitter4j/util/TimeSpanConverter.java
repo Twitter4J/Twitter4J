@@ -33,8 +33,17 @@ public final class TimeSpanConverter implements Serializable {
     private static final int ONE_DAY_IN_SECONDS = 24 * ONE_HOUR_IN_SECONDS;
     private static final int ONE_MONTH_IN_SECONDS = 30 * ONE_DAY_IN_SECONDS;
     private static final long serialVersionUID = 8665013607650804076L;
+    /**
+     * formats
+     */
     private final MessageFormat[] formats = new MessageFormat[6];
+    /**
+     * dateMonth
+     */
     private final SimpleDateFormat dateMonth;
+    /**
+     * dateMonthYear
+     */
     private final SimpleDateFormat dateMonthYear;
 
     private static final int NOW = 0;

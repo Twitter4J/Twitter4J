@@ -28,11 +28,29 @@ import java.util.Objects;
 public final class GeoQuery implements java.io.Serializable {
 
     private static final long serialVersionUID = 5434503339001056634L;
+    /**
+     * location
+     */
     private GeoLocation location;
+    /**
+     * query
+     */
     private String query = null;
+    /**
+     * ip
+     */
     private String ip = null;
+    /**
+     * accuracy
+     */
     private String accuracy = null;
+    /**
+     * granularity
+     */
     private String granularity = null;
+    /**
+     * maxResults
+     */
     private int maxResults = -1;
 
     /**

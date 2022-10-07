@@ -26,8 +26,14 @@ package twitter4j;
 public final class RateLimitStatusEvent extends java.util.EventObject {
 
     private static final long serialVersionUID = 3749366911109722414L;
+    /**
+     * rateLimitStatus
+     */
     private final RateLimitStatus rateLimitStatus;
 
+    /**
+     * isAccountRateLimitStatus
+     */
     private final boolean isAccountRateLimitStatus;
 
     RateLimitStatusEvent(Object source, RateLimitStatus rateLimitStatus, boolean isAccountRateLimitStatus) {

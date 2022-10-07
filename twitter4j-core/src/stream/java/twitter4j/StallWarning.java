@@ -29,8 +29,17 @@ import static twitter4j.ParseUtil.getRawString;
 @SuppressWarnings("unused")
 public final class StallWarning implements Serializable {
     private static final long serialVersionUID = -4294628635422470314L;
+    /**
+     * code
+     */
     private final String code;
+    /**
+     * message
+     */
     private final String message;
+    /**
+     * percentFull
+     */
     private final int percentFull;
 
     StallWarning(JSONObject json) throws JSONException {

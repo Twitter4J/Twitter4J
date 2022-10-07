@@ -35,16 +35,46 @@ public class OAuthAuthorization implements Authorization, java.io.Serializable {
     private static final String HMAC_SHA1 = "HmacSHA1";
     private static final HttpParameter OAUTH_SIGNATURE_METHOD = new HttpParameter("oauth_signature_method", "HMAC-SHA1");
     private static final Logger logger = Logger.getLogger();
+    /**
+     * consumer key
+     */
     private final String consumerKey;
+    /**
+     * consumer secret
+     */
     private final String consumerSecret;
+    /**
+     * realm
+     */
     private final String realm;
+    /**
+     * oauth token
+     */
     private OAuthToken oauthToken = null;
+    /**
+     * http
+     */
     private final HttpClient http;
+    /**
+     * oAuthRequestTokenURL
+     */
     private final String oAuthRequestTokenURL;
+    /**
+     * oAuthAccessTokenURL
+     */
     private final String oAuthAccessTokenURL;
+    /**
+     * oAuthInvalidateTokenURL
+     */
     private final String oAuthInvalidateTokenURL;
 
+    /**
+     * oAuthAuthorizationURL
+     */
     private final String oAuthAuthorizationURL;
+    /**
+     * oAuthAuthenticationURL
+     */
     private final String oAuthAuthenticationURL;
 
     /**

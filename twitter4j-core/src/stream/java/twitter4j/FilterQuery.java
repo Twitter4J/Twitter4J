@@ -26,11 +26,29 @@ import java.util.Objects;
  */
 public final class FilterQuery implements java.io.Serializable {
     private static final long serialVersionUID = -142808200594318258L;
+    /**
+     * count
+     */
     private int count;
+    /**
+     * follow
+     */
     private long[] follow;
+    /**
+     * track
+     */
     private String[] track;
+    /**
+     * locations
+     */
     private double[][] locations;
+    /**
+     * language
+     */
     private String[] language;
+    /**
+     * filter level
+     */
     private String filterLevel;
 
     /**

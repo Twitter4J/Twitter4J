@@ -29,10 +29,25 @@ import static twitter4j.ParseUtil.getInt;
  */
 public class TwitterException extends Exception implements TwitterResponse, HttpResponseCode {
     private static final long serialVersionUID = 6006561839051121336L;
+    /**
+     * statusCode
+     */
     private int statusCode = -1;
+    /**
+     * errorCode
+     */
     private int errorCode = -1;
+    /**
+     * exceptionDiagnosis
+     */
     private ExceptionDiagnosis exceptionDiagnosis = null;
+    /**
+     * response
+     */
     private HttpResponse response;
+    /**
+     * errorMessage
+     */
     private String errorMessage = null;
 
     /**
@@ -244,6 +259,9 @@ public class TwitterException extends Exception implements TwitterResponse, Http
         return exceptionDiagnosis;
     }
 
+    /**
+     * nested
+     */
     private boolean nested = false;
 
     void setNested() {

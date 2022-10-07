@@ -26,7 +26,13 @@ import java.util.Objects;
  */
 public class AccessToken extends OAuthToken implements java.io.Serializable {
     private static final long serialVersionUID = 2470022129505774772L;
+    /**
+     * screen name
+     */
     private String screenName;
+    /**
+     * screen name
+     */
     private long userId = -1L;
 
     AccessToken(HttpResponse res) throws TwitterException {
