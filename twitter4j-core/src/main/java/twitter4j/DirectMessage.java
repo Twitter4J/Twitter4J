@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A data interface representing sent/received direct message.
@@ -49,7 +49,7 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
      * @return created_at
      * @since Twitter4J 1.1.0
      */
-    Date getCreatedAt();
+    LocalDateTime getCreatedAt();
 
 
     /**
@@ -64,6 +64,7 @@ public interface DirectMessage extends TwitterResponse, EntitySupport, java.io.S
      * @see <a href="https://developer.twitter.com/en/docs/twitter-api/v1/direct-messages/quick-replies/overview">Quick Replies</a>
      * @since Twitter4J 4.0.8
      */
+    @SuppressWarnings("unused")
     String getQuickReplyResponse();
 
     // currently type is always "message_create". So we're not providing a getter for that.

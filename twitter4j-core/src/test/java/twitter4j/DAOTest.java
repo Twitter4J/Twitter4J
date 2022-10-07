@@ -21,6 +21,8 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.*;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -519,7 +521,9 @@ class DAOTest extends TwitterTestBase {
         // single Status
         List<Status> statuses = StatusJSONImpl.createStatusList(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), true);
         Status status = statuses.get(0);
-        assertEquals(new Date(1259041785000L), status.getCreatedAt());
+        assertEquals(Instant.ofEpochMilli(1259041785000L)
+                .atZone(ZoneId.of("UTC"))
+                .toLocalDateTime(), status.getCreatedAt());
         assertEquals(6000554383L, status.getId());
         assertEquals("G_Shock22", status.getInReplyToScreenName());
         assertEquals(6000444309L, status.getInReplyToStatusId());
@@ -536,7 +540,9 @@ class DAOTest extends TwitterTestBase {
     void testRetweetStatusAsJSON() throws Exception {
         // single Status
         Status status = new StatusJSONImpl(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), true);
-        assertEquals(new Date(1259078050000L), status.getCreatedAt());
+        assertEquals(Instant.ofEpochMilli(1259078050000L)
+                .atZone(ZoneId.of("UTC"))
+                .toLocalDateTime(), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
         assertNull(status.getInReplyToScreenName());
         assertEquals(-1L, status.getInReplyToStatusId());
@@ -625,7 +631,9 @@ class DAOTest extends TwitterTestBase {
     void testDirectMessagesAsJSON() throws Exception {
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), true);
         DirectMessage dm = directMessages.get(0);
-        assertEquals(new java.util.Date(1248177356000L), dm.getCreatedAt());
+        assertEquals(Instant.ofEpochMilli(1248177356000L)
+                .atZone(ZoneId.of("UTC"))
+                .toLocalDateTime(), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());
         assertEquals(6358482, dm.getRecipientId());
         assertEquals(6377362, dm.getSenderId());

@@ -23,7 +23,7 @@ class KryoSerializationTest {
         kryo = new Kryo();
         kryo.register(java.lang.String[].class);
         kryo.register(long[].class);
-        kryo.register(java.util.Date.class);
+        kryo.register(java.time.LocalDateTime.class);
         kryo.register(twitter4j.HashtagEntity[].class);
         kryo.register(twitter4j.URLEntity[].class);
         kryo.register(twitter4j.MediaEntity[].class);

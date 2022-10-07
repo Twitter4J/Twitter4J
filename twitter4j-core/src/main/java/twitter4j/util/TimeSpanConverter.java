@@ -18,8 +18,10 @@ package twitter4j.util;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
@@ -40,11 +42,11 @@ public final class TimeSpanConverter implements Serializable {
     /**
      * dateMonth
      */
-    private final SimpleDateFormat dateMonth;
+    private final DateTimeFormatter dateMonth;
     /**
      * dateMonthYear
      */
-    private final SimpleDateFormat dateMonthYear;
+    private final DateTimeFormatter dateMonthYear;
 
     private static final int NOW = 0;
     private static final int N_SECONDS_AGO = 1;
@@ -75,8 +77,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("{0} minuti fa");
             formats[AN_HOUR_AGO] = new MessageFormat("1 ora fa");
             formats[N_HOURS_AGO] = new MessageFormat("{0} ore fa");
-            dateMonth = new SimpleDateFormat("d MMM", locale);
-            dateMonthYear = new SimpleDateFormat("d MMM yy", locale);
+            dateMonth = DateTimeFormatter.ofPattern("d MMM", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("d MMM yy", locale);
         } else if ("kr".equals(language)) {
             formats[NOW] = new MessageFormat("지금");
             formats[N_SECONDS_AGO] = new MessageFormat("{0}초 전");
@@ -84,8 +86,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("{0}분 전");
             formats[AN_HOUR_AGO] = new MessageFormat("1시간 전");
             formats[N_HOURS_AGO] = new MessageFormat("{0} ore fa");
-            dateMonth = new SimpleDateFormat("M월 d일", locale);
-            dateMonthYear = new SimpleDateFormat("yy년 M월 d일", locale);
+            dateMonth = DateTimeFormatter.ofPattern("M월 d일", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("yy년 M월 d일", locale);
         } else if ("es".equals(language)) {
             formats[NOW] = new MessageFormat("Ahora");
             formats[N_SECONDS_AGO] = new MessageFormat("hace {0} segundos");
@@ -93,8 +95,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("hace {0} minutos");
             formats[AN_HOUR_AGO] = new MessageFormat("hace 1 hora");
             formats[N_HOURS_AGO] = new MessageFormat("hace {0} horas");
-            dateMonth = new SimpleDateFormat("d MMM", locale);
-            dateMonthYear = new SimpleDateFormat("d MMM yy", locale);
+            dateMonth = DateTimeFormatter.ofPattern("d MMM", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("d MMM yy", locale);
         } else if ("fr".equals(language)) {
             formats[NOW] = new MessageFormat("Maintenant");
             formats[N_SECONDS_AGO] = new MessageFormat("Il y a {0} secondes");
@@ -102,8 +104,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("Il y a {0} minutes");
             formats[AN_HOUR_AGO] = new MessageFormat("Il y a 1 heure");
             formats[N_HOURS_AGO] = new MessageFormat("Il y a {0} heures");
-            dateMonth = new SimpleDateFormat("d MMM", locale);
-            dateMonthYear = new SimpleDateFormat("d MMM yy", locale);
+            dateMonth = DateTimeFormatter.ofPattern("d MMM", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("d MMM yy", locale);
         } else if ("de".equals(language)) {
             formats[NOW] = new MessageFormat("Jetzt");
             formats[N_SECONDS_AGO] = new MessageFormat("vor {0} Sekunden");
@@ -111,8 +113,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("vor {0} Minuten");
             formats[AN_HOUR_AGO] = new MessageFormat("vor 1 Stunde");
             formats[N_HOURS_AGO] = new MessageFormat("vor {0} Stunden");
-            dateMonth = new SimpleDateFormat("d MMM", locale);
-            dateMonthYear = new SimpleDateFormat("d MMM yy", locale);
+            dateMonth = DateTimeFormatter.ofPattern("d MMM", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("d MMM yy", locale);
         } else if ("ja".equals(language)) {
             formats[NOW] = new MessageFormat("今");
             formats[N_SECONDS_AGO] = new MessageFormat("{0}秒前");
@@ -120,8 +122,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("{0}分前");
             formats[AN_HOUR_AGO] = new MessageFormat("1時間前");
             formats[N_HOURS_AGO] = new MessageFormat("{0}時間前");
-            dateMonth = new SimpleDateFormat("M月d日", locale);
-            dateMonthYear = new SimpleDateFormat("yy年M月d日", locale);
+            dateMonth = DateTimeFormatter.ofPattern("M月d日", locale);
+            dateMonthYear = DateTimeFormatter.ofPattern("yy年M月d日", locale);
         } else {
             formats[NOW] = new MessageFormat("now");
             formats[N_SECONDS_AGO] = new MessageFormat("{0} seconds ago");
@@ -129,8 +131,8 @@ public final class TimeSpanConverter implements Serializable {
             formats[N_MINUTES_AGO] = new MessageFormat("{0} minutes ago");
             formats[AN_HOUR_AGO] = new MessageFormat("1 hour ago");
             formats[N_HOURS_AGO] = new MessageFormat("{0} hours ago");
-            dateMonth = new SimpleDateFormat("d MMM", Locale.ENGLISH);
-            dateMonthYear = new SimpleDateFormat("d MMM yy", Locale.ENGLISH);
+            dateMonth = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH);
+            dateMonthYear = DateTimeFormatter.ofPattern("d MMM yy", Locale.ENGLISH);
         }
     }
 
@@ -138,8 +140,8 @@ public final class TimeSpanConverter implements Serializable {
      * @param date date
      * @return time span string
      */
-    public String toTimeSpanString(Date date) {
-        return toTimeSpanString(date.getTime());
+    public String toTimeSpanString(LocalDateTime date) {
+        return toTimeSpanString(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
     }
 
     /**
@@ -150,9 +152,14 @@ public final class TimeSpanConverter implements Serializable {
         int deltaInSeconds = (int) ((System.currentTimeMillis() - milliseconds) / 1000);
         if (deltaInSeconds >= ONE_DAY_IN_SECONDS) {
             if (deltaInSeconds >= ONE_MONTH_IN_SECONDS) {
-                return dateMonthYear.format(new Date(milliseconds));
+                return dateMonthYear.format(
+                        Instant.ofEpochMilli(milliseconds)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime());
             } else {
-                return dateMonth.format(new Date(milliseconds));
+                return dateMonth.format(Instant.ofEpochMilli(milliseconds)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime());
             }
         }
         return toTimeSpanString(deltaInSeconds);

@@ -18,13 +18,14 @@ package twitter4j;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A tiny parse utility class.
@@ -65,27 +66,42 @@ final class ParseUtil {
         return returnValue;
     }
 
-    public static Date parseTrendsDate(String asOfStr) throws TwitterException {
-        Date parsed;
+    static DateTimeFormatter formatterYYYY = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+    static DateTimeFormatter formatterEEE = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
+    static DateTimeFormatter formatterEEEYYYY = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss Z yyyy", Locale.US);
+
+
+    public static LocalDateTime parseTrendsDate(String asOfStr) throws TwitterException {
+        LocalDateTime parsed;
         switch (asOfStr.length()) {
             case 10:
-                parsed = new Date(Long.parseLong(asOfStr) * 1000);
+                parsed = Instant.ofEpochMilli(Long.parseLong(asOfStr) * 1000)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
                 break;
             case 20:
-                parsed = getDate(asOfStr, "yyyy-MM-dd'T'HH:mm:ss'Z'");
+                parsed = getDate(asOfStr, formatterYYYY);
                 break;
             default:
-                parsed = getDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
+                parsed = getDate(asOfStr, formatterEEE);
         }
         return parsed;
     }
 
 
-    public static Date getDate(String name, JSONObject json) throws TwitterException {
-        return getDate(name, json, "EEE MMM d HH:mm:ss z yyyy");
+    public static LocalDateTime getDate(String name, JSONObject json) throws TwitterException {
+        return getDate(name, json, formatterEEEYYYY);
     }
 
-    public static Date getDate(String name, JSONObject json, String format) throws TwitterException {
+    public static LocalDateTime getDate(String name, JSONObject json, String format) throws TwitterException {
+        return getDate(name, json, getFormat(format));
+    }
+
+    private static DateTimeFormatter getFormat(String format) {
+        return formatterMap.computeIfAbsent(format, pattern -> DateTimeFormatter.ofPattern(pattern, Locale.US));
+    }
+
+    public static LocalDateTime getDate(String name, JSONObject json, DateTimeFormatter format) throws TwitterException {
         String dateStr = getUnescapedString(name, json);
         if ("null".equals(dateStr) || null == dateStr) {
             return null;
@@ -94,30 +110,17 @@ final class ParseUtil {
         }
     }
 
-    private final static Map<String, LinkedBlockingQueue<SimpleDateFormat>> formatMapQueue = new HashMap<>();
+    private static final Map<String, DateTimeFormatter> formatterMap = new ConcurrentHashMap<>();
 
-    public static Date getDate(String dateString, String format) throws TwitterException {
-        LinkedBlockingQueue<SimpleDateFormat> simpleDateFormats = formatMapQueue.get(format);
-        if (simpleDateFormats == null) {
-            simpleDateFormats = new LinkedBlockingQueue<>();
-            formatMapQueue.put(format, simpleDateFormats);
-        }
-        SimpleDateFormat sdf = simpleDateFormats.poll();
-        if (null == sdf) {
-            sdf = new SimpleDateFormat(format, Locale.US);
-            sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
-        }
+    public static LocalDateTime getDate(String dateString, String format) throws TwitterException {
+        return getDate(dateString, getFormat(format));
+    }
+
+    public static LocalDateTime getDate(String dateString, DateTimeFormatter format) throws TwitterException {
         try {
-            return sdf.parse(dateString);
-        } catch (ParseException pe) {
+            return LocalDateTime.from(format.parse(dateString));
+        } catch (DateTimeParseException pe) {
             throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
-        } finally {
-            try {
-                simpleDateFormats.put(sdf);
-            } catch (InterruptedException ignore) {
-                // the size of LinkedBlockingQueue is Integer.MAX by default.
-                // there is no need to concern about this situation
-            }
         }
     }
 
@@ -130,7 +133,7 @@ final class ParseUtil {
             return -1;
         } else {
             try {
-                return Integer.valueOf(str);
+                return Integer.parseInt(str);
             } catch (NumberFormatException nfe) {
                 // workaround for the API side issue http://issue.twitter4j.org/youtrack/issue/TFJ-484
                 return -1;
@@ -149,9 +152,9 @@ final class ParseUtil {
             // some count over 100 will be expressed as "100+"
             if (str.endsWith("+")) {
                 str = str.substring(0, str.length() - 1);
-                return Long.valueOf(str) + 1;
+                return Long.parseLong(str) + 1;
             }
-            return Long.valueOf(str);
+            return Long.parseLong(str);
         }
     }
 
@@ -160,7 +163,7 @@ final class ParseUtil {
         if (null == str2 || "".equals(str2) || "null".equals(str2)) {
             return -1;
         } else {
-            return Double.valueOf(str2);
+            return Double.parseDouble(str2);
         }
     }
 
@@ -169,7 +172,7 @@ final class ParseUtil {
         if (null == str || "null".equals(str)) {
             return false;
         }
-        return Boolean.valueOf(str);
+        return Boolean.parseBoolean(str);
     }
 
 

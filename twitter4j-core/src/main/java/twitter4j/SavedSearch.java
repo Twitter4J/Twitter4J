@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A data interface representing a Saved Search
@@ -28,7 +28,7 @@ public interface SavedSearch extends Comparable<SavedSearch>, TwitterResponse, j
     /**
      * @return created at
      */
-    Date getCreatedAt();
+    LocalDateTime getCreatedAt();
 
     /**
      * @return query

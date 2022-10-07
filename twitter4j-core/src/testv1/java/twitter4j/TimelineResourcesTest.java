@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,7 +90,7 @@ class TimelineResourcesTest extends TwitterTestBase {
 
     @Test
     void testGetMentions() throws Exception {
-        Status status = twitter2.tweets().updateStatus("@" + id1.screenName + " reply to id1 " + new java.util.Date());
+        Status status = twitter2.tweets().updateStatus("@" + id1.screenName + " reply to id1 " + LocalDateTime.now());
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         List<Status> statuses = twitter1.timelines().getMentionsTimeline();
         // mention can be invisible due to Twitter's spam isolation mechanism

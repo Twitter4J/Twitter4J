@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,8 +43,7 @@ class ParseUtilTest {
 
     @Test
     void testParseTrendDate() throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         assertEquals("2011-07-11"
                 , sdf.format(ParseUtil.parseTrendsDate("2011-07-11T05:31:52Z")));
     }

@@ -16,7 +16,13 @@
 
 package twitter4j;
 
-import java.util.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A data class representing sent/received direct message.
@@ -30,7 +36,7 @@ import java.util.*;
     private String text;
     private long senderId;
     private long recipientId;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private UserMentionEntity[] userMentionEntities;
     private URLEntity[] urlEntities;
     private HashtagEntity[] hashtagEntities;
@@ -64,7 +70,9 @@ import java.util.*;
             JSONObject messageCreate;
             final JSONObject messageData;
             if (!json.isNull("created_timestamp")) {
-                createdAt = new Date(json.getLong("created_timestamp"));
+                createdAt = Instant.ofEpochMilli(json.getLong("created_timestamp"))
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
                 messageCreate = json.getJSONObject("message_create");
                 recipientId = ParseUtil.getLong("recipient_id", messageCreate.getJSONObject("target"));
                 senderId = ParseUtil.getLong("sender_id", messageCreate);
@@ -167,7 +175,7 @@ import java.util.*;
     }
 
     @Override
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

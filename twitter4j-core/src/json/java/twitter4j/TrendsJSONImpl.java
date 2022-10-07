@@ -16,7 +16,11 @@
 
 package twitter4j;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * A data class representing Trends.
@@ -26,8 +30,8 @@ import java.util.*;
  */
 /*package*/ final class TrendsJSONImpl extends TwitterResponseImpl implements Trends, java.io.Serializable {
     private static final long serialVersionUID = 2054973282133379835L;
-    private Date asOf;
-    private Date trendAt;
+    private LocalDateTime asOf;
+    private LocalDateTime trendAt;
     private Trend[] trends;
     private Location location;
 
@@ -77,7 +81,7 @@ import java.util.*;
     }
 
 
-    /*package*/ TrendsJSONImpl(Date asOf, Location location, Date trendAt, Trend[] trends) {
+    /*package*/ TrendsJSONImpl(LocalDateTime asOf, Location location, LocalDateTime trendAt, Trend[] trends) {
         this.asOf = asOf;
         this.location = location;
         this.trendAt = trendAt;
@@ -90,7 +94,7 @@ import java.util.*;
         JSONObject json = res.asJSONObject();
         ResponseList<Trends> trends;
         try {
-            Date asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
+            LocalDateTime asOf = ParseUtil.parseTrendsDate(json.getString("as_of"));
             JSONObject trendsJson = json.getJSONObject("trends");
             Location location = extractLocation(json, storeJSON);
             trends = new ResponseListImpl<>(trendsJson.length(), res);
@@ -159,12 +163,12 @@ import java.util.*;
     }
 
     @Override
-    public Date getAsOf() {
+    public LocalDateTime getAsOf() {
         return asOf;
     }
 
     @Override
-    public Date getTrendAt() {
+    public LocalDateTime getTrendAt() {
         return trendAt;
     }
 

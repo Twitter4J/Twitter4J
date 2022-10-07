@@ -16,7 +16,8 @@
 
 package twitter4j;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 /**
  * A data interface representing Basic user information element
@@ -225,7 +226,7 @@ public interface User extends Comparable<User>, TwitterResponse, java.io.Seriali
     /**
      * @return created at
      */
-    Date getCreatedAt();
+    LocalDateTime getCreatedAt();
 
     /**
      * @return favorites count

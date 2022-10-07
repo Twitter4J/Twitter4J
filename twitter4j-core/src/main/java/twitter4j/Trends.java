@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A data class representing Trends.
@@ -45,11 +45,11 @@ public interface Trends extends TwitterResponse, Comparable<Trends>, java.io.Ser
      * @return as of date
      */
     @SuppressWarnings("unused")
-    Date getAsOf();
+    LocalDateTime getAsOf();
 
     /**
      * @return date trending at
      */
-    Date getTrendAt();
+    LocalDateTime getTrendAt();
 
 }

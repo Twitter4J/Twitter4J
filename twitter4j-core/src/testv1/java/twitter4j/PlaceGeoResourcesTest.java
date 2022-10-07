@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,7 +66,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
             assertEquals(400, te.getStatusCode());
         }
         String sanFrancisco = "5a110d312052166f";
-        Status status = twitter1.tweets().updateStatus(StatusUpdate.of(new java.util.Date() + " status with place").
+        Status status = twitter1.tweets().updateStatus(StatusUpdate.of(LocalDateTime.now() + " status with place").
                 placeId(sanFrancisco));
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
@@ -78,7 +78,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
         final double LATITUDE = 12.3456;
         final double LONGITUDE = -34.5678;
 
-        StatusUpdate location = StatusUpdate.of(new Date() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)).displayCoordinates(true);
+        StatusUpdate location = StatusUpdate.of(LocalDateTime.now() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)).displayCoordinates(true);
         Status withgeo = twitter1.tweets().updateStatus(location);
         assertNotNull(TwitterObjectFactory.getRawJSON(withgeo));
         assertEquals(withgeo, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(withgeo)));

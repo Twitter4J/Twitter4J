@@ -18,7 +18,7 @@ package twitter4j;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A data class representing Basic list information element
@@ -39,7 +39,7 @@ import java.util.Date;
     private boolean mode;
     private User user;
     private boolean following;
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     /*package*/ UserListJSONImpl(HttpResponse res, boolean jsonStoreEnabled) throws TwitterException {
         super(res);
@@ -146,7 +146,7 @@ import java.util.Date;
     }
 
     @Override
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

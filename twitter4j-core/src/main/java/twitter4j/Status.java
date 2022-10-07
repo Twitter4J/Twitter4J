@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * A data interface representing one single status of a user.
@@ -33,7 +33,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
      * @return created_at
      * @since Twitter4J 1.1.0
      */
-    Date getCreatedAt();
+    LocalDateTime getCreatedAt();
 
     /**
      * Returns the id of the status
@@ -221,7 +221,7 @@ public interface Status extends Comparable<Status>, TwitterResponse,
     /**
      * Returns the list of country codes where the tweet is withheld
      *
-     * @return list of country codes where the tweet is withheld - null if not withheld
+     * @return array of country codes where the tweet is withheld - null if not withheld
      * @since Twitter4j 4.0.3
      */
     String[] getWithheldInCountries();

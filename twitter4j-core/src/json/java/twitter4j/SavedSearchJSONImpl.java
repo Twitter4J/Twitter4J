@@ -16,7 +16,7 @@
 
 package twitter4j;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -28,7 +28,7 @@ import java.util.Objects;
 /*package*/ final class SavedSearchJSONImpl extends TwitterResponseImpl implements SavedSearch {
 
     private static final long serialVersionUID = -2281949861485441692L;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private String query;
     private int position;
     private String name;
@@ -77,7 +77,7 @@ import java.util.Objects;
     }
 
     private void init(JSONObject savedSearch) throws TwitterException {
-        createdAt = ParseUtil.getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss z yyyy");
+        createdAt = ParseUtil.getDate("created_at", savedSearch, "EEE MMM dd HH:mm:ss Z yyyy");
         query = ParseUtil.getUnescapedString("query", savedSearch);
         position = ParseUtil.getInt("position", savedSearch);
         name = ParseUtil.getUnescapedString("name", savedSearch);
@@ -90,7 +90,7 @@ import java.util.Objects;
     }
 
     @Override
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

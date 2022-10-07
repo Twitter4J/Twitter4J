@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DirectMessagesResourcesTest extends TwitterTestBase {
     @Test
     void testQuickResponse() throws Exception {
-        String message = "hello! message with quick reply " + new Date();
+        String message = "hello! message with quick reply " + LocalDateTime.now();
         rwPrivateMessage.directMessages().sendDirectMessage(id1.id, message,
                 new QuickReply("quick response label1", "quick response description1", "metadata1"),
                 new QuickReply("quick response label2", "quick response description2", "metadata2"));
@@ -47,7 +47,7 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
         // ensure id1 is not blocking id2, and id2 is following id1
         twitter1.users().destroyBlock(rwPrivate.id);
         rwPrivateMessage.friendsFollowers().createFriendship(id1.id);
-        String message = "hello " + new Date();
+        String message = "hello " + LocalDateTime.now();
         DirectMessage sent = twitter1.directMessages().sendDirectMessage(rwPrivate.id, message);
         assertEquals(rwPrivate.id, sent.getRecipientId());
         assertEquals(id1.id, sent.getSenderId());
@@ -66,7 +66,7 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
 
         // message with quick reply
 
-        DirectMessage directMessageWithQuickReplies = twitter1.directMessages().sendDirectMessage(rwPrivate.id, "hello" + new Date(), new QuickReply("らべる１", "説明1", "めたでーた1")
+        DirectMessage directMessageWithQuickReplies = twitter1.directMessages().sendDirectMessage(rwPrivate.id, "hello" + LocalDateTime.now(), new QuickReply("らべる１", "説明1", "めたでーた1")
                 , new QuickReply("label2", "description 2", "metadata 2")
                 , new QuickReply("label3", "description 3", null));
         QuickReply[] quickReplies = directMessageWithQuickReplies.getQuickReplies();

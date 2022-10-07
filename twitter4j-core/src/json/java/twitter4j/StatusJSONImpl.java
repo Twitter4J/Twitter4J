@@ -16,8 +16,8 @@
 
 package twitter4j;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 import static twitter4j.ParseUtil.getDate;
 
@@ -29,7 +29,7 @@ import static twitter4j.ParseUtil.getDate;
 /*package*/ final class StatusJSONImpl extends TwitterResponseImpl implements Status, java.io.Serializable {
     private static final long serialVersionUID = -6461195536943679985L;
 
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private long id;
     private String text;
     private int displayTextRangeStart = -1;
@@ -258,7 +258,7 @@ import static twitter4j.ParseUtil.getDate;
     }
 
     @Override
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 

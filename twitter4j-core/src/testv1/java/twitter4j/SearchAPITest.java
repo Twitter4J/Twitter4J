@@ -21,9 +21,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,9 +33,9 @@ class SearchAPITest extends TwitterTestBase {
 
     @Test
     void testQuery() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        var format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Query query = Query.of("test")
-                .withUntil(format.format(new java.util.Date(System.currentTimeMillis() - 3600 * 24)));
+                .withUntil(format.format(LocalDateTime.now().minus(24,ChronoUnit.DAYS)));
         HttpParameter[] params = query.asHttpParameterArray();
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
@@ -55,8 +55,8 @@ class SearchAPITest extends TwitterTestBase {
     @Test
     void testSearch() throws Exception {
         String queryStr = "test";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateStr = format.format(new java.util.Date(System.currentTimeMillis() - 24 * 3600 * 1000));
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateStr = format.format(LocalDateTime.now().minus(1,ChronoUnit.DAYS));
         Query query = Query.of(queryStr).withUntil(dateStr);
         QueryResult queryResult = twitter1.search().search(query);
         RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
@@ -89,7 +89,7 @@ class SearchAPITest extends TwitterTestBase {
 
         queryStr = "%... 日本語";
 
-        twitter1.tweets().updateStatus(queryStr + new Date());
+        twitter1.tweets().updateStatus(queryStr + LocalDateTime.now());
         query = Query.of(queryStr);
         queryResult = twitter1.search().search(query);
         assertEquals(queryStr, queryResult.getQuery());
@@ -125,9 +125,8 @@ class SearchAPITest extends TwitterTestBase {
 
     @Test
     void testEasyPaging2() throws Exception {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DAY_OF_MONTH, 1);
-        String until = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
+        LocalDateTime now = LocalDateTime.now().plus(1, ChronoUnit.MONTHS);
+        String until = now.getYear() + "-" + now.getMonthValue() + "-" + now.getDayOfMonth();
 
         String lang = "en";
         Query query = Query.of("twitter")

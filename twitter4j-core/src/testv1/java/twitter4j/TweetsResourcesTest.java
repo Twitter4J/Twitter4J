@@ -21,6 +21,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,7 @@ class TweetsResourcesTest extends TwitterTestBase {
 
     @Test
     void testStatusMethods() throws Exception {
-        String dateStr = new java.util.Date().toString();
+        String dateStr = LocalDateTime.now().toString();
         String date = dateStr + "test mytweet @" + id2.screenName + " #twitter4jtest";
         Status status = twitter1.tweets().updateStatus(date);
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
@@ -86,7 +87,7 @@ class TweetsResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
 
-        date = new java.util.Date().toString();
+        date = LocalDateTime.now().toString();
         String tweet = date + "test @" + id2.screenName + " #twitter4jtest";
         status = twitter1.tweets().updateStatus(StatusUpdate.of(tweet).possiblySensitive(false).media(getRandomlyChosenFile()));
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
@@ -96,7 +97,7 @@ class TweetsResourcesTest extends TwitterTestBase {
         assertEquals(1, status.getMediaEntities().length);
 
         // testing un-retweet
-        String dateStr3 = new java.util.Date().toString();
+        String dateStr3 = LocalDateTime.now().toString();
         String date3 = dateStr3 + "test http://t.co/VEDROet @" + id2.screenName + " #twitter4jtest";
         Status status3 = twitter1.tweets().updateStatus(date3);
         // since updateStatus is already tested, just checking if the returned status is non-null
