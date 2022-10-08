@@ -1,12 +1,15 @@
 package twitter4j;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import java.nio.ByteBuffer;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,15 +38,14 @@ class KryoSerializationTest {
 
     @Test
     void testKryoSerialization() throws TwitterException, ClassNotFoundException {
-        Status status;
-        status = TwitterObjectFactory.createStatus(TEST_STATUS_JSON);
+        Status status = TwitterObjectFactory.createStatus(TEST_STATUS_JSON);
 
-        ByteBuffer buffer = ByteBuffer.allocate(512);
-        kryo.writeObject(buffer, status);
-        System.out.println(buffer.position() + " vs. " + TEST_STATUS_JSON.length());
-        buffer.rewind();
-
-        Status deserializedStatus = (Status) kryo.readObject(buffer, Class.forName("twitter4j.StatusJSONImpl"));
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (Output output = new Output(byteArrayOutputStream)) {
+            kryo.writeObject(output, status);
+        }
+        Status deserializedStatus = (Status) kryo.readObject(new Input(new ByteArrayInputStream(byteArrayOutputStream.toByteArray())),
+                Class.forName("twitter4j.StatusJSONImpl"));
         assertNotNull(deserializedStatus);
         assertEquals(status, deserializedStatus);
     }
