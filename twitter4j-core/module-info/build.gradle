@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'org.twitter4j'
-version '4.0.8-SNAPSHOT'
+version '4.1.0'
 
 repositories {
     mavenCentral()
@@ -33,5 +33,4 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-api:2.0.2'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.19.0'
     compileOnly 'org.jetbrains:annotations:23.0.0'
-
 }

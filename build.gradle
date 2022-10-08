@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'org.twitter4j'
-version '4.0.8-SNAPSHOT'
+version '4.1.0'
 
 repositories {
     mavenCentral()
