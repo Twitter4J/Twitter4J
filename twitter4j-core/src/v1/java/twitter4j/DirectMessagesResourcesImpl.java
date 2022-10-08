@@ -83,12 +83,12 @@ class DirectMessagesResourcesImpl extends APIResourceBase implements DirectMessa
             JSONArray jsonArray = new JSONArray();
             for (QuickReply quickReply : quickReplies) {
                 JSONObject option = new JSONObject();
-                option.put("label", quickReply.getLabel());
-                if (quickReply.getDescription() != null) {
-                    option.put("description", quickReply.getDescription());
+                option.put("label", quickReply.label);
+                if (quickReply.description != null) {
+                    option.put("description", quickReply.description);
                 }
-                if (quickReply.getMetadata() != null) {
-                    option.put("metadata", quickReply.getMetadata());
+                if (quickReply.metadata != null) {
+                    option.put("metadata", quickReply.metadata);
                 }
                 jsonArray.put(option);
             }

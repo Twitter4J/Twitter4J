@@ -33,8 +33,8 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
     void testQuickResponse() throws Exception {
         String message = "hello! message with quick reply " + LocalDateTime.now();
         rwPrivateMessage.directMessages().sendDirectMessage(id1.id, message,
-                new QuickReply("quick response label1", "quick response description1", "metadata1"),
-                new QuickReply("quick response label2", "quick response description2", "metadata2"));
+                QuickReply.of("quick response label1", "quick response description1", "metadata1"),
+                QuickReply.of("quick response label2", "quick response description2", "metadata2"));
 
         twitter1.directMessages().sendDirectMessage(rwPrivate.id, "quick response label1" + System.currentTimeMillis(), "metadata1");
     }
@@ -66,13 +66,13 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
 
         // message with quick reply
 
-        DirectMessage directMessageWithQuickReplies = twitter1.directMessages().sendDirectMessage(rwPrivate.id, "hello" + LocalDateTime.now(), new QuickReply("らべる１", "説明1", "めたでーた1")
-                , new QuickReply("label2", "description 2", "metadata 2")
-                , new QuickReply("label3", "description 3", null));
+        DirectMessage directMessageWithQuickReplies = twitter1.directMessages().sendDirectMessage(rwPrivate.id, "hello" + LocalDateTime.now(), QuickReply.of("らべる１", "説明1", "めたでーた1")
+                , QuickReply.of("label2", "description 2", "metadata 2")
+                , QuickReply.of("label3", "description 3", null));
         QuickReply[] quickReplies = directMessageWithQuickReplies.getQuickReplies();
         assertEquals(3, quickReplies.length);
-        assertEquals(new QuickReply("らべる１", "説明1", "めたでーた1"), quickReplies[0]);
-        assertNull(quickReplies[2].getMetadata());
+        assertEquals(QuickReply.of("らべる１", "説明1", "めたでーた1"), quickReplies[0]);
+        assertNull(quickReplies[2].metadata);
 
         rwPrivateMessage.directMessages().destroyDirectMessage(received.getId());
     }

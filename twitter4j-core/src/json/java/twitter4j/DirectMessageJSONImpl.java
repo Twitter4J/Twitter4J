@@ -113,7 +113,7 @@ import java.util.Objects;
                     JSONObject option = options.getJSONObject(i);
                     String description = option.isNull("description") ? null : option.getString("description");
                     String metadata = option.isNull("metadata") ? null : option.getString("metadata");
-                    quickReplyList.add(new QuickReply(option.getString("label"), description, metadata));
+                    quickReplyList.add(QuickReply.of(option.getString("label"), description, metadata));
                 }
                 quickReplies = quickReplyList.toArray(new QuickReply[0]);
             } else {

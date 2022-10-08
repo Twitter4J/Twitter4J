@@ -25,46 +25,31 @@ public final class QuickReply implements java.io.Serializable {
     /**
      * label
      */
-    private final String label;
+    public final String label;
     /**
      * description
      */
-    private final String description;
+    public final String description;
     /**
      * metadata
      */
-    private final String metadata;
+    public final String metadata;
 
     /**
+     * constructs a new quick reply inctance
      * @param label       The text label displayed on the button face. Label text is returned as the user’s message response. String, max length of 36 characters including spaces. Values with URLs are not allowed and will return an error.
      * @param description Optional description text displayed under label text. All options must have this property defined if property is present in any option. Text is auto-wrapped and will display on a max of two lines and supports n for controling line breaks. Description text is not include in the user’s message response. String, max length of 72 characters including spaces.
      * @param metadata    Metadata that will be sent back in the webhook request. String, max length of 1,000 characters including spaces.
+     * @return QuickReply
      */
-    public QuickReply(String label, String description, String metadata) {
+    public static QuickReply of(String label, String description, String metadata) {
+        return new QuickReply(label,description, metadata);
+    }
+
+    private QuickReply(String label, String description, String metadata) {
         this.label = label;
         this.description = description;
         this.metadata = metadata;
-    }
-
-    /**
-     * @return label
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @return description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @return meta data
-     */
-    public String getMetadata() {
-        return metadata;
     }
 
     @Override
