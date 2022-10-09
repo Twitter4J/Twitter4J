@@ -17,6 +17,7 @@
 package examples.stream;
 
 import twitter4j.*;
+import twitter4j.v1.StatusListener;
 
 /**
  * retweet stream example

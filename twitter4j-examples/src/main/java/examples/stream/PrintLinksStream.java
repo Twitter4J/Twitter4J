@@ -17,6 +17,7 @@
 package examples.stream;
 
 import twitter4j.*;
+import twitter4j.v1.StatusListener;
 
 /**
  * links stream example

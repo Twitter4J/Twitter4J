@@ -15,8 +15,14 @@
  */
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+import twitter4j.v1.FilterQuery;
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StreamListener;
+
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -244,7 +250,7 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream filter(final String... track) {
-        filter(new FilterQuery().track(track));
+        filter(FilterQuery.ofTrack(track));
         return this;
     }
 
@@ -263,12 +269,50 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
         try {
             return new StatusStreamImpl(http.post(streamBaseURL
                             + "statuses/filter.json"
-                    , query.asHttpParameterArray(stallWarningsParam), auth, null), streamListeners, rawStreamListeners,
+                    , getParameters(query, stallWarningsParam), auth, null), streamListeners, rawStreamListeners,
                     jsonStoreEnabled, prettyDebug);
         } catch (IOException e) {
             throw new TwitterException(e);
         }
     }
+
+    @NotNull
+    private HttpParameter[] getParameters(FilterQuery query, HttpParameter stallWarningsParam) {
+        ArrayList<HttpParameter> params = new ArrayList<>();
+
+        params.add(new HttpParameter("count", query.count));
+        if (query.follow != null && query.follow.length > 0) {
+            params.add(new HttpParameter("follow", StringUtil.join(query.follow)));
+        }
+        if (query.track != null && query.track.length > 0) {
+            params.add(new HttpParameter("track", StringUtil.join(query.track)));
+        }
+        if (query.locations != null && query.locations.length > 0) {
+            params.add(new HttpParameter("locations", toLocationsString(query.locations)));
+        }
+        if (query.language != null && query.language.length > 0) {
+            params.add(new HttpParameter("language", StringUtil.join(query.language)));
+        }
+        if (query.filterLevel != null) {
+            params.add(new HttpParameter("filter_level", query.filterLevel.name().toLowerCase()));
+        }
+        params.add(stallWarningsParam);
+        HttpParameter[] paramArray = new HttpParameter[params.size()];
+        return params.toArray(paramArray);
+    }
+    private String toLocationsString(final double[][] keywords) {
+        final StringBuilder buf = new StringBuilder(20 * keywords.length * 2);
+        for (double[] keyword : keywords) {
+            if (0 != buf.length()) {
+                buf.append(",");
+            }
+            buf.append(keyword[0]);
+            buf.append(",");
+            buf.append(keyword[1]);
+        }
+        return buf.toString();
+    }
+
 
 
     /**
@@ -283,20 +327,17 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
         }
     }
 
-    private static int numberOfHandlers = 0;
 
     private synchronized void startHandler(TwitterStreamConsumer handler) {
         cleanUp();
         this.handler = handler;
         this.handler.start();
-        numberOfHandlers++;
     }
 
     @Override
     public synchronized void cleanUp() {
         if (handler != null) {
             handler.close();
-            numberOfHandlers--;
         }
     }
 

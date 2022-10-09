@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package twitter4j;
+package twitter4j.v1;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
- * @since Twitter4J 2.1.8
+ * @since Twitter4J 3.0.2
  */
-public interface StreamListener {
+public interface RawStreamListener extends StreamListener {
     /**
-     * @param ex exception
+     * @param rawString ras string
      */
-    void onException(Exception ex);
+    void onMessage(String rawString);
 }

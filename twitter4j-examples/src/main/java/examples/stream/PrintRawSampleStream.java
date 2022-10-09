@@ -15,9 +15,9 @@
  */
 package examples.stream;
 
-import twitter4j.RawStreamListener;
 import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
+import twitter4j.v1.RawStreamListener;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - sample method support.<br>

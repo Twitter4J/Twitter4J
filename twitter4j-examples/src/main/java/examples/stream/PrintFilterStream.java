@@ -17,6 +17,8 @@
 package examples.stream;
 
 import twitter4j.*;
+import twitter4j.v1.FilterQuery;
+import twitter4j.v1.StatusListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +93,7 @@ public final class PrintFilterStream {
         String[] trackArray = track.toArray(new String[0]);
 
         // filter() method internally creates a thread which manipulates TwitterStream and calls these adequate listener methods continuously.
-        twitterStream.filter(new FilterQuery(0, followArray, trackArray));
+        twitterStream.filter(FilterQuery.ofFollow(followArray).track(trackArray));
     }
 
     private static boolean isNumericalArgument(String argument) {

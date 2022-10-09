@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.v1.StreamListener;
+
 import java.io.IOException;
 import java.util.List;
 

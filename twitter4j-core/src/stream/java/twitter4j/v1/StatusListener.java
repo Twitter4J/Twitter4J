@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package twitter4j.v1;
+
+import twitter4j.StallWarning;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
 
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com

@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StreamListener;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

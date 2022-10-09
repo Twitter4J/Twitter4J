@@ -17,6 +17,7 @@
 package examples.stream;
 
 import twitter4j.*;
+import twitter4j.v1.StatusListener;
 
 /**
  * <p>This is a code example of Twitter4J Streaming API - sample method support.<br>

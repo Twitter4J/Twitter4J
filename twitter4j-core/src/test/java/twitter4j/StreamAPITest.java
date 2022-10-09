@@ -20,6 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.FilterQuery;
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StatusListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,7 +129,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertFalse(onDisconnectCalled);
         assertFalse(onCleanUpCalled);
 
-        twitterStream1.filter(new FilterQuery(0, null, new String[]{"twitter", "iphone"}));
+        twitterStream1.filter(FilterQuery.ofTrack("twitter", "iphone"));
         waitForStatus();
         assertTrue(onConnectCalled);
         assertFalse(onDisconnectCalled);
@@ -135,7 +138,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         assertNotNull(status.getText());
         assertTrue("web".equals(status.getSource()) || status.getSource().contains("<a href=\""));
         this.ex = null;
-        twitterStream1.filter(new FilterQuery(0, null).track("twitter4j java", "ipad"));
+        twitterStream1.filter(FilterQuery.ofTrack("twitter4j java", "ipad"));
         waitForStatus();
         assertNull(ex);
 
@@ -152,7 +155,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     void testFilterIncludesEntities() {
         this.ex = null;
 
-        FilterQuery query = new FilterQuery(0, null, new String[]{"http", "#", "@"});
+        FilterQuery query = FilterQuery.ofTrack("http", "#", "@");
         TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "id2"))
                 .listener(this).build();
         twitterStream2.filter(query);
@@ -198,7 +201,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         }
         try {
             twitterStream3 = TwitterStream.getInstance();
-            StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(new FilterQuery(6358482L));
+            StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(FilterQuery.ofFollow(6358482L));
             fail();
         } catch (IllegalStateException ignored) {
         } catch (TwitterException te) {

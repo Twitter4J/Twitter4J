@@ -16,8 +16,11 @@
 
 package twitter4j;
 
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StatusListener;
+import twitter4j.v1.StreamListener;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -27,15 +30,6 @@ import java.util.List;
  * @since Twitter4J 2.1.2
  */
 class StatusStreamImpl extends StatusStreamBase {
-    /*package*/
-
-    StatusStreamImpl(InputStream stream, List<StreamListener> streamListeners
-            , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) {
-        super(stream, streamListeners
-                , rawStreamListeners, jsonStoreEnabled, prettyDebug);
-    }
-    /*package*/
-
     StatusStreamImpl(HttpResponse response, List<StreamListener> streamListeners
             , List<RawStreamListener> rawStreamListeners, boolean jsonStoreEnabled, boolean prettyDebug) throws IOException {
         super(response, streamListeners
@@ -43,7 +37,6 @@ class StatusStreamImpl extends StatusStreamBase {
     }
 
     String line;
-
 
     @Override
     protected void onClose() {
@@ -80,7 +73,7 @@ class StatusStreamImpl extends StatusStreamBase {
     }
 
     @Override
-    protected void onDelete(JSONObject json, List<StreamListener> listeners) throws TwitterException, JSONException {
+    protected void onDelete(JSONObject json, List<StreamListener> listeners) throws JSONException {
         JSONObject deletionNotice = json.getJSONObject("delete");
         if (deletionNotice.has("status")) {
             for (StreamListener listener : listeners) {
@@ -90,7 +83,7 @@ class StatusStreamImpl extends StatusStreamBase {
     }
 
     @Override
-    protected void onLimit(JSONObject json, List<StreamListener> listeners) throws TwitterException, JSONException {
+    protected void onLimit(JSONObject json, List<StreamListener> listeners) throws JSONException {
         for (StreamListener listener : listeners) {
             ((StatusListener) listener).onTrackLimitationNotice(ParseUtil.getInt("track", json.getJSONObject("limit")));
         }
