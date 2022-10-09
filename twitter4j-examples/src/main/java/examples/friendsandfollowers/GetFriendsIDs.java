@@ -33,7 +33,7 @@ public final class GetFriendsIDs {
      */
     public static void main(String[] args) {
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             long cursor = -1;
             IDs ids;
             System.out.println("Listing following ids.");

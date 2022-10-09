@@ -37,7 +37,7 @@ public final class ShowUserList {
             System.exit(-1);
         }
         try {
-            var list = Twitter.getInstance().list();
+            var list = Twitter.getInstance().v1().list();
             UserList userList = list.showUserList(Integer.parseInt(args[0]));
             System.out.println("id:" + userList.getId() + ", name:" + userList.getName() + ", description:"
                     + userList.getDescription() + ", slug:" + userList.getSlug() + "");

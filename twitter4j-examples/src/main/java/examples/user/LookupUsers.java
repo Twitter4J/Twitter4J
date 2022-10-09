@@ -39,7 +39,7 @@ public final class LookupUsers {
             System.exit(-1);
         }
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             ResponseList<User> usersList = users.lookupUsers(args[0].split(","));
             for (User user : usersList) {
                 if (user.getStatus() != null) {

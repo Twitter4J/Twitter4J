@@ -36,7 +36,7 @@ public final class DestroyStatus {
             System.exit(-1);
         }
         try {
-            var tweets = Twitter.getInstance().tweets();
+            var tweets = Twitter.getInstance().v1().tweets();
             tweets.destroyStatus(Long.parseLong(args[0]));
             System.out.println("Successfully deleted status [" + args[0] + "].");
             System.exit(0);

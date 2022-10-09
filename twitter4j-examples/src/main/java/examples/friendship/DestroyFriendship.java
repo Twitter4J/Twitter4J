@@ -36,7 +36,7 @@ public final class DestroyFriendship {
             System.exit(-1);
         }
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             friendsFollowers.destroyFriendship(args[0]);
             System.out.println("Successfully unfollowed [" + args[0] + "].");
             System.exit(0);

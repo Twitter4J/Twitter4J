@@ -40,11 +40,11 @@ public final class ShowUserListSubscription {
         try {
             var twitter = Twitter.getInstance();
             long listId = Long.parseLong(args[0]);
-            UserList userList = twitter.list().showUserList(listId);
+            UserList userList = twitter.v1().list().showUserList(listId);
             long userId = Integer.parseInt(args[1]);
-            User user = twitter.users().showUser(userId);
+            User user = twitter.v1().users().showUser(userId);
             try {
-                twitter.list().showUserListSubscription(listId, userId);
+                twitter.v1().list().showUserListSubscription(listId, userId);
                 System.out.println("@" + user.getScreenName() + " is subscribing the list:" + userList.getName());
             } catch (TwitterException te) {
                 if (te.getStatusCode() == 404) {

@@ -18,7 +18,7 @@
 package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
-import twitter4j.api.*;
+import twitter4j.v1.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -176,72 +176,76 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
         }
     }
 
-    @Override
-    public TimelinesResources timelines() {
-        return timelinesResources;
+
+
+
+    public TwitterV1 v1(){
+        return new TwitterV1() {
+            @Override
+            public TimelinesResources timelines() {
+                return timelinesResources;
+            }
+            @Override
+            public TweetsResources tweets() {
+                return tweetsResources;
+            }
+
+            @Override
+            public SearchResource search() {
+                return searchResource;
+            }
+
+            @Override
+            public DirectMessagesResources directMessages() {
+                return directMessagesResources;
+            }
+
+            @Override
+            public FriendsFollowersResources friendsFollowers() {
+                return friendsFollowersResources;
+            }
+
+            @Override
+            public UsersResources users() {
+                return usersResources;
+            }
+
+            @Override
+            public FavoritesResources favorites() {
+                return favoritesResources;
+            }
+
+            @Override
+            public ListsResources list() {
+                return listResources;
+            }
+
+            @Override
+            public SavedSearchesResources savedSearches() {
+                return savedSearchesResources;
+            }
+
+            @Override
+            public PlacesGeoResources placesGeo() {
+                return placeGeoResources;
+            }
+
+            @Override
+            public TrendsResources trends() {
+                return trendResources;
+            }
+
+            @Override
+            public SpamReportingResource spamReporting() {
+                return spamReportingResource;
+            }
+
+            @Override
+            public HelpResources help() {
+                return helpResources;
+            }
+        };
     }
-
-    @Override
-    public TweetsResources tweets() {
-        return tweetsResources;
-    }
-
-    @Override
-    public SearchResource search() {
-        return searchResource;
-    }
-
-    @Override
-    public DirectMessagesResources directMessages() {
-        return directMessagesResources;
-    }
-
-    @Override
-    public FriendsFollowersResources friendsFollowers() {
-        return friendsFollowersResources;
-    }
-
-    @Override
-    public UsersResources users() {
-        return usersResources;
-    }
-
-    @Override
-    public FavoritesResources favorites() {
-        return favoritesResources;
-    }
-
-    @Override
-    public ListsResources list() {
-        return listResources;
-    }
-
-    @Override
-    public SavedSearchesResources savedSearches() {
-        return savedSearchesResources;
-    }
-
-    @Override
-    public PlacesGeoResources placesGeo() {
-        return placeGeoResources;
-    }
-
-    @Override
-    public TrendsResources trends() {
-        return trendResources;
-    }
-
-    @Override
-    public SpamReportingResource spamReporting() {
-        return spamReportingResource;
-    }
-
-    @Override
-    public HelpResources help() {
-        return helpResources;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

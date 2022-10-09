@@ -1,6 +1,6 @@
 package twitter4j;
 
-import twitter4j.api.SearchResource;
+import twitter4j.v1.SearchResource;
 
 import java.util.List;
 import java.util.function.Consumer;

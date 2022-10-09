@@ -38,7 +38,7 @@ public final class UpdateFriendship {
             System.exit(-1);
         }
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             Relationship relationship = friendsFollowers.updateFriendship(args[0]
                     , Boolean.parseBoolean(args[1]), Boolean.parseBoolean(args[2]));
             System.out.println("Successfully updated the friendship of [" + relationship.getTargetUserScreenName() + "].");

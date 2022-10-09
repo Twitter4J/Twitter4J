@@ -37,7 +37,7 @@ public final class CreateUserList {
             System.exit(-1);
         }
         try {
-            var twitter = Twitter.getInstance().list();
+            var twitter = Twitter.getInstance().v1().list();
             String description = null;
             if (args.length >= 2) {
                 description = args[1];

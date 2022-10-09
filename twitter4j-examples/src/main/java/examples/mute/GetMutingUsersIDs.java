@@ -32,7 +32,7 @@ public final class GetMutingUsersIDs {
      */
 	public static void main( String[] args ) {
 		try {
-			var users = Twitter.getInstance().users();
+			var users = Twitter.getInstance().v1().users();
 			IDs ids = users.getMutesIDs(-1L);
 			for (long id : ids.getIDs()) {
 	            System.out.println(id);

@@ -36,7 +36,7 @@ public final class DeleteUserListMember {
             System.exit(-1);
         }
         try {
-            var list = Twitter.getInstance().list();
+            var list = Twitter.getInstance().v1().list();
             list.destroyUserListMember(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
             System.out.println("Successfully deleted user [" + args[1] + "] from the list.");
             System.exit(0);

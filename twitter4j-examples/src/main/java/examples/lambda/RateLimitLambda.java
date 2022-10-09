@@ -31,7 +31,7 @@ public class RateLimitLambda {
     public static void main(String... args) {
         var timelines = Twitter.newBuilder()
                 .onRateLimitStatus(e -> System.out.println("rate limit remaining: " + e.getRateLimitStatus().getRemaining()))
-                .build().timelines();
+                .build().v1().timelines();
         for (int i = 0; i < 20; i++) {
             try {
                 System.out.println(timelines.getHomeTimeline());

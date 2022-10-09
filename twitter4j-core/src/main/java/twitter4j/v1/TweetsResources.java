@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.api;
+package twitter4j.v1;
 
 import twitter4j.*;
 
@@ -192,6 +192,7 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
      * @since Twitter4J 4.0.3
      */
+    @SuppressWarnings("UnusedReturnValue")
     UploadedMedia uploadMedia(String fileName, InputStream media) throws TwitterException;
 
     /**
@@ -208,5 +209,6 @@ public interface TweetsResources {
      * @see <a href="https://dev.twitter.com/docs/api/multiple-media-extended-entities">Multiple Media Entities in Statuses</a>
      * @since Twitter4J 4.0.7
      */
+    @SuppressWarnings("unused")
     UploadedMedia uploadMediaChunked(String fileName, InputStream media) throws TwitterException;
 }

@@ -35,7 +35,7 @@ public final class ReverseGeoCode {
             System.exit(-1);
         }
         try {
-            var placesGeo = Twitter.getInstance().placesGeo();
+            var placesGeo = Twitter.getInstance().v1().placesGeo();
             GeoQuery query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
             ResponseList<Place> places = placesGeo.reverseGeoCode(query);
             if (places.size() == 0) {

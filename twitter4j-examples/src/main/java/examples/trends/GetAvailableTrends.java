@@ -34,7 +34,7 @@ public final class GetAvailableTrends {
      */
     public static void main(String[] args) {
         try {
-            var trends = Twitter.getInstance().trends();
+            var trends = Twitter.getInstance().v1().trends();
             ResponseList<Location> locations;
             locations = trends.getAvailableTrends();
             System.out.println("Showing available trends");

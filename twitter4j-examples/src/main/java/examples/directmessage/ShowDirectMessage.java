@@ -36,7 +36,7 @@ public class ShowDirectMessage {
             System.out.println("Usage: java twitter4j.examples.directmessage.ShowDirectMessage [message id]");
             System.exit(-1);
         }
-        var directMessages = Twitter.getInstance().directMessages();
+        var directMessages = Twitter.getInstance().v1().directMessages();
         try {
             DirectMessage message = directMessages.showDirectMessage(Long.parseLong(args[0]));
             System.out.println("From: id:" + message.getId() + " - "

@@ -37,7 +37,7 @@ public final class ShowStatus {
             System.exit(-1);
         }
         try {
-            var tweets = Twitter.getInstance().tweets();
+            var tweets = Twitter.getInstance().v1().tweets();
             Status status = tweets.showStatus(Long.parseLong(args[0]));
             System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             System.exit(0);

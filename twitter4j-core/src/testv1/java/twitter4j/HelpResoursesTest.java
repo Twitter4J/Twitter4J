@@ -18,7 +18,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.api.HelpResources;
+import twitter4j.v1.HelpResources;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class HelpResoursesTest extends TwitterTestBase {
     @Test
     void testHelpMethods() throws Exception {
-        ResponseList<HelpResources.Language> languages = twitter1.help().getLanguages();
+        ResponseList<HelpResources.Language> languages = twitter1.v1().help().getLanguages();
         assertTrue(languages.size() > 5);
         HelpResources.Language language = languages.get(0);
         assertNotNull(language.getCode());

@@ -36,7 +36,7 @@ public final class UpdateProfile {
             System.exit(-1);
         }
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             users.updateProfile(args[0], args[1], args[2], args[3]);
             System.out.println("Successfully updated profile.");
             System.exit(0);

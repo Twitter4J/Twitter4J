@@ -38,7 +38,7 @@ public final class GetUserListSubscriptions {
             System.exit(-1);
         }
         try {
-            var list = Twitter.getInstance().list();
+            var list = Twitter.getInstance().v1().list();
             long cursor = -1;
             PagableResponseList<UserList> userLists;
             do {

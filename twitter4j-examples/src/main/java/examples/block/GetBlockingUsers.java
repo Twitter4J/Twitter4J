@@ -35,7 +35,7 @@ public final class GetBlockingUsers {
      */
     public static void main(String[] args) {
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             int page = 1;
             List<User> userList;
             do {

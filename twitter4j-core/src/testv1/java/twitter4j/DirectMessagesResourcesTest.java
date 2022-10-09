@@ -32,11 +32,11 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
     @Test
     void testQuickResponse() throws Exception {
         String message = "hello! message with quick reply " + LocalDateTime.now();
-        rwPrivateMessage.directMessages().sendDirectMessage(id1.id, message,
+        rwPrivateMessage.v1().directMessages().sendDirectMessage(id1.id, message,
                 QuickReply.of("quick response label1", "quick response description1", "metadata1"),
                 QuickReply.of("quick response label2", "quick response description2", "metadata2"));
 
-        twitter1.directMessages().sendDirectMessage(rwPrivate.id, "quick response label1" + System.currentTimeMillis(), "metadata1");
+        twitter1.v1().directMessages().sendDirectMessage(rwPrivate.id, "quick response label1" + System.currentTimeMillis(), "metadata1");
     }
 
     @Test
@@ -45,28 +45,28 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
         // send dm
 
         // ensure id1 is not blocking id2, and id2 is following id1
-        twitter1.users().destroyBlock(rwPrivate.id);
-        rwPrivateMessage.friendsFollowers().createFriendship(id1.id);
+        twitter1.v1().users().destroyBlock(rwPrivate.id);
+        rwPrivateMessage.v1().friendsFollowers().createFriendship(id1.id);
         String message = "hello " + LocalDateTime.now();
-        DirectMessage sent = twitter1.directMessages().sendDirectMessage(rwPrivate.id, message);
+        DirectMessage sent = twitter1.v1().directMessages().sendDirectMessage(rwPrivate.id, message);
         assertEquals(rwPrivate.id, sent.getRecipientId());
         assertEquals(id1.id, sent.getSenderId());
         assertEquals(message, sent.getText());
         assertEquals(sent, TwitterObjectFactory.createDirectMessage(TwitterObjectFactory.getRawJSON(sent)));
 
         // receive dm
-        DirectMessage received = rwPrivateMessage.directMessages().showDirectMessage(sent.getId());
+        DirectMessage received = rwPrivateMessage.v1().directMessages().showDirectMessage(sent.getId());
         assertEquals(rwPrivate.id, received.getRecipientId());
         assertEquals(id1.id, received.getSenderId());
         assertEquals(received, TwitterObjectFactory.createDirectMessage(TwitterObjectFactory.getRawJSON(received)));
 
         // destroy dm
-        DirectMessageList directMessages = rwPrivateMessage.directMessages().getDirectMessages(100);
+        DirectMessageList directMessages = rwPrivateMessage.v1().directMessages().getDirectMessages(100);
         assertTrue(directMessages.size() > 0);
 
         // message with quick reply
 
-        DirectMessage directMessageWithQuickReplies = twitter1.directMessages().sendDirectMessage(rwPrivate.id, "hello" + LocalDateTime.now(), QuickReply.of("らべる１", "説明1", "めたでーた1")
+        DirectMessage directMessageWithQuickReplies = twitter1.v1().directMessages().sendDirectMessage(rwPrivate.id, "hello" + LocalDateTime.now(), QuickReply.of("らべる１", "説明1", "めたでーた1")
                 , QuickReply.of("label2", "description 2", "metadata 2")
                 , QuickReply.of("label3", "description 3", null));
         QuickReply[] quickReplies = directMessageWithQuickReplies.getQuickReplies();
@@ -74,7 +74,7 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
         assertEquals(QuickReply.of("らべる１", "説明1", "めたでーた1"), quickReplies[0]);
         assertNull(quickReplies[2].metadata);
 
-        rwPrivateMessage.directMessages().destroyDirectMessage(received.getId());
+        rwPrivateMessage.v1().directMessages().destroyDirectMessage(received.getId());
     }
 
 }

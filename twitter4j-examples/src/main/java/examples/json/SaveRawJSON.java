@@ -37,7 +37,7 @@ public final class SaveRawJSON {
      * @param args String[]
      */
     public static void main(String[] args) {
-        var timelines = Twitter.getInstance().timelines();
+        var timelines = Twitter.getInstance().v1().timelines();
         System.out.println("Saving public timeline.");
         try {
             //noinspection ResultOfMethodCallIgnored

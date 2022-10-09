@@ -37,7 +37,7 @@ public final class CreateSavedSearch {
             System.exit(-1);
         }
         try {
-            var twitter = Twitter.getInstance().savedSearches();
+            var twitter = Twitter.getInstance().v1().savedSearches();
             SavedSearch savedSearch = twitter.createSavedSearch(args[0]);
             System.out.println("Successfully created saved search [name:" + savedSearch.getName()
                     + " query:" + savedSearch.getQuery() + " id:" + savedSearch.getId() + "]");

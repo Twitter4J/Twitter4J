@@ -37,7 +37,7 @@ public final class ShowFriendship {
             System.exit(-1);
         }
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             Relationship relationship = friendsFollowers.showFriendship(args[0], args[1]);
             System.out.println("isSourceBlockingTarget: " + relationship.isSourceBlockingTarget());
             System.out.println("isSourceFollowedByTarget: " + relationship.isSourceFollowedByTarget());

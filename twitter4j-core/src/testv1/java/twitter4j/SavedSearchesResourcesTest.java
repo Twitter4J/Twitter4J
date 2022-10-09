@@ -33,25 +33,25 @@ class SavedSearchesResourcesTest extends TwitterTestBase {
     /* Saved Searches Methods */
     @Test
     void testSavedSearches() throws Exception {
-        List<SavedSearch> list = twitter1.savedSearches().getSavedSearches();
+        List<SavedSearch> list = twitter1.v1().savedSearches().getSavedSearches();
         assertNotNull(TwitterObjectFactory.getRawJSON(list));
         for (SavedSearch savedSearch : list) {
-            twitter1.savedSearches().destroySavedSearch(savedSearch.getId());
+            twitter1.v1().savedSearches().destroySavedSearch(savedSearch.getId());
         }
         String listName = String.valueOf(System.currentTimeMillis());
-        SavedSearch ss1 = twitter1.savedSearches().createSavedSearch(listName);
+        SavedSearch ss1 = twitter1.v1().savedSearches().createSavedSearch(listName);
         assertNotNull(TwitterObjectFactory.getRawJSON(ss1));
         assertEquals(ss1, TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(ss1)));
         assertEquals(listName, ss1.getQuery());
         assertEquals(-1, ss1.getPosition());
-        list = twitter1.savedSearches().getSavedSearches();
+        list = twitter1.v1().savedSearches().getSavedSearches();
         assertNotNull(TwitterObjectFactory.getRawJSON(list));
         assertEquals(list.get(0), TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(list.get(0))));
         // http://code.google.com/p/twitter-api/issues/detail?id=1032
         // the saved search may not be immediately available
 //        assertTrue(0 <= list.size());
         try {
-            SavedSearch ss2 = twitter1.savedSearches().destroySavedSearch(ss1.getId());
+            SavedSearch ss2 = twitter1.v1().savedSearches().destroySavedSearch(ss1.getId());
             assertEquals(ss1, ss2);
         } catch (TwitterException te) {
             // sometimes it returns 404 or 500 when its out of sync.

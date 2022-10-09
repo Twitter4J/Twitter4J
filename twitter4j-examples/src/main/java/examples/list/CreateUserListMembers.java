@@ -36,7 +36,7 @@ public final class CreateUserListMembers {
             System.exit(-1);
         }
         try {
-            var list = Twitter.getInstance().list();
+            var list = Twitter.getInstance().v1().list();
             list.createUserListMembers(Integer.parseInt(args[0]), args[1].split(","));
             System.out.println("Successfully added the user(s) to the specified list.");
             System.exit(0);

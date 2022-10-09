@@ -53,7 +53,7 @@ class OAuthTest extends TwitterTestBase {
         Twitter twitter = Twitter.newBuilder()
                 .oAuthAccessToken(oAuthAccessToken, oAuthAccessTokenSecret)
                 .oAuthConsumer(oAuthConsumerKey, oAuthConsumerSecret).build();
-        twitter.users().verifyCredentials();
+        twitter.v1().users().verifyCredentials();
     }
 
     @Disabled

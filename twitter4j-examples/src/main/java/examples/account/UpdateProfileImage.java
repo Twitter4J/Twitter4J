@@ -38,7 +38,7 @@ public final class UpdateProfileImage {
             System.exit(-1);
         }
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             users.updateProfileImage(new File(args[0]));
             System.out.println("Successfully updated profile image.");
             System.exit(0);

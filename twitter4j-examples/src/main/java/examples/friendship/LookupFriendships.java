@@ -39,7 +39,7 @@ public final class LookupFriendships {
             System.exit(-1);
         }
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             ResponseList<Friendship> friendships = friendsFollowers.lookupFriendships(args[0].split(","));
             for (Friendship friendship : friendships) {
                 System.out.println("@" + friendship.getScreenName()

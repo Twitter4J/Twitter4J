@@ -33,7 +33,7 @@ public final class VerifyCredentials {
      */
     public static void main(String[] args) {
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             User user = users.verifyCredentials();
             System.out.println("Successfully verified credentials of " + user.getScreenName());
             System.exit(0);

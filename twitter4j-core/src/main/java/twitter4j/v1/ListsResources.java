@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.api;
+package twitter4j.v1;
 
 import twitter4j.*;
 

@@ -36,7 +36,7 @@ public final class CreateFriendship {
             System.exit(-1);
         }
         try {
-            var friendsFollowers = Twitter.getInstance().friendsFollowers();
+            var friendsFollowers = Twitter.getInstance().v1().friendsFollowers();
             friendsFollowers.createFriendship(args[0]);
             System.out.println("Successfully followed [" + args[0] + "].");
             System.exit(0);

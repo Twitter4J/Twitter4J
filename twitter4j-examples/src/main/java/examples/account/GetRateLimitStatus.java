@@ -35,7 +35,7 @@ public final class GetRateLimitStatus {
      */
     public static void main(String[] args) {
         try {
-            var help = Twitter.getInstance().help();
+            var help = Twitter.getInstance().v1().help();
             Map<String ,RateLimitStatus> rateLimitStatus = help.getRateLimitStatus();
             for (String endpoint : rateLimitStatus.keySet()) {
                 RateLimitStatus status = rateLimitStatus.get(endpoint);

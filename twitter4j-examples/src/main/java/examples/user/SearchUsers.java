@@ -38,7 +38,7 @@ public final class SearchUsers {
             System.exit(-1);
         }
         try {
-            var users = Twitter.getInstance().users();
+            var users = Twitter.getInstance().v1().users();
             int page = 1;
             ResponseList<User> usersList;
             do {

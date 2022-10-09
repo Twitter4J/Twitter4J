@@ -15,8 +15,6 @@
  */
 package twitter4j;
 
-import twitter4j.api.*;
-
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
@@ -43,82 +41,13 @@ public interface Twitter extends java.io.Serializable {
     }
 
     /**
-     * @return {@link twitter4j.api.TimelinesResources}
-     * @since Twitter4J 3.0.4
+     * @return returns Twitter API v1.1 interfaces
      */
-    TimelinesResources timelines();
+    TwitterV1 v1();
 
-    /**
-     * @return {@link twitter4j.api.TweetsResources}
-     * @since Twitter4J 3.0.4
-     */
-    TweetsResources tweets();
 
-    /**
-     * @return {@link twitter4j.api.SearchResource}
-     * @since Twitter4J 3.0.4
-     */
-    SearchResource search();
 
-    /**
-     * @return {@link twitter4j.api.DirectMessagesResources}
-     * @since Twitter4J 3.0.4
-     */
-    DirectMessagesResources directMessages();
 
-    /**
-     * @return {@link twitter4j.api.FriendsFollowersResources}
-     * @since Twitter4J 3.0.4
-     */
-    FriendsFollowersResources friendsFollowers();
-
-    /**
-     * @return {@link twitter4j.api.UsersResources}
-     * @since Twitter4J 3.0.4
-     */
-    UsersResources users();
-
-    /**
-     * @return {@link twitter4j.api.FavoritesResources}
-     * @since Twitter4J 3.0.4
-     */
-    FavoritesResources favorites();
-
-    /**
-     * @return {@link twitter4j.api.ListsResources}
-     * @since Twitter4J 3.0.4
-     */
-    ListsResources list();
-
-    /**
-     * @return {@link twitter4j.api.SavedSearchesResources}
-     * @since Twitter4J 3.0.4
-     */
-    SavedSearchesResources savedSearches();
-
-    /**
-     * @return {@link twitter4j.api.PlacesGeoResources}
-     * @since Twitter4J 3.0.4
-     */
-    PlacesGeoResources placesGeo();
-
-    /**
-     * @return {@link twitter4j.api.TrendsResources}
-     * @since Twitter4J 3.0.4
-     */
-    TrendsResources trends();
-
-    /**
-     * @return {@link twitter4j.api.SpamReportingResource}
-     * @since Twitter4J 3.0.4
-     */
-    SpamReportingResource spamReporting();
-
-    /**
-     * @return {@link twitter4j.api.HelpResources}
-     * @since Twitter4J 3.0.4
-     */
-    HelpResources help();
 
     /**
      * builder for Twitter

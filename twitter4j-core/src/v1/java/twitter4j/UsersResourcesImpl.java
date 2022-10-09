@@ -1,6 +1,6 @@
 package twitter4j;
 
-import twitter4j.api.UsersResources;
+import twitter4j.v1.UsersResources;
 
 import java.io.File;
 import java.io.InputStream;

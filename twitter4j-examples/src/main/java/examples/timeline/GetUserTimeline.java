@@ -41,10 +41,10 @@ public class GetUserTimeline {
             String user;
             if (args.length == 1) {
                 user = args[0];
-                statuses = twitter.timelines().getUserTimeline(user);
+                statuses = twitter.v1().timelines().getUserTimeline(user);
             } else {
-                user = twitter.users().verifyCredentials().getScreenName();
-                statuses = twitter.timelines().getUserTimeline();
+                user = twitter.v1().users().verifyCredentials().getScreenName();
+                statuses = twitter.v1().timelines().getUserTimeline();
             }
             System.out.println("Showing @" + user + "'s user timeline.");
             for (Status status : statuses) {

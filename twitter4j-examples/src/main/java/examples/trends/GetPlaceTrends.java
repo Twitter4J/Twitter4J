@@ -20,7 +20,7 @@ public final class GetPlaceTrends {
         try {
             int woeid = args.length > 0 ? Integer.parseInt(args[0]) : 1;
             var twitter = Twitter.getInstance();
-            Trends trends = twitter.trends().getPlaceTrends(woeid);
+            Trends trends = twitter.v1().trends().getPlaceTrends(woeid);
 
             System.out.println("Showing trends for " + trends.getLocation().getName());
 

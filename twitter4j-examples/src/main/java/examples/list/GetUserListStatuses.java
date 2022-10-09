@@ -35,7 +35,7 @@ public final class GetUserListStatuses {
             System.exit(-1);
         }
         try {
-            var list = Twitter.getInstance().list();
+            var list = Twitter.getInstance().v1().list();
             Paging page = Paging.ofPage(1);
             ResponseList<Status> statuses;
             do {

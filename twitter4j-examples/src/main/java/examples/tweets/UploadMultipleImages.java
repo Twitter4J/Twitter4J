@@ -37,7 +37,7 @@ public final class UploadMultipleImages {
             System.exit(-1);
         }
         try {
-            var tweets = Twitter.getInstance().tweets();
+            var tweets = Twitter.getInstance().v1().tweets();
             
             long[] mediaIds = new long[args.length-1];
             for (int i=1; i<args.length; i++) {

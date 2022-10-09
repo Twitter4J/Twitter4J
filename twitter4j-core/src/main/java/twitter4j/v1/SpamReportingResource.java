@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.api;
+package twitter4j.v1;
 
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -34,6 +34,7 @@ public interface SpamReportingResource {
      * @see <a href="https://dev.twitter.com/docs/api/1.1/post/report_spam">POST report_spam | Twitter Developers</a>
      * @since Twitter4J 2.1.0
      */
+    @SuppressWarnings("unused")
     User reportSpam(long userId) throws TwitterException;
 
     /**

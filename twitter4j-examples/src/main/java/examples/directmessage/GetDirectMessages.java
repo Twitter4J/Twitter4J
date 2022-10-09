@@ -33,7 +33,7 @@ public class GetDirectMessages {
      * @param args String[]
      */
     public static void main(String[] args) {
-        var directMessages = Twitter.getInstance().directMessages();
+        var directMessages = Twitter.getInstance().v1().directMessages();
         try {
             String cursor = null;
             int count = 20;
