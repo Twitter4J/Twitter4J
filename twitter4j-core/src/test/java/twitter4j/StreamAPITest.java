@@ -47,14 +47,14 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     @Test
     void testToString() {
         //noinspection ResultOfMethodCallIgnored
-        TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build().toString();
+        Twitter.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build().toString();
     }
 
     @Test
     void testEquality() {
         Map<TwitterStream, String> map = new HashMap<>();
-        TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build();
-        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build();
+        TwitterStream twitterStream1 = Twitter.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build().v1().stream();
+        TwitterStream twitterStream2 = Twitter.newBuilder().load(subProperty(p, "bestFriend1")).onStatus(System.out::println).build().v1().stream();
         assertEquals(twitterStream1, twitterStream2);
     }
 
@@ -63,7 +63,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testRawStreamListener() throws Exception {
-        TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p, "bestFriend1")).listener(new RawStreamListener() {
+        TwitterStream twitterStream1 = Twitter.newBuilder().load(subProperty(p, "bestFriend1")).listener(new RawStreamListener() {
             @Override
             public void onMessage(String rawString) {
                 received.add(rawString);
@@ -75,7 +75,7 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
             @Override
             public void onException(Exception ex) {
             }
-        }).build().sample();
+        }).build().v1().stream().sample();
         synchronized (lock) {
             lock.wait();
         }
@@ -86,10 +86,10 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     @Test
     void testNoListener() {
         try {
-            TwitterStream.newBuilder()
+            Twitter.newBuilder()
                     .oAuthConsumer("dummy", "dummy")
                     .oAuthAccessToken("dummy", "dummy")
-                    .build();
+                    .build().v1().stream().retweet();
             fail("expecting IllegalStateException");
         } catch (IllegalStateException ignored) {
         }
@@ -98,8 +98,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testSample() {
-        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "id3"))
-                .listener(this).build();
+        TwitterStream twitterStream2 = Twitter.newBuilder().load(subProperty(p, "id3"))
+                .listener(this).build().v1().stream();
         twitterStream2.sample();
         waitForStatus();
         assertTrue(status != null || deletionNotice != null);
@@ -108,9 +108,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testShutdownAndRestart() {
-        TwitterStream twitterStream3 = TwitterStream.newBuilder().load(subProperty(p, "id3"))
+        TwitterStream twitterStream3 = Twitter.newBuilder().load(subProperty(p, "id3"))
                 .listener(this)
-                .build().sample();
+                .build().v1().stream().sample();
         waitForStatus();
         twitterStream3.shutdown();
         twitterStream3.shutdown();
@@ -122,9 +122,9 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
 
     @Test
     void testFilterTrackPush() throws Exception {
-        TwitterStream twitterStream1 = TwitterStream.newBuilder().load(subProperty(p, "id2"))
+        TwitterStream twitterStream1 = Twitter.newBuilder().load(subProperty(p, "id2"))
                 .listener(this)
-                .connectionLifeCycleListener(this).build();
+                .connectionLifeCycleListener(this).build().v1().stream();
         assertFalse(onConnectCalled);
         assertFalse(onDisconnectCalled);
         assertFalse(onCleanUpCalled);
@@ -156,8 +156,8 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
         this.ex = null;
 
         FilterQuery query = FilterQuery.ofTrack("http", "#", "@");
-        TwitterStream twitterStream2 = TwitterStream.newBuilder().load(subProperty(p, "id2"))
-                .listener(this).build();
+        TwitterStream twitterStream2 = Twitter.newBuilder().load(subProperty(p, "id2"))
+                .listener(this).build().v1().stream();
         twitterStream2.filter(query);
 
         boolean sawURL, sawMention, sawHashtag;
@@ -194,13 +194,13 @@ public class StreamAPITest extends TwitterTestBase implements StatusListener, Co
     void testUnAuthorizedStreamMethods() {
         TwitterStream twitterStream3 = null;
         try {
-            twitterStream3 = TwitterStream.newBuilder().load(subProperty(p, "id2")).listener(this).build();
+            twitterStream3 = Twitter.newBuilder().load(subProperty(p, "id2")).listener(this).build().v1().stream();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFirehoseStream(0);
             fail();
         } catch (IllegalStateException | TwitterException ignored) {
         }
         try {
-            twitterStream3 = TwitterStream.getInstance();
+            twitterStream3 = Twitter.getInstance().v1().stream();
             StatusStream stream = ((TwitterStreamImpl) twitterStream3).getFilterStream(FilterQuery.ofFollow(6358482L));
             fail();
         } catch (IllegalStateException ignored) {

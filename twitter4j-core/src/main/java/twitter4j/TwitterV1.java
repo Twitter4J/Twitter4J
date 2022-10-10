@@ -83,4 +83,9 @@ public interface TwitterV1 {
      * @since Twitter4J 3.0.4
      */
     HelpResources help();
+
+    /**
+     * @return {@link TwitterStream}
+     */
+    TwitterStream stream();
 }

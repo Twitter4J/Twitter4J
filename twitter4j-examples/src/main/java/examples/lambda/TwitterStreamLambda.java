@@ -16,7 +16,8 @@
 
 package examples.lambda;
 
-import twitter4j.TwitterStream;
+import twitter4j.Twitter;
+import twitter4j.v1.FilterQuery;
 
 /**
  * example code to explain lambda expression. Prints tweets containing twitter4j or #twitter4j.
@@ -28,10 +29,10 @@ public class TwitterStreamLambda {
      * @param args not used
      */
     public static void main(String... args) {
-        TwitterStream.newBuilder()
+        Twitter.newBuilder()
                 .onStatus(e -> System.out.printf("@%s %s%n", e.getUser().getScreenName(), e.getText()))
                 .onException(Throwable::printStackTrace)
-                .build().filter("twitter4j", "#twitter4j");
+                .build().v1().stream().filter(FilterQuery.ofTrack("twitter4j", "#twitter4j"));
 
     }
 }

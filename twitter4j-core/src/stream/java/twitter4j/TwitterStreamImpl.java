@@ -21,7 +21,6 @@ import twitter4j.v1.RawStreamListener;
 import twitter4j.v1.StreamListener;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,9 +36,7 @@ import static twitter4j.HttpResponseCode.NOT_ACCEPTABLE;
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.0.4
  */
-@SuppressWarnings("rawtypes")
-class TwitterStreamImpl implements TwitterStream, Serializable {
-    private static final long serialVersionUID = 5621090317737561048L;
+class TwitterStreamImpl implements TwitterStream {
     private static final Logger logger = Logger.getLogger();
     private final String streamBaseURL;
     private final String streamThreadName;
@@ -56,35 +53,34 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     private final HttpClient http;
     private final Authorization auth;
-
-    /*package*/
-    TwitterStreamImpl(Configuration conf) {
-        TwitterStreamBuilder builder = (TwitterStreamBuilder) conf;
-        streamListeners = builder.streamListeners;
-        rawStreamListeners = builder.rawStreamListeners;
-
-        conf.ensureAuthorizationEnabled();
-        ensureStatusStreamListenerIsSet();
-        http = conf.http;
-        auth = conf.auth;
-        jsonStoreEnabled = conf.jsonStoreEnabled;
-        prettyDebug = conf.prettyDebug;
-        connectionLifeCycleListeners = builder.connectionLifeCycleListeners;
-        streamThreadName = conf.streamThreadName;
+    TwitterStreamImpl(String streamBaseURL, String streamThreadName,
+                             List<ConnectionLifeCycleListener> connectionLifeCycleListeners,
+                             List<StreamListener> streamListeners, List<RawStreamListener> rawStreamListeners,
+                             boolean jsonStoreEnabled, boolean prettyDebug,
+                             boolean stallWarningsEnabled, HttpClient http, Authorization auth) {
+        this.streamBaseURL = streamBaseURL;
+        this.streamThreadName = streamThreadName;
+        this.connectionLifeCycleListeners = connectionLifeCycleListeners;
+        this.streamListeners = streamListeners;
+        this.rawStreamListeners = rawStreamListeners;
+        this.jsonStoreEnabled = jsonStoreEnabled;
+        this.prettyDebug = prettyDebug;
+        this.stallWarningsGetParam = "stall_warnings=" + (stallWarningsEnabled ? "true" : "false");
+        this.stallWarningsParam = new HttpParameter("stall_warnings", stallWarningsEnabled);
+        this.http = http;
         // turning off keepalive connection explicitly because Streaming API doesn't need keepalive connection.
         // and this will reduce the shutdown latency of streaming api connection
         // see also - http://jira.twitter4j.org/browse/TFJ-556
         http.addDefaultRequestHeader("Connection", "close");
-        streamBaseURL = conf.streamBaseURL;
-
-        stallWarningsGetParam = "stall_warnings=" + (conf.stallWarningsEnabled ? "true" : "false");
-        stallWarningsParam = new HttpParameter("stall_warnings", conf.stallWarningsEnabled);
+        this.auth = auth;
     }
 
     /* Streaming API */
 
     @Override
     public TwitterStream firehose(final int count) {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -100,7 +96,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/firehose</a>
      * @since Twitter4J 2.0.4
      */
@@ -110,6 +105,8 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream links(final int count) {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -125,7 +122,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      * @param count Indicates the number of previous statuses to stream before transitioning to the live stream.
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods statuses/links</a>
      * @since Twitter4J 2.1.1
      */
@@ -146,6 +142,8 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream retweet() {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -160,7 +158,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      *
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/retweet</a>
      * @since Twitter4J 2.0.10
      */
@@ -176,6 +173,8 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream sample() {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -187,6 +186,8 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream sample(final String language) {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
@@ -201,7 +202,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      *
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
@@ -222,7 +222,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      *
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API: Methods statuses/sample</a>
      * @since Twitter4J 2.0.10
      */
@@ -239,18 +238,14 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
 
     @Override
     public TwitterStream filter(final FilterQuery query) {
+        auth.isEnabled();
+        ensureStatusStreamListenerIsSet();
         startHandler(new TwitterStreamConsumer(Mode.status) {
             @Override
             public StatusStream getStream() throws TwitterException {
                 return getFilterStream(query);
             }
         });
-        return this;
-    }
-
-    @Override
-    public TwitterStream filter(final String... track) {
-        filter(FilterQuery.ofTrack(track));
         return this;
     }
 
@@ -261,7 +256,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
      * @param query Filter query
      * @return StatusStream
      * @throws TwitterException when Twitter service or network is unavailable
-     * @see twitter4j.StatusStream
      * @see <a href="https://dev.twitter.com/docs/streaming-api/methods">Streaming API Methods | Twitter Developers</a>
      * @since Twitter4J 2.1.2
      */
@@ -300,6 +294,7 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
         HttpParameter[] paramArray = new HttpParameter[params.size()];
         return params.toArray(paramArray);
     }
+
     private String toLocationsString(final double[][] keywords) {
         final StringBuilder buf = new StringBuilder(20 * keywords.length * 2);
         for (double[] keyword : keywords) {
@@ -312,7 +307,6 @@ class TwitterStreamImpl implements TwitterStream, Serializable {
         }
         return buf.toString();
     }
-
 
 
     /**

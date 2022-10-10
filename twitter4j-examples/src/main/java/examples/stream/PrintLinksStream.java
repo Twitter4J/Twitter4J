@@ -32,7 +32,7 @@ public class PrintLinksStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream.newBuilder().listener(new StatusListener() {
+        Twitter.newBuilder().listener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -62,6 +62,6 @@ public class PrintLinksStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        }).build().links(0);
+        }).build().v1().stream().links(0);
     }
 }

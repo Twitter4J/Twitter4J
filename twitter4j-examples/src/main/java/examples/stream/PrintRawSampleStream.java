@@ -15,8 +15,8 @@
  */
 package examples.stream;
 
+import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterStream;
 import twitter4j.v1.RawStreamListener;
 
 /**
@@ -34,7 +34,7 @@ public class PrintRawSampleStream {
      * @throws TwitterException when Twitter service or network is unavailable
      */
     public static void main(String[] args) throws TwitterException {
-        TwitterStream.newBuilder().listener(new RawStreamListener() {
+        Twitter.newBuilder().listener(new RawStreamListener() {
             @Override
             public void onMessage(String rawJSON) {
                 System.out.println(rawJSON);
@@ -44,6 +44,6 @@ public class PrintRawSampleStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        }).build().sample();
+        }).build().v1().stream().sample();
     }
 }

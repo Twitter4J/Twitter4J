@@ -15,6 +15,15 @@
  */
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StatusAdapter;
+import twitter4j.v1.StreamListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since Twitter4J 2.2.0
@@ -62,5 +71,69 @@ public interface Twitter extends java.io.Serializable {
         public Twitter build() {
             return new TwitterImpl(buildConfiguration());
         }
+        final List<ConnectionLifeCycleListener> connectionLifeCycleListeners = new ArrayList<>();
+
+        final List<StreamListener> streamListeners = new ArrayList<>();
+        final List<RawStreamListener> rawStreamListeners = new ArrayList<>();
+
+        /**
+         * @param listener listener
+         * @return this instance
+         */
+        public Twitter.TwitterBuilder connectionLifeCycleListener(@NotNull ConnectionLifeCycleListener listener) {
+            this.connectionLifeCycleListeners.add(listener);
+            return this;
+        }
+
+
+        /**
+         * @param streamListener adds listener
+         * @return this instance
+         */
+        public Twitter.TwitterBuilder listener(@NotNull StreamListener streamListener) {
+            this.streamListeners.add(streamListener);
+            return this;
+        }
+
+        /**
+         * @param rawStreamListener listener
+         * @return this instance
+         */
+        public Twitter.TwitterBuilder listener(@NotNull RawStreamListener rawStreamListener) {
+            this.rawStreamListeners.add(rawStreamListener);
+            return this;
+        }
+
+
+        /**
+         * @param onStatus listener
+         * @return this instance
+         */
+        public Twitter.TwitterBuilder onStatus(@NotNull Consumer<Status> onStatus) {
+            this.streamListeners.add(new StatusAdapter() {
+                @Override
+                public void onStatus(Status status) {
+                    onStatus.accept(status);
+                }
+
+            });
+            return this;
+        }
+
+        /**
+         * @param onException listener
+         * @return this instance
+         */
+        public Twitter.TwitterBuilder onException(Consumer<Exception> onException) {
+            this.streamListeners.add(new StatusAdapter() {
+                @Override
+                public void onException(Exception ex) {
+                    onException.accept(ex);
+                }
+
+            });
+            return this;
+        }
+
     }
 }

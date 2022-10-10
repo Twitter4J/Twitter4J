@@ -49,6 +49,14 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
     private final String restBaseURL;
     private final boolean mbeanEnabled;
     private final String uploadBaseURL;
+    private final String streamBaseURL;
+    private final String streamThreadName;
+    private transient List<ConnectionLifeCycleListener> connectionLifeCycleListeners;
+    private transient List<StreamListener> streamListeners;
+    private transient List<RawStreamListener> rawStreamListeners;
+    private final boolean stallWarningsEnabled;
+    private final boolean prettyDebug;
+    private final boolean jsonStoreEnabled;
 
 
     private transient PlacesGeoResourcesImpl placeGeoResources;
@@ -69,6 +77,7 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
     private transient HelpResources helpResources;
     private transient SpamReportingResource spamReportingResource;
     private transient TrendsResources trendResources;
+    private transient TwitterStream twitterStream;
 
 
     TwitterImpl(Configuration conf) {
@@ -120,7 +129,22 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
         if (conf.tweetModeExtended) {
             params.add(new HttpParameter("tweet_mode", "extended"));
         }
-
+        streamBaseURL = conf.streamBaseURL;
+        streamThreadName = conf.streamThreadName;
+        jsonStoreEnabled = conf.jsonStoreEnabled;
+        prettyDebug = conf.prettyDebug;
+        if(conf instanceof  TwitterBuilder){
+            TwitterBuilder builder = (TwitterBuilder) conf;
+            connectionLifeCycleListeners = builder.connectionLifeCycleListeners;
+            streamListeners = builder.streamListeners;
+            rawStreamListeners = builder.rawStreamListeners;
+            stallWarningsEnabled = builder.stallWarningsEnabled;
+        }else{
+            connectionLifeCycleListeners= new ArrayList<>();
+            streamListeners = new ArrayList<>();
+            rawStreamListeners = new ArrayList<>();
+            stallWarningsEnabled = false;
+        }
         this.IMPLICIT_PARAMS = params.toArray(new HttpParameter[0]);
         this.IMPLICIT_PARAMS_STR = implicitParamsStr;
         initTransients();
@@ -140,6 +164,7 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
        friendsFollowersResources = new FriendsFollowersResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
        favoritesResources = new FavoritesResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
        usersResources = new UsersResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
+       twitterStream = new TwitterStreamImpl(streamBaseURL, streamThreadName,  connectionLifeCycleListeners,  streamListeners,  rawStreamListeners,  jsonStoreEnabled,  prettyDebug,  stallWarningsEnabled,  http,auth);
 
    }
     @Override
@@ -244,6 +269,10 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
             public HelpResources help() {
                 return helpResources;
             }
+            @Override
+            public TwitterStream stream() {
+                return twitterStream;
+            }
         };
     }
     @Override
@@ -294,6 +323,10 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
 
         rateLimitReachedListeners = new ArrayList<>();
         rateLimitStatusListeners = new ArrayList<>();
+        connectionLifeCycleListeners = new ArrayList<>();
+        streamListeners = new ArrayList<>();
+        rawStreamListeners = new ArrayList<>();
+
         initTransients();
     }
 

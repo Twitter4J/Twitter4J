@@ -43,7 +43,7 @@ public final class PrintFilterStream {
             System.exit(-1);
         }
 
-        TwitterStream twitterStream = TwitterStream.newBuilder().listener(new StatusListener() {
+        TwitterStream twitterStream = Twitter.newBuilder().listener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -73,7 +73,7 @@ public final class PrintFilterStream {
             public void onException(Exception ex) {
                 ex.printStackTrace();
             }
-        }).build();
+        }).build().v1().stream();
 
         ArrayList<Long> follow = new ArrayList<>();
         ArrayList<String> track = new ArrayList<>();
