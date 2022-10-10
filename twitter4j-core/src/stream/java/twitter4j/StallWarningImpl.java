@@ -16,6 +16,8 @@
  */
 package twitter4j;
 
+import twitter4j.v1.StallWarning;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 3.0.0
  */
 @SuppressWarnings("unused")
-public final class StallWarning implements Serializable {
+public final class StallWarningImpl implements StallWarning, Serializable {
     private static final long serialVersionUID = -4294628635422470314L;
     /**
      * code
@@ -42,7 +44,7 @@ public final class StallWarning implements Serializable {
      */
     private final int percentFull;
 
-    StallWarning(JSONObject json) throws JSONException {
+    StallWarningImpl(JSONObject json) throws JSONException {
         JSONObject warning = json.getJSONObject("warning");
         code = getRawString("code", warning);
         message = getRawString("message", warning);
@@ -50,23 +52,17 @@ public final class StallWarning implements Serializable {
 
     }
 
-    /**
-     * @return code
-     */
+    @Override
     public String getCode() {
         return code;
     }
 
-    /**
-     * @return message
-     */
+    @Override
     public String getMessage() {
         return message;
     }
 
-    /**
-     * @return percent full
-     */
+    @Override
     public int getPercentFull() {
         return percentFull;
     }
@@ -75,25 +71,18 @@ public final class StallWarning implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        StallWarning that = (StallWarning) o;
-
-        if (percentFull != that.percentFull) return false;
-        if (!Objects.equals(code, that.code)) return false;
-        return Objects.equals(message, that.message);
+        StallWarningImpl that = (StallWarningImpl) o;
+        return percentFull == that.percentFull && Objects.equals(code, that.code) && Objects.equals(message, that.message);
     }
 
     @Override
     public int hashCode() {
-        int result = code != null ? code.hashCode() : 0;
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + percentFull;
-        return result;
+        return Objects.hash(code, message, percentFull);
     }
 
     @Override
     public String toString() {
-        return "StallWarning{" +
+        return "StallWarningImpl{" +
                 "code='" + code + '\'' +
                 ", message='" + message + '\'' +
                 ", percentFull=" + percentFull +

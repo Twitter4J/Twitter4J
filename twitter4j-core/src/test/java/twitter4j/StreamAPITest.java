@@ -20,9 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.v1.FilterQuery;
-import twitter4j.v1.RawStreamListener;
-import twitter4j.v1.StatusListener;
+import twitter4j.v1.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

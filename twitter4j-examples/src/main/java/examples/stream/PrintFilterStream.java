@@ -16,9 +16,14 @@
 
 package examples.stream;
 
-import twitter4j.*;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.v1.FilterQuery;
+import twitter4j.v1.StallWarning;
 import twitter4j.v1.StatusListener;
+import twitter4j.v1.TwitterStream;
 
 import java.util.ArrayList;
 import java.util.Arrays;

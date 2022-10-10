@@ -16,7 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 

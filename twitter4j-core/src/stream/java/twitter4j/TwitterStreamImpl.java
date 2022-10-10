@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import twitter4j.v1.FilterQuery;
 import twitter4j.v1.RawStreamListener;
 import twitter4j.v1.StreamListener;
+import twitter4j.v1.TwitterStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,11 +54,12 @@ class TwitterStreamImpl implements TwitterStream {
 
     private final HttpClient http;
     private final Authorization auth;
+
     TwitterStreamImpl(String streamBaseURL, String streamThreadName,
-                             List<ConnectionLifeCycleListener> connectionLifeCycleListeners,
-                             List<StreamListener> streamListeners, List<RawStreamListener> rawStreamListeners,
-                             boolean jsonStoreEnabled, boolean prettyDebug,
-                             boolean stallWarningsEnabled, HttpClient http, Authorization auth) {
+                      List<ConnectionLifeCycleListener> connectionLifeCycleListeners,
+                      List<StreamListener> streamListeners, List<RawStreamListener> rawStreamListeners,
+                      boolean jsonStoreEnabled, boolean prettyDebug,
+                      boolean stallWarningsEnabled, HttpClient http, Authorization auth) {
         this.streamBaseURL = streamBaseURL;
         this.streamThreadName = streamThreadName;
         this.connectionLifeCycleListeners = connectionLifeCycleListeners;

@@ -92,7 +92,7 @@ class StatusStreamImpl extends StatusStreamBase {
     @Override
     protected void onStallWarning(JSONObject json, List<StreamListener> listeners) throws TwitterException, JSONException {
         for (StreamListener listener : listeners) {
-            ((StatusListener) listener).onStallWarning(new StallWarning(json));
+            ((StatusListener) listener).onStallWarning(new StallWarningImpl(json));
         }
     }
 
