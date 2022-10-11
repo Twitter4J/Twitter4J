@@ -16,7 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.QuickReply;
 import twitter4j.TwitterException;
 
 import java.io.InputStream;

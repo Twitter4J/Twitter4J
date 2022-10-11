@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package twitter4j.v1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import twitter4j.GeoLocation;
 
-import java.util.*;
+import java.util.Objects;
 
 /**
  * A data class represents search query.<br>
@@ -82,7 +83,7 @@ public final class Query implements java.io.Serializable {
      * next page query
      */
     @Nullable
-    final String nextPageQuery;
+    public final String nextPageQuery;
 
     /**
      * creates a new Query instance with the specified lang
@@ -218,54 +219,6 @@ public final class Query implements java.io.Serializable {
         return new Query(query, null, null, -1, -1, null, -1, null, null, null, null);
     }
 
-
-    /* package */
-    static Query createWithNextPageQuery(@NotNull String nextPageQuery) {
-
-        String nextPageParameters = nextPageQuery.substring(1);
-
-        Map<String, String> params = new LinkedHashMap<>();
-        for (HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
-            // Yes, we'll overwrite duplicate parameters, but we should not
-            // get duplicate parameters from this endpoint.
-            params.put(param.getName(), param.getValue());
-        }
-
-        String query = params.getOrDefault("q", "");
-        String lang = params.getOrDefault("lang", null);
-        String locale = params.getOrDefault("locale", null);
-        long maxId = Long.parseLong(params.getOrDefault("max_id", "-1"));
-        int count = Integer.parseInt(params.getOrDefault("count", "-1"));
-        String geoLocation = null;
-        if (params.containsKey("geocode")) {
-            String[] parts = params.get("geocode").split(",");
-            double latitude = Double.parseDouble(parts[0]);
-            double longitude = Double.parseDouble(parts[1]);
-
-            double radius = 0.0;
-            Query.Unit unit = null;
-            String radiusstr = parts[2];
-            for (Query.Unit value : Query.Unit.values())
-                if (radiusstr.endsWith(value.name())) {
-                    radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
-                    unit = value;
-                    break;
-                }
-            if (unit == null) {
-                throw new IllegalArgumentException("unrecognized geocode radius: " + radiusstr);
-            }
-            geoLocation = latitude + "," + longitude + "," + radius + unit.name();
-
-        }
-        ResultType resultType1 = null;
-        if (params.containsKey("result_type")) {
-            resultType1 = Query.ResultType.valueOf(params.get("result_type"));
-        }
-        // We don't pull out since, until -- they get pushed into the query
-        return new Query(query, lang, locale, maxId, count, null, -1, geoLocation, null, resultType1, nextPageQuery);
-    }
-
-
     /**
      * miles
      */
@@ -322,44 +275,6 @@ public final class Query implements java.io.Serializable {
          * recent
          */
         recent
-    }
-
-
-    private static final HttpParameter WITH_TWITTER_USER_ID = new HttpParameter("with_twitter_user_id", "true");
-
-    /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<>(12);
-        appendParameter("q", query, params);
-        appendParameter("lang", lang, params);
-        appendParameter("locale", locale, params);
-        appendParameter("max_id", maxId, params);
-        appendParameter("count", count, params);
-        appendParameter("since", since, params);
-        appendParameter("since_id", sinceId, params);
-        appendParameter("geocode", geocode, params);
-        appendParameter("until", until, params);
-        if (resultType != null) {
-            params.add(new HttpParameter("result_type", resultType.name()));
-        }
-        params.add(WITH_TWITTER_USER_ID);
-        HttpParameter[] paramArray = new HttpParameter[params.size()];
-        return params.toArray(paramArray);
-    }
-
-    private void appendParameter(String name, String value, List<HttpParameter> params) {
-        if (value != null) {
-            params.add(new HttpParameter(name, value));
-        }
-    }
-
-    private void appendParameter(String name, long value, List<HttpParameter> params) {
-        if (0 <= value) {
-            params.add(new HttpParameter(name, String.valueOf(value)));
-        }
-    }
-
-    /*package*/ String nextPage() {
-        return nextPageQuery;
     }
 
     @Override

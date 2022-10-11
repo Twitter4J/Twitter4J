@@ -28,11 +28,11 @@ public class GeoLocation implements java.io.Serializable {
     /**
      * latitude
      */
-    private double latitude;
+    private final double latitude;
     /**
      * longitude
      */
-    private double longitude;
+    private final double longitude;
 
     /**
      * Creates a GeoLocation instance
@@ -43,11 +43,6 @@ public class GeoLocation implements java.io.Serializable {
     public GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    /* For serialization purposes only. */
-    /* package */ GeoLocation() {
-
     }
 
     /**

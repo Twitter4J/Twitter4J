@@ -16,9 +16,9 @@
 
 package examples.search;
 
-import twitter4j.Query;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.Query;
 import twitter4j.v1.QueryResult;
 import twitter4j.v1.Status;
 

@@ -20,6 +20,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.Query;
 import twitter4j.v1.QueryResult;
 import twitter4j.v1.RateLimitStatus;
 import twitter4j.v1.Status;
@@ -39,7 +40,7 @@ class SearchAPITest extends TwitterTestBase {
         var format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Query query = Query.of("test")
                 .withUntil(format.format(LocalDateTime.now().minus(24,ChronoUnit.DAYS)));
-        HttpParameter[] params = query.asHttpParameterArray();
+        HttpParameter[] params = SearchResourceImpl.asHttpParameterArray(query);
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
     }

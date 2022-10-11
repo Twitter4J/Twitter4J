@@ -20,6 +20,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.v1.DirectMessage;
 import twitter4j.v1.DirectMessageList;
+import twitter4j.v1.QuickReply;
 
 import java.time.LocalDateTime;
 

@@ -16,11 +16,15 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+import twitter4j.v1.Query;
 import twitter4j.v1.QueryResult;
 import twitter4j.v1.Status;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A data class representing search API response
@@ -73,6 +77,60 @@ import java.util.List;
         tweets = new ArrayList<>(0);
     }
 
+    /* package */
+    static Query createWithNextPageQuery(@NotNull String nextPageQuery) {
+
+        String nextPageParameters = nextPageQuery.substring(1);
+
+        Map<String, String> params = new LinkedHashMap<>();
+        for (HttpParameter param : HttpParameter.decodeParameters(nextPageParameters)) {
+            // Yes, we'll overwrite duplicate parameters, but we should not
+            // get duplicate parameters from this endpoint.
+            params.put(param.getName(), param.getValue());
+        }
+
+        Query query = Query.of(params.getOrDefault("q", ""));
+        if (params.containsKey("lang")) {
+            query = query.withLang(params.get("lang"));
+        }
+        if (params.containsKey("locale")) {
+            query = query.withLocale(params.get("locale"));
+        }
+        if (params.containsKey("max_id")) {
+            query = query.withMaxId(Long.parseLong(params.get("max_id")));
+        }
+        if (params.containsKey("count")) {
+            query = query.withCount(Integer.parseInt(params.get("count")));
+        }
+        if (params.containsKey("geocode")) {
+            String[] parts = params.get("geocode").split(",");
+            double latitude = Double.parseDouble(parts[0]);
+            double longitude = Double.parseDouble(parts[1]);
+
+            double radius;
+            Query.Unit unit = null;
+            String radiusstr = parts[2];
+
+            for (Query.Unit value : Query.Unit.values())
+                if (radiusstr.endsWith(value.name())) {
+                    radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
+                    unit = value;
+                    query = query.withGeoCode(new GeoLocation(latitude, longitude), radius, unit);
+                    break;
+                }
+            if (unit == null) {
+                throw new IllegalArgumentException("unrecognized geocode radius: " + radiusstr);
+            }
+
+        }
+        Query.ResultType resultType;
+        if (params.containsKey("result_type")) {
+            resultType = Query.ResultType.valueOf(params.get("result_type"));
+            query = query.withResultType(resultType);
+        }
+        return query;
+    }
+
     @Override
     public long getSinceId() {
         return sinceId;
@@ -113,7 +171,7 @@ import java.util.List;
         if (nextResults == null) {
             return null;
         }
-        return Query.createWithNextPageQuery(nextResults);
+        return createWithNextPageQuery(nextResults);
     }
 
     @Override
