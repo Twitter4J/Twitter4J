@@ -39,7 +39,7 @@ class SearchAPITest extends TwitterTestBase {
     void testQuery() {
         var format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Query query = Query.of("test")
-                .withUntil(format.format(LocalDateTime.now().minus(24,ChronoUnit.DAYS)));
+                .until(format.format(LocalDateTime.now().minus(24,ChronoUnit.DAYS)));
         HttpParameter[] params = SearchResourceImpl.asHttpParameterArray(query);
         assertTrue(findParameter(params, "q"));
         assertTrue(findParameter(params, "until"));
@@ -61,7 +61,7 @@ class SearchAPITest extends TwitterTestBase {
         String queryStr = "test";
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dateStr = format.format(LocalDateTime.now().minus(1,ChronoUnit.DAYS));
-        Query query = Query.of(queryStr).withUntil(dateStr);
+        Query query = Query.of(queryStr).until(dateStr);
         QueryResult queryResult = twitter1.v1().search().search(query);
         RateLimitStatus rateLimitStatus = queryResult.getRateLimitStatus();
         assertTrue(-1 != queryResult.getSinceId(), "sinceId");
@@ -99,24 +99,24 @@ class SearchAPITest extends TwitterTestBase {
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query = Query.of("starbucks")
-                .withGeoCode(new GeoLocation(47.6094651, -122.3411666), 10, Query.KILOMETERS);
+                .geoCode(new GeoLocation(47.6094651, -122.3411666), 10, Query.KILOMETERS);
         queryResult = twitter1.v1().search().search(query);
         assertTrue(0 < queryResult.getTweets().size());
 
-        query = Query.of("from:tsuda").withSinceId(1671199128);
+        query = Query.of("from:tsuda").sinceId(1671199128);
         queryResult = twitter1.v1().search().search(query);
         assertTrue(0 < queryResult.getTweets().size());
         assertEquals(4171231, queryResult.getTweets().get(0).getUser().getId());
         assertTrue(queryResult.hasNext());
         assertNotNull(queryResult.nextQuery());
 
-        query = Query.of("\\u5e30%u5e30 <%}& foobar").withCount(100);
+        query = Query.of("\\u5e30%u5e30 <%}& foobar").count(100);
         twitter1.v1().search().search(query);
     }
 
     @Test
     void testEasyPaging() throws Exception {
-        Query query = Query.of("from:twit4j doesnothit").withResultType(Query.POPULAR);
+        Query query = Query.of("from:twit4j doesnothit").resultType(Query.POPULAR);
         QueryResult result = twitter1.v1().search().search(query);
         assertFalse(result.hasNext());
 
@@ -134,10 +134,10 @@ class SearchAPITest extends TwitterTestBase {
 
         String lang = "en";
         Query query = Query.of("twitter")
-                .withLang(lang)
-                .withResultType(Query.ResultType.recent)
-                .withSince("2017-01-01")
-                .withUntil(until);
+                .lang(lang)
+                .resultType(Query.ResultType.recent)
+                .since("2017-01-01")
+                .until(until);
         assertEquals(lang, query.lang);
         QueryResult qr = twitter1.v1().search().search(query);
         Query nextQuery = qr.nextQuery();

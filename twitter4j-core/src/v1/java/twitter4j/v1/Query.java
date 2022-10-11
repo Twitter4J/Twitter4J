@@ -92,7 +92,7 @@ public final class Query implements java.io.Serializable {
      * @return new Query instance
      */
     @NotNull
-    public Query withLang(@NotNull String lang) {
+    public Query lang(@NotNull String lang) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -103,7 +103,7 @@ public final class Query implements java.io.Serializable {
      * @return new Query instance
      */
     @NotNull
-    public Query withLocale(@NotNull String locale) {
+    public Query locale(@NotNull String locale) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -115,7 +115,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withMaxId(long maxId) {
+    public Query maxId(long maxId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -127,7 +127,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withCount(int count) {
+    public Query count(int count) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -139,7 +139,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withSince(@NotNull String since) {
+    public Query since(@NotNull String since) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, null, resultType, nextPageQuery);
     }
 
@@ -151,7 +151,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withSinceId(long sinceId) {
+    public Query sinceId(long sinceId) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -165,7 +165,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withGeoCode(@NotNull GeoLocation location, double radius
+    public Query geoCode(@NotNull GeoLocation location, double radius
             , Unit unit) {
         String geocode = location.latitude + "," + location.longitude + "," + radius + unit.name();
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
@@ -179,7 +179,7 @@ public final class Query implements java.io.Serializable {
      */
 
     @NotNull
-    public Query withUntil(@NotNull String until) {
+    public Query until(@NotNull String until) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 
@@ -190,7 +190,7 @@ public final class Query implements java.io.Serializable {
      * @return new Query instance
      */
     @NotNull
-    public Query withResultType(@NotNull ResultType resultType) {
+    public Query resultType(@NotNull ResultType resultType) {
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 

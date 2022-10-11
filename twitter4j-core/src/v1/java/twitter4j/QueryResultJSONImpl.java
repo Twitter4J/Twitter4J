@@ -91,16 +91,16 @@ import java.util.Map;
 
         Query query = Query.of(params.getOrDefault("q", ""));
         if (params.containsKey("lang")) {
-            query = query.withLang(params.get("lang"));
+            query = query.lang(params.get("lang"));
         }
         if (params.containsKey("locale")) {
-            query = query.withLocale(params.get("locale"));
+            query = query.locale(params.get("locale"));
         }
         if (params.containsKey("max_id")) {
-            query = query.withMaxId(Long.parseLong(params.get("max_id")));
+            query = query.maxId(Long.parseLong(params.get("max_id")));
         }
         if (params.containsKey("count")) {
-            query = query.withCount(Integer.parseInt(params.get("count")));
+            query = query.count(Integer.parseInt(params.get("count")));
         }
         if (params.containsKey("geocode")) {
             String[] parts = params.get("geocode").split(",");
@@ -115,7 +115,7 @@ import java.util.Map;
                 if (radiusstr.endsWith(value.name())) {
                     radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
                     unit = value;
-                    query = query.withGeoCode(new GeoLocation(latitude, longitude), radius, unit);
+                    query = query.geoCode(new GeoLocation(latitude, longitude), radius, unit);
                     break;
                 }
             if (unit == null) {
@@ -126,7 +126,7 @@ import java.util.Map;
         Query.ResultType resultType;
         if (params.containsKey("result_type")) {
             resultType = Query.ResultType.valueOf(params.get("result_type"));
-            query = query.withResultType(resultType);
+            query = query.resultType(resultType);
         }
         return query;
     }
