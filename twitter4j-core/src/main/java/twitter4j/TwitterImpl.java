@@ -18,7 +18,9 @@
 package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
-import twitter4j.v1.*;
+import twitter4j.v1.RawStreamListener;
+import twitter4j.v1.StreamListener;
+import twitter4j.v1.TwitterV1;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,25 +61,12 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
     private final boolean jsonStoreEnabled;
 
 
-    private transient PlacesGeoResourcesImpl placeGeoResources;
-    private transient TimelinesResources timelinesResources;
-    private transient TweetsResources tweetsResources;
-    private transient SearchResource searchResource;
-    private transient DirectMessagesResources directMessagesResources;
-    private transient FriendsFollowersResources friendsFollowersResources;
-    private transient UsersResources usersResources;
     private transient List<Consumer<RateLimitStatusEvent>> rateLimitStatusListeners;
     private transient List<Consumer<RateLimitStatusEvent>> rateLimitReachedListeners;
+    private transient TwitterV1 twitterV1;
 
     @NotNull
     private final Authorization auth;
-    private transient SavedSearchesResources savedSearchesResources;
-    private transient FavoritesResources favoritesResources;
-    private transient ListsResources listResources;
-    private transient HelpResources helpResources;
-    private transient SpamReportingResource spamReportingResource;
-    private transient TrendsResources trendResources;
-    private transient TwitterStream twitterStream;
 
 
     TwitterImpl(Configuration conf) {
@@ -133,14 +122,14 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
         streamThreadName = conf.streamThreadName;
         jsonStoreEnabled = conf.jsonStoreEnabled;
         prettyDebug = conf.prettyDebug;
-        if(conf instanceof  TwitterBuilder){
+        if (conf instanceof TwitterBuilder) {
             TwitterBuilder builder = (TwitterBuilder) conf;
             connectionLifeCycleListeners = builder.connectionLifeCycleListeners;
             streamListeners = builder.streamListeners;
             rawStreamListeners = builder.rawStreamListeners;
             stallWarningsEnabled = builder.stallWarningsEnabled;
-        }else{
-            connectionLifeCycleListeners= new ArrayList<>();
+        } else {
+            connectionLifeCycleListeners = new ArrayList<>();
             streamListeners = new ArrayList<>();
             rawStreamListeners = new ArrayList<>();
             stallWarningsEnabled = false;
@@ -150,23 +139,12 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
         initTransients();
     }
 
-   void initTransients() {
-       helpResources = new HelpResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       spamReportingResource = new SpamReportingResourceImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       trendResources = new TrendsResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       placeGeoResources = new PlacesGeoResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       savedSearchesResources = new SavedSearchesResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       listResources = new ListsResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       timelinesResources = new TimelinesResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       tweetsResources = new TweetsResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners, uploadBaseURL);
-       searchResource = new SearchResourceImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       directMessagesResources = new DirectMessagesResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       friendsFollowersResources = new FriendsFollowersResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       favoritesResources = new FavoritesResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       usersResources = new UsersResourcesImpl(http, factory, restBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS, IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners);
-       twitterStream = new TwitterStreamImpl(streamBaseURL, streamThreadName,  connectionLifeCycleListeners,  streamListeners,  rawStreamListeners,  jsonStoreEnabled,  prettyDebug,  stallWarningsEnabled,  http,auth);
+    void initTransients() {
+        twitterV1 = new TwitterV1Impl(http, factory, restBaseURL, streamBaseURL, uploadBaseURL, auth, mbeanEnabled, IMPLICIT_PARAMS,
+                IMPLICIT_PARAMS_STR, rateLimitStatusListeners, rateLimitReachedListeners, streamThreadName, connectionLifeCycleListeners,
+                streamListeners, rawStreamListeners, jsonStoreEnabled, prettyDebug, stallWarningsEnabled);
+    }
 
-   }
     @Override
     public void httpResponseReceived(HttpResponseEvent event) {
         if (rateLimitStatusListeners.size() != 0 || rateLimitReachedListeners.size() != 0) {
@@ -201,86 +179,16 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
         }
     }
 
-
-
-
-    public TwitterV1 v1(){
-        return new TwitterV1() {
-            @Override
-            public TimelinesResources timelines() {
-                return timelinesResources;
-            }
-            @Override
-            public TweetsResources tweets() {
-                return tweetsResources;
-            }
-
-            @Override
-            public SearchResource search() {
-                return searchResource;
-            }
-
-            @Override
-            public DirectMessagesResources directMessages() {
-                return directMessagesResources;
-            }
-
-            @Override
-            public FriendsFollowersResources friendsFollowers() {
-                return friendsFollowersResources;
-            }
-
-            @Override
-            public UsersResources users() {
-                return usersResources;
-            }
-
-            @Override
-            public FavoritesResources favorites() {
-                return favoritesResources;
-            }
-
-            @Override
-            public ListsResources list() {
-                return listResources;
-            }
-
-            @Override
-            public SavedSearchesResources savedSearches() {
-                return savedSearchesResources;
-            }
-
-            @Override
-            public PlacesGeoResources placesGeo() {
-                return placeGeoResources;
-            }
-
-            @Override
-            public TrendsResources trends() {
-                return trendResources;
-            }
-
-            @Override
-            public SpamReportingResource spamReporting() {
-                return spamReportingResource;
-            }
-
-            @Override
-            public HelpResources help() {
-                return helpResources;
-            }
-            @Override
-            public TwitterStream stream() {
-                return twitterStream;
-            }
-        };
+    public TwitterV1 v1() {
+        return twitterV1;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TwitterImpl twitter = (TwitterImpl) o;
-        return mbeanEnabled == twitter.mbeanEnabled && Objects.equals(http, twitter.http) && Objects.equals(IMPLICIT_PARAMS_STR, twitter.IMPLICIT_PARAMS_STR) && Arrays.equals(IMPLICIT_PARAMS, twitter.IMPLICIT_PARAMS) && Objects.equals(factory, twitter.factory) && Objects.equals(restBaseURL, twitter.restBaseURL) && Objects.equals(uploadBaseURL, twitter.uploadBaseURL) && Objects.equals(placeGeoResources, twitter.placeGeoResources) && Objects.equals(timelinesResources, twitter.timelinesResources) && Objects.equals(tweetsResources, twitter.tweetsResources) && Objects.equals(searchResource, twitter.searchResource) && Objects.equals(directMessagesResources, twitter.directMessagesResources) && Objects.equals(friendsFollowersResources, twitter.friendsFollowersResources) && Objects.equals(usersResources, twitter.usersResources) && Objects.equals(rateLimitStatusListeners, twitter.rateLimitStatusListeners) && Objects.equals(rateLimitReachedListeners, twitter.rateLimitReachedListeners) && auth.equals(twitter.auth) && Objects.equals(savedSearchesResources, twitter.savedSearchesResources) && Objects.equals(favoritesResources, twitter.favoritesResources) && Objects.equals(listResources, twitter.listResources) && Objects.equals(helpResources, twitter.helpResources) && Objects.equals(spamReportingResource, twitter.spamReportingResource) && Objects.equals(trendResources, twitter.trendResources);
+        return mbeanEnabled == twitter.mbeanEnabled && stallWarningsEnabled == twitter.stallWarningsEnabled && prettyDebug == twitter.prettyDebug && jsonStoreEnabled == twitter.jsonStoreEnabled && Objects.equals(http, twitter.http) && Objects.equals(IMPLICIT_PARAMS_STR, twitter.IMPLICIT_PARAMS_STR) && Arrays.equals(IMPLICIT_PARAMS, twitter.IMPLICIT_PARAMS) && Objects.equals(factory, twitter.factory) && Objects.equals(restBaseURL, twitter.restBaseURL) && Objects.equals(uploadBaseURL, twitter.uploadBaseURL) && Objects.equals(streamBaseURL, twitter.streamBaseURL) && Objects.equals(streamThreadName, twitter.streamThreadName) && Objects.equals(connectionLifeCycleListeners, twitter.connectionLifeCycleListeners) && Objects.equals(streamListeners, twitter.streamListeners) && Objects.equals(rawStreamListeners, twitter.rawStreamListeners) && Objects.equals(rateLimitStatusListeners, twitter.rateLimitStatusListeners) && Objects.equals(rateLimitReachedListeners, twitter.rateLimitReachedListeners) && Objects.equals(twitterV1, twitter.twitterV1) && auth.equals(twitter.auth);
     }
 
     @Override
@@ -298,22 +206,18 @@ class TwitterImpl implements Twitter, HttpResponseListener, Serializable {
                 ", restBaseURL='" + restBaseURL + '\'' +
                 ", mbeanEnabled=" + mbeanEnabled +
                 ", uploadBaseURL='" + uploadBaseURL + '\'' +
-                ", placeGeoResources=" + placeGeoResources +
-                ", timelinesResources=" + timelinesResources +
-                ", tweetsResources=" + tweetsResources +
-                ", searchResource=" + searchResource +
-                ", directMessagesResources=" + directMessagesResources +
-                ", friendsFollowersResources=" + friendsFollowersResources +
-                ", usersResources=" + usersResources +
+                ", streamBaseURL='" + streamBaseURL + '\'' +
+                ", streamThreadName='" + streamThreadName + '\'' +
+                ", connectionLifeCycleListeners=" + connectionLifeCycleListeners +
+                ", streamListeners=" + streamListeners +
+                ", rawStreamListeners=" + rawStreamListeners +
+                ", stallWarningsEnabled=" + stallWarningsEnabled +
+                ", prettyDebug=" + prettyDebug +
+                ", jsonStoreEnabled=" + jsonStoreEnabled +
                 ", rateLimitStatusListeners=" + rateLimitStatusListeners +
                 ", rateLimitReachedListeners=" + rateLimitReachedListeners +
+                ", twitterV1=" + twitterV1 +
                 ", auth=" + auth +
-                ", savedSearchesResources=" + savedSearchesResources +
-                ", favoritesResources=" + favoritesResources +
-                ", listResources=" + listResources +
-                ", helpResources=" + helpResources +
-                ", spamReportingResource=" + spamReportingResource +
-                ", trendResources=" + trendResources +
                 '}';
     }
 
