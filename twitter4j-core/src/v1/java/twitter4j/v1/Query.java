@@ -18,7 +18,6 @@ package twitter4j.v1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import twitter4j.GeoLocation;
 
 import java.util.Objects;
 

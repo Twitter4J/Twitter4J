@@ -16,7 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.GeoLocation;
 import twitter4j.TwitterResponse;
 
 import java.time.LocalDateTime;

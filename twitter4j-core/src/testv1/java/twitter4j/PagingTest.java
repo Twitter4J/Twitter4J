@@ -20,6 +20,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.Paging;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -29,11 +30,11 @@ class PagingTest {
     @Test
     void testPaging() {
         java.util.List<HttpParameter> params;
-        Paging paging = Paging.empty;
-        params = paging.asPostParameterList();
+        Paging paging = TimelinesResourcesImpl.empty;
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(0, params.size());
         // parameter validation test
-        params = paging.asPostParameterList(Paging.S);
+        params = TimelinesResourcesImpl.asPostParameterList(TimelinesResourcesImpl.S, paging);
         assertEquals(0, params.size());
 
         // setter validation test
@@ -44,14 +45,14 @@ class PagingTest {
         }
         // parameter validation test
         try {
-            paging.asPostParameterList(Paging.S);
+            TimelinesResourcesImpl.asPostParameterList(TimelinesResourcesImpl.S, paging);
         } catch (IllegalStateException ise) {
             fail("IllegalStateException should not be thrown.");
         }
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(0, params.size());
         paging = Paging.ofSinceId(2000L);
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(1, params.size());
         assertContains(params, "since_id", 2000L);
 
@@ -62,7 +63,7 @@ class PagingTest {
         } catch (IllegalArgumentException ignore) {
         }
         paging = paging.withPage(10);
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(2, params.size());
         assertContains(params, "page", 10);
         assertContains(params, "since_id", 2000L);
@@ -75,14 +76,14 @@ class PagingTest {
         }
         // parameter validation test
         try {
-            paging.asPostParameterList(Paging.S);
+            TimelinesResourcesImpl.asPostParameterList(TimelinesResourcesImpl.S, paging);
             fail("should accept only since_id parameter");
         } catch (IllegalStateException ignore) {
         }
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(2, params.size());
         paging = paging.maxId(1000L);
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(3, params.size());
         assertContains(params, "page", 10);
         assertContains(params, "max_id", 1000L);
@@ -97,14 +98,14 @@ class PagingTest {
         }
         // parameter validation test
         try {
-            paging.asPostParameterList(Paging.S);
+            TimelinesResourcesImpl.asPostParameterList(TimelinesResourcesImpl.S, paging);
             fail("should accept only since_id parameter");
         } catch (IllegalStateException ignore) {
         }
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(3, params.size());
         paging = paging.count(3000);
-        params = paging.asPostParameterList();
+        params = TimelinesResourcesImpl.asPostParameterList(paging);
         assertEquals(4, params.size());
         assertContains(params, "page", 10);
         assertContains(params, "max_id", 1000L);

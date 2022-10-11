@@ -3,6 +3,7 @@ package twitter4j;
 import twitter4j.v1.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -61,10 +62,55 @@ class TweetsResourcesImpl extends APIResourceBase implements TweetsResources {
 
     @Override
     public Status updateStatus(StatusUpdate status) throws TwitterException {
-        String url = restBaseURL + (status.isForUpdateWithMedia() ? "statuses/update_with_media.json" : "statuses/update.json");
-        return factory.createStatus(post(url, status.asHttpParameterArray()));
+        boolean isForUpdateWithMedia = status.mediaFile != null || status.mediaName != null;
+        String url = restBaseURL + (isForUpdateWithMedia ? "statuses/update_with_media.json" : "statuses/update.json");
+        return factory.createStatus(post(url, asHttpParameterArray(status)));
+    }
+    static HttpParameter[] asHttpParameterArray(StatusUpdate statusUpdate) {
+        ArrayList<HttpParameter> params = new ArrayList<>();
+        appendParameter("status", statusUpdate.status, params);
+        if (-1 != statusUpdate.inReplyToStatusId) {
+            appendParameter("in_reply_to_status_id", statusUpdate.inReplyToStatusId, params);
+        }
+        if (statusUpdate.location != null) {
+            appendParameter("lat", statusUpdate.location.latitude, params);
+            appendParameter("long", statusUpdate.location.longitude, params);
+
+        }
+        appendParameter("place_id", statusUpdate.placeId, params);
+        if (!statusUpdate.displayCoordinates) {
+            appendParameter("display_coordinates", "false", params);
+        }
+        if (null != statusUpdate.mediaFile) {
+            params.add(new HttpParameter("media[]", statusUpdate.mediaFile));
+            params.add(new HttpParameter("possibly_sensitive", statusUpdate.possiblySensitive));
+        } else if (statusUpdate.mediaName != null && statusUpdate.mediaBody != null) {
+            params.add(new HttpParameter("media[]", statusUpdate.mediaName, statusUpdate.mediaBody));
+            params.add(new HttpParameter("possibly_sensitive", statusUpdate.possiblySensitive));
+        } else if (statusUpdate.mediaIds != null && statusUpdate.mediaIds.length >= 1) {
+            params.add(new HttpParameter("media_ids", StringUtil.join(statusUpdate.mediaIds)));
+        }
+        if (statusUpdate.autoPopulateReplyMetadata) {
+            appendParameter("auto_populate_reply_metadata", "true", params);
+        }
+        appendParameter("attachment_url", statusUpdate.attachmentUrl, params);
+        HttpParameter[] paramArray = new HttpParameter[params.size()];
+        return params.toArray(paramArray);
     }
 
+    private static void appendParameter(String name, String value, List<HttpParameter> params) {
+        if (value != null) {
+            params.add(new HttpParameter(name, value));
+        }
+    }
+
+    private static void appendParameter(String name, double value, List<HttpParameter> params) {
+        params.add(new HttpParameter(name, String.valueOf(value)));
+    }
+
+    private static void appendParameter(@SuppressWarnings("SameParameterValue") String name, long value, List<HttpParameter> params) {
+        params.add(new HttpParameter(name, String.valueOf(value)));
+    }
     @Override
     public Status retweetStatus(long statusId) throws TwitterException {
         return factory.createStatus(post(restBaseURL + "statuses/retweet/" + statusId + ".json"));

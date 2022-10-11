@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package twitter4j.v1;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -164,10 +162,6 @@ public final class StatusUpdate implements java.io.Serializable {
         return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, attachmentUrl);
     }
 
-    /*package*/ boolean isForUpdateWithMedia() {
-        return mediaFile != null || mediaName != null;
-    }
-
     /**
      * @param mediaName media name
      * @param mediaBody media body
@@ -194,52 +188,6 @@ public final class StatusUpdate implements java.io.Serializable {
      */
     public StatusUpdate autoPopulateReplyMetadata(boolean autoPopulateReplyMetadata) {
         return new StatusUpdate(this.status, this.inReplyToStatusId, this.location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, autoPopulateReplyMetadata, this.attachmentUrl);
-    }
-
-    /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<>();
-        appendParameter("status", status, params);
-        if (-1 != inReplyToStatusId) {
-            appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
-        }
-        if (location != null) {
-            appendParameter("lat", location.latitude, params);
-            appendParameter("long", location.longitude, params);
-
-        }
-        appendParameter("place_id", placeId, params);
-        if (!displayCoordinates) {
-            appendParameter("display_coordinates", "false", params);
-        }
-        if (null != mediaFile) {
-            params.add(new HttpParameter("media[]", mediaFile));
-            params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
-        } else if (mediaName != null && mediaBody != null) {
-            params.add(new HttpParameter("media[]", mediaName, mediaBody));
-            params.add(new HttpParameter("possibly_sensitive", possiblySensitive));
-        } else if (mediaIds != null && mediaIds.length >= 1) {
-            params.add(new HttpParameter("media_ids", StringUtil.join(mediaIds)));
-        }
-        if (autoPopulateReplyMetadata) {
-            appendParameter("auto_populate_reply_metadata", "true", params);
-        }
-        appendParameter("attachment_url", attachmentUrl, params);
-        HttpParameter[] paramArray = new HttpParameter[params.size()];
-        return params.toArray(paramArray);
-    }
-
-    private void appendParameter(String name, String value, List<HttpParameter> params) {
-        if (value != null) {
-            params.add(new HttpParameter(name, value));
-        }
-    }
-
-    private void appendParameter(String name, double value, List<HttpParameter> params) {
-        params.add(new HttpParameter(name, String.valueOf(value)));
-    }
-
-    private void appendParameter(@SuppressWarnings("SameParameterValue") String name, long value, List<HttpParameter> params) {
-        params.add(new HttpParameter(name, String.valueOf(value)));
     }
 
     @Override

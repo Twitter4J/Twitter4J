@@ -16,7 +16,9 @@
 
 package twitter4j.v1;
 
-import twitter4j.*;
+import twitter4j.OEmbedRequest;
+import twitter4j.TwitterException;
+import twitter4j.UploadedMedia;
 
 import java.io.File;
 import java.io.InputStream;
@@ -168,7 +170,7 @@ public interface TweetsResources {
     ResponseList<Status> lookup(long... ids) throws TwitterException;
 
     /**
-     * Uploads media image to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}
+     * Uploads media image to be attached via {@link #updateStatus(StatusUpdate)}
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *
      * @param mediaFile the latest status to be updated.
@@ -181,7 +183,7 @@ public interface TweetsResources {
     UploadedMedia uploadMedia(File mediaFile) throws TwitterException;
 
     /**
-     * Uploads media image to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}
+     * Uploads media image to be attached via {@link #updateStatus(StatusUpdate)}
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *
      * @param fileName media file name
@@ -196,7 +198,7 @@ public interface TweetsResources {
     UploadedMedia uploadMedia(String fileName, InputStream media) throws TwitterException;
 
     /**
-     * Uploads media using chunked approach to be attached via {@link #updateStatus(twitter4j.StatusUpdate)}.
+     * Uploads media using chunked approach to be attached via {@link #updateStatus(StatusUpdate)}.
      * This should be used for videos.
      * <br>This method calls https://api.twitter.com/1.1/media/upload.json
      *

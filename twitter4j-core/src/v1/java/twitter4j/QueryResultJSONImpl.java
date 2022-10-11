@@ -17,6 +17,7 @@
 package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
+import twitter4j.v1.GeoLocation;
 import twitter4j.v1.Query;
 import twitter4j.v1.QueryResult;
 import twitter4j.v1.Status;

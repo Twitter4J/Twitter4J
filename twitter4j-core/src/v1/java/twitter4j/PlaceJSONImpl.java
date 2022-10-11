@@ -16,6 +16,7 @@
 
 package twitter4j;
 
+import twitter4j.v1.GeoLocation;
 import twitter4j.v1.Place;
 import twitter4j.v1.ResponseList;
 

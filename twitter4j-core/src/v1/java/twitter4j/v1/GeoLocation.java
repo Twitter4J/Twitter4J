@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package twitter4j.v1;
 
 
 /**

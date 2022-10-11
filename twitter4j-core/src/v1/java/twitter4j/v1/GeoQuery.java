@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package twitter4j;
+package twitter4j.v1;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -158,41 +156,6 @@ public final class GeoQuery implements java.io.Serializable {
      */
     public GeoQuery maxResults(int maxResults) {
         return new GeoQuery(this.location, this.query, this.ip, this.accuracy, this.granularity, maxResults);
-    }
-
-    /*package*/ HttpParameter[] asHttpParameterArray() {
-        ArrayList<HttpParameter> params = new ArrayList<>();
-        if (location != null) {
-            appendParameter("lat", location.latitude, params);
-            appendParameter("long", location.longitude, params);
-
-        }
-        if (ip != null) {
-            appendParameter("ip", ip, params);
-
-        }
-        appendParameter("accuracy", accuracy, params);
-        appendParameter("query", query, params);
-        appendParameter("granularity", granularity, params);
-        appendParameter("max_results", maxResults, params);
-        HttpParameter[] paramArray = new HttpParameter[params.size()];
-        return params.toArray(paramArray);
-    }
-
-    private void appendParameter(String name, String value, List<HttpParameter> params) {
-        if (value != null) {
-            params.add(new HttpParameter(name, value));
-        }
-    }
-
-    private void appendParameter(@SuppressWarnings("SameParameterValue") String name, int value, List<HttpParameter> params) {
-        if (0 < value) {
-            params.add(new HttpParameter(name, String.valueOf(value)));
-        }
-    }
-
-    private void appendParameter(String name, double value, List<HttpParameter> params) {
-        params.add(new HttpParameter(name, String.valueOf(value)));
     }
 
     @Override

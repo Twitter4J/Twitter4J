@@ -1,6 +1,7 @@
 package twitter4j;
 
 import twitter4j.v1.FavoritesResources;
+import twitter4j.v1.Paging;
 import twitter4j.v1.ResponseList;
 import twitter4j.v1.Status;
 
@@ -31,17 +32,17 @@ class FavoritesResourcesImpl extends  APIResourceBase implements FavoritesResour
 
     @Override
     public ResponseList<Status> getFavorites(Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "favorites/list.json", paging.asPostParameterArray()));
+        return factory.createStatusList(get(restBaseURL + "favorites/list.json", TimelinesResourcesImpl.asPostParameterArray(paging)));
     }
 
     @Override
     public ResponseList<Status> getFavorites(long userId, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "favorites/list.json", mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}, paging.asPostParameterArray())));
+        return factory.createStatusList(get(restBaseURL + "favorites/list.json", mergeParameters(new HttpParameter[]{new HttpParameter("user_id", userId)}, TimelinesResourcesImpl.asPostParameterArray(paging))));
     }
 
     @Override
     public ResponseList<Status> getFavorites(String screenName, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "favorites/list.json", mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}, paging.asPostParameterArray())));
+        return factory.createStatusList(get(restBaseURL + "favorites/list.json", mergeParameters(new HttpParameter[]{new HttpParameter("screen_name", screenName)}, TimelinesResourcesImpl.asPostParameterArray(paging))));
     }
 
     @Override

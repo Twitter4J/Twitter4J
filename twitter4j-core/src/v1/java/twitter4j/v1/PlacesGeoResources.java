@@ -16,7 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.GeoQuery;
 import twitter4j.TwitterException;
 
 /**
@@ -25,7 +24,7 @@ import twitter4j.TwitterException;
  */
 public interface PlacesGeoResources {
     /**
-     * Find out more details of a place that was returned from the {@link PlacesGeoResources#reverseGeoCode(twitter4j.GeoQuery)} method.
+     * Find out more details of a place that was returned from the {@link PlacesGeoResources#reverseGeoCode(GeoQuery)} method.
      * <br>This method calls https://api.twitter.com/1.1/geo/id/:id.json
      *
      * @param placeId The ID of the location to query about.

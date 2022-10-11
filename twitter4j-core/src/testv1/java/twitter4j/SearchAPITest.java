@@ -20,10 +20,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import twitter4j.v1.Query;
-import twitter4j.v1.QueryResult;
-import twitter4j.v1.RateLimitStatus;
-import twitter4j.v1.Status;
+import twitter4j.v1.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

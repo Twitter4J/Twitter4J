@@ -37,18 +37,18 @@ class ListsResourcesImpl extends APIResourceBase implements ListsResources {
 
     @Override
     public ResponseList<Status> getUserListStatuses(long listId, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.COUNT), new HttpParameter("list_id", listId))));
+        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(TimelinesResourcesImpl.asPostParameterArray(TimelinesResourcesImpl.SMCP, TimelinesResourcesImpl.COUNT, paging), new HttpParameter("list_id", listId))));
     }
 
     @Override
     public ResponseList<Status> getUserListStatuses(long ownerId, String slug, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.COUNT), new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)})));
+        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(TimelinesResourcesImpl.asPostParameterArray(TimelinesResourcesImpl.SMCP, TimelinesResourcesImpl.COUNT, paging), new HttpParameter[]{new HttpParameter("owner_id", ownerId), new HttpParameter("slug", slug)})));
     }
 
     @Override
     public ResponseList<Status> getUserListStatuses(String ownerScreenName,
                                                     String slug, Paging paging) throws TwitterException {
-        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(paging.asPostParameterArray(Paging.SMCP, Paging.COUNT), new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)})));
+        return factory.createStatusList(get(restBaseURL + "lists/statuses.json", mergeParameters(TimelinesResourcesImpl.asPostParameterArray(TimelinesResourcesImpl.SMCP, TimelinesResourcesImpl.COUNT, paging), new HttpParameter[]{new HttpParameter("owner_screen_name", ownerScreenName), new HttpParameter("slug", slug)})));
     }
 
     @Override
