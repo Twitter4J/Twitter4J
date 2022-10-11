@@ -75,17 +75,17 @@ class TimelineResourcesTest extends TwitterTestBase {
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertTrue(0 < statuses.size(), "size");
-        statuses = twitter1.v1().timelines().getUserTimeline(Paging.ofSinceId(999383469L).withCount(15));
+        statuses = twitter1.v1().timelines().getUserTimeline(Paging.ofSinceId(999383469L).count(15));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
         assertTrue(0 < statuses.size(), "size");
 
 
-        statuses = twitter1.v1().timelines().getUserTimeline(Paging.ofPage(1).withCount(30));
+        statuses = twitter1.v1().timelines().getUserTimeline(Paging.ofPage(1).count(30));
         assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
         assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
 
-        List<Status> statuses2 = twitter1.v1().timelines().getUserTimeline(Paging.ofPage(2).withCount(15));
+        List<Status> statuses2 = twitter1.v1().timelines().getUserTimeline(Paging.ofPage(2).count(15));
         assertEquals(statuses2.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses2.get(0))));
     }
 
@@ -108,7 +108,7 @@ class TimelineResourcesTest extends TwitterTestBase {
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue(statuses.size() > 0);
-            statuses = twitter1.v1().timelines().getMentionsTimeline(Paging.ofPage(1).withSinceId(1L));
+            statuses = twitter1.v1().timelines().getMentionsTimeline(Paging.ofPage(1).sinceId(1L));
             assertNotNull(TwitterObjectFactory.getRawJSON(statuses));
             assertEquals(statuses.get(0), TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(statuses.get(0))));
             assertTrue(statuses.size() > 0);

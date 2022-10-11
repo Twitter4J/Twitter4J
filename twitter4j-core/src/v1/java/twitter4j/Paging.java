@@ -94,7 +94,7 @@ public final class Paging implements java.io.Serializable {
      * @return new Paging instance
      */
     @NotNull
-    public Paging withCount(int count) {
+    public Paging count(int count) {
         if (count < 1) {
             throw new IllegalArgumentException("count should be positive integer. passed:" + count);
         }
@@ -120,7 +120,7 @@ public final class Paging implements java.io.Serializable {
      * @return new Paging instance
      */
     @NotNull
-    public Paging withSinceId(long sinceId) {
+    public Paging sinceId(long sinceId) {
         if (sinceId < 1) {
             throw new IllegalArgumentException("since_id should be positive integer. passed:" + sinceId);
         }
@@ -146,7 +146,7 @@ public final class Paging implements java.io.Serializable {
      * @return new Paging instance
      */
     @NotNull
-    public Paging withMaxId(long maxId) {
+    public Paging maxId(long maxId) {
         if (maxId < 1) {
             throw new IllegalArgumentException("max_id should be positive integer. passed:" + maxId);
         }

@@ -81,7 +81,7 @@ class PagingTest {
         }
         params = paging.asPostParameterList();
         assertEquals(2, params.size());
-        paging = paging.withMaxId(1000L);
+        paging = paging.maxId(1000L);
         params = paging.asPostParameterList();
         assertEquals(3, params.size());
         assertContains(params, "page", 10);
@@ -103,7 +103,7 @@ class PagingTest {
         }
         params = paging.asPostParameterList();
         assertEquals(3, params.size());
-        paging = paging.withCount(3000);
+        paging = paging.count(3000);
         params = paging.asPostParameterList();
         assertEquals(4, params.size());
         assertContains(params, "page", 10);
