@@ -115,7 +115,7 @@ import java.util.Map;
                 if (radiusstr.endsWith(value.name())) {
                     radius = Double.parseDouble(radiusstr.substring(0, radiusstr.length() - 2));
                     unit = value;
-                    query = query.geoCode(new GeoLocation(latitude, longitude), radius, unit);
+                    query = query.geoCode(GeoLocation.of(latitude, longitude), radius, unit);
                     break;
                 }
             if (unit == null) {

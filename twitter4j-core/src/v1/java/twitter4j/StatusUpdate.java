@@ -112,11 +112,12 @@ public final class StatusUpdate implements java.io.Serializable {
     }
 
     /**
-     * @param location location
+     * @param latitude latitude
+     * @param longitude longitude
      * @return new instance with the specified value
      */
-    public StatusUpdate location(GeoLocation location) {
-        return new StatusUpdate(this.status, this.inReplyToStatusId, location, this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
+    public StatusUpdate location(double latitude, double longitude) {
+        return new StatusUpdate(this.status, this.inReplyToStatusId, GeoLocation.of(latitude,longitude), this.placeId, this.displayCoordinates, this.possiblySensitive, this.mediaName, this.mediaBody, this.mediaFile, this.mediaIds, this.autoPopulateReplyMetadata, this.attachmentUrl);
     }
 
     /**

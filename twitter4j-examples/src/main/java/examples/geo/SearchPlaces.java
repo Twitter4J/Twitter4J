@@ -16,7 +16,6 @@
 
 package examples.geo;
 
-import twitter4j.GeoLocation;
 import twitter4j.GeoQuery;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -43,7 +42,7 @@ public final class SearchPlaces {
             var placesGeo = Twitter.getInstance().v1().placesGeo();
             GeoQuery query;
             if (args.length == 2) {
-                query = GeoQuery.ofGeoLocation(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
+                query = GeoQuery.ofGeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
             } else {
                 query = GeoQuery.ofQuery(args[0]);
             }

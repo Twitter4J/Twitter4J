@@ -68,31 +68,28 @@ public final class GeoQuery implements java.io.Serializable {
         this.granularity = granularity;
         this.maxResults = maxResults;
     }
+    /**
+     * Creates a GeoQuery with the specified location
+     *
+     * @param latitude latitude
+     * @param longitude longitude
+     * @return GeoQuery
+     */
+    public static GeoQuery ofGeoLocation(double latitude, double longitude) {
+        return new GeoQuery(GeoLocation.of(latitude, longitude), null, null, null, null, -1);
+    }
+
 
     /**
      * Creates a GeoQuery with the specified location
      *
-     * @param location geo location
+     * @param latitude latitude
+     * @param longitude longitude
      * @return GeoQuery
      */
-    public static GeoQuery ofGeoLocation(GeoLocation location) {
-        return new GeoQuery(location, null, null, null, null, -1);
+    public GeoQuery geoLocation(double latitude, double longitude) {
+        return new GeoQuery(GeoLocation.of(latitude, longitude), this.query, this.ip, this.accuracy, this.granularity, this.maxResults);
     }
-
-    /**
-     * Creates a GeoQuery with the specified location
-     *
-     * @param location geo location
-     * @return GeoQuery
-     */
-    public GeoQuery geoLocation(GeoLocation location) {
-        return new GeoQuery(location, this.query, this.ip, this.accuracy, this.granularity, this.maxResults);
-    }
-
-/*
-        return new GeoQuery(this.location,this.query,this.ip,this.accuracy,this.granularity,this.maxResults);
-
- */
 
     /**
      * Creates a GeoQuery with the specified IP address

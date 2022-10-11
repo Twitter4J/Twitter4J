@@ -36,7 +36,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
     void testGeoMethods() throws Exception {
         GeoQuery query;
         ResponseList<Place> places;
-        query = GeoQuery.ofGeoLocation(new GeoLocation(0, 0));
+        query = GeoQuery.ofGeoLocation(0, 0);
 
         try {
 
@@ -46,7 +46,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
             // no data for this place
         }
 
-        query = GeoQuery.ofGeoLocation(new GeoLocation(37.78215, -122.40060));
+        query = GeoQuery.ofGeoLocation(37.78215, -122.40060);
         places = twitter1.v1().placesGeo().reverseGeoCode(query);
         assertNotNull(TwitterObjectFactory.getRawJSON(places));
         assertEquals(places.get(0), TwitterObjectFactory.createPlace(TwitterObjectFactory.getRawJSON(places.get(0))));
@@ -81,7 +81,7 @@ class PlaceGeoResourcesTest extends TwitterTestBase {
         final double LATITUDE = 12.3456;
         final double LONGITUDE = -34.5678;
 
-        StatusUpdate location = StatusUpdate.of(LocalDateTime.now() + ": updating geo location").location(new GeoLocation(LATITUDE, LONGITUDE)).displayCoordinates(true);
+        StatusUpdate location = StatusUpdate.of(LocalDateTime.now() + ": updating geo location").location(LATITUDE, LONGITUDE).displayCoordinates(true);
         Status withgeo = twitter1.v1().tweets().updateStatus(location);
         assertNotNull(TwitterObjectFactory.getRawJSON(withgeo));
         assertEquals(withgeo, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(withgeo)));

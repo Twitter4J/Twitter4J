@@ -40,7 +40,7 @@ class TrendsResourcesTest extends TwitterTestBase {
         assertEquals(locations.get(0), TwitterObjectFactory.createLocation(TwitterObjectFactory.getRawJSON(locations.get(0))));
         assertTrue(locations.size() > 0);
 
-        locations = twitter2.v1().trends().getClosestTrends(new GeoLocation(35.677248D, 139.72911D));
+        locations = twitter2.v1().trends().getClosestTrends(GeoLocation.of(35.677248D, 139.72911D));
         assertEquals("Tokyo", locations.get(0).getName());
     }
 }

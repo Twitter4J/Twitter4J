@@ -39,8 +39,13 @@ public class GeoLocation implements java.io.Serializable {
      *
      * @param latitude  the latitude
      * @param longitude the longitude
+     * @return GeoLocation
      */
-    public GeoLocation(double latitude, double longitude) {
+    public static GeoLocation of(double latitude, double longitude) {
+        return new GeoLocation(latitude, longitude);
+    }
+
+    private GeoLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

@@ -16,7 +16,6 @@
 
 package examples.geo;
 
-import twitter4j.GeoLocation;
 import twitter4j.GeoQuery;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -41,7 +40,7 @@ public final class ReverseGeoCode {
         }
         try {
             var placesGeo = Twitter.getInstance().v1().placesGeo();
-            GeoQuery query = GeoQuery.ofGeoLocation(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
+            GeoQuery query = GeoQuery.ofGeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
             ResponseList<Place> places = placesGeo.reverseGeoCode(query);
             if (places.size() == 0) {
                 System.out.println("No location associated with the specified lat/lang");

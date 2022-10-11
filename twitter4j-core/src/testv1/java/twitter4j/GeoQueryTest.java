@@ -32,7 +32,7 @@ class GeoQueryTest {
 
     @Test
     void testConstructors() {
-        GeoQuery geoQuery = GeoQuery.ofQuery("query").ip("4.5.3.2").geoLocation(new GeoLocation(38.2622, -0.7011));
+        GeoQuery geoQuery = GeoQuery.ofQuery("query").ip("4.5.3.2").geoLocation(38.2622, -0.7011);
         assertEquals(geoQuery.query, "query");
         assertEquals(geoQuery.ip, "4.5.3.2");
         assertEquals(geoQuery.location.latitude, 38.2622);

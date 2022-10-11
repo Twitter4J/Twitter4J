@@ -99,7 +99,7 @@ class SearchAPITest extends TwitterTestBase {
         assertEquals(queryStr, queryResult.getQuery());
         assertTrue(0 < queryResult.getTweets().size());
         query = Query.of("starbucks")
-                .geoCode(new GeoLocation(47.6094651, -122.3411666), 10, Query.KILOMETERS);
+                .geoCode(GeoLocation.of(47.6094651, -122.3411666), 10, Query.KILOMETERS);
         queryResult = twitter1.v1().search().search(query);
         assertTrue(0 < queryResult.getTweets().size());
 
