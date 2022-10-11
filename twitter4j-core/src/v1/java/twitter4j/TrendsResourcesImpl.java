@@ -28,6 +28,6 @@ class TrendsResourcesImpl extends APIResourceBase implements TrendsResources {
 
     @Override
     public ResponseList<Location> getClosestTrends(GeoLocation location) throws TwitterException {
-        return factory.createLocationList(get(restBaseURL + "trends/closest.json", new HttpParameter("lat", location.getLatitude()), new HttpParameter("long", location.getLongitude())));
+        return factory.createLocationList(get(restBaseURL + "trends/closest.json", new HttpParameter("lat", location.latitude), new HttpParameter("long", location.longitude)));
     }
 }

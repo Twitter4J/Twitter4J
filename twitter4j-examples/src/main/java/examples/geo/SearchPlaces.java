@@ -43,9 +43,9 @@ public final class SearchPlaces {
             var placesGeo = Twitter.getInstance().v1().placesGeo();
             GeoQuery query;
             if (args.length == 2) {
-                query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
+                query = GeoQuery.ofGeoLocation(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
             } else {
-                query = new GeoQuery(args[0]);
+                query = GeoQuery.ofQuery(args[0]);
             }
             ResponseList<Place> places = placesGeo.searchPlaces(query);
             if (places.size() == 0) {

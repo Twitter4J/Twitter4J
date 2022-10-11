@@ -167,7 +167,7 @@ public final class Query implements java.io.Serializable {
     @NotNull
     public Query withGeoCode(@NotNull GeoLocation location, double radius
             , Unit unit) {
-        String geocode = location.getLatitude() + "," + location.getLongitude() + "," + radius + unit.name();
+        String geocode = location.latitude + "," + location.longitude + "," + radius + unit.name();
         return new Query(query, lang, locale, maxId, count, since, sinceId, geocode, until, resultType, nextPageQuery);
     }
 

@@ -202,8 +202,8 @@ public final class StatusUpdate implements java.io.Serializable {
             appendParameter("in_reply_to_status_id", inReplyToStatusId, params);
         }
         if (location != null) {
-            appendParameter("lat", location.getLatitude(), params);
-            appendParameter("long", location.getLongitude(), params);
+            appendParameter("lat", location.latitude, params);
+            appendParameter("long", location.longitude, params);
 
         }
         appendParameter("place_id", placeId, params);

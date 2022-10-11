@@ -16,6 +16,9 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,105 +34,103 @@ public final class GeoQuery implements java.io.Serializable {
     /**
      * location
      */
-    private GeoLocation location;
+    @Nullable
+    public final GeoLocation location;
     /**
      * query
      */
-    private String query = null;
+    public final String query;
     /**
      * ip
      */
-    private String ip = null;
+    @Nullable
+    public final String ip;
     /**
      * accuracy
      */
-    private String accuracy = null;
+    @Nullable
+    public final String accuracy;
     /**
      * granularity
      */
-    private String granularity = null;
+    @Nullable
+    public final String granularity;
     /**
      * maxResults
      */
-    private int maxResults = -1;
+    public final int maxResults;
+
+    private GeoQuery(@Nullable GeoLocation location, String query, @Nullable String ip, @Nullable String accuracy, @Nullable String granularity, int maxResults) {
+        this.location = location;
+        this.query = query;
+        this.ip = ip;
+        this.accuracy = accuracy;
+        this.granularity = granularity;
+        this.maxResults = maxResults;
+    }
 
     /**
      * Creates a GeoQuery with the specified location
      *
      * @param location geo location
+     * @return GeoQuery
      */
-    public GeoQuery(GeoLocation location) {
-        this.location = location;
+    public static GeoQuery ofGeoLocation(GeoLocation location) {
+        return new GeoQuery(location, null, null, null, null, -1);
     }
+
+    /**
+     * Creates a GeoQuery with the specified location
+     *
+     * @param location geo location
+     * @return GeoQuery
+     */
+    public GeoQuery geoLocation(GeoLocation location) {
+        return new GeoQuery(location, this.query, this.ip, this.accuracy, this.granularity, this.maxResults);
+    }
+
+/*
+        return new GeoQuery(this.location,this.query,this.ip,this.accuracy,this.granularity,this.maxResults);
+
+ */
 
     /**
      * Creates a GeoQuery with the specified IP address
      *
      * @param ip IP address
+     * @return GeoQuery
      */
-    public GeoQuery(String ip) {
-        this.ip = ip;
+    public static GeoQuery ofIP(String ip) {
+        return new GeoQuery(null, null, ip, null, null, -1);
+    }
+
+    /**
+     * @param ip IP
+     * @return GeoQuery
+     */
+    public GeoQuery ip(String ip) {
+        return new GeoQuery(this.location, this.query, ip, this.accuracy, this.granularity, this.maxResults);
     }
 
     /**
      * Creates a GeoQuery with the specified query, ip and location
      *
-     * @param query    free-form text to match
-     * @param ip       IP address
-     * @param location geo location
+     * @param query free-form text to match
+     * @return GeoQuery
      */
-    public GeoQuery(String query, String ip, GeoLocation location) {
-        this.query = query;
-        this.ip = ip;
-        this.location = location;
+    public static GeoQuery ofQuery(@NotNull String query) {
+        return new GeoQuery(null, query, null, null, null, -1);
     }
 
     /**
-     * @return geo location
-     */
-    public GeoLocation getLocation() {
-        return location;
-    }
-
-    /**
-     * Gets the query to filter Place results from geo/search
+     * Creates a GeoQuery with the specified query, ip and location
      *
-     * @return the query
+     * @param query free-form text to match
+     * @return GeoQuery
      */
-    public String getQuery() {
-        return query;
+    public GeoQuery query(@NotNull String query) {
+        return new GeoQuery(this.location, query, this.ip, this.accuracy, this.granularity, this.maxResults);
     }
-
-    /**
-     * @param query query
-     */
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    /**
-     * @return ip
-     */
-    public String getIp() {
-        return ip;
-    }
-
-    /**
-     * @return accuracy
-     */
-    public String getAccuracy() {
-        return accuracy;
-    }
-
-    /**
-     * Sets a hint on the "region" in which to search.  If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet.  If this is not passed in, then it is assumed to be 0m.  If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
-     *
-     * @param accuracy a hint on the "region" in which to search.
-     */
-    public void setAccuracy(String accuracy) {
-        this.accuracy = accuracy;
-    }
-
 
     /**
      * Sets a hint on the "region" in which to search.  If a number, then this is a radius in meters, but it can also take a string that is suffixed with ft to specify feet.  If this is not passed in, then it is assumed to be 0m.  If coming from a device, in practice, this value is whatever accuracy the device has measuring its location (whether it be coming from a GPS, WiFi triangulation, etc.).
@@ -137,26 +138,8 @@ public final class GeoQuery implements java.io.Serializable {
      * @param accuracy a hint on the "region" in which to search.
      * @return this instance
      */
-    public GeoQuery accuracy(String accuracy) {
-        setAccuracy(accuracy);
-        return this;
-    }
-
-    /**
-     * returns granularity
-     * @return granularity
-     */
-    public String getGranularity() {
-        return granularity;
-    }
-
-    /**
-     * Sets the minimal granularity of data to return.  If this is not passed in, then neighborhood is assumed.  city can also be passed.
-     *
-     * @param granularity the minimal granularity of data to return
-     */
-    public void setGranularity(String granularity) {
-        this.granularity = granularity;
+    public GeoQuery accuracy(@NotNull String accuracy) {
+        return new GeoQuery(this.location, this.query, this.ip, accuracy, this.granularity, this.maxResults);
     }
 
 
@@ -164,27 +147,10 @@ public final class GeoQuery implements java.io.Serializable {
      * Sets the minimal granularity of data to return.  If this is not passed in, then neighborhood is assumed.  city can also be passed.
      *
      * @param granularity the minimal granularity of data to return
-     * @return this instance
+     * @return GeoQuery
      */
-    public GeoQuery granularity(String granularity) {
-        setGranularity(granularity);
-        return this;
-    }
-
-    /**
-     * @return max results
-     */
-    public int getMaxResults() {
-        return maxResults;
-    }
-
-    /**
-     * Sets a hint as to the number of results to return.  This does not guarantee that the number of results returned will equal max_results, but instead informs how many "nearby" results to return.  Ideally, only pass in the number of places you intend to display to the user here.
-     *
-     * @param maxResults A hint as to the number of results to return.
-     */
-    public void setMaxResults(int maxResults) {
-        this.maxResults = maxResults;
+    public GeoQuery granularity(@NotNull String granularity) {
+        return new GeoQuery(this.location, this.query, this.ip, this.accuracy, granularity, this.maxResults);
     }
 
     /**
@@ -194,15 +160,14 @@ public final class GeoQuery implements java.io.Serializable {
      * @return this instance
      */
     public GeoQuery maxResults(int maxResults) {
-        setMaxResults(maxResults);
-        return this;
+        return new GeoQuery(this.location, this.query, this.ip, this.accuracy, this.granularity, maxResults);
     }
 
     /*package*/ HttpParameter[] asHttpParameterArray() {
         ArrayList<HttpParameter> params = new ArrayList<>();
         if (location != null) {
-            appendParameter("lat", location.getLatitude(), params);
-            appendParameter("long", location.getLongitude(), params);
+            appendParameter("lat", location.latitude, params);
+            appendParameter("long", location.longitude, params);
 
         }
         if (ip != null) {

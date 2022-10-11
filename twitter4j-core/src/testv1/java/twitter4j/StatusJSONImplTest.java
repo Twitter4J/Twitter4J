@@ -66,8 +66,8 @@ public class StatusJSONImplTest {
         GeoLocation geoLocation = status.getGeoLocation();
         //then
         assertNotNull(geoLocation);
-        assertEquals(geoLocation.getLongitude(), 0.70928444, 0.00000001);
-        assertEquals(geoLocation.getLatitude(), 52.25604116, 0.00000001);
+        assertEquals(geoLocation.longitude, 0.70928444, 0.00000001);
+        assertEquals(geoLocation.latitude, 52.25604116, 0.00000001);
     }
 
     @Test

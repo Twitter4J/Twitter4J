@@ -41,7 +41,7 @@ public final class ReverseGeoCode {
         }
         try {
             var placesGeo = Twitter.getInstance().v1().placesGeo();
-            GeoQuery query = new GeoQuery(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
+            GeoQuery query = GeoQuery.ofGeoLocation(new GeoLocation(Double.parseDouble(args[0]), Double.parseDouble(args[1])));
             ResponseList<Place> places = placesGeo.reverseGeoCode(query);
             if (places.size() == 0) {
                 System.out.println("No location associated with the specified lat/lang");

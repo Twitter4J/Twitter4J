@@ -575,14 +575,14 @@ class DAOTest extends TwitterTestBase {
         GeoLocation[][] boundingBox = place.getBoundingBoxCoordinates();
         assertEquals(1, boundingBox.length);
         assertEquals(4, boundingBox[0].length);
-        assertEquals(37.76893497, boundingBox[0][0].getLatitude());
-        assertEquals(-122.42284884, boundingBox[0][0].getLongitude());
-        assertEquals(37.76893497, boundingBox[0][1].getLatitude());
-        assertEquals(-122.3964, boundingBox[0][1].getLongitude());
-        assertEquals(37.78752897, boundingBox[0][2].getLatitude());
-        assertEquals(-122.3964, boundingBox[0][2].getLongitude());
-        assertEquals(37.78752897, boundingBox[0][3].getLatitude());
-        assertEquals(-122.42284884, boundingBox[0][3].getLongitude());
+        assertEquals(37.76893497, boundingBox[0][0].latitude);
+        assertEquals(-122.42284884, boundingBox[0][0].longitude);
+        assertEquals(37.76893497, boundingBox[0][1].latitude);
+        assertEquals(-122.3964, boundingBox[0][1].longitude);
+        assertEquals(37.78752897, boundingBox[0][2].latitude);
+        assertEquals(-122.3964, boundingBox[0][2].longitude);
+        assertEquals(37.78752897, boundingBox[0][3].latitude);
+        assertEquals(-122.42284884, boundingBox[0][3].longitude);
         assertNull(place.getGeometryType());
         assertNull(place.getGeometryCoordinates());
 
@@ -601,14 +601,14 @@ class DAOTest extends TwitterTestBase {
         assertEquals("Polygon", place.getBoundingBoxType());
         assertEquals(1, boundingBox.length);
         assertEquals(4, boundingBox[0].length);
-        assertEquals(37.70813196, boundingBox[0][0].getLatitude());
-        assertEquals(-122.51368188, boundingBox[0][0].getLongitude());
-        assertEquals(37.70813196, boundingBox[0][1].getLatitude());
-        assertEquals(-122.35845384, boundingBox[0][1].getLongitude());
-        assertEquals(37.83245301, boundingBox[0][2].getLatitude());
-        assertEquals(-122.35845384, boundingBox[0][2].getLongitude());
-        assertEquals(37.83245301, boundingBox[0][3].getLatitude());
-        assertEquals(-122.51368188, boundingBox[0][3].getLongitude());
+        assertEquals(37.70813196, boundingBox[0][0].latitude);
+        assertEquals(-122.51368188, boundingBox[0][0].longitude);
+        assertEquals(37.70813196, boundingBox[0][1].latitude);
+        assertEquals(-122.35845384, boundingBox[0][1].longitude);
+        assertEquals(37.83245301, boundingBox[0][2].latitude);
+        assertEquals(-122.35845384, boundingBox[0][2].longitude);
+        assertEquals(37.83245301, boundingBox[0][3].latitude);
+        assertEquals(-122.51368188, boundingBox[0][3].longitude);
 
         assertNull(place.getGeometryType());
         assertNull(place.getGeometryCoordinates());
