@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import twitter4j.v1.RawStreamListener;
 import twitter4j.v1.StatusAdapter;
 import twitter4j.v1.StreamListener;
+import twitter4j.v1.TwitterV1;
 
 import java.util.ArrayList;
 import java.util.List;

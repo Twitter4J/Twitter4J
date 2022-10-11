@@ -1,6 +1,4 @@
-package twitter4j;
-
-import twitter4j.v1.*;
+package twitter4j.v1;
 
 /**
  * Interface represents Twitter API v1.1
