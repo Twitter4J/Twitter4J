@@ -1,6 +1,6 @@
 package twitter4j;
 
-import twitter4j.v1.ListsResources;
+import twitter4j.v1.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

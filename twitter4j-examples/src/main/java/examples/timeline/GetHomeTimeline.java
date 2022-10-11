@@ -16,10 +16,10 @@
 
 package examples.timeline;
 
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.v1.Status;
+import twitter4j.v1.User;
 
 import java.util.List;
 

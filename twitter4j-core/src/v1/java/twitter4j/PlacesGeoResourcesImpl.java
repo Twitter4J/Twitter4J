@@ -1,6 +1,8 @@
 package twitter4j;
 
+import twitter4j.v1.Place;
 import twitter4j.v1.PlacesGeoResources;
+import twitter4j.v1.ResponseList;
 
 import java.util.List;
 import java.util.function.Consumer;

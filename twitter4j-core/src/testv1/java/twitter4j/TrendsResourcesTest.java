@@ -18,6 +18,9 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.Location;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.Trends;
 
 import static org.junit.jupiter.api.Assertions.*;
 

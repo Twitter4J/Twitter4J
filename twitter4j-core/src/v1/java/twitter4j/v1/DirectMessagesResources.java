@@ -16,8 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.DirectMessage;
-import twitter4j.DirectMessageList;
 import twitter4j.QuickReply;
 import twitter4j.TwitterException;
 

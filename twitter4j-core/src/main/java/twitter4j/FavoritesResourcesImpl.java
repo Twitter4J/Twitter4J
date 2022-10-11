@@ -1,6 +1,8 @@
 package twitter4j;
 
 import twitter4j.v1.FavoritesResources;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.Status;
 
 import java.util.List;
 import java.util.function.Consumer;

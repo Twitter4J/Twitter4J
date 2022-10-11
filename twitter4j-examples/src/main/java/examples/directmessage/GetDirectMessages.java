@@ -16,10 +16,10 @@
 
 package examples.directmessage;
 
-import twitter4j.DirectMessage;
-import twitter4j.DirectMessageList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.DirectMessage;
+import twitter4j.v1.DirectMessageList;
 
 /**
  * Example application that gets all direct messages via event api.<br>

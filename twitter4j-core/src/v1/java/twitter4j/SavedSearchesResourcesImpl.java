@@ -1,5 +1,7 @@
 package twitter4j;
 
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.SavedSearch;
 import twitter4j.v1.SavedSearchesResources;
 
 import java.util.List;

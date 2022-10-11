@@ -18,7 +18,7 @@ package examples.user;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.v1.User;
 
 /**
  * Shows one single user.

@@ -17,8 +17,6 @@
 package twitter4j.v1;
 
 import twitter4j.GeoQuery;
-import twitter4j.Place;
-import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 
 /**

@@ -16,7 +16,11 @@
 
 package examples.list;
 
-import twitter4j.*;
+import twitter4j.Paging;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.Status;
 
 /**
  * Show tweet timeline for members of the specified list.

@@ -16,9 +16,9 @@
 
 package examples.directmessage;
 
-import twitter4j.DirectMessage;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.DirectMessage;
 
 /**
  * Example application that gets a specified direct message.<br>

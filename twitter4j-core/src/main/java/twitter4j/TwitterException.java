@@ -16,6 +16,8 @@
 
 package twitter4j;
 
+import twitter4j.v1.RateLimitStatus;
+
 import java.util.List;
 import java.util.Objects;
 

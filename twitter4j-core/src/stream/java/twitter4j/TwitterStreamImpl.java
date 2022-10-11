@@ -16,10 +16,7 @@
 package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
-import twitter4j.v1.FilterQuery;
-import twitter4j.v1.RawStreamListener;
-import twitter4j.v1.StreamListener;
-import twitter4j.v1.TwitterStream;
+import twitter4j.v1.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

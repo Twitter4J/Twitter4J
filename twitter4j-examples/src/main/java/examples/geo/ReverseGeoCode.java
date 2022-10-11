@@ -16,7 +16,12 @@
 
 package examples.geo;
 
-import twitter4j.*;
+import twitter4j.GeoLocation;
+import twitter4j.GeoQuery;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.v1.Place;
+import twitter4j.v1.ResponseList;
 
 /**
  * Given a latitude and a longitude, searches for up to 20 places that can be used as a place_id when updating a status.

@@ -1,5 +1,7 @@
 package twitter4j;
 
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.Status;
 import twitter4j.v1.TimelinesResources;
 
 import java.util.List;

@@ -16,6 +16,11 @@
 
 package twitter4j;
 
+import twitter4j.v1.HashtagEntity;
+import twitter4j.v1.MediaEntity;
+import twitter4j.v1.URLEntity;
+import twitter4j.v1.UserMentionEntity;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

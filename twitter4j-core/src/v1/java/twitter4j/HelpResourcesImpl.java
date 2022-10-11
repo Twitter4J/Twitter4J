@@ -1,6 +1,8 @@
 package twitter4j;
 
 import twitter4j.v1.HelpResources;
+import twitter4j.v1.RateLimitStatus;
+import twitter4j.v1.ResponseList;
 
 import java.util.List;
 import java.util.Map;

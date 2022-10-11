@@ -16,9 +16,9 @@
 
 package examples.friendship;
 
-import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.IDs;
 
 /**
  * Lists incoming friendships.

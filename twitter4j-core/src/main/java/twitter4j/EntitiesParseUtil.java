@@ -1,5 +1,7 @@
 package twitter4j;
 
+import twitter4j.v1.*;
+
 /*package*/ class EntitiesParseUtil {
 
     /*package*/

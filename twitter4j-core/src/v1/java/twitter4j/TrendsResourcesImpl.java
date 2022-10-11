@@ -1,5 +1,8 @@
 package twitter4j;
 
+import twitter4j.v1.Location;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.Trends;
 import twitter4j.v1.TrendsResources;
 
 import java.util.List;

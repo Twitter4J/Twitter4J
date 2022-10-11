@@ -16,10 +16,10 @@
 
 package examples.trends;
 
-import twitter4j.Location;
-import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.Location;
+import twitter4j.v1.ResponseList;
 
 /**
  * Shows the locations that Twitter has trending topic information for.

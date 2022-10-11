@@ -18,6 +18,7 @@ package twitter4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.RateLimitStatus;
 
 import java.util.List;
 import java.util.Map;

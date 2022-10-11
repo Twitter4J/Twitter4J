@@ -16,10 +16,10 @@
 
 package examples.list;
 
-import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.v1.PagableResponseList;
+import twitter4j.v1.User;
 
 /**
  * Lists list subscribers.

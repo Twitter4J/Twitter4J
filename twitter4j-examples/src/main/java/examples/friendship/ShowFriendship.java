@@ -16,9 +16,9 @@
 
 package examples.friendship;
 
-import twitter4j.Relationship;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.Relationship;
 
 /**
  * Shows friendship between two users.

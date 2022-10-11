@@ -1,5 +1,6 @@
 package twitter4j;
 
+import twitter4j.v1.QueryResult;
 import twitter4j.v1.SearchResource;
 
 import java.util.List;

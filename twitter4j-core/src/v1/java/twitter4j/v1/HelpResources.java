@@ -16,8 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.RateLimitStatus;
-import twitter4j.ResponseList;
 import twitter4j.TwitterException;
 
 import java.io.Serializable;

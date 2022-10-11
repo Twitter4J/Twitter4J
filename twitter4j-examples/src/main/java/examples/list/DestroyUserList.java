@@ -18,7 +18,7 @@ package examples.list;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.UserList;
+import twitter4j.v1.UserList;
 
 /**
  * Destroys a specified list.

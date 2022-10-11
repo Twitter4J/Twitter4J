@@ -16,10 +16,10 @@
 
 package examples.account;
 
-import twitter4j.AccountSettings;
-import twitter4j.Location;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.AccountSettings;
+import twitter4j.v1.Location;
 
 /**
  * Gets account settings.

@@ -17,8 +17,6 @@
 package twitter4j.v1;
 
 import twitter4j.Paging;
-import twitter4j.ResponseList;
-import twitter4j.Status;
 import twitter4j.TwitterException;
 
 /**

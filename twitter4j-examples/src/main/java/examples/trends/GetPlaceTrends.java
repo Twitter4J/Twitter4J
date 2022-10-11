@@ -1,9 +1,9 @@
 package examples.trends;
 
-import twitter4j.Trend;
-import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.Trend;
+import twitter4j.v1.Trends;
 
 /**
  * Shows the trend for a place denoted by its WOEID. By default shows trends for "Worldwide" (WOEID 1).

@@ -16,9 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-
 /**
  * @author yusuke at mac.com
  * @since Twitter4J 2.1.3

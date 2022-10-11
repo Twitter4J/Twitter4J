@@ -1,5 +1,7 @@
 package twitter4j;
 
+import twitter4j.v1.RateLimitStatus;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -16,10 +16,10 @@
 
 package examples.user;
 
-import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.User;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.User;
 
 /**
  * Search users with the specified query.

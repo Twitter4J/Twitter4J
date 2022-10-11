@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.v1.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,11 +28,11 @@ class KryoSerializationTest {
         kryo.register(java.lang.String[].class);
         kryo.register(long[].class);
         kryo.register(java.time.LocalDateTime.class);
-        kryo.register(twitter4j.HashtagEntity[].class);
-        kryo.register(twitter4j.URLEntity[].class);
-        kryo.register(twitter4j.MediaEntity[].class);
-        kryo.register(twitter4j.SymbolEntity[].class);
-        kryo.register(twitter4j.UserMentionEntity[].class);
+        kryo.register(HashtagEntity[].class);
+        kryo.register(URLEntity[].class);
+        kryo.register(MediaEntity[].class);
+        kryo.register(SymbolEntity[].class);
+        kryo.register(UserMentionEntity[].class);
         kryo.register(Class.forName("twitter4j.UserJSONImpl"));
         kryo.register(Class.forName("twitter4j.StatusJSONImpl"));
     }

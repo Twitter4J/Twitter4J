@@ -16,10 +16,10 @@
 
 package examples.list;
 
-import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.UserList;
+import twitter4j.v1.ResponseList;
+import twitter4j.v1.UserList;
 
 /**
  * List the lists of the specified user.

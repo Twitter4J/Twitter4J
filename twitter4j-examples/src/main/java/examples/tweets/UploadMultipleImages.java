@@ -16,7 +16,11 @@
 
 package examples.tweets;
 
-import twitter4j.*;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.UploadedMedia;
+import twitter4j.v1.Status;
 
 import java.io.File;
 

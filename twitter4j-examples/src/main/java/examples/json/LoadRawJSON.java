@@ -16,9 +16,9 @@
 
 package examples.json;
 
-import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
+import twitter4j.v1.Status;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

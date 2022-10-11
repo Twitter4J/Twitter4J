@@ -1,5 +1,7 @@
 package twitter4j;
 
+import twitter4j.v1.DirectMessage;
+import twitter4j.v1.DirectMessageList;
 import twitter4j.v1.DirectMessagesResources;
 
 import java.io.InputStream;

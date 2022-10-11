@@ -1,6 +1,7 @@
 package twitter4j;
 
 import twitter4j.v1.SpamReportingResource;
+import twitter4j.v1.User;
 
 import java.util.List;
 import java.util.function.Consumer;

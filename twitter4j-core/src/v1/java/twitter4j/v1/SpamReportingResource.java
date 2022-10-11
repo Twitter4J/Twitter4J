@@ -17,7 +17,6 @@
 package twitter4j.v1;
 
 import twitter4j.TwitterException;
-import twitter4j.User;
 
 /**
  * @author Joern Huxhorn - jhuxhorn at googlemail.com

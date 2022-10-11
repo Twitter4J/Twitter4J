@@ -17,6 +17,8 @@
 package twitter4j;
 
 
+import twitter4j.v1.RateLimitStatus;
+
 /**
  * A data interface representing Twitter REST API's rate limit status
  *

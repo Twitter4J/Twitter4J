@@ -16,9 +16,9 @@
 
 package examples.account;
 
-import twitter4j.RateLimitStatus;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.v1.RateLimitStatus;
 
 import java.util.Map;
 

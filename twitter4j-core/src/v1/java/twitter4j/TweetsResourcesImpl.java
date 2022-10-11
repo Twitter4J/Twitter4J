@@ -1,6 +1,6 @@
 package twitter4j;
 
-import twitter4j.v1.TweetsResources;
+import twitter4j.v1.*;
 
 import java.io.*;
 import java.util.List;

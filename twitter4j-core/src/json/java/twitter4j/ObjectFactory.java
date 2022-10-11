@@ -16,7 +16,7 @@
  */
 package twitter4j;
 
-import twitter4j.v1.HelpResources;
+import twitter4j.v1.*;
 
 import java.util.Map;
 
