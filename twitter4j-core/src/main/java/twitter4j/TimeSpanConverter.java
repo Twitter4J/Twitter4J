@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package twitter4j.util;
+package twitter4j;
 
 import java.io.Serializable;
 import java.text.MessageFormat;

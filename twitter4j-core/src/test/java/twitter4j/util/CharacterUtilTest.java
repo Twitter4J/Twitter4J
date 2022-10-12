@@ -19,6 +19,7 @@ package twitter4j.util;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.CharacterUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -19,6 +19,7 @@ package twitter4j.util;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import twitter4j.TimeSpanConverter;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -40,6 +41,7 @@ class TimeSpanConverterTest {
     }
 
     // Beware the 'month' argument follows the Java Calendar standard and is 0-based.
+    @SuppressWarnings("unused")
     private long getSpecificLocalDateInMillis(int month, int day) {
         return this.getSpecificLocalDateInMillis((int) this.getCurrentYear(), month, day);
     }
@@ -73,7 +75,7 @@ class TimeSpanConverterTest {
     @Test
     void testSpanish() {
         Locale[] locales = Locale.getAvailableLocales();
-        Locale locale = null;
+        Locale locale = Locale.getDefault();
         for (Locale loc : locales) {
             if ("es".equals(loc.getLanguage())) {
                 locale = loc;
