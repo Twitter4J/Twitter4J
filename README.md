@@ -31,21 +31,25 @@ dependencies {
 ### Java modularity
 
 ```text
-require org.twitter4j
+requires org.twitter4j;
 ```
 
 ## Getting started
 
-- Acquire an instance configured with twitter4j.properties, tweet "Hello Twitter API!".
+Acquire an instance configured with twitter4j.properties, tweet "Hello Twitter API!".
 
-```properties:twitter4j.properties
+#### twitter4j.properties
+
+```properties
 oauth.consumerKey=[consumer key]
 oauth.consumerSecret=[consumer secret]
 oauth.accessToken=[access token]
 oauth.accessTokenSecret=[access token secret]
 ```
 
-```java:Main.java
+#### Main.java
+
+```java
 import org.twitter4j.*;
 public class Main {
   public static void main(String... args){
@@ -58,9 +62,11 @@ public class Main {
 v1() returns [TwitterV1](https://github.com/Twitter4J/Twitter4J/blob/main/twitter4j-core/src/v1/java/twitter4j/v1/TwitterV1.java) interface which provides various Twitter API V1.1 API resources. tweets() returns [TweetsResources](https://github.com/Twitter4J/Twitter4J/blob/main/twitter4j-core/src/v1/java/twitter4j/v1/TweetsResources.java). 
 
 
-- You can also get a builder object from newBuilder() method to configure the instance with code:
+You can also get a builder object from newBuilder() method to configure the instance with code:
 
-```java:Main.java
+#### Main.java
+
+```java
 import org.twitter4j.*;
 public class Main {
   public static void main(String... args){
