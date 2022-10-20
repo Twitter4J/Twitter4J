@@ -151,7 +151,7 @@ class TweetsResourcesTest extends TwitterTestBase {
 
     @Test
     void testOEmbed() throws TwitterException {
-        OEmbed oembed = twitter1.v1().tweets().getOEmbed(new OEmbedRequest(240192632003911681L, "http://samuraism.com/"));
+        OEmbed oembed = twitter1.v1().tweets().getOEmbed(OEmbedRequest.of(240192632003911681L, "http://samuraism.com/"));
         assertNotNull(TwitterObjectFactory.getRawJSON(oembed));
         assertEquals(oembed, TwitterObjectFactory.createOEmbed(TwitterObjectFactory.getRawJSON(oembed)));
 
@@ -163,14 +163,13 @@ class TweetsResourcesTest extends TwitterTestBase {
         assertEquals("https://twitter.com/jasoncosta", oembed.getAuthorURL());
         assertTrue(0 < oembed.getWidth());
 
-        twitter1.v1().tweets().getOEmbed(new OEmbedRequest(273685580615913473L, "http://samuraism.com/"));
+        twitter1.v1().tweets().getOEmbed(OEmbedRequest.of(273685580615913473L, "http://samuraism.com/"));
 
     }
 
     @Test
     void testOEmbedWithWidgetType() throws TwitterException {
-        OEmbedRequest req = new OEmbedRequest(1011622565469548550L, "");
-        req.setWidgetType(OEmbedRequest.WidgetType.VIDEO);
+        OEmbedRequest req =  OEmbedRequest.of(1011622565469548550L, "").widgetType(OEmbedRequest.WidgetType.VIDEO);
         // use this if want to see impact:
         // req.setHideTweet(true);
 

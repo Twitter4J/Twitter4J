@@ -16,7 +16,6 @@
 
 package twitter4j.v1;
 
-import twitter4j.OEmbedRequest;
 import twitter4j.TwitterException;
 
 import java.io.File;

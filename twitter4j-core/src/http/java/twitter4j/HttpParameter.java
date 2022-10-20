@@ -328,4 +328,17 @@ final class HttpParameter implements Comparable<HttpParameter>, java.io.Serializ
         }
         return result;
     }
+    static void appendParameter(String name, String value, List<HttpParameter> params) {
+        if (value != null) {
+            params.add(new HttpParameter(name, value));
+        }
+    }
+
+    static void appendParameter(String name, long value, List<HttpParameter> params) {
+        if (0 <= value) {
+            params.add(new HttpParameter(name, String.valueOf(value)));
+        }
+    }
+
+
 }

@@ -123,8 +123,31 @@ class TweetsResourcesImpl extends APIResourceBase implements TweetsResources {
 
     @Override
     public OEmbed getOEmbed(OEmbedRequest req) throws TwitterException {
-        return factory.createOEmbed(get(restBaseURL + "statuses/oembed.json", req.asHttpParameterArray()));
+        return factory.createOEmbed(get(restBaseURL + "statuses/oembed.json", asHttpParameterArray(req)));
     }
+
+    /*package*/ HttpParameter[] asHttpParameterArray(OEmbedRequest request) {
+        ArrayList<HttpParameter> params = new ArrayList<>(12);
+        HttpParameter.appendParameter("id", request.statusId, params);
+        HttpParameter.appendParameter("url", request.url, params);
+        HttpParameter.appendParameter("maxwidth", request.maxWidth, params);
+        params.add(new HttpParameter("hide_media", request.hideMedia));
+        params.add(new HttpParameter("hide_thread", request.hideThread));
+        params.add(new HttpParameter("omit_script", request.omitScript));
+        params.add(new HttpParameter("align", request.align.name().toLowerCase()));
+        if (request.related.length > 0) {
+            HttpParameter.appendParameter("related", StringUtil.join(request.related), params);
+        }
+        HttpParameter.appendParameter("lang", request.lang, params);
+        if (request.widgetType != OEmbedRequest.WidgetType.NONE) {
+            params.add(new HttpParameter("widget_type", request.widgetType.name().toLowerCase()));
+            params.add(new HttpParameter("hide_tweet", request.hideTweet));
+        }
+
+        HttpParameter[] paramArray = new HttpParameter[params.size()];
+        return params.toArray(paramArray);
+    }
+
 
     @Override
     public ResponseList<Status> lookup(long... ids) throws TwitterException {
