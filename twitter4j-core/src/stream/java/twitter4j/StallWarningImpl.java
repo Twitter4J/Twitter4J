@@ -29,7 +29,7 @@ import static twitter4j.ParseUtil.getRawString;
  * @since Twitter4J 3.0.0
  */
 @SuppressWarnings("unused")
-public final class StallWarningImpl implements StallWarning, Serializable {
+final class StallWarningImpl implements StallWarning, Serializable {
     private static final long serialVersionUID = -4294628635422470314L;
     /**
      * code
