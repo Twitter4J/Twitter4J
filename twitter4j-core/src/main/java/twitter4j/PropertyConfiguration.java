@@ -87,7 +87,10 @@ final class PropertyConfiguration {
             try {
                 Map<String, String> envMap = System.getenv();
                 for (String key : envMap.keySet()) {
-                    props.setProperty(key, envMap.get(key));
+                    if (key.startsWith("twitter4j_")) {
+                        String t4jKey = key.substring(key.indexOf("_")+1).replaceAll("_", ".");
+                        props.setProperty(t4jKey, envMap.get(key));
+                    }
                 }
             } catch (SecurityException ignore) {
             }
