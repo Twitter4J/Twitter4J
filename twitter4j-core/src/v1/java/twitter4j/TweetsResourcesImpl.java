@@ -134,12 +134,12 @@ class TweetsResourcesImpl extends APIResourceBase implements TweetsResources {
     @Override
     public UploadedMedia uploadMedia(File image) throws TwitterException {
         checkFileValidity(image);
-        return new UploadedMedia(post(uploadBaseURL + "media/upload.json", new HttpParameter("media", image)).asJSONObject());
+        return new UploadedMediaImpl(post(uploadBaseURL + "media/upload.json", new HttpParameter("media", image)).asJSONObject());
     }
 
     @Override
     public UploadedMedia uploadMedia(String fileName, InputStream image) throws TwitterException {
-        return new UploadedMedia(post(uploadBaseURL + "media/upload.json", new HttpParameter("media", fileName, image)).asJSONObject());
+        return new UploadedMediaImpl(post(uploadBaseURL + "media/upload.json", new HttpParameter("media", fileName, image)).asJSONObject());
     }
 
     @Override
@@ -191,7 +191,7 @@ class TweetsResourcesImpl extends APIResourceBase implements TweetsResources {
     // "command=INIT&media_type=video/mp4&total_bytes=4430752"
 
     private UploadedMedia uploadMediaChunkedInit(long size) throws TwitterException {
-        return new UploadedMedia(post(uploadBaseURL + "media/upload.json", new HttpParameter("command", CHUNKED_INIT), new HttpParameter("media_type", "video/mp4"), new HttpParameter("media_category", "tweet_video"), new HttpParameter("total_bytes", size)).asJSONObject());
+        return new UploadedMediaImpl(post(uploadBaseURL + "media/upload.json", new HttpParameter("command", CHUNKED_INIT), new HttpParameter("media_type", "video/mp4"), new HttpParameter("media_category", "tweet_video"), new HttpParameter("total_bytes", size)).asJSONObject());
     }
 
     // twurl -H upload.twitter.com "/1.1/media/upload.json" -d
@@ -241,13 +241,13 @@ class TweetsResourcesImpl extends APIResourceBase implements TweetsResources {
     private UploadedMedia uploadMediaChunkedFinalize0(long mediaId) throws TwitterException {
         JSONObject json = post(uploadBaseURL + "media/upload.json", new HttpParameter("command", CHUNKED_FINALIZE), new HttpParameter("media_id", mediaId)).asJSONObject();
         logger.debug("Finalize response:" + json);
-        return new UploadedMedia(json);
+        return new UploadedMediaImpl(json);
     }
 
     private UploadedMedia uploadMediaChunkedStatus(long mediaId) throws TwitterException {
         JSONObject json = get(uploadBaseURL + "media/upload.json", new HttpParameter("command", CHUNKED_STATUS), new HttpParameter("media_id", mediaId)).asJSONObject();
         logger.debug("Status response:" + json);
-        return new UploadedMedia(json);
+        return new UploadedMediaImpl(json);
     }
 
 }
