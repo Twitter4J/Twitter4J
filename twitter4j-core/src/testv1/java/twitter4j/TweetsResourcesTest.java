@@ -23,6 +23,7 @@ import twitter4j.v1.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
@@ -65,9 +66,11 @@ class TweetsResourcesTest extends TwitterTestBase {
 
     @Test
     void testStatusMethods() throws Exception {
-        String dateStr = LocalDateTime.now().toString();
+        LocalDateTime now = LocalDateTime.now();
+        String dateStr = now.toString();
         String date = dateStr + "test mytweet @" + id2.screenName + " #twitter4jtest";
         Status status = twitter1.v1().tweets().updateStatus(date);
+        assertTrue(Math.abs(status.getCreatedAt().toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC)) < 10);
         assertNotNull(TwitterObjectFactory.getRawJSON(status));
         assertEquals(status, TwitterObjectFactory.createStatus(TwitterObjectFactory.getRawJSON(status)));
 

@@ -23,6 +23,7 @@ import twitter4j.v1.DirectMessageList;
 import twitter4j.v1.QuickReply;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,9 +36,11 @@ class DirectMessagesResourcesTest extends TwitterTestBase {
     @Test
     void testQuickResponse() throws Exception {
         String message = "hello! message with quick reply " + LocalDateTime.now();
-        rwPrivateMessage.v1().directMessages().sendDirectMessage(id1.id, message,
+        DirectMessage directMessage = rwPrivateMessage.v1().directMessages().sendDirectMessage(id1.id, message,
                 QuickReply.of("quick response label1", "quick response description1", "metadata1"),
                 QuickReply.of("quick response label2", "quick response description2", "metadata2"));
+        assertTrue(Math.abs(directMessage.getCreatedAt().toEpochSecond(ZoneOffset.UTC)
+                - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) < 10);
 
         twitter1.v1().directMessages().sendDirectMessage(rwPrivate.id, "quick response label1" + System.currentTimeMillis(), "metadata1");
     }

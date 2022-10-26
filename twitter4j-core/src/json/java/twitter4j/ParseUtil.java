@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -66,9 +67,9 @@ final class ParseUtil {
         return returnValue;
     }
 
-    static DateTimeFormatter formatterYYYY = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-    static DateTimeFormatter formatterEEE = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
-    static DateTimeFormatter formatterEEEYYYY = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss Z yyyy", Locale.US);
+    static DateTimeFormatter formatterYYYY = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).withZone(ZoneId.systemDefault());
+    static DateTimeFormatter formatterEEE = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss Z", Locale.US).withZone(ZoneId.systemDefault());
+    static DateTimeFormatter formatterEEEYYYY = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss Z yyyy", Locale.US).withZone(ZoneId.systemDefault());
 
 
     public static LocalDateTime parseTrendsDate(String asOfStr) throws TwitterException {
@@ -98,7 +99,7 @@ final class ParseUtil {
     }
 
     private static DateTimeFormatter getFormat(String format) {
-        return formatterMap.computeIfAbsent(format, pattern -> DateTimeFormatter.ofPattern(pattern, Locale.US));
+        return formatterMap.computeIfAbsent(format, pattern -> DateTimeFormatter.ofPattern(pattern, Locale.US).withZone(ZoneId.systemDefault()));
     }
 
     public static LocalDateTime getDate(String name, JSONObject json, DateTimeFormatter format) throws TwitterException {
@@ -118,7 +119,7 @@ final class ParseUtil {
 
     public static LocalDateTime getDate(String dateString, DateTimeFormatter format) throws TwitterException {
         try {
-            return LocalDateTime.from(format.parse(dateString));
+            return ZonedDateTime.parse(dateString,format).toLocalDateTime();
         } catch (DateTimeParseException pe) {
             throw new TwitterException("Unexpected date format(" + dateString + ") returned from twitter.com", pe);
         }

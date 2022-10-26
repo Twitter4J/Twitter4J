@@ -20,6 +20,8 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import twitter4j.v1.SavedSearch;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +43,10 @@ class SavedSearchesResourcesTest extends TwitterTestBase {
         }
         String listName = String.valueOf(System.currentTimeMillis());
         SavedSearch ss1 = twitter1.v1().savedSearches().createSavedSearch(listName);
+
+        assertTrue(Math.abs(ss1.getCreatedAt().toEpochSecond(ZoneOffset.UTC)
+                - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) < 10);
+
         assertNotNull(TwitterObjectFactory.getRawJSON(ss1));
         assertEquals(ss1, TwitterObjectFactory.createSavedSearch(TwitterObjectFactory.getRawJSON(ss1)));
         assertEquals(listName, ss1.getQuery());

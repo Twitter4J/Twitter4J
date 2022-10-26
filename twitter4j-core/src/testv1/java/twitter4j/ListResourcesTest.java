@@ -343,6 +343,9 @@ class ListResourcesTest extends TwitterTestBase {
         }
         if (list == null) {
             list = twitter1.v1().list().createUserList("testpoint1", true, "description1");
+            // the api returns "created_at": "Tue Jan 20 06:59:53 +0000 1970"
+//            assertTrue(Math.abs(list.getCreatedAt().toEpochSecond(ZoneOffset.UTC)
+//                    - LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)) < 10);
         }
         Thread.sleep(5000);
         return list;
