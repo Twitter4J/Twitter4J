@@ -92,11 +92,19 @@ interface JSONSchema {
         if (code.contains("@Range")) {
             imports += "import org.jetbrains.annotations.Range;\n";
         }
-        if (code.contains("List<")) {
+
+        boolean localDateTimeContains = code.contains("LocalDateTime");
+        boolean listContains = code.contains("List<");
+        if (localDateTimeContains || listContains) {
             if (!imports.isEmpty()) {
                 imports += "\n";
             }
-            imports += "import java.util.List;\n";
+            if (localDateTimeContains) {
+                imports += "import java.time.LocalDateTime;\n";
+            }
+            if (listContains) {
+                imports += "import java.util.List;\n";
+            }
         }
 
         if (!imports.isEmpty()) {

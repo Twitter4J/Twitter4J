@@ -236,7 +236,8 @@ class JSONSchemaTest {
                             "type" : "string"
                           },
                           "detail" : {
-                            "type" : "string"
+                            "type" : "string",
+                            "format" : "date-time"
                           },
                           "HTTPStatusCode" : {
                             "type" : "integer",
@@ -262,7 +263,7 @@ class JSONSchemaTest {
                         private final String title;
 
                         @Nullable
-                        private final String detail;
+                        private final LocalDateTime detail;
                                                 
                         @Nullable
                         @Range(from = 100, to = 599)
@@ -272,7 +273,7 @@ class JSONSchemaTest {
         assertEquals("""
                         this.type = json.getString("type");
                         this.title = json.getString("title");
-                        this.detail = json.has("detail") ? json.getString("detail") : null;
+                        this.detail = json.has("detail") ? json.getLocalDateTime("detail") : null;
                         this.hTTPStatusCode = json.has("HTTPStatusCode") ? json.getInt("HTTPStatusCode") : null;""",
                 problemFields.asConstructorAssignments());
         assertEquals("""
@@ -290,7 +291,7 @@ class JSONSchemaTest {
 
                         @Nullable
                         @Override
-                        public String getDetail() {
+                        public LocalDateTime getDetail() {
                             return detail;
                         }
                         
@@ -310,6 +311,8 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
+                        
+                        import java.time.LocalDateTime;
                                                 
                         /**
                          * ProblemFields
@@ -322,7 +325,7 @@ class JSONSchemaTest {
                             private final String title;
                                                 
                             @Nullable
-                            private final String detail;
+                            private final LocalDateTime detail;
                                                 
                             @Nullable
                             @Range(from = 100, to = 599)
@@ -331,7 +334,7 @@ class JSONSchemaTest {
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
                                 this.title = json.getString("title");
-                                this.detail = json.has("detail") ? json.getString("detail") : null;
+                                this.detail = json.has("detail") ? json.getLocalDateTime("detail") : null;
                                 this.hTTPStatusCode = json.has("HTTPStatusCode") ? json.getInt("HTTPStatusCode") : null;
                             }
                                                 
@@ -349,7 +352,7 @@ class JSONSchemaTest {
                                                 
                             @Nullable
                             @Override
-                            public String getDetail() {
+                            public LocalDateTime getDetail() {
                                 return detail;
                             }
                                                 
@@ -370,7 +373,9 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
-
+                        
+                        import java.time.LocalDateTime;
+                        
                         /**
                          * ProblemFields
                          */
@@ -391,7 +396,7 @@ class JSONSchemaTest {
                              * @return detail
                              */
                             @Nullable
-                            String getDetail();
+                            LocalDateTime getDetail();
                                                 
                             /**
                              * @return HTTP Status Code.
