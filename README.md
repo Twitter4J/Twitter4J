@@ -17,14 +17,14 @@ Add a dependency declaration to pom.xml, or build.gradle as follows:
     <dependency>
         <groupId>org.twitter4j</groupId>
         <artifactId>twitter4j-core</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
     </dependency>
 </dependencies>
 ```
 ### Gradle
 ```text
 dependencies {
-    compile 'org.twitter4j:twitter4j-core:4.1.1'
+    compile 'org.twitter4j:twitter4j-core:4.1.2'
 }
 ```
 

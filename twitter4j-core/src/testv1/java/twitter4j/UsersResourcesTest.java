@@ -22,6 +22,7 @@ import twitter4j.v1.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +38,7 @@ class UsersResourcesTest extends TwitterTestBase {
     @Test
     void testShowUser() throws Exception {
         User user = twitter1.v1().users().showUser("yusuke");
+        assertEquals(LocalDateTime.of(2007, 4, 17, 9, 28,18), user.getCreatedAt() );
         assertEquals("yusuke", user.getScreenName());
         assertNotNull(user.getLocation());
         assertNotNull(user.getDescription());

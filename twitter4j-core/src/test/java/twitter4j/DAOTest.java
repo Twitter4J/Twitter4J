@@ -523,7 +523,7 @@ class DAOTest extends TwitterTestBase {
         List<Status> statuses = StatusJSONImpl.createStatusList(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/public_timeline.json"), true);
         Status status = statuses.get(0);
         assertEquals(Instant.ofEpochMilli(1259041785000L)
-                .atZone(ZoneId.of("UTC"))
+                .atZone(ZoneId.systemDefault())
                 .toLocalDateTime(), status.getCreatedAt());
         assertEquals(6000554383L, status.getId());
         assertEquals("G_Shock22", status.getInReplyToScreenName());
@@ -542,7 +542,7 @@ class DAOTest extends TwitterTestBase {
         // single Status
         Status status = new StatusJSONImpl(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/statuses/retweet/6010814202.json"), true);
         assertEquals(Instant.ofEpochMilli(1259078050000L)
-                .atZone(ZoneId.of("UTC"))
+                .atZone(ZoneId.systemDefault())
                 .toLocalDateTime(), status.getCreatedAt());
         assertEquals(6011259778L, status.getId());
         assertNull(status.getInReplyToScreenName());
@@ -633,7 +633,7 @@ class DAOTest extends TwitterTestBase {
         List<DirectMessage> directMessages = DirectMessageJSONImpl.createDirectMessageList(conf1.http.get("https://raw.githubusercontent.com/Twitter4J/Twitter4J/main/twitter4j-core/src/test/resources/dao/direct_messages.json"), true);
         DirectMessage dm = directMessages.get(0);
         assertEquals(Instant.ofEpochMilli(1248177356000L)
-                .atZone(ZoneId.of("UTC"))
+                .atZone(ZoneId.systemDefault())
                 .toLocalDateTime(), dm.getCreatedAt());
         assertEquals(246928323, dm.getId());
         assertEquals(6358482, dm.getRecipientId());
