@@ -16,7 +16,10 @@
 
 package twitter4j;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
+import java.util.stream.Stream;
 
 // Note: this class was written without inspecting the non-free org.json sourcecode.
 
@@ -505,6 +508,54 @@ class JSONObject {
         return result;
     }
 
+
+    public double[] getDoubleArray(String name) throws JSONException {
+        if (!has(name)) {
+            return new double[0];
+        }
+        JSONArray ary = getJSONArray(name);
+        double[] result = new double[ary.length()];
+        for (int i = 0; i < ary.length(); i++) {
+            result[i] = ary.getDouble(i);
+        }
+        return result;
+    }
+    public int[] getIntArray(String name) throws JSONException {
+        if (!has(name)) {
+            return new int[0];
+        }
+        JSONArray ary = getJSONArray(name);
+        int[] result = new int[ary.length()];
+        for (int i = 0; i < ary.length(); i++) {
+            result[i] = ary.getInt(i);
+        }
+        return result;
+    }
+    public boolean[] getBooleanArray(String name) throws JSONException {
+        if (!has(name)) {
+            return new boolean[0];
+        }
+        JSONArray ary = getJSONArray(name);
+        boolean[] result = new boolean[ary.length()];
+        for (int i = 0; i < ary.length(); i++) {
+            result[i] = ary.getBoolean(i);
+        }
+        return result;
+    }
+
+    @NotNull
+    public List<String> getStringList(String name) throws JSONException {
+        if (!has(name)) {
+            return new ArrayList<>(0);
+        }
+        JSONArray ary = getJSONArray(name);
+        List<String>  result = new ArrayList<>(ary.length());
+        for (int i = 0; i < ary.length(); i++) {
+            result.add(ary.getString(i));
+        }
+        return result;
+    }
+
     /**
      * Returns the value mapped by {@code name} if it exists and is a double or
      * can be coerced to a double, or {@code NaN} otherwise.
@@ -681,6 +732,13 @@ class JSONObject {
         } else {
             throw JSON.typeMismatch(name, object, "JSONArray");
         }
+    }
+    public Stream<JSONObject> getJSONArrayAsStream(String name){
+        if (!has(name)) {
+            return Stream.empty();
+        }
+        JSONArray jsonArray = getJSONArray(name);
+        return jsonArray.asJSONObjectStream();
     }
 
     /**

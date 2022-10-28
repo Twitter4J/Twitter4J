@@ -1,0 +1,1847 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "API Reference — Labs v2",
+    "version" : "2.13",
+    "title" : "Tweets and Users",
+    "termsOfService" : "https://developer.twitter.com/en/developer-terms/agreement-and-policy.html",
+    "contact" : {
+      "name" : "Twitter Developers",
+      "url" : "https://developer.twitter.com/"
+    },
+    "license" : {
+      "name" : "Twitter Developer Agreement and Policy",
+      "url" : "https://developer.twitter.com/en/developer-terms/agreement-and-policy.html"
+    }
+  },
+  "servers" : [ {
+    "description" : "Twitter API",
+    "url" : "https://api.twitter.com"
+  } ],
+  "tags" : [ {
+    "name" : "General",
+    "description" : "Miscellaneous endpoints for general API functionality",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://developer.twitter.com/en/docs/labs"
+    }
+  }, {
+    "name" : "Tweets",
+    "description" : "APIs related to Tweets",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://developer.twitter.com/en/docs/labs/tweets-and-users/overview"
+    }
+  }, {
+    "name" : "Users",
+    "description" : "APIs related to Users",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://developer.twitter.com/en/docs/labs/tweets-and-users/overview"
+    }
+  } ],
+  "paths" : {
+    "/labs/2/users" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Return details for the specified users",
+        "description" : "This endpoint returns information about users. Specify users by their ID.",
+        "operationId" : "findUsersById",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "Required. A list of User IDs, comma-separated. You can specify up to 100 IDs.",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserID"
+            },
+            "minItems" : 1,
+            "maxItems" : 100
+          },
+          "style" : "form",
+          "explode" : false
+        }, {
+          "$ref" : "#/components/parameters/UserExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/users/{id}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Return details for the specified users",
+        "description" : "This endpoint returns information about a user. Specify user by ID.",
+        "operationId" : "findUserById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Required. A User ID.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/UserID"
+          }
+        }, {
+          "$ref" : "#/components/parameters/UserExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SingleUserLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/users/by" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Return details for the specified users",
+        "description" : "This endpoint returns information about users. Specify users by their username.",
+        "operationId" : "findUsersByUsername",
+        "parameters" : [ {
+          "name" : "usernames",
+          "in" : "query",
+          "description" : "Required . A list of usernames, comma-separated. You can specify up to 100 usernames.",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserName"
+            },
+            "minItems" : 1,
+            "maxItems" : 100
+          },
+          "style" : "form",
+          "explode" : false
+        }, {
+          "$ref" : "#/components/parameters/UserExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/users/by/username/{username}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Return details for the specified users",
+        "description" : "This endpoint returns information about a user. Specify user by username.",
+        "operationId" : "findUserByUsername",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "required" : true,
+          "description" : "Required. A username.",
+          "schema" : {
+            "$ref" : "#/components/schemas/UserName"
+          }
+        }, {
+          "$ref" : "#/components/parameters/UserExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SingleUserLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/tweets" : {
+      "get" : {
+        "tags" : [ "Tweets" ],
+        "summary" : "Returns hydrated Tweet objects",
+        "description" : "Returns a variety of information about the Tweet specified by the requested ID",
+        "operationId" : "findTweetsById",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "description" : "A comma separated list of Tweet IDs. Up to 100 are allowed in a single request.",
+          "required" : true,
+          "style" : "form",
+          "explode" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TweetID"
+            },
+            "minItems" : 1,
+            "maxItems" : 100
+          }
+        }, {
+          "$ref" : "#/components/parameters/TweetExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TweetLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/tweets/{id}" : {
+      "get" : {
+        "tags" : [ "Tweets" ],
+        "summary" : "Returns hydrated Tweet objects",
+        "description" : "Returns a variety of information about the Tweet specified by the requested ID",
+        "operationId" : "findTweetById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A single Tweet ID.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/TweetID"
+          }
+        }, {
+          "$ref" : "#/components/parameters/TweetExpansionsParameter"
+        }, {
+          "$ref" : "#/components/parameters/TweetFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/UserFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/MediaFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PlaceFieldsParameter"
+        }, {
+          "$ref" : "#/components/parameters/PollFieldsParameter"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SingleTweetLookupResponse"
+                }
+              }
+            }
+          },
+          "default" : {
+            "$ref" : "#/components/responses/HttpErrorResponse"
+          }
+        }
+      }
+    },
+    "/labs/2/openapi.json" : {
+      "get" : {
+        "tags" : [ "General" ],
+        "summary" : "Returns the open api spec document.",
+        "description" : "Full open api spec in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)",
+        "operationId" : "getOpenApiSpec",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "The request was successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "MediaHeight" : {
+        "type" : "integer",
+        "minimum" : 0,
+        "description" : "The height of the media in pixels"
+      },
+      "MediaWidth" : {
+        "type" : "integer",
+        "minimum" : 0,
+        "description" : "The width of the media in pixels"
+      },
+      "HTTPStatusCode" : {
+        "type" : "integer",
+        "minimum" : 100,
+        "maximum" : 599,
+        "description" : "HTTP Status Code."
+      },
+      "ContextAnnotation" : {
+        "type" : "object",
+        "description" : "Annotation inferred from the tweet text.",
+        "required" : [ "domain", "entity" ],
+        "properties" : {
+          "domain" : {
+            "$ref" : "#/components/schemas/ContextAnnotationDomainFields"
+          },
+          "entity" : {
+            "$ref" : "#/components/schemas/ContextAnnotationEntityFields"
+          }
+        }
+      },
+      "ContextAnnotationDomainFields" : {
+        "type" : "object",
+        "description" : "Represents the data for the context annotation domain.",
+        "required" : [ "id" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The unique id for a context annotation domain.",
+            "pattern" : "^[0-9]{1,19}$"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the context annotation domain."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description of the context annotation domain."
+          }
+        }
+      },
+      "ContextAnnotationEntityFields" : {
+        "type" : "object",
+        "description" : "Represents the data for the context annotation entity.",
+        "required" : [ "id" ],
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The unique id for a context annotation entity.",
+            "pattern" : "^[0-9]{1,19}$"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the context annotation entity."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description of the context annotation entity."
+          }
+        }
+      },
+      "URL" : {
+        "type" : "string",
+        "description" : "A validly formatted URL.",
+        "format" : "uri",
+        "example" : "https://example.com"
+      },
+      "EntityIndices" : {
+        "type" : "object",
+        "description" : "Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.",
+        "required" : [ "start", "end" ],
+        "properties" : {
+          "start" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "description" : "Index (zero-based) at which position this entity starts."
+          },
+          "end" : {
+            "type" : "integer",
+            "minimum" : 0,
+            "description" : "Index (zero-based) at which position this entity ends."
+          }
+        }
+      },
+      "URLFields" : {
+        "type" : "object",
+        "description" : "Represent the portion of text recognized as a URL.",
+        "required" : [ "url" ],
+        "properties" : {
+          "url" : {
+            "$ref" : "#/components/schemas/URL"
+          },
+          "expanded_url" : {
+            "$ref" : "#/components/schemas/URL"
+          },
+          "display_url" : {
+            "type" : "string",
+            "description" : "The URL as displayed in the Twitter client."
+          },
+          "unwound_url" : {
+            "type" : "string",
+            "description" : "Fully resolved url",
+            "format" : "uri"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/HTTPStatusCode"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Title of the page the URL points to."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "Description of the URL landing page."
+          },
+          "images" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/URLImage"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "UrlEntity" : {
+        "description" : "Represent the portion of text recognized as a URL, and its start and end position within the text.",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/EntityIndices"
+        }, {
+          "$ref" : "#/components/schemas/URLFields"
+        } ]
+      },
+      "URLImage" : {
+        "type" : "object",
+        "description" : "Represent the information for the URL image",
+        "properties" : {
+          "url" : {
+            "$ref" : "#/components/schemas/URL"
+          },
+          "height" : {
+            "$ref" : "#/components/schemas/MediaHeight"
+          },
+          "width" : {
+            "$ref" : "#/components/schemas/MediaWidth"
+          }
+        }
+      },
+      "HashtagFields" : {
+        "type" : "object",
+        "description" : "Represent the portion of text recognized as a Hashtag, and its start and end position within the text.",
+        "required" : [ "tag" ],
+        "properties" : {
+          "tag" : {
+            "type" : "string",
+            "description" : "The text of the Hashtag"
+          }
+        }
+      },
+      "HashtagEntity" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/EntityIndices"
+        }, {
+          "$ref" : "#/components/schemas/HashtagFields"
+        } ]
+      },
+      "CashtagFields" : {
+        "type" : "object",
+        "description" : "Represent the portion of text recognized as a Cashtag, and its start and end position within the text.",
+        "required" : [ "tag" ],
+        "properties" : {
+          "tag" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CashtagEntity" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/EntityIndices"
+        }, {
+          "$ref" : "#/components/schemas/CashtagFields"
+        } ]
+      },
+      "MentionFields" : {
+        "type" : "object",
+        "description" : "Represent the portion of text recognized as a User mention, and its start and end position within the text.",
+        "required" : [ "username", "id" ],
+        "properties" : {
+          "username" : {
+            "$ref" : "#/components/schemas/UserName"
+          },
+          "id" : {
+            "$ref" : "#/components/schemas/UserID"
+          }
+        }
+      },
+      "MentionEntity" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/EntityIndices"
+        }, {
+          "$ref" : "#/components/schemas/MentionFields"
+        } ]
+      },
+      "FullTextEntities" : {
+        "type" : "object",
+        "properties" : {
+          "urls" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UrlEntity"
+            },
+            "minItems" : 1
+          },
+          "hashtags" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/HashtagEntity"
+            },
+            "minItems" : 1
+          },
+          "mentions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MentionEntity"
+            },
+            "minItems" : 1
+          },
+          "cashtags" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CashtagEntity"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "TweetID" : {
+        "type" : "string",
+        "description" : "Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.",
+        "pattern" : "^[0-9]{1,19}$",
+        "example" : "120897978112909812"
+      },
+      "UserID" : {
+        "type" : "string",
+        "description" : "Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.",
+        "pattern" : "^[0-9]{1,19}$",
+        "example" : "712089797812"
+      },
+      "Error" : {
+        "required" : [ "code", "message" ],
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Expansions" : {
+        "type" : "object",
+        "properties" : {
+          "users" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/User"
+            },
+            "minItems" : 1
+          },
+          "tweets" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Tweet"
+            },
+            "minItems" : 1
+          },
+          "places" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Place"
+            },
+            "minItems" : 1
+          },
+          "media" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Media"
+            },
+            "minItems" : 1
+          },
+          "polls" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Poll"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "Tweet" : {
+        "required" : [ "id", "text" ],
+        "properties" : {
+          "id" : {
+            "$ref" : "#/components/schemas/TweetID"
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Creation time of the Tweet."
+          },
+          "text" : {
+            "type" : "string",
+            "description" : "The content of the Tweet."
+          },
+          "author_id" : {
+            "$ref" : "#/components/schemas/UserID"
+          },
+          "in_reply_to_user_id" : {
+            "$ref" : "#/components/schemas/UserID"
+          },
+          "referenced_tweets" : {
+            "type" : "array",
+            "description" : "A list of Tweets this Tweet refers to. For example, if the parent Tweet is a Retweet, a Quoted Tweet or a Reply, it will include the related Tweet referenced to by its parent.",
+            "items" : {
+              "type" : "object",
+              "required" : [ "type", "id" ],
+              "properties" : {
+                "type" : {
+                  "type" : "string",
+                  "enum" : [ "retweeted", "quoted", "replied_to" ]
+                },
+                "id" : {
+                  "$ref" : "#/components/schemas/TweetID"
+                }
+              }
+            },
+            "minItems" : 1
+          },
+          "attachments" : {
+            "type" : "object",
+            "description" : "Specifies the type of attachments (if any) present in this Tweet.",
+            "properties" : {
+              "media_keys" : {
+                "type" : "array",
+                "description" : "A list of Media Keys for each one of the media attachments (if media are attached).",
+                "items" : {
+                  "$ref" : "#/components/schemas/MediaKey"
+                },
+                "minItems" : 1
+              },
+              "poll_ids" : {
+                "type" : "array",
+                "description" : "A list of poll IDs (if polls are attached).",
+                "items" : {
+                  "$ref" : "#/components/schemas/PollId"
+                },
+                "minItems" : 1
+              }
+            }
+          },
+          "context_annotations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ContextAnnotation"
+            },
+            "minItems" : 1
+          },
+          "withheld" : {
+            "$ref" : "#/components/schemas/TweetWithheld"
+          },
+          "geo" : {
+            "type" : "object",
+            "description" : "The location tagged on the Tweet, if the user provided one.",
+            "properties" : {
+              "coordinates" : {
+                "$ref" : "#/components/schemas/Point"
+              },
+              "place_id" : {
+                "$ref" : "#/components/schemas/PlaceId"
+              }
+            }
+          },
+          "entities" : {
+            "$ref" : "#/components/schemas/FullTextEntities"
+          },
+          "public_metrics" : {
+            "type" : "object",
+            "description" : "Engagement metrics for the Tweet at the time of the request.",
+            "required" : [ "retweet_count", "reply_count", "like_count" ],
+            "properties" : {
+              "retweet_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been Retweeted."
+              },
+              "reply_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been replied to."
+              },
+              "like_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been liked."
+              },
+              "quote_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been quoted."
+              }
+            }
+          },
+            "possibly_sensitive" : {
+              "type" : "boolean",
+              "description" : "Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences."
+            },
+          "lang" : {
+            "type" : "string",
+            "description" : "Language of the Tweet, if detected by Twitter. Returned as a BCP47 language tag."
+          },
+          "source" : {
+            "type" : "string",
+            "description" : "The name of the app the user Tweeted from."
+          },
+          "non_public_metrics" : {
+            "type" : "object",
+            "description" : "Nonpublic engagement metrics for the Tweet at the time of the request.",
+            "properties" : {
+              "impression_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this Tweet has been viewed."
+              },
+              "user_profile_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times the user's profile from this Tweet has been clicked."
+              },
+              "url_link_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times links in this Tweet have been clicked."
+              }
+            }
+          },
+          "promoted_metrics" : {
+            "type" : "object",
+            "description" : "Promoted nonpublic engagement metrics for the Tweet at the time of the request.",
+            "properties" : {
+              "impression_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this Tweet has been viewed."
+              },
+              "like_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this Tweet has been liked."
+              },
+              "reply_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this Tweet has been replied to."
+              },
+              "retweet_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this Tweet has been Retweeted."
+              },
+              "user_profile_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times the user's profile from this Tweet has been clicked."
+              },
+              "url_link_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times links in this Tweet have been clicked."
+              }
+            }
+          },
+          "organic_metrics" : {
+            "type" : "object",
+            "description" : "Organic nonpublic engagement metrics for the Tweet at the time of the request.",
+            "required" : [ "impression_count", "retweet_count", "reply_count", "like_count", "user_profile_clicks" ],
+            "properties" : {
+              "impression_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been viewed."
+              },
+              "retweet_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been Retweeted."
+              },
+              "reply_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been replied to."
+              },
+              "like_count" : {
+                "type" : "integer",
+                "description" : "Number of times this Tweet has been liked."
+              },
+              "user_profile_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times the user's profile from this Tweet has been clicked."
+              },
+              "url_link_clicks" : {
+                "type" : "integer",
+                "description" : "Number of times links in this Tweet have been clicked."
+              }
+            }
+          }
+        },
+        "example" : {
+          "id" : "12234",
+          "created_at" : "Wed Jun 20 16:53:49 +0000 2018",
+          "text" : "Some great insight into the human condition.",
+          "author_id" : "712089797812"
+        }
+      },
+      "User" : {
+        "description" : "The Twitter User object",
+        "required" : [ "id", "name", "username" ],
+        "properties" : {
+          "id" : {
+            "$ref" : "#/components/schemas/UserID"
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Creation time of this user."
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The friendly name of this user, as shown on their profile."
+          },
+          "username" : {
+            "$ref" : "#/components/schemas/UserName"
+          },
+          "protected" : {
+            "type" : "boolean",
+            "description" : "Indicates if this user has chosen to protect their Tweets (in other words, if this user's Tweets are private)."
+          },
+          "verified" : {
+            "type" : "boolean",
+            "description" : "Indicate if this user is a verified Twitter User."
+          },
+          "withheld" : {
+            "$ref" : "#/components/schemas/UserWithheld"
+          },
+          "profile_image_url" : {
+            "type" : "string",
+            "description" : "The URL to the profile image for this user.",
+            "format" : "uri"
+          },
+          "location" : {
+            "type" : "string",
+            "description" : "The location specified in the user's profile, if the user provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries."
+          },
+          "url" : {
+            "type" : "string",
+            "description" : "The URL specified in the user's profile."
+          },
+          "description" : {
+            "type" : "string",
+            "description" : "The text of this user's profile description (also known as bio), if the user provided one."
+          },
+          "entities" : {
+            "type" : "object",
+            "description" : "A list of metadata found in the user's profile description.",
+            "properties" : {
+              "url" : {
+                "type" : "object",
+                "description" : "Expanded details for the URL specified in the user's profile, with start and end indices.",
+                "properties" : {
+                  "urls" : {
+                    "type" : "array",
+                    "items" : {
+                      "$ref" : "#/components/schemas/UrlEntity"
+                    },
+                    "minItems" : 1
+                  }
+                }
+              },
+              "description" : {
+                "$ref" : "#/components/schemas/FullTextEntities"
+              }
+            }
+          },
+          "pinned_tweet_id" : {
+            "$ref" : "#/components/schemas/TweetID"
+          },
+          "public_metrics" : {
+            "type" : "object",
+            "description" : "A list of metrics for this user",
+            "required" : [ "followers_count", "following_count", "tweet_count", "listed_count" ],
+            "properties" : {
+              "followers_count" : {
+                "type" : "integer",
+                "description" : "Number of users who are following this user."
+              },
+              "following_count" : {
+                "type" : "integer",
+                "description" : "Number of users this user is following."
+              },
+              "tweet_count" : {
+                "type" : "integer",
+                "description" : "The number of Tweets (including Retweets) posted by this user."
+              },
+              "listed_count" : {
+                "type" : "integer",
+                "description" : "The number of lists that include this user."
+              }
+            }
+          }
+        },
+        "example" : {
+          "id" : "1234",
+          "created_at" : "2017-10-09T17:16:24Z",
+          "name" : "Twitter API",
+          "username" : "twitterapi",
+          "protected" : false
+        }
+      },
+      "UserName" : {
+        "type" : "string",
+        "description" : "The Twitter handle (screen name) of this user.",
+        "pattern" : "^[A-Za-z0-9_]{1,15}$"
+      },
+      "UserLookupResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/User"
+            },
+            "minItems" : 1
+          },
+          "includes" : {
+            "$ref" : "#/components/schemas/Expansions"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Problem"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "SingleUserLookupResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "includes" : {
+            "$ref" : "#/components/schemas/Expansions"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Problem"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "TweetLookupResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Tweet"
+            },
+            "minItems" : 1
+          },
+          "includes" : {
+            "$ref" : "#/components/schemas/Expansions"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Problem"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "SingleTweetLookupResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/components/schemas/Tweet"
+          },
+          "includes" : {
+            "$ref" : "#/components/schemas/Expansions"
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Problem"
+            },
+            "minItems" : 1
+          }
+        }
+      },
+      "Point" : {
+        "type" : "object",
+        "description" : "A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object.",
+        "required" : [ "type", "coordinates" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "Point" ]
+          },
+          "coordinates" : {
+            "$ref" : "#/components/schemas/Position"
+          }
+        }
+      },
+      "Position" : {
+        "type" : "array",
+        "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
+        "items" : {
+          "type" : "number"
+        },
+        "minItems" : 2,
+        "maxItems" : 2
+      },
+      "Geo" : {
+        "type" : "object",
+        "required" : [ "type", "bbox", "properties" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "Feature" ]
+          },
+          "bbox" : {
+            "type" : "array",
+            "maxItems" : 4,
+            "minItems" : 4,
+            "items" : {
+              "type" : "number",
+              "format" : "double",
+              "minimum" : -180,
+              "maximum" : 180
+            }
+          },
+          "geometry" : {
+            "$ref" : "#/components/schemas/Point"
+          },
+          "properties" : {
+            "type" : "object"
+          }
+        }
+      },
+      "PlaceId" : {
+        "type" : "string",
+        "description" : "The identifier for this place"
+      },
+      "Place" : {
+        "required" : [ "id", "full_name" ],
+        "properties" : {
+          "id" : {
+            "$ref" : "#/components/schemas/PlaceId"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "The human readable name of this place."
+          },
+          "country_code" : {
+            "$ref" : "#/components/schemas/CountryCode"
+          },
+          "place_type" : {
+            "$ref" : "#/components/schemas/PlaceType"
+          },
+          "full_name" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "contained_within" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PlaceId"
+            },
+            "minItems" : 1
+          },
+          "geo" : {
+            "$ref" : "#/components/schemas/Geo"
+          }
+        }
+      },
+      "PlaceType" : {
+        "type" : "string",
+        "enum" : [ "poi", "neighborhood", "city", "admin", "country", "unknown" ]
+      },
+      "Poll" : {
+        "type" : "object",
+        "description" : "Represent a Poll attached to a Tweet",
+        "required" : [ "id", "options" ],
+        "properties" : {
+          "id" : {
+            "$ref" : "#/components/schemas/PollId"
+          },
+          "options" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PollOption"
+            },
+            "minItems" : 2,
+            "maxItems" : 4
+          },
+          "voting_status" : {
+            "type" : "string",
+            "enum" : [ "open", "closed" ]
+          },
+          "end_datetime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "duration_minutes" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "PollId" : {
+        "type" : "string",
+        "description" : "Unique identifier of this poll.",
+        "pattern" : "^[0-9]{1,19}$"
+      },
+      "PollOption" : {
+        "type" : "object",
+        "description" : "Describes a choice in a Poll object.",
+        "required" : [ "position", "label", "votes" ],
+        "properties" : {
+          "position" : {
+            "type" : "integer",
+            "description" : "Position of this choice in the poll."
+          },
+          "label" : {
+            "type" : "string",
+            "description" : "The text of a poll choice."
+          },
+          "votes" : {
+            "type" : "integer",
+            "description" : "Number of users who voted for this choice."
+          }
+        }
+      },
+      "Media" : {
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/Photo"
+        }, {
+          "$ref" : "#/components/schemas/Video"
+        }, {
+          "$ref" : "#/components/schemas/AnimatedGif"
+        } ],
+        "required" : [ "type" ],
+        "discriminator" : {
+          "propertyName" : "type",
+          "mapping" : {
+            "photo" : "#/components/schemas/Photo",
+            "video" : "#/components/schemas/Video",
+            "animated_gif" : "#/components/schemas/AnimatedGif"
+          }
+        }
+      },
+      "CommonMediaFields" : {
+        "type" : "object",
+        "description" : "This contains the list of the fields that are common to all media returned.",
+        "properties" : {
+          "media_key" : {
+            "$ref" : "#/components/schemas/MediaKey"
+          },
+          "height" : {
+            "$ref" : "#/components/schemas/MediaHeight"
+          },
+          "width" : {
+            "$ref" : "#/components/schemas/MediaWidth"
+          }
+        }
+      },
+      "Photo" : {
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CommonMediaFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "photo" ]
+          },
+          "url" : {
+            "type" : "string",
+            "format" : "uri"
+          }
+        }
+      },
+      "Video" : {
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CommonMediaFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "video" ]
+          },
+          "preview_image_url" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "duration_ms" : {
+            "type" : "integer"
+          },
+          "public_metrics" : {
+            "type" : "object",
+            "description" : "Engagement metrics for the Media at the time of the request.",
+            "properties" : {
+              "view_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this video has been viewed."
+              }
+            }
+          },
+          "non_public_metrics" : {
+            "type" : "object",
+            "description" : "Nonpublic engagement metrics for the Media at the time of the request.",
+            "properties" : {
+              "playback_0_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 0% of the video."
+              },
+              "playback_25_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 25% of the video."
+              },
+              "playback_50_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 50% of the video."
+              },
+              "playback_75_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 75% of the video."
+              },
+              "playback_100_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 100% of the video."
+              }
+            }
+          },
+          "organic_metrics" : {
+            "type" : "object",
+            "description" : "Organic nonpublic engagement metrics for the Media at the time of the request.",
+            "properties" : {
+              "playback_0_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 0% of the video."
+              },
+              "playback_25_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 25% of the video."
+              },
+              "playback_50_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 50% of the video."
+              },
+              "playback_75_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 75% of the video."
+              },
+              "playback_100_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 100% of the video."
+              },
+              "view_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this video has been viewed."
+              }
+            }
+          },
+          "promoted_metrics" : {
+            "type" : "object",
+            "description" : "Promoted nonpublic engagement metrics for the Media at the time of the request.",
+            "properties" : {
+              "playback_0_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 0% of the video."
+              },
+              "playback_25_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 25% of the video."
+              },
+              "playback_50_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 50% of the video."
+              },
+              "playback_75_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 75% of the video."
+              },
+              "playback_100_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of users who made it through 100% of the video."
+              },
+              "view_count" : {
+                "type" : "integer",
+                "format" : "int32",
+                "description" : "Number of times this video has been viewed."
+              }
+            }
+          }
+        }
+      },
+      "AnimatedGif" : {
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CommonMediaFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "animated_gif" ]
+          },
+          "preview_image_url" : {
+            "type" : "string",
+            "format" : "uri"
+          }
+        }
+      },
+      "MediaKey" : {
+        "type" : "string",
+        "description" : "The Media Key identifier for this attachment.",
+        "pattern" : "^([0-9]+)_([0-9]+)$"
+      },
+      "TweetWithheld" : {
+        "type" : "object",
+        "description" : "Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).",
+        "required" : [ "copyright", "country_codes" ],
+        "properties" : {
+          "copyright" : {
+            "type" : "boolean",
+            "description" : "Indicates if the content is being withheld for on the basis of copyright infringement."
+          },
+          "country_codes" : {
+            "type" : "array",
+            "description" : "Provides a list of countries where this content is not available.",
+            "items" : {
+              "$ref" : "#/components/schemas/CountryCode"
+            },
+            "uniqueItems" : true,
+            "minItems" : 1
+          },
+          "scope" : {
+            "type" : "string",
+            "description" : "Indicates whether the content being withheld is the `tweet` or a `user`.",
+            "enum" : [ "tweet", "user" ]
+          }
+        }
+      },
+      "UserWithheld" : {
+        "type" : "object",
+        "description" : "Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).",
+        "required" : [ "country_codes" ],
+        "properties" : {
+          "country_codes" : {
+            "type" : "array",
+            "description" : "Provides a list of countries where this content is not available.",
+            "items" : {
+              "$ref" : "#/components/schemas/CountryCode"
+            },
+            "uniqueItems" : true,
+            "minItems" : 1
+          },
+          "scope" : {
+            "type" : "string",
+            "description" : "Indicates that the content being withheld is a `user`.",
+            "enum" : [ "user" ]
+          }
+        }
+      },
+      "CountryCode" : {
+        "type" : "string",
+        "pattern" : "^[A-Z]{2}$"
+      },
+      "ProblemFields" : {
+        "type" : "object",
+        "required" : [ "type", "title", "detail" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "detail" : {
+            "type" : "string"
+          }
+        }
+      },
+      "GenericProblem" : {
+        "description" : "A generic problem with no additional information beyond that provided by the HTTP status code.",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "required" : [ "status" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "about:blank" ]
+          },
+          "status" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "InvalidRequestProblem" : {
+        "description" : "A problem that indicates this request is invalid.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/invalid-request" ]
+          },
+          "errors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "parameters" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "message" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResourceNotFoundProblem" : {
+        "description" : "A problem that indicates that a given Tweet, User, etc. does not exist.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "required" : [ "parameter", "value", "resource_id", "resource_type" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/resource-not-found" ]
+          },
+          "parameter" : {
+            "type" : "string",
+            "minLength" : 1
+          },
+          "value" : {
+            "description" : "Value will match the schema of the field."
+          },
+          "resource_id" : {
+            "type" : "string"
+          },
+          "resource_type" : {
+            "type" : "string",
+            "enum" : [ "user", "tweet", "media" ]
+          }
+        }
+      },
+      "ResourceUnauthorizedProblem" : {
+        "description" : "A problem that indicates you are not allowed to see a particular Tweet, User, etc.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "required" : [ "resource_id", "resource_type", "section" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/not-authorized-for-resource" ]
+          },
+          "resource_id" : {
+            "type" : "string"
+          },
+          "resource_type" : {
+            "type" : "string",
+            "enum" : [ "tweet", "user", "media" ]
+          },
+          "section" : {
+            "type" : "string",
+            "enum" : [ "data", "includes" ]
+          }
+        }
+      },
+      "ClientForbiddenProblem" : {
+        "description" : "A problem that indicates your client is forbidden from making this request.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/client-forbidden" ]
+          },
+          "reason" : {
+            "type" : "string",
+            "enum" : [ "official-client-forbidden", "client-not-enrolled" ]
+          },
+          "registration_url" : {
+            "type" : "string",
+            "format" : "uri"
+          }
+        }
+      },
+      "DisallowedResourceProblem" : {
+        "description" : "A problem that indicates that the resource requested violates the precepts of this API.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "required" : [ "resource_id", "resource_type", "section" ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/disallowed-resource" ]
+          },
+          "resource_id" : {
+            "type" : "string"
+          },
+          "resource_type" : {
+            "type" : "string",
+            "enum" : [ "tweet", "media" ]
+          },
+          "section" : {
+            "type" : "string",
+            "enum" : [ "data", "includes" ]
+          }
+        }
+      },
+      "UnsupportedAuthenticationProblem" : {
+        "description" : "A problem that indicates that the authentication used is not supported.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/unsupported-authentication" ]
+          }
+        }
+      },
+      "UsageCapExceededProblem" : {
+        "description" : "A problem that indicates that a usage cap has been exceeded.",
+        "type" : "object",
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/ProblemFields"
+        } ],
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "https://api.twitter.com/labs/2/problems/usage-capped" ]
+          },
+          "period" : {
+            "type" : "string",
+            "enum" : [ "Daily", "Monthly" ]
+          },
+          "scope" : {
+            "type" : "string",
+            "enum" : [ "Account", "Product" ]
+          }
+        }
+      },
+      "Problem" : {
+        "description" : "An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).",
+        "oneOf" : [ {
+          "$ref" : "#/components/schemas/GenericProblem"
+        }, {
+          "$ref" : "#/components/schemas/InvalidRequestProblem"
+        }, {
+          "$ref" : "#/components/schemas/ClientForbiddenProblem"
+        }, {
+          "$ref" : "#/components/schemas/ResourceNotFoundProblem"
+        }, {
+          "$ref" : "#/components/schemas/ResourceUnauthorizedProblem"
+        }, {
+          "$ref" : "#/components/schemas/DisallowedResourceProblem"
+        }, {
+          "$ref" : "#/components/schemas/UnsupportedAuthenticationProblem"
+        }, {
+          "$ref" : "#/components/schemas/UsageCapExceededProblem"
+        } ],
+        "discriminator" : {
+          "propertyName" : "type",
+          "mapping" : {
+            "about:blank" : "#/components/schemas/GenericProblem",
+            "https://api.twitter.com/labs/2/problems/invalid-request" : "#/components/schemas/InvalidRequestProblem",
+            "https://api.twitter.com/labs/2/problems/client-forbidden" : "#/components/schemas/ClientForbiddenProblem",
+            "https://api.twitter.com/labs/2/problems/resource-not-found" : "#/components/schemas/ResourceNotFoundProblem",
+            "https://api.twitter.com/labs/2/problems/not-authorized-for-resource" : "#/components/schemas/ResourceUnauthorizedProblem",
+            "https://api.twitter.com/labs/2/problems/disallowed-resource" : "#/components/schemas/DisallowedResourceProblem",
+            "https://api.twitter.com/labs/2/problems/unsupported-authentication" : "#/components/schemas/UnsupportedAuthenticationProblem",
+            "https://api.twitter.com/labs/2/problems/usage-capped" : "#/components/schemas/UsageCapExceededProblem"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "HttpErrorResponse" : {
+        "description" : "The request has failed.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          },
+          "application/problem+json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "TweetExpansionsParameter" : {
+        "name" : "expansions",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "description" : "A comma separated list of fields to expand.",
+        "schema" : {
+          "description" : "The list of fields you can expand for a [Tweet](#Tweet) object. If the field has an ID, it can be expanded into a full object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "author_id", "referenced_tweets.id", "in_reply_to_user_id", "geo.place_id", "attachments.media_keys", "attachments.poll_ids", "entities.mentions.username", "referenced_tweets.id.author_id" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "author_id"
+        }
+      },
+      "UserExpansionsParameter" : {
+        "name" : "expansions",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "description" : "A comma separated list of fields to expand.",
+        "schema" : {
+          "description" : "The list of fields you can expand for a [User](#User) object. If the field has an ID, it can be expanded into a full object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "pinned_tweet_id" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "pinned_tweet_id"
+        }
+      },
+      "TweetFieldsParameter" : {
+        "name" : "tweet.fields",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "required" : false,
+        "description" : "A comma separated list of Tweet fields to display.",
+        "schema" : {
+          "description" : "The list of fields you can display for a [Tweet](#Tweet) object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "id", "created_at", "text", "author_id", "in_reply_to_user_id", "referenced_tweets", "attachments", "withheld", "geo", "entities", "public_metrics", "possibly_sensitive", "source", "lang", "context_annotations", "non_public_metrics", "promoted_metrics", "organic_metrics" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "created_at"
+        }
+      },
+      "UserFieldsParameter" : {
+        "name" : "user.fields",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "required" : false,
+        "description" : "A comma separated list of User fields to display.",
+        "schema" : {
+          "description" : "The list of fields you can display for a [User](#User) object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "id", "created_at", "name", "username", "protected", "verified", "withheld", "profile_image_url", "location", "url", "description", "entities", "pinned_tweet_id", "public_metrics" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "created_at"
+        }
+      },
+      "MediaFieldsParameter" : {
+        "name" : "media.fields",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "required" : false,
+        "description" : "A comma separated list of Media fields to display.",
+        "schema" : {
+          "description" : "The list of fields you can display for a Media object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "media_key", "duration_ms", "height", "preview_image_url", "type", "url", "width", "public_metrics", "non_public_metrics", "organic_metrics", "promoted_metrics" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "created_at"
+        }
+      },
+      "PlaceFieldsParameter" : {
+        "name" : "place.fields",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "required" : false,
+        "description" : "A comma separated list of Place fields to display.",
+        "schema" : {
+          "description" : "The list of fields you can display for a Place object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "id", "name", "country_code", "place_type", "full_name", "country", "contained_within", "geo" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "country_code"
+        }
+      },
+      "PollFieldsParameter" : {
+        "name" : "poll.fields",
+        "in" : "query",
+        "style" : "form",
+        "explode" : false,
+        "required" : false,
+        "description" : "A comma separated list of Poll fields to display.",
+        "schema" : {
+          "description" : "The list of fields you can display for a Poll object.",
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "id", "options", "voting_status", "end_datetime", "duration_minutes" ]
+          },
+          "minItems" : 1,
+          "uniqueItems" : true,
+          "example" : "end_datetime"
+        }
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Swagger",
+    "url" : "http://swagger.io"
+  }
+}

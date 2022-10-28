@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 // Note: this class was written without inspecting the non-free org.json sourcecode.
 
@@ -318,6 +319,13 @@ class JSONArray {
         } catch (IndexOutOfBoundsException e) {
             throw new JSONException("Index " + index + " out of range [0.." + values.size() + ")");
         }
+    }
+    public Stream<JSONObject> asJSONObjectStream(){
+        List<JSONObject> jsonObjectList = new ArrayList<>(length());
+        for (int i = 0; i < length(); i++) {
+            jsonObjectList.add(getJSONObject(i));
+        }
+        return jsonObjectList.stream();
     }
 
     /**

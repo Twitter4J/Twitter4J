@@ -25,7 +25,9 @@ sourceSets {
     test {
         java {
             srcDirs(['src/test/java',
-                     'src/testv1/java'])
+                     'src/test-jsonschema/java',
+                     'src/testv1/java'
+            ])
         }
     }
 
