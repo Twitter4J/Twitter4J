@@ -506,19 +506,24 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 
     @Override
     public @NotNull String getJavaType(boolean notNull) {
-        return "String";
+        return isDateTime() ? "LocalDateTime" : "String";
+    }
+
+    private boolean isDateTime() {
+        return "date-time".equals(format);
     }
 
 
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
+        String getterMethod = isDateTime() ? "getLocalDateTime" : "getString";
         return notNull ? """
-                this.%1$s = json.getString("%2$s");
-                """.formatted(lowerCamelCased, typeName)
+                this.%1$s = json.%2$s("%3$s");
+                """.formatted(lowerCamelCased, getterMethod, typeName)
                 : """
-                this.%1$s = json.has("%2$s") ? json.getString("%2$s") : null;
-                """.formatted(lowerCamelCased, typeName);
+                this.%1$s = json.has("%3$s") ? json.%2$s("%3$s") : null;
+                """.formatted(lowerCamelCased, getterMethod, typeName);
     }
 
     @Override

@@ -17,44 +17,6 @@ class JSONSchemaTest {
                 foo""", 4));
     }
 
-    @Test
-    void string() {
-        var extract = JSONSchema.extract("#/", """
-                {
-                  "TweetID" : {
-                         "type" : "string",
-                         "description" : "Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.",
-                         "pattern" : "^[0-9]{1,19}$",
-                         "example" : "120897978112909812"
-                       }
-                 
-                }""");
-        assertEquals(1, extract.size());
-        JSONSchema tweetId = extract.get("TweetID");
-        assertEquals("@Nullable\nprivate final String tweetID;",
-                tweetId.asFieldDeclaration(false));
-        assertEquals("@NotNull\nprivate final String tweetID;",
-                tweetId.asFieldDeclaration(true));
-        assertEquals("""
-                        this.tweetID = json.has("TweetID") ? json.getString("TweetID") : null;
-                        """,
-                tweetId.asConstructorAssignment(false));
-        assertEquals("""
-                        this.tweetID = json.getString("TweetID");
-                        """,
-                tweetId.asConstructorAssignment(true));
-        assertEquals("""
-                        @Nullable
-                        @Override
-                        public String getTweetID() {
-                            return tweetID;
-                        }
-                        """,
-                tweetId.asGetterImplementation(false));
-
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2"));
-    }
 
     @Test
     void integer() {

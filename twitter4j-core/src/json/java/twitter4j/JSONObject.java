@@ -18,6 +18,10 @@ package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -732,6 +736,15 @@ class JSONObject {
         } else {
             throw JSON.typeMismatch(name, object, "JSONArray");
         }
+    }
+
+    private static final DateTimeFormatter dateTimeFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+                    .withZone(ZoneId.of("UTC"));
+
+    public LocalDateTime getLocalDateTime(String name){
+        String dateStr = getString(name);
+        return ZonedDateTime.parse(dateStr, dateTimeFormatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
     public Stream<JSONObject> getJSONArrayAsStream(String name){
         if (!has(name)) {
