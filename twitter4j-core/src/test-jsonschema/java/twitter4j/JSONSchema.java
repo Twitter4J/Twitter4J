@@ -235,10 +235,8 @@ interface JSONSchema {
 
     @NotNull
     static JSONSchema toJSONSchemaType(JSONObject jsonObject, @NotNull String typeName, @NotNull String jsonPointer) {
-        String type;
-        if (jsonObject.has("type")) {
-            type = jsonObject.getString("type");
-        } else {
+        String type = jsonObject.getString("type");
+        if (type == null) {
             type = "none";
         }
         types.add(type);
@@ -387,7 +385,7 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
 
         } else {
             return """
-                    this.%1$s = json.has("%3$s") ? json.get%2$s("%3$s") : null;""".formatted(JSONSchema.lowerCamelCased(typeName), useInt() ? "Int" : "Long", typeName);
+                    this.%1$s = json.get%2$sValue("%3$s");""".formatted(JSONSchema.lowerCamelCased(typeName), useInt() ? "Int" : "Long", typeName);
         }
     }
 
@@ -443,7 +441,7 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 
         } else {
             return """
-                    this.%1$s = json.has("%2$s") ? json.getDouble("%2$s") : null;""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+                    this.%1$s = json.getDoubleValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
         }
     }
 
@@ -475,8 +473,10 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull) {
-        return """
-                this.%1$s = json.getBoolean("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+        return notNull ? """
+                this.%1$s = json.getBoolean("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName):
+                """
+                this.%1$s = json.getBooleanValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
     }
 
     @Override
@@ -526,11 +526,8 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     public @NotNull String asConstructorAssignment(boolean notNull) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
         String getterMethod = isDateTime() ? "getLocalDateTime" : "getString";
-        return notNull ? """
+        return """
                 this.%1$s = json.%2$s("%3$s");
-                """.formatted(lowerCamelCased, getterMethod, typeName)
-                : """
-                this.%1$s = json.has("%3$s") ? json.%2$s("%3$s") : null;
                 """.formatted(lowerCamelCased, getterMethod, typeName);
     }
 

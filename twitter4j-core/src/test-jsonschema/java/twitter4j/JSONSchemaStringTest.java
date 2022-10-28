@@ -25,7 +25,7 @@ class JSONSchemaStringTest {
         assertEquals("@NotNull\nprivate final String tweetID;",
                 tweetId.asFieldDeclaration(true));
         assertEquals("""
-                        this.tweetID = json.has("TweetID") ? json.getString("TweetID") : null;
+                        this.tweetID = json.getString("TweetID");
                         """,
                 tweetId.asConstructorAssignment(false));
         assertEquals("""
@@ -61,7 +61,7 @@ class JSONSchemaStringTest {
         assertEquals("@NotNull\nprivate final LocalDateTime endDatetime;",
                 tweetId.asFieldDeclaration(true));
         assertEquals("""
-                        this.endDatetime = json.has("end_datetime") ? json.getLocalDateTime("end_datetime") : null;
+                        this.endDatetime = json.getLocalDateTime("end_datetime");
                         """,
                 tweetId.asConstructorAssignment(false));
         assertEquals("""

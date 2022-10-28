@@ -37,7 +37,7 @@ class JSONSchemaTest {
                         private final Long mediaHeight;""",
                 mediaHeight.asFieldDeclaration(false));
         assertEquals("""
-                        this.mediaHeight = json.has("MediaHeight") ? json.getLong("MediaHeight") : null;""",
+                        this.mediaHeight = json.getLongValue("MediaHeight");""",
                 mediaHeight.asConstructorAssignment(false));
         assertEquals("this.mediaHeight = json.getLong(\"MediaHeight\");",
                 mediaHeight.asConstructorAssignment(true));
@@ -74,7 +74,7 @@ class JSONSchemaTest {
                         private final Double items;""",
                 items.asFieldDeclaration(false));
         assertEquals("""
-                        this.items = json.has("items") ? json.getDouble("items") : null;""",
+                        this.items = json.getDoubleValue("items");""",
                 items.asConstructorAssignment(false));
         assertEquals("this.items = json.getDouble(\"items\");",
                 items.asConstructorAssignment(true));
@@ -108,7 +108,7 @@ class JSONSchemaTest {
         assertEquals("@Nullable\n@Range(from = 100, to = 599)\nprivate final Integer hTTPStatusCode;",
                 hTTPStatusCode.asFieldDeclaration(false));
         assertEquals("""
-                        this.hTTPStatusCode = json.has("HTTPStatusCode") ? json.getInt("HTTPStatusCode") : null;""",
+                        this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
                 hTTPStatusCode.asConstructorAssignment(false));
         assertEquals("this.hTTPStatusCode = json.getInt(\"HTTPStatusCode\");",
                 hTTPStatusCode.asConstructorAssignment(true));
@@ -150,7 +150,7 @@ class JSONSchemaTest {
         assertEquals("private final int code;",
                 code.asFieldDeclaration(true));
         assertEquals("""
-                        this.code = json.has("code") ? json.getInt("code") : null;""",
+                        this.code = json.getIntValue("code");""",
                 code.asConstructorAssignment(false));
         assertEquals("this.code = json.getInt(\"code\");",
                 code.asConstructorAssignment(true));
@@ -204,8 +204,10 @@ class JSONSchemaTest {
         JSONSchema possiblySensitive = extract.get("possibly_sensitive");
         assertEquals("@Nullable\nprivate final Boolean possiblySensitive;",
                 possiblySensitive.asFieldDeclaration(false));
-        assertEquals("this.possiblySensitive = json.getBoolean(\"possibly_sensitive\");",
+        assertEquals("this.possiblySensitive = json.getBooleanValue(\"possibly_sensitive\");",
                 possiblySensitive.asConstructorAssignment(false));
+        assertEquals("this.possiblySensitive = json.getBoolean(\"possibly_sensitive\");",
+                possiblySensitive.asConstructorAssignment(true));
         assertEquals("""
                         @Nullable
                         @Override
@@ -273,8 +275,8 @@ class JSONSchemaTest {
         assertEquals("""
                         this.type = json.getString("type");
                         this.title = json.getString("title");
-                        this.detail = json.has("detail") ? json.getLocalDateTime("detail") : null;
-                        this.hTTPStatusCode = json.has("HTTPStatusCode") ? json.getInt("HTTPStatusCode") : null;""",
+                        this.detail = json.getLocalDateTime("detail");
+                        this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
                 problemFields.asConstructorAssignments());
         assertEquals("""
                         @NotNull
@@ -334,8 +336,8 @@ class JSONSchemaTest {
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
                                 this.title = json.getString("title");
-                                this.detail = json.has("detail") ? json.getLocalDateTime("detail") : null;
-                                this.hTTPStatusCode = json.has("HTTPStatusCode") ? json.getInt("HTTPStatusCode") : null;
+                                this.detail = json.getLocalDateTime("detail");
+                                this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");
                             }
                                                 
                             @NotNull

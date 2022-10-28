@@ -17,6 +17,7 @@
 package twitter4j;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -457,16 +458,19 @@ class JSONObject {
      *
      * @param name The name of the field we want.
      * @return The selected value if it exists.
-     * @throws JSONException if the mapping doesn't exist or cannot be coerced
-     *                       to a boolean.
      */
-    public boolean getBoolean(String name) throws JSONException {
+    public boolean getBoolean(String name) {
         Object object = get(name);
         Boolean result = JSON.toBoolean(object);
         if (result == null) {
-            throw JSON.typeMismatch(name, object, "boolean");
+            return false;
         }
         return result;
+    }
+    @Nullable
+    public Boolean getBooleanValue(String name) throws JSONException {
+        Object object = get(name);
+        return JSON.toBoolean(object);
     }
 
     /**
@@ -499,17 +503,20 @@ class JSONObject {
      * can be coerced to a double, or throws otherwise.
      *
      * @param name The name of the field we want.
-     * @return The selected value if it exists.
-     * @throws JSONException if the mapping doesn't exist or cannot be coerced
-     *                       to a double.
+     * @return The selected value if it exists, or -1 when the value is not defined.
      */
     public double getDouble(String name) throws JSONException {
         Object object = get(name);
         Double result = JSON.toDouble(object);
         if (result == null) {
-            throw JSON.typeMismatch(name, object, "double");
+            return -1D;
         }
         return result;
+    }
+    @Nullable
+    public Double getDoubleValue(String name) throws JSONException {
+        Object object = get(name);
+        return JSON.toDouble(object);
     }
 
 
@@ -590,17 +597,21 @@ class JSONObject {
      * can be coerced to an int, or throws otherwise.
      *
      * @param name The name of the field we want.
-     * @return The selected value if it exists.
-     * @throws JSONException if the mapping doesn't exist or cannot be coerced
-     *                       to an int.
+     * @return The selected value if it exists, or -1 when the value is not defined.
      */
     public int getInt(String name) throws JSONException {
         Object object = get(name);
         Integer result = JSON.toInteger(object);
         if (result == null) {
-            throw JSON.typeMismatch(name, object, "int");
+            return -1;
         }
         return result;
+    }
+
+    @Nullable
+    public Integer getIntValue(String name) throws JSONException {
+        Object object = get(name);
+        return JSON.toInteger(object);
     }
 
     /**
@@ -637,17 +648,21 @@ class JSONObject {
      * via JSON without loss.
      *
      * @param name The name of the field that we want.
-     * @return The value of the field.
-     * @throws JSONException if the mapping doesn't exist or cannot be coerced
-     *                       to a long.
+     * @return The value of the field, or -1 when the value is not defined..
      */
     public long getLong(String name) throws JSONException {
         Object object = get(name);
         Long result = JSON.toLong(object);
         if (result == null) {
-            throw JSON.typeMismatch(name, object, "long");
+            return -1L;
         }
         return result;
+    }
+
+    @Nullable
+    public Long getLongValue(String name) throws JSONException {
+        Object object = get(name);
+        return JSON.toLong(object);
     }
 
     /**
@@ -683,16 +698,12 @@ class JSONObject {
      * necessary, or throws if no such mapping exists.
      *
      * @param name The name of the field we want.
-     * @return The value of the field.
-     * @throws JSONException if no such mapping exists.
+     * @return The value of the field, or null when the value is not defined.
      */
+    @Nullable
     public String getString(String name) throws JSONException {
         Object object = get(name);
-        String result = JSON.toString(object);
-        if (result == null) {
-            throw JSON.typeMismatch(name, object, "String");
-        }
-        return result;
+        return JSON.toString(object);
     }
 
     /**
@@ -742,8 +753,12 @@ class JSONObject {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
                     .withZone(ZoneId.of("UTC"));
 
+    @Nullable
     public LocalDateTime getLocalDateTime(String name){
         String dateStr = getString(name);
+        if (dateStr == null) {
+            return null;
+        }
         return ZonedDateTime.parse(dateStr, dateTimeFormatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
     public Stream<JSONObject> getJSONArrayAsStream(String name){
