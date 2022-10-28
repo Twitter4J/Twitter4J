@@ -25,12 +25,10 @@ class JSONSchemaStringTest {
         assertEquals("@NotNull\nprivate final String tweetID;",
                 tweetId.asFieldDeclaration(true));
         assertEquals("""
-                        this.tweetID = json.getString("TweetID");
-                        """,
+                        this.tweetID = json.getString("TweetID");""",
                 tweetId.asConstructorAssignment(false));
         assertEquals("""
-                        this.tweetID = json.getString("TweetID");
-                        """,
+                        this.tweetID = json.getString("TweetID");""",
                 tweetId.asConstructorAssignment(true));
         assertEquals("""
                         @Nullable
@@ -61,12 +59,10 @@ class JSONSchemaStringTest {
         assertEquals("@NotNull\nprivate final LocalDateTime endDatetime;",
                 tweetId.asFieldDeclaration(true));
         assertEquals("""
-                        this.endDatetime = json.getLocalDateTime("end_datetime");
-                        """,
+                        this.endDatetime = json.getLocalDateTime("end_datetime");""",
                 tweetId.asConstructorAssignment(false));
         assertEquals("""
-                        this.endDatetime = json.getLocalDateTime("end_datetime");
-                        """,
+                        this.endDatetime = json.getLocalDateTime("end_datetime");""",
                 tweetId.asConstructorAssignment(true));
         assertEquals("""
                         @Nullable

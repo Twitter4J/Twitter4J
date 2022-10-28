@@ -237,7 +237,7 @@ interface JSONSchema {
     static JSONSchema toJSONSchemaType(JSONObject jsonObject, @NotNull String typeName, @NotNull String jsonPointer) {
         String type = jsonObject.getString("type");
         if (type == null) {
-            type = "none";
+            type = "object";
         }
         types.add(type);
 
@@ -527,8 +527,7 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
         String getterMethod = isDateTime() ? "getLocalDateTime" : "getString";
         return """
-                this.%1$s = json.%2$s("%3$s");
-                """.formatted(lowerCamelCased, getterMethod, typeName);
+                this.%1$s = json.%2$s("%3$s");""".formatted(lowerCamelCased, getterMethod, typeName);
     }
 
     @Override
@@ -587,18 +586,30 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
 
 record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     @NotNull List<String> required,
-                    @NotNull List<JSONSchema> properties, @Nullable JSONSchema items,
-                    @Nullable JSONSchema additionalProperties) implements JSONSchema {
+                    @NotNull List<JSONSchema> properties,
+                    @NotNull List<JSONSchema> allOf,
+                    @NotNull List<JSONSchema> oneOf,
+                    @Nullable String ref,
+                    @Nullable JSONSchema items,
+                    @Nullable JSONSchema additionalProperties,
+                    @Nullable String example,
+                    @Nullable String description) implements JSONSchema {
     static ObjectSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[allOf, description, additionalProperties, type, required, properties, items]");
+        JSONSchema.ensureOneOf(object, "[allOf, oneOf, description, additionalProperties, type, $ref, required, properties, example, discriminator]");
         List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "properties");
+        List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "allOf");
+        List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "oneOf");
 
         return new ObjectSchema(typeName, jsonPointer,
-                JSONSchema.toStringList(object, "required"), properties,
-                object.has("items") ? JSONSchema.toJSONSchemaType(object.getJSONObject("items"), "items", jsonPointer + "/items") : null,
+                JSONSchema.toStringList(object, "required"), properties, allOf, oneOf,
+                object.getString("$ref"),
+                object.has("items") ? JSONSchema.toJSONSchemaType(object.getJSONObject("items"),
+                        "items", jsonPointer + "/items") : null,
                 object.has("additionalProperties") ?
-                        from(object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
-                        : null
+                        JSONSchema.toJSONSchemaType(object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
+                        : null,
+                object.getString("example"),
+                object.getString("description")
         );
     }
 
@@ -625,8 +636,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         return notNull ? """
                 this.%1$s = new %2$s(json.getJSONObject("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, typeName)
                 : """
-                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;
-                """.formatted(lowerCamelCased, upperCamelCased, typeName);
+                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, typeName);
     }
 
     @Override
@@ -639,7 +649,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull String asConstructorAssignments() {
-        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()))).collect(Collectors.joining());
+        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
     }
 
     @Override
@@ -673,14 +683,32 @@ record NoneSchema(@NotNull String typeName, @NotNull String jsonPointer,
         return new NoneSchema(typeName, jsonPointer,
                 allOf, oneOf, object.has("$ref") ? object.getString("$ref") : null,
                 JSONSchema.toStringList(object, "required"), properties,
-                object.has("example") ?
-                        object.getString("example") : null,
+                object.getString("example"),
                 object.has("description") ? object.getString("description") : null);
     }
 
     @Override
     public @NotNull String getJavaType(boolean notNull) {
         return typeName;
+    }
+
+    @Override
+    public @NotNull String asFieldDeclarations() {
+        return properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()))).collect(Collectors.joining("\n\n")) + "\n";
+    }
+
+    @Override
+    public @NotNull String asConstructorAssignments() {
+        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
+    }
+    @Override
+    public @NotNull String asGetterImplementations() {
+        return properties.stream().map(e -> e.asGetterImplementation(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
+    }
+
+    @Override
+    public @NotNull String asGetterDeclarations() {
+        return properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
     }
 
     @Override

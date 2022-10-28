@@ -702,6 +702,9 @@ class JSONObject {
      */
     @Nullable
     public String getString(String name) throws JSONException {
+        if (!has(name)) {
+            return null;
+        }
         Object object = get(name);
         return JSON.toString(object);
     }

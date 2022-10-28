@@ -255,8 +255,7 @@ class JSONSchemaTest {
         assertEquals("""
                 this.problemFields = new ProblemFields(json.getJSONObject("ProblemFields"));""", problemFields.asConstructorAssignment(true));
         assertEquals("""
-                this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;
-                """, problemFields.asConstructorAssignment(false));
+                this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(false));
         assertEquals("""
                         @NotNull
                         private final String type;
