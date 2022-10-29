@@ -460,12 +460,11 @@ class JSONObject {
      * @return The selected value if it exists.
      */
     public boolean getBoolean(String name) {
-        Object object = get(name);
-        Boolean result = JSON.toBoolean(object);
-        if (result == null) {
+        if (!has(name)) {
             return false;
         }
-        return result;
+        Object object = get(name);
+        return JSON.toBoolean(object);
     }
     @Nullable
     public Boolean getBooleanValue(String name) throws JSONException {
@@ -506,15 +505,17 @@ class JSONObject {
      * @return The selected value if it exists, or -1 when the value is not defined.
      */
     public double getDouble(String name) throws JSONException {
-        Object object = get(name);
-        Double result = JSON.toDouble(object);
-        if (result == null) {
+        if (!has(name)) {
             return -1D;
         }
-        return result;
+        Object object = get(name);
+        return JSON.toDouble(object);
     }
     @Nullable
     public Double getDoubleValue(String name) throws JSONException {
+        if (!has(name)) {
+            return null;
+        }
         Object object = get(name);
         return JSON.toDouble(object);
     }
@@ -600,16 +601,18 @@ class JSONObject {
      * @return The selected value if it exists, or -1 when the value is not defined.
      */
     public int getInt(String name) throws JSONException {
-        Object object = get(name);
-        Integer result = JSON.toInteger(object);
-        if (result == null) {
+        if (!has(name)) {
             return -1;
         }
-        return result;
+        Object object = get(name);
+        return JSON.toInteger(object);
     }
 
     @Nullable
     public Integer getIntValue(String name) throws JSONException {
+        if (!has(name)) {
+            return null;
+        }
         Object object = get(name);
         return JSON.toInteger(object);
     }
@@ -651,16 +654,18 @@ class JSONObject {
      * @return The value of the field, or -1 when the value is not defined..
      */
     public long getLong(String name) throws JSONException {
-        Object object = get(name);
-        Long result = JSON.toLong(object);
-        if (result == null) {
+        if (!has(name)) {
             return -1L;
         }
-        return result;
+        Object object = get(name);
+        return JSON.toLong(object);
     }
 
     @Nullable
     public Long getLongValue(String name) throws JSONException {
+        if (!has(name)) {
+            return null;
+        }
         Object object = get(name);
         return JSON.toLong(object);
     }

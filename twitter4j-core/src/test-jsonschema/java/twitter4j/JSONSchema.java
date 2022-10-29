@@ -128,9 +128,8 @@ interface JSONSchema {
         return false;
     }
 
-
     @NotNull
-    String asConstructorAssignment(boolean notNull);
+    String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName);
 
     @NotNull
     default String asConstructorAssignmentArray(String name) {
@@ -230,14 +229,18 @@ interface JSONSchema {
     HashSet<String> propsNumber = new HashSet<>();
     HashSet<String> propsBoolean = new HashSet<>();
     HashSet<String> propsArray = new HashSet<>();
-    HashSet<String> propsNone = new HashSet<>();
+    HashSet<String> propsRef = new HashSet<>();
 
 
     @NotNull
-    static JSONSchema toJSONSchemaType(JSONObject jsonObject, @NotNull String typeName, @NotNull String jsonPointer) {
+    static JSONSchema toJSONSchemaType(Map<String, JSONSchema> schemaMap, JSONObject jsonObject, @NotNull String typeName, @NotNull String jsonPointer) {
         String type = jsonObject.getString("type");
         if (type == null) {
-            type = "object";
+            if (jsonObject.has("$ref")) {
+                type = "ref";
+            } else {
+                type = "object";
+            }
         }
         types.add(type);
 
@@ -250,35 +253,37 @@ interface JSONSchema {
                 case "object" -> propsObj.add(s);
                 case "number" -> propsNumber.add(s);
                 case "boolean" -> propsBoolean.add(s);
-                case "none" -> propsNone.add(s);
+                case "ref" -> propsRef.add(s);
                 default -> throw new IllegalStateException("unexpected type:" + type);
             }
         }
 
-        return switch (type) {
+        JSONSchema schema = switch (type) {
             case "string" -> StringSchema.from(jsonObject, typeName, jsonPointer);
-            case "array" -> ArraySchema.from(jsonObject, typeName, jsonPointer);
+            case "array" -> ArraySchema.from(schemaMap, jsonObject, typeName, jsonPointer);
             case "integer" -> IntegerSchema.from(jsonObject, typeName, jsonPointer);
             case "number" -> NumberSchema.from(jsonObject, typeName, jsonPointer);
-            case "object" -> ObjectSchema.from(jsonObject, typeName, jsonPointer);
+            case "object" -> ObjectSchema.from(schemaMap, jsonObject, typeName, jsonPointer);
+            case "ref" -> RefSchema.from(schemaMap, jsonObject, typeName, jsonPointer);
             case "boolean" -> BooleanSchema.from(jsonObject, typeName, jsonPointer);
-            case "none" -> NoneSchema.from(jsonObject, typeName, jsonPointer);
             default -> throw new IllegalStateException("unexpected type:" + type);
         };
+        schemaMap.put(typeName, schema);
+        return schema;
     }
 
-    static List<JSONSchema> toJSONSchemaTypeList(JSONObject jsonObject, String path, String name) {
+    static List<JSONSchema> toJSONSchemaTypeList(Map<String, JSONSchema> schemaMap, JSONObject jsonObject, String path, String name) {
         List<JSONSchema> list = new ArrayList<>();
         if (jsonObject.has(name)) {
             try {
                 JSONObject propertiesJSONObject = jsonObject.getJSONObject(name);
                 for (String key : propertiesJSONObject.keySet()) {
-                    list.add(toJSONSchemaType(propertiesJSONObject.getJSONObject(key), key, path + "/" + name));
+                    list.add(toJSONSchemaType(schemaMap, propertiesJSONObject.getJSONObject(key), key, path + "/" + name));
                 }
             } catch (JSONException jsone) {
                 JSONArray propertiesJSONArray = jsonObject.getJSONArray(name);
                 for (int i = 0; i < propertiesJSONArray.length(); i++) {
-                    list.add(toJSONSchemaType(propertiesJSONArray.getJSONObject(i), "", path + "/" + ""));
+                    list.add(toJSONSchemaType(schemaMap, propertiesJSONArray.getJSONObject(i), "", path + "/" + ""));
                 }
 
             }
@@ -294,16 +299,10 @@ interface JSONSchema {
                 jsonObject = jsonObject.getJSONObject(pathPart);
             }
         }
-
-        return extract(path, jsonObject);
-    }
-
-    static Map<String, JSONSchema> extract(String path, JSONObject jsonObject) {
         Map<String, JSONSchema> schemaMap = new HashMap<>();
 
         for (String schema : jsonObject.keySet()) {
-            JSONSchema schemaType = toJSONSchemaType(jsonObject.getJSONObject(schema), schema, path + "/" + schema);
-            schemaMap.put(schemaType.typeName(), schemaType);
+            toJSONSchemaType(schemaMap, jsonObject.getJSONObject(schema), schema, path + schema);
         }
         System.out.println("types------------");
         System.out.println(types);
@@ -320,7 +319,7 @@ interface JSONSchema {
         System.out.println("propsArray------------");
         System.out.println(propsArray);
         System.out.println("propsNone------------");
-        System.out.println(propsNone);
+        System.out.println(propsRef);
         return schemaMap;
     }
 
@@ -333,13 +332,11 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
     static IntegerSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[format, description, maximum, type, minimum]");
 
-        return new IntegerSchema(typeName, jsonPointer, object.has("minimum") ?
-                object.getLong("minimum") : null,
-                object.has("maximum") ?
-                        object.getLong("maximum") : null,
-                object.has("format") ?
-                        object.getString("format") : null,
-                object.has("description") ? object.getString("description") : null);
+        return new IntegerSchema(typeName, jsonPointer,
+                object.getLongValue("minimum"),
+                object.getLongValue("maximum"),
+                object.getString("format"),
+                object.getString("description"));
     }
 
     @Override
@@ -378,7 +375,8 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         if (notNull) {
             return """
                     this.%1$s = json.get%2$s("%3$s");""".formatted(JSONSchema.lowerCamelCased(typeName), useInt() ? "Int" : "Long", typeName);
@@ -404,13 +402,11 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     static NumberSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[format, maximum, type, minimum]");
 
-        return new NumberSchema(typeName, jsonPointer, object.has("minimum") ?
-                object.getLong("minimum") : null,
-                object.has("maximum") ?
-                        object.getLong("maximum") : null,
-                object.has("format") ?
-                        object.getString("format") : null,
-                object.has("description") ? object.getString("description") : null);
+        return new NumberSchema(typeName, jsonPointer,
+                object.getLongValue("minimum"),
+                object.getLongValue("maximum"),
+                object.getString("format"),
+                object.getString("description"));
     }
 
     @Override
@@ -434,7 +430,8 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         if (notNull) {
             return """
                     this.%1$s = json.getDouble("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
@@ -458,7 +455,7 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
     static BooleanSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[description, type]");
         return new BooleanSchema(typeName, jsonPointer,
-                object.has("description") ? object.getString("description") : null);
+                object.getString("description"));
     }
 
     @Override
@@ -472,11 +469,12 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         return notNull ? """
-                this.%1$s = json.getBoolean("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName):
+                this.%1$s = json.getBoolean("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName) :
                 """
-                this.%1$s = json.getBooleanValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+                        this.%1$s = json.getBooleanValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
     }
 
     @Override
@@ -498,17 +496,12 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
         List<String> enumArray = JSONSchema.toStringList(object, "enum");
 
         return new StringSchema(typeName, jsonPointer,
-                object.has("pattern") ?
-                        object.getString("pattern") : null,
-                object.has("format") ?
-                        object.getString("format") : null,
+                object.getString("pattern"),
+                object.getString("format"),
                 enumArray,
-                object.has("minLength") ?
-                        object.getInt("minLength") : null,
-
-                object.has("description") ? object.getString("description") : typeName,
-                object.has("example") ?
-                        object.getString("example") : null
+                object.getIntValue("minLength"),
+                object.optString("description", typeName),
+                object.getString("example")
         );
     }
 
@@ -523,7 +516,8 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
         String getterMethod = isDateTime() ? "getLocalDateTime" : "getString";
         return """
@@ -544,15 +538,13 @@ record JavaFile(@NotNull String fileName, @NotNull String content) {
 record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nullable Integer minItems,
                    @Nullable Integer maxItems, boolean uniqueItems,
                    @Nullable String description, @NotNull JSONSchema items) implements JSONSchema {
-    static ArraySchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
+    static ArraySchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[minItems, maxItems, uniqueItems, description, type, items]");
-        return new ArraySchema(typeName, jsonPointer, object.has("minItems") ?
-                object.getInt("minItems") : null,
-                object.has("maxItems") ?
-                        object.getInt("maxItems") : null,
-                object.has("uniqueItems") && object.getBoolean("uniqueItems"),
-                object.has("description") ? object.getString("description") : null
-                , JSONSchema.toJSONSchemaType(object.getJSONObject("items"), "items", jsonPointer + "/items"));
+        return new ArraySchema(typeName, jsonPointer,object.getIntValue("minItems"),
+                        object.getIntValue("maxItems"),
+                 object.getBoolean("uniqueItems"),
+                object.getString("description")
+                , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"), "items", jsonPointer + "/items"));
     }
 
     @Override
@@ -578,7 +570,8 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
 
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         return items.asConstructorAssignmentArray(typeName);
     }
 
@@ -594,19 +587,19 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     @Nullable JSONSchema additionalProperties,
                     @Nullable String example,
                     @Nullable String description) implements JSONSchema {
-    static ObjectSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
+    static ObjectSchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[allOf, oneOf, description, additionalProperties, type, $ref, required, properties, example, discriminator]");
-        List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "properties");
-        List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "allOf");
-        List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "oneOf");
+        List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "properties");
+        List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "allOf");
+        List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "oneOf");
 
         return new ObjectSchema(typeName, jsonPointer,
                 JSONSchema.toStringList(object, "required"), properties, allOf, oneOf,
                 object.getString("$ref"),
-                object.has("items") ? JSONSchema.toJSONSchemaType(object.getJSONObject("items"),
+                object.has("items") ? JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"),
                         "items", jsonPointer + "/items") : null,
                 object.has("additionalProperties") ?
-                        JSONSchema.toJSONSchemaType(object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
+                        JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
                         : null,
                 object.getString("example"),
                 object.getString("description")
@@ -630,7 +623,8 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
         return notNull ? """
@@ -649,7 +643,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull String asConstructorAssignments() {
-        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
+        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.joining("\n"));
     }
 
     @Override
@@ -664,56 +658,29 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
 }
 
-record NoneSchema(@NotNull String typeName, @NotNull String jsonPointer,
-                  @NotNull List<JSONSchema> allOf,
-                  @NotNull List<JSONSchema> oneOf,
-                  @Nullable String ref,
-                  @NotNull List<String> required,
-                  @NotNull List<JSONSchema> properties,
-                  @Nullable String example,
-                  @Nullable String description
-) implements JSONSchema {
-    static NoneSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[allOf, oneOf, description, $ref, required, properties, example, discriminator]");
-        List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "properties");
-        List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "allOf");
-        List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(object, jsonPointer, "oneOf");
+record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String ref,
+                 String jsonPointer) implements JSONSchema {
 
+    static RefSchema from(@NotNull Map<String, JSONSchema> map, JSONObject object, String typeName, String jsonPointer) {
+        return new RefSchema(map, typeName, object.getString("$ref"), jsonPointer);
+    }
 
-        return new NoneSchema(typeName, jsonPointer,
-                allOf, oneOf, object.has("$ref") ? object.getString("$ref") : null,
-                JSONSchema.toStringList(object, "required"), properties,
-                object.getString("example"),
-                object.has("description") ? object.getString("description") : null);
+    private JSONSchema delegateTo() {
+        return map.values().stream().filter(e -> e.jsonPointer().equals(ref)).findFirst().get();
+    }
+
+    @Override
+    public String description() {
+        return delegateTo().description();
     }
 
     @Override
     public @NotNull String getJavaType(boolean notNull) {
-        return typeName;
+        return delegateTo().getJavaType(notNull);
     }
 
     @Override
-    public @NotNull String asFieldDeclarations() {
-        return properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()))).collect(Collectors.joining("\n\n")) + "\n";
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        return delegateTo().asConstructorAssignment(notNull, typeName);
     }
-
-    @Override
-    public @NotNull String asConstructorAssignments() {
-        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
-    }
-    @Override
-    public @NotNull String asGetterImplementations() {
-        return properties.stream().map(e -> e.asGetterImplementation(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
-    }
-
-    @Override
-    public @NotNull String asGetterDeclarations() {
-        return properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
-    }
-
-    @Override
-    public @NotNull String asConstructorAssignment(boolean notNull) {
-        return null;
-    }
-
 }

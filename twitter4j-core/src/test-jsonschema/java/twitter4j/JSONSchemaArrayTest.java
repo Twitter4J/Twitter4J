@@ -20,16 +20,16 @@ class JSONSchemaArrayTest {
                          "maxItems" : 2
                        }
                  }""");
-        assertEquals(1, extract.size());
+        assertEquals(2, extract.size());
         JSONSchema position = extract.get("Position");
         assertEquals("private final double[] position;",
                 position.asFieldDeclaration(false));
         assertEquals("private final double[] position;",
                 position.asFieldDeclaration(true));
         assertEquals("this.position = json.getDoubleArray(\"Position\");",
-                position.asConstructorAssignment(false));
+                position.asConstructorAssignment(false, null));
         assertEquals("this.position = json.getDoubleArray(\"Position\");",
-                position.asConstructorAssignment(true));
+                position.asConstructorAssignment(true, null));
         assertEquals("""
                         @Override
                         public double[] getPosition() {
@@ -62,16 +62,16 @@ class JSONSchemaArrayTest {
                          "maxItems" : 2
                        }
                  }""");
-        assertEquals(1, extract.size());
+        assertEquals(2, extract.size());
         JSONSchema position = extract.get("Position");
         assertEquals("private final long[] position;",
                 position.asFieldDeclaration(false));
         assertEquals("private final long[] position;",
                 position.asFieldDeclaration(true));
         assertEquals("this.position = json.getIntArray(\"Position\");",
-                position.asConstructorAssignment(false));
+                position.asConstructorAssignment(false, null));
         assertEquals("this.position = json.getIntArray(\"Position\");",
-                position.asConstructorAssignment(true));
+                position.asConstructorAssignment(true, null));
         assertEquals("""
                         @Override
                         public long[] getPosition() {
@@ -104,16 +104,16 @@ class JSONSchemaArrayTest {
                          "maxItems" : 2
                        }
                  }""");
-        assertEquals(1, extract.size());
+        assertEquals(2, extract.size());
         JSONSchema position = extract.get("Position");
         assertEquals("private final List<String> position;",
                 position.asFieldDeclaration(false));
         assertEquals("private final List<String> position;",
                 position.asFieldDeclaration(true));
         assertEquals("this.position = json.getStringList(\"Position\");",
-                position.asConstructorAssignment(false));
+                position.asConstructorAssignment(false, null));
         assertEquals("this.position = json.getStringList(\"Position\");",
-                position.asConstructorAssignment(true));
+                position.asConstructorAssignment(true, null));
         assertEquals("""
                         @Override
                         public List<String> getPosition() {
@@ -146,16 +146,16 @@ class JSONSchemaArrayTest {
                          "maxItems" : 2
                        }
                  }""");
-        assertEquals(1, extract.size());
+        assertEquals(2, extract.size());
         JSONSchema position = extract.get("Position");
         assertEquals("private final boolean[] position;",
                 position.asFieldDeclaration(false));
         assertEquals("private final boolean[] position;",
                 position.asFieldDeclaration(true));
         assertEquals("this.position = json.getBooleanArray(\"Position\");",
-                position.asConstructorAssignment(false));
+                position.asConstructorAssignment(false, null));
         assertEquals("this.position = json.getBooleanArray(\"Position\");",
-                position.asConstructorAssignment(true));
+                position.asConstructorAssignment(true, null));
         assertEquals("""
                         @Override
                         public boolean[] getPosition() {
@@ -207,7 +207,7 @@ class JSONSchemaArrayTest {
                          "maxItems" : 2
                        }
                  }""");
-        assertEquals(1, extract.size());
+        assertEquals(6, extract.size());
         JSONSchema position = extract.get("Position");
         assertEquals("private final List<Position> position;",
                 position.asFieldDeclaration(false));
@@ -215,9 +215,9 @@ class JSONSchemaArrayTest {
                 position.asFieldDeclaration(true));
 
         assertEquals("""
-                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(true));
+                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(true, null));
         assertEquals("""
-                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(false));
+                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(false, null));
         assertEquals("""
                         @Override
                         public List<Position> getPosition() {

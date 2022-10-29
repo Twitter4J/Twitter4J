@@ -38,9 +38,9 @@ class JSONSchemaTest {
                 mediaHeight.asFieldDeclaration(false));
         assertEquals("""
                         this.mediaHeight = json.getLongValue("MediaHeight");""",
-                mediaHeight.asConstructorAssignment(false));
+                mediaHeight.asConstructorAssignment(false, null));
         assertEquals("this.mediaHeight = json.getLong(\"MediaHeight\");",
-                mediaHeight.asConstructorAssignment(true));
+                mediaHeight.asConstructorAssignment(true, null));
         assertEquals("""
                         @Nullable
                         @Range(from = 0, to = Long.MAX_VALUE)
@@ -75,9 +75,9 @@ class JSONSchemaTest {
                 items.asFieldDeclaration(false));
         assertEquals("""
                         this.items = json.getDoubleValue("items");""",
-                items.asConstructorAssignment(false));
+                items.asConstructorAssignment(false, null));
         assertEquals("this.items = json.getDouble(\"items\");",
-                items.asConstructorAssignment(true));
+                items.asConstructorAssignment(true, null));
         assertEquals("""
                         @Nullable
                         @Range(from = -180, to = 180)
@@ -109,9 +109,9 @@ class JSONSchemaTest {
                 hTTPStatusCode.asFieldDeclaration(false));
         assertEquals("""
                         this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
-                hTTPStatusCode.asConstructorAssignment(false));
+                hTTPStatusCode.asConstructorAssignment(false, null));
         assertEquals("this.hTTPStatusCode = json.getInt(\"HTTPStatusCode\");",
-                hTTPStatusCode.asConstructorAssignment(true));
+                hTTPStatusCode.asConstructorAssignment(true, null));
         assertEquals("""
                         @Nullable
                         @Range(from = 100, to = 599)
@@ -151,9 +151,9 @@ class JSONSchemaTest {
                 code.asFieldDeclaration(true));
         assertEquals("""
                         this.code = json.getIntValue("code");""",
-                code.asConstructorAssignment(false));
+                code.asConstructorAssignment(false, null));
         assertEquals("this.code = json.getInt(\"code\");",
-                code.asConstructorAssignment(true));
+                code.asConstructorAssignment(true, null));
         assertEquals("""
                         @Nullable
                         @Override
@@ -205,9 +205,9 @@ class JSONSchemaTest {
         assertEquals("@Nullable\nprivate final Boolean possiblySensitive;",
                 possiblySensitive.asFieldDeclaration(false));
         assertEquals("this.possiblySensitive = json.getBooleanValue(\"possibly_sensitive\");",
-                possiblySensitive.asConstructorAssignment(false));
+                possiblySensitive.asConstructorAssignment(false, null));
         assertEquals("this.possiblySensitive = json.getBoolean(\"possibly_sensitive\");",
-                possiblySensitive.asConstructorAssignment(true));
+                possiblySensitive.asConstructorAssignment(true, null));
         assertEquals("""
                         @Nullable
                         @Override
@@ -250,12 +250,12 @@ class JSONSchemaTest {
                         }
                       }
                 }""");
-        assertEquals(1, extract.size());
+        assertEquals(5, extract.size());
         JSONSchema problemFields = extract.get("ProblemFields");
         assertEquals("""
-                this.problemFields = new ProblemFields(json.getJSONObject("ProblemFields"));""", problemFields.asConstructorAssignment(true));
+                this.problemFields = new ProblemFields(json.getJSONObject("ProblemFields"));""", problemFields.asConstructorAssignment(true, null));
         assertEquals("""
-                this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(false));
+                this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(false, null));
         assertEquals("""
                         @NotNull
                         private final String type;
