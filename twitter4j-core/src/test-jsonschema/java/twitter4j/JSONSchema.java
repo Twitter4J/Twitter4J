@@ -230,6 +230,7 @@ interface JSONSchema {
     HashSet<String> propsBoolean = new HashSet<>();
     HashSet<String> propsArray = new HashSet<>();
     HashSet<String> propsRef = new HashSet<>();
+    HashSet<String> propsEnum = new HashSet<>();
 
 
     @NotNull
@@ -243,6 +244,9 @@ interface JSONSchema {
             }
         }
         types.add(type);
+        if ("string".equals(type) && jsonObject.has("enum")) {
+            type = "enum";
+        }
 
 
         for (String s : jsonObject.keySet()) {
@@ -250,6 +254,7 @@ interface JSONSchema {
                 case "integer" -> propsInt.add(s);
                 case "array" -> propsArray.add(s);
                 case "string" -> propsStr.add(s);
+                case "enum" -> propsEnum.add(s);
                 case "object" -> propsObj.add(s);
                 case "number" -> propsNumber.add(s);
                 case "boolean" -> propsBoolean.add(s);
@@ -260,6 +265,7 @@ interface JSONSchema {
 
         JSONSchema schema = switch (type) {
             case "string" -> StringSchema.from(jsonObject, typeName, jsonPointer);
+            case "enum" -> EnumSchema.from(jsonObject, typeName, jsonPointer);
             case "array" -> ArraySchema.from(schemaMap, jsonObject, typeName, jsonPointer);
             case "integer" -> IntegerSchema.from(jsonObject, typeName, jsonPointer);
             case "number" -> NumberSchema.from(jsonObject, typeName, jsonPointer);
@@ -318,8 +324,10 @@ interface JSONSchema {
         System.out.println(propsObj);
         System.out.println("propsArray------------");
         System.out.println(propsArray);
-        System.out.println("propsNone------------");
+        System.out.println("propsRef------------");
         System.out.println(propsRef);
+        System.out.println("propsEnum------------");
+        System.out.println(propsEnum);
         return schemaMap;
     }
 
@@ -532,6 +540,78 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     }
 }
 
+record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
+                  @NotNull List<String> enumList, @Nullable String description) implements JSONSchema {
+    static EnumSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
+        JSONSchema.ensureOneOf(object, "[description, type, enum]");
+        List<String> enumArray = JSONSchema.toStringList(object, "enum");
+        return new EnumSchema(typeName, jsonPointer, enumArray, object.optString("description", typeName)
+        );
+    }
+
+    @Override
+    @NotNull
+    public String asGetterDeclaration(boolean notNull) {
+        String enumStr = JSONSchema.indent(this.enumList.stream().map(e -> """
+                %s("%s")""".formatted(e.toUpperCase().replaceAll("-", "_")
+                , e)).collect(Collectors.joining(",\n")), 4) + ";";
+        return """
+                /**
+                 * %1$s
+                 */
+                public enum %4$s {
+                %5$s
+                    public final String value;
+                            
+                    %4$s(String value) {
+                        this.value = value;
+                    }
+                            
+                    @Override
+                    public String toString() {
+                        return value;
+                    }
+                            
+                    public static %4$s of(String str) {
+                        for (%4$s value : %4$s.values()) {
+                            if (value.value.equals(str)) {
+                                return value;
+                            }
+                        }
+                        return null;
+                    }
+                }
+                                
+                /**
+                 * @return %1$s
+                 */
+                %2$s%3$s get%4$s();
+                """.formatted(description(), nullableAnnotation(notNull), getAnnotation() + getJavaType(notNull),
+                JSONSchema.upperCamelCased(typeName()), enumStr);
+    }
+
+    @Override
+    public @NotNull String getJavaType(boolean notNull) {
+        return JSONSchema.upperCamelCased(typeName);
+    }
+
+    @Override
+    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
+        String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
+        String upperCamelCased = JSONSchema.upperCamelCased(typeName);
+        return """
+                this.%1$s = %2$s.of(json.getString("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, typeName);
+    }
+
+    @Override
+    public @NotNull String asConstructorAssignmentArray(String name) {
+        String lowerCamelCased = JSONSchema.lowerCamelCased(name);
+        return """
+                this.%1$s = json.getStringList("%2$s");""".formatted(lowerCamelCased, name);
+    }
+}
+
 record JavaFile(@NotNull String fileName, @NotNull String content) {
 }
 
@@ -540,9 +620,9 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
                    @Nullable String description, @NotNull JSONSchema items) implements JSONSchema {
     static ArraySchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
         JSONSchema.ensureOneOf(object, "[minItems, maxItems, uniqueItems, description, type, items]");
-        return new ArraySchema(typeName, jsonPointer,object.getIntValue("minItems"),
-                        object.getIntValue("maxItems"),
-                 object.getBoolean("uniqueItems"),
+        return new ArraySchema(typeName, jsonPointer, object.getIntValue("minItems"),
+                object.getIntValue("maxItems"),
+                object.getBoolean("uniqueItems"),
                 object.getString("description")
                 , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"), "items", jsonPointer + "/items"));
     }
