@@ -280,7 +280,7 @@ interface JSONSchema {
             }
         }
         types.add(type);
-        if ("string".equals(type) && jsonObject.has("enum")) {
+        if ("string".equals(type) && jsonObject.has("enum") && jsonObject.getJSONArray("enum").length() != 1) {
             type = "enum";
         }
 

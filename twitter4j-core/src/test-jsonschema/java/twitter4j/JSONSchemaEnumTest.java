@@ -48,9 +48,9 @@ class JSONSchemaEnumTest {
         assertEquals("""
                         @Nullable
                         private final Reason reason;""",
-                reason.asFieldDeclaration(false,"twitter4j.v2",null).codeFragment());
+                reason.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("@NotNull\nprivate final Reason reason;",
-                reason.asFieldDeclaration(true,"twitter4j.v2",null).codeFragment());
+                reason.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.reason = Reason.of(json.getString("reason"));""",
                 reason.asConstructorAssignment(false, null));
@@ -64,7 +64,7 @@ class JSONSchemaEnumTest {
                             return reason;
                         }
                         """,
-                reason.asGetterImplementation(false,"twitter4j.v2",null).codeFragment());
+                reason.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         /**
                          * reason
@@ -92,14 +92,14 @@ class JSONSchemaEnumTest {
                                 return null;
                             }
                         }
-                        
+                                                
                         /**
                          * @return reason
                          */
                         @Nullable
                         Reason getReason();
                         """,
-                reason.asGetterDeclaration(false,"twitter4j.v2",null).codeFragment());
+                reason.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
 
 
         assertThrows(UnsupportedOperationException.class, () -> reason.asJavaImpl("twitter4j", "twitter4j.v2"));
@@ -149,7 +149,7 @@ class JSONSchemaEnumTest {
                             }
                         }
                         """,
-                reason.asJavaImpl("twitter4j","twitter4j.v2"));
+                reason.asJavaImpl("twitter4j", "twitter4j.v2"));
 
         assertEquals("""
                         package twitter4j.v2;
@@ -186,7 +186,7 @@ class JSONSchemaEnumTest {
                                     return null;
                                 }
                             }
-                        
+                                                
                             /**
                              * @return MyReason
                              */
@@ -196,5 +196,87 @@ class JSONSchemaEnumTest {
                         """,
                 reason.asInterface("twitter4j.v2").content());
     }
+
+    @Test
+    void enumSingle() {
+        // single enum element will be just StringSchema
+        var extract = JSONSchema.extract("#/", """
+                {
+                  "UsageCapExceededProblem": {
+                    "description": "A problem that indicates that a usage cap has been exceeded.",
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "https://api.twitter.com/labs/2/problems/usage-capped"
+                        ]
+                      },
+                      "period": {
+                        "type": "string",
+                        "enum": [
+                          "Daily",
+                          "Monthly"
+                        ]
+                      }
+                    }
+                  }
+                }""");
+        assertEquals(3, extract.size());
+        JSONSchema usageCapExceededProblem = extract.get("UsageCapExceededProblem");
+
+
+        assertEquals("""
+                        package twitter4j.v2;
+                                                
+                        import org.jetbrains.annotations.Nullable;
+                                                
+                        /**
+                         * A problem that indicates that a usage cap has been exceeded.
+                         */
+                        public interface UsageCapExceededProblem {
+                            /**
+                             * @return type
+                             */
+                            @Nullable
+                            String getType();
+                                                
+                            /**
+                             * period
+                             */
+                            enum Period {
+                                DAILY("Daily"),
+                                MONTHLY("Monthly");
+                                public final String value;
+                                                
+                                Period(String value) {
+                                    this.value = value;
+                                }
+                                                
+                                @Override
+                                public String toString() {
+                                    return value;
+                                }
+                                                
+                                public static Period of(String str) {
+                                    for (Period value : Period.values()) {
+                                        if (value.value.equals(str)) {
+                                            return value;
+                                        }
+                                    }
+                                    return null;
+                                }
+                            }
+                                                
+                            /**
+                             * @return period
+                             */
+                            @Nullable
+                            Period getPeriod();
+                        }
+                        """,
+                usageCapExceededProblem.asInterface("twitter4j.v2").content());
+    }
+
 
 }
