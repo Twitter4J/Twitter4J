@@ -683,7 +683,7 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
             Code javaType = resolvedSchema.getJavaType(true, packageName);
             return Code.of(javaType.codeFragment() + "[]", javaType.typesToBeImported());
         }
-        if (resolvedSchema instanceof StringSchema) {
+        if (resolvedSchema instanceof StringSchema || resolvedSchema instanceof ObjectSchema) {
             Code javaType = resolvedSchema.getJavaType(notNull, packageName);
             Set<String> imports = new HashSet<>(javaType.typesToBeImported());
             imports.add("java.util.List");

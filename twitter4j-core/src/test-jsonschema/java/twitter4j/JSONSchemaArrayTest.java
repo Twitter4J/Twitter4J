@@ -182,63 +182,64 @@ class JSONSchemaArrayTest {
     void objectArray() {
         var extract = JSONSchema.extract("#/", """
                 {
-                  "Position" : {
-                        "type" : "array",
-                        "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
-                        "items" : {
-                       "type" : "object",
-                       "required" : [ "type", "title"],
-                       "properties" : {
-                         "type" : {
-                           "type" : "string",
-                           "format" : "uri"
-                         },
-                         "title" : {
-                           "type" : "string"
-                         },
-                         "detail" : {
-                           "type" : "string"
-                         },
-                         "HTTPStatusCode" : {
-                           "type" : "integer",
-                           "minimum" : 100,
-                           "maximum" : 599,
-                           "description" : "HTTP Status Code."
-                         }
-                       }
-                     },
-                        "minItems" : 2,
-                        "maxItems" : 2
+                  "FullTextEntities": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/UrlEntity"
+                        },
+                        "minItems": 1
                       }
+                    }
+                  },
+                  "UrlEntity": {
+                    "description": "Represent the portion of text recognized as a URL, and its start and end position within the text.",
+                    "allOf": [
+                      {
+                        "$ref": "#/EntityIndices"
+                      }
+                    ]
+                  },
+                  "EntityIndices": {
+                    "type": "object",
+                    "description": "Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.",
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "properties": {
+                      "start": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Index (zero-based) at which position this entity starts."
+                      },
+                      "end": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Index (zero-based) at which position this entity ends."
+                      }
+                    }
+                  }
                 }""");
-        assertEquals(6, extract.size());
-        JSONSchema position = extract.get("Position");
-        assertEquals("private final List<Position> position;",
-                position.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
-        assertEquals("private final List<Position> position;",
-                position.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
+        JSONSchema fullTextEntities = extract.get("FullTextEntities");
+
 
         assertEquals("""
-                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(true, null));
-        assertEquals("""
-                this.position = json.getJSONArrayAsStream("Position").map(PositionImpl::new).collect(Collectors.toList());""", position.asConstructorAssignment(false, null));
-        assertEquals("""
-                        @Override
-                        public List<Position> getPosition() {
-                            return position;
-                        }
-                        """,
-                position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
-        assertEquals("""
-                        /**
-                         * @return A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
-                         */
-                        List<Position> getPosition();
-                        """,
-                position.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
-
-        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
+                package twitter4j.v2;
+                                
+                import java.util.List;
+                                
+                /**
+                 * FullTextEntities
+                 */
+                public interface FullTextEntities {
+                    /**
+                     * @return null
+                     */
+                    List<UrlEntity> getUrls();
+                }
+                """, fullTextEntities.asInterface("twitter4j.v2").content());
     }
-
 }
