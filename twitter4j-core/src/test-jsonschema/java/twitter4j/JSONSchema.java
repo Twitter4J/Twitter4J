@@ -738,7 +738,14 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        if (hasNoElements()) {
+            return Code.of("String");
+        }
         return Code.of(typeName, packageName + "." + typeName);
+    }
+
+    boolean hasNoElements() {
+        return (properties.size() + allOf.size() + oneOf.size()) == 0;
     }
 
     @Override
@@ -755,8 +762,12 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(overrideTypeName != null ? overrideTypeName : this.typeName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
-        return """
-                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, overrideTypeName != null ? overrideTypeName : this.typeName);
+        return hasNoElements() ?
+                """
+                        this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, this.typeName)
+                :
+                """
+                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, overrideTypeName != null ? overrideTypeName : this.typeName);
     }
 
     @Override
