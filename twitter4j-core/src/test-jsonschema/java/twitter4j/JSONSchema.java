@@ -59,7 +59,7 @@ interface JSONSchema {
     }
 
     /**
-     * @param codeFragment code fragment
+     * @param codeFragment      code fragment
      * @param typesToBeImported types to be imported
      */
     record Code(String codeFragment, Set<String> typesToBeImported) {
@@ -679,7 +679,7 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
     @Override
     public @NotNull Code getJavaType(boolean notNull, String packageName) {
         JSONSchema resolvedSchema = items instanceof RefSchema refSchema ?
-            refSchema.delegateTo(): items;
+                refSchema.delegateTo() : items;
         if (resolvedSchema.isPrimitive()) {
             Code javaType = resolvedSchema.getJavaType(true, packageName);
             return Code.of(javaType.codeFragment() + "[]", javaType.typesToBeImported());
@@ -771,6 +771,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     public @NotNull String asConstructorAssignments(String packageName) {
         List<String> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asConstructorAssignment(true, null)).forEach(codes::add);
+        oneOf.stream().map(e -> e.asConstructorAssignment(false, null)).forEach(codes::add);
         return String.join("\n", codes);
     }
 
@@ -778,6 +779,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
         List<Code> codes = properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asGetterDeclaration(true, packageName, referencingSchema)).forEach(codes::add);
+        oneOf.stream().map(e -> e.asGetterDeclaration(false, packageName, referencingSchema)).forEach(codes::add);
         return Code.of(codes);
     }
 
@@ -788,6 +790,9 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                 .collect(Collectors.toList());
         allOf.stream()
                 .map(e -> e.asGetterImplementation(true, packageName, overrideTypeName))
+                .forEach(codes::add);
+        oneOf.stream()
+                .map(e -> e.asGetterImplementation(false, packageName, overrideTypeName))
                 .forEach(codes::add);
         return Code.of(codes);
     }
@@ -823,7 +828,7 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
         } else {
             if ("".equals(typeName)) {
                 return delegateToDescription;
-            }else {
+            } else {
                 return typeName + ": " + delegateToDescription;
             }
         }
@@ -835,7 +840,7 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     @Nullable
-    private String overrideTypeName(){
+    private String overrideTypeName() {
         return "".equals(typeName) ? null : typeName;
     }
 
