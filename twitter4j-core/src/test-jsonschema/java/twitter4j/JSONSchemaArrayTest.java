@@ -236,7 +236,7 @@ class JSONSchemaArrayTest {
                  */
                 public interface FullTextEntities {
                     /**
-                     * @return null
+                     * @return urls
                      */
                     List<UrlEntity> getUrls();
                 }

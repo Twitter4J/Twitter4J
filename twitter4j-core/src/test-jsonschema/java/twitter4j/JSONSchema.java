@@ -186,7 +186,10 @@ interface JSONSchema {
                          * @return %1$s
                          */
                         %2$s%3$s get%4$s();
-                        """.formatted(referencingSchema != null ? referencingSchema.description() : description(), code.codeFragment, annotation.codeFragment + javaType.codeFragment, upperCamelCased(resolvedTypeName))
+                        """.formatted(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description(),
+                        code.codeFragment,
+                        annotation.codeFragment + javaType.codeFragment,
+                        upperCamelCased(resolvedTypeName))
                 , annotation, javaType, code);
     }
 
@@ -667,8 +670,8 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
         return new ArraySchema(typeName, jsonPointer, object.getIntValue("minItems"),
                 object.getIntValue("maxItems"),
                 object.getBoolean("uniqueItems"),
-                object.getString("description")
-                , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"), "items", jsonPointer + "/items"));
+                object.optString("description", typeName)
+                , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"), JSONSchema.upperCamelCased(typeName.length() > 1 && typeName.endsWith("s") ? typeName.substring(0, typeName.length() - 1) : "items"), jsonPointer + "/items"));
     }
 
     @Override

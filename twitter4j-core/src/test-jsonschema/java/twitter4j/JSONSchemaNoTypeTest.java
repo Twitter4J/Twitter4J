@@ -153,7 +153,7 @@ class JSONSchemaNoTypeTest {
                             ResourceType getResourceType();
                                                 
                             /**
-                             * @return\s
+                             * @return ProblemFields
                              */
                             @NotNull
                             ProblemFields getProblemFields();
