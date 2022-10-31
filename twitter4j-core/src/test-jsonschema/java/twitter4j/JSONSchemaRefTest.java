@@ -9,41 +9,49 @@ class JSONSchemaRefTest {
     void ref() {
         var extract = JSONSchema.extract("#/", """
                 {
-                "URL" : {
-                        "type" : "string",
+                "HostPort" : {
+                        "type" : "object",
                         "description" : "A validly formatted URL.",
-                        "format" : "uri",
                         "example" : "https://example.com"
+                        ,  "properties" : {
+                          "host" : {
+                            "type" : "string"
+                          },
+                          "port" : {
+                            "type" : "integer"
+                          }
+                        }
+
                       },
                       "ProblemFields" : {
                         "type" : "object",
-                        "required" : [ "type", "title"],
+                        "required" : [ "type", "theHost"],
                         "properties" : {
                           "type" : {
                             "type" : "string",
                             "format" : "uri"
                           },
-                          "title" : {
-                            "$ref" : "#/URL"
+                          "theHost" : {
+                            "$ref" : "#/HostPort"
                           }
                         }
                       }
                 }""");
 
-        assertEquals(4, extract.size());
+        assertEquals(6, extract.size());
         JSONSchema problemFields = extract.get("ProblemFields");
         assertEquals("""
                         @NotNull
                         private final String type;
 
                         @NotNull
-                        private final String title;
+                        private final HostPort theHost;
                         """,
-                problemFields.asFieldDeclarations());
+                problemFields.asFieldDeclarations("twitter4j.v2",null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");
-                        this.title = json.getString("title");""",
-                problemFields.asConstructorAssignments());
+                        this.theHost = json.has("theHost") ? new HostPort(json.getJSONObject("theHost")) : null;""",
+                problemFields.asConstructorAssignments("twitter4j.v2"));
         assertEquals("""
                         @NotNull
                         @Override
@@ -53,17 +61,33 @@ class JSONSchemaRefTest {
 
                         @NotNull
                         @Override
-                        public String getTitle() {
-                            return title;
+                        public HostPort getTheHost() {
+                            return theHost;
                         }
                         """,
-                problemFields.asGetterImplementations());
+                problemFields.asGetterImplementations("twitter4j.v2",null).codeFragment());
+        assertEquals("""
+                        /**
+                         * @return type
+                         */
+                        @NotNull
+                        String getType();
+                        
+                        /**
+                         * @return theHost: A validly formatted URL.
+                         */
+                        @NotNull
+                        HostPort getTheHost();
+                        """,
+                problemFields.asGetterDeclarations("twitter4j.v2",null).codeFragment());
 
         String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2");
         assertEquals("""
                         package twitter4j;
                                                 
                         import org.jetbrains.annotations.NotNull;
+                                                
+                        import twitter4j.v2.HostPort;
                                                 
                         /**
                          * ProblemFields
@@ -73,11 +97,11 @@ class JSONSchemaRefTest {
                             private final String type;
                                                 
                             @NotNull
-                            private final String title;
+                            private final HostPort theHost;
                                                 
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
-                                this.title = json.getString("title");
+                                this.theHost = json.has("theHost") ? new HostPort(json.getJSONObject("theHost")) : null;
                             }
                                                 
                             @NotNull
@@ -88,8 +112,8 @@ class JSONSchemaRefTest {
                                                 
                             @NotNull
                             @Override
-                            public String getTitle() {
-                                return title;
+                            public HostPort getTheHost() {
+                                return theHost;
                             }
                         }
                         """,
@@ -112,10 +136,10 @@ class JSONSchemaRefTest {
                             String getType();
                             
                             /**
-                             * @return A validly formatted URL.
+                             * @return theHost: A validly formatted URL.
                              */
                             @NotNull
-                            String getTitle();
+                            HostPort getTheHost();
                         }
                         """,
                 interfaceDeclaration);

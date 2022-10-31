@@ -21,9 +21,9 @@ class JSONSchemaStringTest {
         assertEquals(1, extract.size());
         JSONSchema tweetId = extract.get("TweetID");
         assertEquals("@Nullable\nprivate final String tweetID;",
-                tweetId.asFieldDeclaration(false));
+                tweetId.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("@NotNull\nprivate final String tweetID;",
-                tweetId.asFieldDeclaration(true));
+                tweetId.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.tweetID = json.getString("TweetID");""",
                 tweetId.asConstructorAssignment(false, null));
@@ -37,7 +37,7 @@ class JSONSchemaStringTest {
                             return tweetID;
                         }
                         """,
-                tweetId.asGetterImplementation(false));
+                tweetId.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2"));
@@ -55,9 +55,9 @@ class JSONSchemaStringTest {
         assertEquals(1, extract.size());
         JSONSchema tweetId = extract.get("end_datetime");
         assertEquals("@Nullable\nprivate final LocalDateTime endDatetime;",
-                tweetId.asFieldDeclaration(false));
+                tweetId.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("@NotNull\nprivate final LocalDateTime endDatetime;",
-                tweetId.asFieldDeclaration(true));
+                tweetId.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.endDatetime = json.getLocalDateTime("end_datetime");""",
                 tweetId.asConstructorAssignment(false, null));
@@ -71,7 +71,7 @@ class JSONSchemaStringTest {
                             return endDatetime;
                         }
                         """,
-                tweetId.asGetterImplementation(false));
+                tweetId.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2"));

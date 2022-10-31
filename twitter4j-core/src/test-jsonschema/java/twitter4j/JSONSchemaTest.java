@@ -35,7 +35,7 @@ class JSONSchemaTest {
                         @Nullable
                         @Range(from = 0, to = Long.MAX_VALUE)
                         private final Long mediaHeight;""",
-                mediaHeight.asFieldDeclaration(false));
+                mediaHeight.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.mediaHeight = json.getLongValue("MediaHeight");""",
                 mediaHeight.asConstructorAssignment(false, null));
@@ -49,7 +49,7 @@ class JSONSchemaTest {
                             return mediaHeight;
                         }
                         """,
-                mediaHeight.asGetterImplementation(false));
+                mediaHeight.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asInterface("twitter4j.v2"));
@@ -72,7 +72,7 @@ class JSONSchemaTest {
                         @Nullable
                         @Range(from = -180, to = 180)
                         private final Double items;""",
-                items.asFieldDeclaration(false));
+                items.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.items = json.getDoubleValue("items");""",
                 items.asConstructorAssignment(false, null));
@@ -86,11 +86,12 @@ class JSONSchemaTest {
                             return items;
                         }
                         """,
-                items.asGetterImplementation(false));
+                items.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> items.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> items.asInterface("twitter4j.v2"));
     }
+
     @Test
     void integerMinMax() {
 
@@ -106,7 +107,7 @@ class JSONSchemaTest {
         assertEquals(1, extract.size());
         JSONSchema hTTPStatusCode = extract.get("HTTPStatusCode");
         assertEquals("@Nullable\n@Range(from = 100, to = 599)\nprivate final Integer hTTPStatusCode;",
-                hTTPStatusCode.asFieldDeclaration(false));
+                hTTPStatusCode.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
                 hTTPStatusCode.asConstructorAssignment(false, null));
@@ -120,7 +121,7 @@ class JSONSchemaTest {
                             return hTTPStatusCode;
                         }
                         """,
-                hTTPStatusCode.asGetterImplementation(false));
+                hTTPStatusCode.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asInterface("twitter4j.v2"));
@@ -146,9 +147,9 @@ class JSONSchemaTest {
         assertEquals(2, extract.size());
         JSONSchema code = extract.get("code");
         assertEquals("@Nullable\nprivate final Integer code;",
-                code.asFieldDeclaration(false));
+                code.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final int code;",
-                code.asFieldDeclaration(true));
+                code.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.code = json.getIntValue("code");""",
                 code.asConstructorAssignment(false, null));
@@ -161,14 +162,14 @@ class JSONSchemaTest {
                             return code;
                         }
                         """,
-                code.asGetterImplementation(false));
+                code.asGetterImplementation(false, "twitter4j.v2",null).codeFragment());
         assertEquals("""
                         @Override
                         public int getCode() {
                             return code;
                         }
                         """,
-                code.asGetterImplementation(true));
+                code.asGetterImplementation(true, "twitter4j.v2",null).codeFragment());
 
 
         JSONSchema hTTPStatusCode = extract.get("HTTPStatusCode");
@@ -179,14 +180,14 @@ class JSONSchemaTest {
                 @Nullable
                 @Range(from = 100, to = 599)
                 Integer getHTTPStatusCode();
-                """, hTTPStatusCode.asGetterDeclaration(false));
+                """, hTTPStatusCode.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
         assertEquals("""
                 /**
                  * @return HTTP Status Code.
                  */
                 @Range(from = 100, to = 599)
                 int getHTTPStatusCode();
-                """, hTTPStatusCode.asGetterDeclaration(true));
+                """, hTTPStatusCode.asGetterDeclaration(true, "twitter4j.v2",null).codeFragment());
 
     }
 
@@ -203,7 +204,7 @@ class JSONSchemaTest {
         assertEquals(1, extract.size());
         JSONSchema possiblySensitive = extract.get("possibly_sensitive");
         assertEquals("@Nullable\nprivate final Boolean possiblySensitive;",
-                possiblySensitive.asFieldDeclaration(false));
+                possiblySensitive.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("this.possiblySensitive = json.getBooleanValue(\"possibly_sensitive\");",
                 possiblySensitive.asConstructorAssignment(false, null));
         assertEquals("this.possiblySensitive = json.getBoolean(\"possibly_sensitive\");",
@@ -215,7 +216,7 @@ class JSONSchemaTest {
                             return possiblySensitive;
                         }
                         """,
-                possiblySensitive.asGetterImplementation(false));
+                possiblySensitive.asGetterImplementation(false, "twitter4j.v2",null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asInterface("twitter4j.v2"));
@@ -253,7 +254,7 @@ class JSONSchemaTest {
         assertEquals(5, extract.size());
         JSONSchema problemFields = extract.get("ProblemFields");
         assertEquals("""
-                this.problemFields = new ProblemFields(json.getJSONObject("ProblemFields"));""", problemFields.asConstructorAssignment(true, null));
+                this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(true, null));
         assertEquals("""
                 this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(false, null));
         assertEquals("""
@@ -270,13 +271,13 @@ class JSONSchemaTest {
                         @Range(from = 100, to = 599)
                         private final Integer hTTPStatusCode;
                         """,
-                problemFields.asFieldDeclarations());
+                problemFields.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");
                         this.title = json.getString("title");
                         this.detail = json.getLocalDateTime("detail");
                         this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
-                problemFields.asConstructorAssignments());
+                problemFields.asConstructorAssignments("twitter4j.v2"));
         assertEquals("""
                         @NotNull
                         @Override
@@ -295,7 +296,7 @@ class JSONSchemaTest {
                         public LocalDateTime getDetail() {
                             return detail;
                         }
-                        
+                                                
                         @Nullable
                         @Range(from = 100, to = 599)
                         @Override
@@ -303,7 +304,7 @@ class JSONSchemaTest {
                             return hTTPStatusCode;
                         }
                         """,
-                problemFields.asGetterImplementations());
+                problemFields.asGetterImplementations("twitter4j.v2", null).codeFragment());
 
         String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2");
         assertEquals("""
@@ -312,7 +313,7 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
-                        
+                                                
                         import java.time.LocalDateTime;
                                                 
                         /**
@@ -374,9 +375,9 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
-                        
+                                                
                         import java.time.LocalDateTime;
-                        
+                                                
                         /**
                          * ProblemFields
                          */

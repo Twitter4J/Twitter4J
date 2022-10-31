@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 interface JSONSchema {
-
-
     @NotNull
     String typeName();
 
@@ -20,10 +18,9 @@ interface JSONSchema {
     String description();
 
     default @NotNull String asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
-
-
-        String getterImplementation = asGetterImplementations();
-        String imports = composeImports(getterImplementation);
+        Code getterImplementation = asGetterImplementations(interfacePackageName, null);
+        Code code = asFieldDeclarations(interfacePackageName, null);
+        String imports = composeImports(null, getterImplementation);
         return """
                 package %1$s;
                 %2$s
@@ -40,13 +37,13 @@ interface JSONSchema {
                 %8$s
                 }
                 """.formatted(packageName, imports, description(), upperCamelCased(typeName()), lowerCamelCased(typeName()),
-                indent(asFieldDeclarations(), 4), indent(asConstructorAssignments(), 8),
-                indent(getterImplementation, 4), interfacePackageName);
+                indent(code.codeFragment, 4), indent(asConstructorAssignments(interfacePackageName), 8),
+                indent(getterImplementation.codeFragment, 4), interfacePackageName);
     }
 
     default @NotNull String asInterface(@NotNull String interfacePackageName) {
-        String getterDeclaration = asGetterDeclarations();
-        String imports = composeImports(getterDeclaration);
+        Code getterDeclaration = asGetterDeclarations(interfacePackageName, null);
+        String imports = composeImports(interfacePackageName, getterDeclaration);
 
         return """
                 package %1$s;
@@ -57,7 +54,29 @@ interface JSONSchema {
                 public interface %4$s {
                 %5$s
                 }
-                """.formatted(interfacePackageName, imports, description(), upperCamelCased(typeName()), indent(getterDeclaration, 4));
+                """.formatted(interfacePackageName, imports, description(), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4));
+    }
+
+    record Code(String codeFragment, Set<String> typesToBeImported) {
+        static Code of(String codeFragment, String... toBeImported) {
+            return new Code(codeFragment, Arrays.stream(toBeImported).collect(Collectors.toSet()));
+        }
+
+        static Code of(String codeFragment, Set<String> typesToBeImported) {
+            return new Code(codeFragment, typesToBeImported);
+        }
+
+        static Code of(List<Code> codes) {
+            return new Code(codes.stream().map(e -> e.codeFragment).collect(Collectors.joining("\n")),
+                    codes.stream().flatMap(e -> e.typesToBeImported.stream()).collect(Collectors.toSet()));
+        }
+
+        static Code with(String codeFragment, Code... code) {
+            return new Code(codeFragment, Arrays.stream(code)
+                    .map(e -> e.typesToBeImported).flatMap(Collection::stream).collect(Collectors.toSet()));
+        }
+
+        public static Code empty = new Code("", new HashSet<>());
     }
 
     static String indent(String tobeFormatted, int numberOfSpaces) {
@@ -79,48 +98,50 @@ interface JSONSchema {
     }
 
     @NotNull
-    String getJavaType(boolean notNull);
+    Code getJavaType(boolean notNull, String packageName);
 
-    static String composeImports(@NotNull String code) {
+    static String composeImports(@Nullable String ignorePackage, @NotNull Code... code) {
+        String annotationImports = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
+                .filter(e -> ignorePackage == null || !e.startsWith(ignorePackage))
+                .filter(e -> e.startsWith("org.jetbrains.annotations"))
+                .sorted()
+                .map(e -> "import " + e + ";").collect(Collectors.joining("\n"));
+        String classImports = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
+                .filter(e -> ignorePackage == null || !e.startsWith(ignorePackage))
+                .filter(e -> !e.startsWith("org.jetbrains.annotations"))
+                .sorted()
+                .map(e -> "import " + e + ";").collect(Collectors.joining("\n"));
+        if (annotationImports.isEmpty() && classImports.isEmpty()) {
+            return "";
+        }
         String imports = "";
-        if (code.contains("@NotNull")) {
-            imports += "import org.jetbrains.annotations.NotNull;\n";
+        if (!annotationImports.isEmpty()) {
+            imports = "\n" + annotationImports + "\n";
         }
-        if (code.contains("@Nullable")) {
-            imports += "import org.jetbrains.annotations.Nullable;\n";
-        }
-        if (code.contains("@Range")) {
-            imports += "import org.jetbrains.annotations.Range;\n";
-        }
-
-        boolean localDateTimeContains = code.contains("LocalDateTime");
-        boolean listContains = code.contains("List<");
-        if (localDateTimeContains || listContains) {
-            if (!imports.isEmpty()) {
-                imports += "\n";
-            }
-            if (localDateTimeContains) {
-                imports += "import java.time.LocalDateTime;\n";
-            }
-            if (listContains) {
-                imports += "import java.util.List;\n";
-            }
-        }
-
-        if (!imports.isEmpty()) {
-            imports = "\n" + imports;
+        if (!classImports.isEmpty()) {
+            imports += "\n" + classImports + "\n";
         }
         return imports;
-
     }
 
-    default @NotNull String asFieldDeclaration(boolean notNull) {
-        return nullableAnnotation(notNull) + "%sprivate final %s %s;".formatted(getAnnotation(), getJavaType(notNull), lowerCamelCased(typeName()));
+    default @NotNull Code asFieldDeclaration(boolean notNull, String packageName, @Nullable String overrideTypeName) {
+        Code nullableAnnotation = nullableAnnotation(notNull);
+        Code annotation = getAnnotation();
+        Code javaType = getJavaType(notNull, packageName);
+        Set<String> imports = new HashSet<>();
+        imports.addAll(nullableAnnotation.typesToBeImported);
+        imports.addAll(annotation.typesToBeImported);
+        imports.addAll(javaType.typesToBeImported);
+        String resolvedTypeName = overrideTypeName != null ? upperCamelCased(overrideTypeName) : typeName();
+        return Code.of(nullableAnnotation.codeFragment + "%sprivate final %s %s;".formatted(annotation.codeFragment,
+                javaType.codeFragment,
+                lowerCamelCased(resolvedTypeName)), imports);
     }
 
-    default String nullableAnnotation(boolean notNull) {
-//        return isPrimitive() ? "" : notNull ? "@NotNull\n" : "@Nullable\n";
-        return notNull ? (isPrimitive() ? "" : "@NotNull\n") : "@Nullable\n";
+    default Code nullableAnnotation(boolean notNull) {
+
+        return notNull ? (isPrimitive() ? Code.empty : Code.of("@NotNull\n", "org.jetbrains.annotations.NotNull"))
+                : Code.of("@Nullable\n", "org.jetbrains.annotations.Nullable");
 
     }
 
@@ -137,42 +158,52 @@ interface JSONSchema {
     }
 
     @NotNull
-    default String asConstructorAssignments() {
+    default String asConstructorAssignments(String packageName) {
         throw new UnsupportedOperationException("not supported");
     }
 
-    default @NotNull String asFieldDeclarations() {
+    default @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
         throw new UnsupportedOperationException("not supported");
     }
 
-    default @NotNull String asGetterDeclarations() {
+    default @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referfencingSchema) {
         throw new UnsupportedOperationException("not supported");
     }
 
-    default @NotNull String asGetterDeclaration(boolean notNull) {
-        return """
-                /**
-                 * @return %1$s
-                 */
-                %2$s%3$s get%4$s();
-                """.formatted(description(), nullableAnnotation(notNull), getAnnotation() + getJavaType(notNull), upperCamelCased(typeName()));
+    default @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
+        Code annotation = getAnnotation();
+        Code javaType = getJavaType(notNull, packageName);
+        Code code = nullableAnnotation(notNull);
+        String resolvedTypeName = referencingSchema != null ? referencingSchema.typeName() : typeName();
+        return Code.with("""
+                        /**
+                         * @return %1$s
+                         */
+                        %2$s%3$s get%4$s();
+                        """.formatted(referencingSchema != null ? referencingSchema.description() : description(), code.codeFragment, annotation.codeFragment + javaType.codeFragment, upperCamelCased(resolvedTypeName))
+                , annotation, javaType, code);
     }
 
-    default @NotNull String asGetterImplementations() {
+    default @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
         throw new UnsupportedOperationException("not supported");
     }
 
-    default @NotNull String asGetterImplementation(boolean notNull) {
-        return """
-                %1$s%2$s@Override
-                public %3$s get%4$s() {
-                    return %5$s;
-                }
-                """.formatted(nullableAnnotation(notNull), getAnnotation(), getJavaType(notNull), upperCamelCased(typeName()), lowerCamelCased(typeName()));
+    default @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
+        Code nullableAnnotation = nullableAnnotation(notNull);
+        Code annotation = getAnnotation();
+        Code javaType = getJavaType(notNull, packageName);
+        String resolvedTypeName = overrideTypeName != null ? overrideTypeName : typeName();
+        return Code.with("""
+                        %1$s%2$s@Override
+                        public %3$s get%4$s() {
+                            return %5$s;
+                        }
+                        """.formatted(nullableAnnotation.codeFragment, annotation.codeFragment, javaType.codeFragment, upperCamelCased(resolvedTypeName), lowerCamelCased(resolvedTypeName))
+                , nullableAnnotation, annotation, javaType);
     }
 
-    default String getAnnotation() {
-        return "";
+    default Code getAnnotation() {
+        return Code.empty;
     }
 
     static String lowerCamelCased(@NotNull String typeName) {
@@ -354,10 +385,10 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
 
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
         return useInt() ?
-                notNull ? "int" : "Integer" :
-                notNull ? "long" : "Long";
+                notNull ? Code.of("int") : Code.of("Integer") :
+                notNull ? Code.of("long") : Code.of("Long");
     }
 
     private String getWrapperType() {
@@ -373,13 +404,13 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
     }
 
     @Override
-    public String getAnnotation() {
+    public Code getAnnotation() {
         if (minimum == null && maximum == null) {
-            return "";
+            return Code.empty;
         }
         String rangeMinimum = minimum == null ? getWrapperType() + ".MIN_VALUE" : minimum.toString();
         String rangeMaximum = maximum == null ? getWrapperType() + ".MAX_VALUE" : maximum.toString();
-        return "@Range(from = %s, to = %s)\n".formatted(rangeMinimum, rangeMaximum);
+        return Code.of("@Range(from = %s, to = %s)\n".formatted(rangeMinimum, rangeMaximum), "org.jetbrains.annotations.Range");
     }
 
     @Override
@@ -423,18 +454,18 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     }
 
     @Override
-    public String getAnnotation() {
+    public Code getAnnotation() {
         if (minimum == null && maximum == null) {
-            return "";
+            return Code.empty;
         }
         String rangeMinimum = minimum == null ? "Double.MIN_VALUE" : minimum.toString();
         String rangeMaximum = maximum == null ? "Double.MAX_VALUE" : maximum.toString();
-        return "@Range(from = %s, to = %s)\n".formatted(rangeMinimum, rangeMaximum);
+        return Code.of("@Range(from = %s, to = %s)\n".formatted(rangeMinimum, rangeMaximum), "org.jetbrains.annotations.Range");
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return notNull ? "double" : "Double";
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        return Code.of(notNull ? "double" : "Double");
     }
 
     @Override
@@ -472,8 +503,8 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return notNull ? "boolean" : "Boolean";
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        return Code.of(notNull ? "boolean" : "Boolean");
     }
 
     @Override
@@ -514,8 +545,8 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return isDateTime() ? "LocalDateTime" : "String";
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        return isDateTime() ? Code.of("LocalDateTime", "java.time.LocalDateTime") : Code.of("String");
     }
 
     private boolean isDateTime() {
@@ -527,9 +558,11 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
-        String getterMethod = isDateTime() ? "getLocalDateTime" : "getString";
-        return """
-                this.%1$s = json.%2$s("%3$s");""".formatted(lowerCamelCased, getterMethod, typeName);
+        return isDateTime() ?
+                """
+                        this.%1$s = json.getLocalDateTime("%2$s");""".formatted(lowerCamelCased, typeName) :
+                """
+                        this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, typeName);
     }
 
     @Override
@@ -551,19 +584,23 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     @NotNull
-    public String asGetterDeclaration(boolean notNull) {
+    public Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
         String enumStr = JSONSchema.indent(this.enumList.stream().map(e -> """
                 %s("%s")""".formatted(e.toUpperCase().replaceAll("-", "_")
                 , e)).collect(Collectors.joining(",\n")), 4) + ";";
-        return """
+        Code nullableAnnotation = nullableAnnotation(notNull);
+        Code annotation = getAnnotation();
+        Code javaType = getJavaType(notNull, packageName);
+        String resolvedTypeName = referencingSchema != null ? referencingSchema.typeName() : typeName;
+        return Code.with("""
                 /**
                  * %1$s
                  */
-                public enum %4$s {
+                enum %3$s {
                 %5$s
                     public final String value;
                             
-                    %4$s(String value) {
+                    %3$s(String value) {
                         this.value = value;
                     }
                             
@@ -572,8 +609,8 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                         return value;
                     }
                             
-                    public static %4$s of(String str) {
-                        for (%4$s value : %4$s.values()) {
+                    public static %3$s of(String str) {
+                        for (%3$s value : %3$s.values()) {
                             if (value.value.equals(str)) {
                                 return value;
                             }
@@ -586,22 +623,23 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                  * @return %1$s
                  */
                 %2$s%3$s get%4$s();
-                """.formatted(description(), nullableAnnotation(notNull), getAnnotation() + getJavaType(notNull),
-                JSONSchema.upperCamelCased(typeName()), enumStr);
+                """.formatted(referencingSchema != null ? referencingSchema.description() : description(), nullableAnnotation.codeFragment(), annotation.codeFragment() + javaType.codeFragment(),
+                JSONSchema.upperCamelCased(resolvedTypeName), enumStr), nullableAnnotation, annotation, javaType);
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return JSONSchema.upperCamelCased(typeName);
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        String upperCamelCased = JSONSchema.upperCamelCased(typeName);
+        return Code.of(upperCamelCased);
     }
 
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
-        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
-        String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
+        String jsonName = overrideTypeName != null ? overrideTypeName : this.typeName;
+        String lowerCamelCased = JSONSchema.lowerCamelCased(jsonName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
         return """
-                this.%1$s = %2$s.of(json.getString("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, typeName);
+                this.%1$s = %2$s.of(json.getString("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, jsonName);
     }
 
     @Override
@@ -633,19 +671,23 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
         if (items.isPrimitive()) {
-            return items.getJavaType(true) + "[]";
+            Code javaType = items.getJavaType(true, packageName);
+            return Code.of(javaType.codeFragment() + "[]", javaType.typesToBeImported());
         }
         if (items instanceof StringSchema) {
-            return "List<%s>".formatted(items.getJavaType(notNull));
+            Code javaType = items.getJavaType(notNull, packageName);
+            Set<String> imports = new HashSet<>(javaType.typesToBeImported());
+            imports.add("java.util.List");
+            return Code.of("List<%s>".formatted(javaType.codeFragment()), imports);
         }
-        return "List<%s>".formatted(typeName);
+        return Code.of("List<%s>".formatted(typeName), "java.util.List");
     }
 
     @Override
-    public String nullableAnnotation(boolean notNull) {
-        return "";
+    public Code nullableAnnotation(boolean notNull) {
+        return Code.empty;
     }
 
 
@@ -682,35 +724,29 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                         JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
                         : null,
                 object.getString("example"),
-                object.getString("description")
+                object.optString("description", typeName)
         );
     }
 
-
     @Override
-    public String description() {
-        return typeName;
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        return Code.of(typeName, packageName + "." + typeName);
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return typeName;
-    }
+    public @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
+        List<Code> fieldDeclarations = properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).collect(Collectors.toList());
+        return Code.of(fieldDeclarations.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
+                fieldDeclarations.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
 
-    @Override
-    public @NotNull String asFieldDeclarations() {
-        return properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()))).collect(Collectors.joining("\n\n")) + "\n";
     }
 
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
-        String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
-        String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
+        String lowerCamelCased = JSONSchema.lowerCamelCased(overrideTypeName != null ? overrideTypeName : this.typeName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
-        return notNull ? """
-                this.%1$s = new %2$s(json.getJSONObject("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, typeName)
-                : """
-                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, typeName);
+        return """
+                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, overrideTypeName != null ? overrideTypeName : this.typeName);
     }
 
     @Override
@@ -722,18 +758,20 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignments() {
+    public @NotNull String asConstructorAssignments(String packageName) {
         return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.joining("\n"));
     }
 
     @Override
-    public @NotNull String asGetterDeclarations() {
-        return properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
+    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
+        return Code.of(properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema)).collect(Collectors.toList()));
     }
 
     @Override
-    public @NotNull String asGetterImplementations() {
-        return properties.stream().map(e -> e.asGetterImplementation(this.required.contains(e.typeName()))).collect(Collectors.joining("\n"));
+    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
+        return Code.of(properties.stream()
+                .map(e -> e.asGetterImplementation(this.required.contains(e.typeName()), packageName, overrideTypeName))
+                .collect(Collectors.toList()));
     }
 
 }
@@ -746,17 +784,62 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     private JSONSchema delegateTo() {
-        return map.values().stream().filter(e -> e.jsonPointer().equals(ref)).findFirst().get();
+        Optional<JSONSchema> first = map.values().stream().filter(e -> e.jsonPointer().equals(ref)).findFirst();
+        if (first.isPresent()) {
+            return first.get();
+        }
+        throw new NoSuchElementException(ref + " not found");
     }
 
     @Override
     public String description() {
-        return delegateTo().description();
+        String delegateToDescription = delegateTo().description();
+        boolean delegateToDoesNotHaveSpecificDescription = delegateToDescription.equals(delegateTo().typeName());
+        if (delegateToDoesNotHaveSpecificDescription) {
+            return typeName;
+        } else {
+            return typeName + ": " + delegateToDescription;
+        }
     }
 
     @Override
-    public @NotNull String getJavaType(boolean notNull) {
-        return delegateTo().getJavaType(notNull);
+    public @NotNull Code getJavaType(boolean notNull, String packageName) {
+        return delegateTo().getJavaType(notNull, packageName);
+    }
+
+    @Override
+    public @NotNull Code asFieldDeclaration(boolean notNull, String packageName, @Nullable String overrideTypeName) {
+        return delegateTo().asFieldDeclaration(notNull, packageName, typeName);
+    }
+
+    @Override
+    public @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
+        return delegateTo().asFieldDeclarations(packageName, typeName);
+    }
+
+    @Override
+    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
+        return delegateTo().asGetterImplementations(packageName, typeName);
+    }
+
+    @Override
+    public @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
+        return delegateTo().asGetterDeclaration(notNull, packageName, this);
+    }
+
+    @Override
+    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
+        return delegateTo().asGetterImplementations(packageName, typeName);
+    }
+
+    @Override
+    public @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
+        return delegateTo().asGetterImplementation(notNull, packageName, typeName);
+    }
+
+    @Override
+    public @NotNull String asConstructorAssignments(String packageName) {
+        return delegateTo().asConstructorAssignments(packageName);
     }
 
     @Override

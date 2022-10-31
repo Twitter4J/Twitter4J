@@ -763,11 +763,10 @@ class JSONObject {
 
     @Nullable
     public LocalDateTime getLocalDateTime(String name){
-        String dateStr = getString(name);
-        if (dateStr == null) {
+        if (!has(name)) {
             return null;
         }
-        return ZonedDateTime.parse(dateStr, dateTimeFormatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+        return ZonedDateTime.parse(getString(name), dateTimeFormatter).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
     }
     public Stream<JSONObject> getJSONArrayAsStream(String name){
         if (!has(name)) {
