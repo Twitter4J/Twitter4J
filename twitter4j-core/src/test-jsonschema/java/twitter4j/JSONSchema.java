@@ -179,7 +179,8 @@ interface JSONSchema {
         Code annotation = getAnnotation();
         Code javaType = getJavaType(notNull, packageName);
         Code code = nullableAnnotation(notNull);
-        String resolvedTypeName = referencingSchema != null ? referencingSchema.typeName() : typeName();
+        String resolvedTypeName = referencingSchema != null && !"".equals(referencingSchema.typeName())
+                ? referencingSchema.typeName() : typeName();
         return Code.with("""
                         /**
                          * @return %1$s
@@ -742,9 +743,11 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
-        List<Code> fieldDeclarations = properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).toList();
-        return Code.of(fieldDeclarations.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
-                fieldDeclarations.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
+        List<Code> codes = new ArrayList<>();
+        properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).forEach(codes::add);
+        allOf.stream().map(e -> e.asFieldDeclaration(true, packageName, overrideTypeName)).forEach(codes::add);
+        return Code.of(codes.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
+                codes.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
 
     }
 
@@ -766,19 +769,27 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull String asConstructorAssignments(String packageName) {
-        return properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.joining("\n"));
+        List<String> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
+        allOf.stream().map(e -> e.asConstructorAssignment(true, null)).forEach(codes::add);
+        return String.join("\n", codes);
     }
 
     @Override
     public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
-        return Code.of(properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema)).collect(Collectors.toList()));
+        List<Code> codes = properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema)).collect(Collectors.toList());
+        allOf.stream().map(e -> e.asGetterDeclaration(true, packageName, referencingSchema)).forEach(codes::add);
+        return Code.of(codes);
     }
 
     @Override
     public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
-        return Code.of(properties.stream()
+        List<Code> codes = properties.stream()
                 .map(e -> e.asGetterImplementation(this.required.contains(e.typeName()), packageName, overrideTypeName))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        allOf.stream()
+                .map(e -> e.asGetterImplementation(true, packageName, overrideTypeName))
+                .forEach(codes::add);
+        return Code.of(codes);
     }
 
     @Override
@@ -810,7 +821,11 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
         if (delegateToDoesNotHaveSpecificDescription) {
             return typeName;
         } else {
-            return typeName + ": " + delegateToDescription;
+            if ("".equals(typeName)) {
+                return delegateToDescription;
+            }else {
+                return typeName + ": " + delegateToDescription;
+            }
         }
     }
 
@@ -819,19 +834,24 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
         return delegateTo().getJavaType(notNull, packageName);
     }
 
+    @Nullable
+    private String overrideTypeName(){
+        return "".equals(typeName) ? null : typeName;
+    }
+
     @Override
     public @NotNull Code asFieldDeclaration(boolean notNull, String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asFieldDeclaration(notNull, packageName, typeName);
+        return delegateTo().asFieldDeclaration(notNull, packageName, overrideTypeName());
     }
 
     @Override
     public @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asFieldDeclarations(packageName, typeName);
+        return delegateTo().asFieldDeclarations(packageName, overrideTypeName());
     }
 
     @Override
     public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
-        return delegateTo().asGetterImplementations(packageName, typeName);
+        return delegateTo().asGetterImplementations(packageName, overrideTypeName());
     }
 
     @Override
@@ -841,12 +861,12 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
 
     @Override
     public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asGetterImplementations(packageName, typeName);
+        return delegateTo().asGetterImplementations(packageName, overrideTypeName());
     }
 
     @Override
     public @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asGetterImplementation(notNull, packageName, typeName);
+        return delegateTo().asGetterImplementation(notNull, packageName, overrideTypeName());
     }
 
     @Override
@@ -856,7 +876,7 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
 
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
-        return delegateTo().asConstructorAssignment(notNull, typeName);
+        return delegateTo().asConstructorAssignment(notNull, overrideTypeName());
     }
 
     @Override
