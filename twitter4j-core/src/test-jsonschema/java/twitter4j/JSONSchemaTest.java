@@ -253,6 +253,7 @@ class JSONSchemaTest {
                 }""");
         assertEquals(5, extract.size());
         JSONSchema problemFields = extract.get("ProblemFields");
+        assertEquals("#/ProblemFields", problemFields.jsonPointer());
         assertEquals("""
                 this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(true, null));
         assertEquals("""
@@ -368,7 +369,9 @@ class JSONSchemaTest {
                         """,
                 javaImpl);
 
-        String interfaceDeclaration = problemFields.asInterface("twitter4j.v2");
+        JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
+        assertEquals("ProblemFields.java", javaFile.fileName());
+        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 

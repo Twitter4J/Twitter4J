@@ -102,7 +102,7 @@ class JSONSchemaNoneTest {
                     @NotNull
                     String getMessage();
                 }
-                """, error.asInterface("twitter4j.v2"));
+                """, error.asInterface("twitter4j.v2").content());
     }
 
 }

@@ -7,39 +7,51 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class JSONSchemaRefTest {
     @Test
     void ref() {
-        var extract = JSONSchema.extract("#/", """
+        var extract = JSONSchema.extract("#/components/schemas/", """
                 {
-                "HostPort" : {
-                        "type" : "object",
-                        "description" : "A validly formatted URL.",
-                        "example" : "https://example.com"
-                        ,  "properties" : {
-                          "host" : {
-                            "type" : "string"
+                  "components": {
+                    "schemas": {
+                      "HostPort": {
+                        "type": "object",
+                        "description": "A validly formatted URL.",
+                        "example": "https://example.com",
+                        "properties": {
+                          "host": {
+                            "type": "string"
                           },
-                          "port" : {
-                            "type" : "integer"
+                          "port": {
+                            "type": "integer"
                           }
                         }
-
                       },
-                      "ProblemFields" : {
-                        "type" : "object",
-                        "required" : [ "type", "theHost"],
-                        "properties" : {
-                          "type" : {
-                            "type" : "string",
-                            "format" : "uri"
+                      "ProblemFields": {
+                        "type": "object",
+                        "required": [
+                          "type",
+                          "theHost"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "format": "uri"
                           },
-                          "theHost" : {
-                            "$ref" : "#/HostPort"
+                          "theHost": {
+                            "$ref": "#/components/schemas/HostPort"
                           }
                         }
                       }
+                    }
+                  }
                 }""");
 
         assertEquals(6, extract.size());
+        assertEquals("#/components/schemas/HostPort", extract.get("HostPort").jsonPointer());
+        for (JSONSchema value : extract.values()) {
+            System.out.println(value.jsonPointer()+":"+value.jsonPointer().getClass().getName()+":"+value.typeName()+":"+value.getJavaType(false, "twitter4j"));
+        }
+
         JSONSchema problemFields = extract.get("ProblemFields");
+        assertEquals("#/components/schemas/ProblemFields", problemFields.jsonPointer());
         assertEquals("""
                         @NotNull
                         private final String type;
@@ -119,7 +131,9 @@ class JSONSchemaRefTest {
                         """,
                 javaImpl);
 
-        String interfaceDeclaration = problemFields.asInterface("twitter4j.v2");
+        JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
+        assertEquals("ProblemFields.java", javaFile.fileName());
+        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 

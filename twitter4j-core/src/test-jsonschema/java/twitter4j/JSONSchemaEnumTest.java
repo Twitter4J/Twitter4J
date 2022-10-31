@@ -194,7 +194,7 @@ class JSONSchemaEnumTest {
                             Reason getMyReason();
                         }
                         """,
-                reason.asInterface("twitter4j.v2"));
+                reason.asInterface("twitter4j.v2").content());
     }
 
 }

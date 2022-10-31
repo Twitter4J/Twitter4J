@@ -41,22 +41,27 @@ interface JSONSchema {
                 indent(getterImplementation.codeFragment, 4), interfacePackageName);
     }
 
-    default @NotNull String asInterface(@NotNull String interfacePackageName) {
+    default @NotNull JavaFile asInterface(@NotNull String interfacePackageName) {
         Code getterDeclaration = asGetterDeclarations(interfacePackageName, null);
         String imports = composeImports(interfacePackageName, getterDeclaration);
 
-        return """
-                package %1$s;
-                %2$s
-                /**
-                 * %3$s
-                 */
-                public interface %4$s {
-                %5$s
-                }
-                """.formatted(interfacePackageName, imports, description(), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4));
+        return new JavaFile(upperCamelCased(typeName()) + ".java",
+                """
+                        package %1$s;
+                        %2$s
+                        /**
+                         * %3$s
+                         */
+                        public interface %4$s {
+                        %5$s
+                        }
+                        """.formatted(interfacePackageName, imports, description(), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4)));
     }
 
+    /**
+     * @param codeFragment code fragment
+     * @param typesToBeImported types to be imported
+     */
     record Code(String codeFragment, Set<String> typesToBeImported) {
         static Code of(String codeFragment, String... toBeImported) {
             return new Code(codeFragment, Arrays.stream(toBeImported).collect(Collectors.toSet()));
@@ -672,12 +677,14 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
 
     @Override
     public @NotNull Code getJavaType(boolean notNull, String packageName) {
-        if (items.isPrimitive()) {
-            Code javaType = items.getJavaType(true, packageName);
+        JSONSchema resolvedSchema = items instanceof RefSchema refSchema ?
+            refSchema.delegateTo(): items;
+        if (resolvedSchema.isPrimitive()) {
+            Code javaType = resolvedSchema.getJavaType(true, packageName);
             return Code.of(javaType.codeFragment() + "[]", javaType.typesToBeImported());
         }
-        if (items instanceof StringSchema) {
-            Code javaType = items.getJavaType(notNull, packageName);
+        if (resolvedSchema instanceof StringSchema) {
+            Code javaType = resolvedSchema.getJavaType(notNull, packageName);
             Set<String> imports = new HashSet<>(javaType.typesToBeImported());
             imports.add("java.util.List");
             return Code.of("List<%s>".formatted(javaType.codeFragment()), imports);
@@ -735,7 +742,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
-        List<Code> fieldDeclarations = properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).collect(Collectors.toList());
+        List<Code> fieldDeclarations = properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).toList();
         return Code.of(fieldDeclarations.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
                 fieldDeclarations.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
 
@@ -774,6 +781,11 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                 .collect(Collectors.toList()));
     }
 
+    @Override
+    public String toString() {
+        return "ObjectSchema(" + getJavaType(true, "");
+    }
+
 }
 
 record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String ref,
@@ -783,7 +795,7 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
         return new RefSchema(map, typeName, object.getString("$ref"), jsonPointer);
     }
 
-    private JSONSchema delegateTo() {
+    JSONSchema delegateTo() {
         Optional<JSONSchema> first = map.values().stream().filter(e -> e.jsonPointer().equals(ref)).findFirst();
         if (first.isPresent()) {
             return first.get();
@@ -845,5 +857,10 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         return delegateTo().asConstructorAssignment(notNull, typeName);
+    }
+
+    @Override
+    public String toString() {
+        return "RefSchema(" + getJavaType(true, "");
     }
 }
