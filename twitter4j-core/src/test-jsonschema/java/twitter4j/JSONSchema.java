@@ -314,7 +314,9 @@ interface JSONSchema {
             case "boolean" -> BooleanSchema.from(jsonObject, typeName, jsonPointer);
             default -> throw new IllegalStateException("unexpected type:" + type);
         };
-        schemaMap.put(typeName, schema);
+        if(!(schema instanceof RefSchema)) {
+            schemaMap.put(typeName, schema);
+        }
         return schema;
     }
 
@@ -826,7 +828,9 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     JSONSchema delegateTo() {
-        Optional<JSONSchema> first = map.values().stream().filter(e -> e.jsonPointer().equals(ref)).findFirst();
+        Optional<JSONSchema> first = map.values().stream()
+                .filter(e -> (e.jsonPointer().equals(ref)
+                        || (e instanceof RefSchema && ((RefSchema) e).ref.equals(ref)))).findFirst();
         if (first.isPresent()) {
             return first.get();
         }
