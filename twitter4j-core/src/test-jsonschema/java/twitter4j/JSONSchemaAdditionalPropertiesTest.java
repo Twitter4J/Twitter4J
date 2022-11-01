@@ -73,9 +73,9 @@ class JSONSchemaAdditionalPropertiesTest {
                 }
                 """);
 
-        JSONSchema invalidRequestProblem = extract.get("InvalidRequestProblem");
+        JSONSchema invalidRequestProblem = extract.get("#/components/schemas/InvalidRequestProblem");
         assertEquals("#/components/schemas/InvalidRequestProblem", invalidRequestProblem.jsonPointer());
-        JSONSchema errors = extract.get("errors");
+        JSONSchema errors = extract.get("#/components/schemas/InvalidRequestProblem/properties/errors");
         assertEquals("""
                 /**
                  * @return errors
@@ -103,9 +103,9 @@ class JSONSchemaAdditionalPropertiesTest {
                     @Nullable
                     String getMessage();
                 }
-                """, extract.get("Error").asInterface("twitter4j.v2").content());
+                """, extract.get("#/components/schemas/InvalidRequestProblem/properties/errors/items").asInterface("twitter4j.v2").content());
 
-        JSONSchema problemFields = extract.get("ProblemFields");
+        JSONSchema problemFields = extract.get("#/components/schemas/ProblemFields");
         assertEquals("""
                 /**
                  * @return ProblemFields

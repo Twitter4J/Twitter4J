@@ -44,7 +44,7 @@ class JSONSchemaEnumTest {
                   }
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema reason = extract.get("reason");
+        JSONSchema reason = extract.get("#/reason");
         assertEquals("""
                         @Nullable
                         private final Reason reason;""",
@@ -123,8 +123,8 @@ class JSONSchemaEnumTest {
                       }
                   }
                 }""");
-        assertEquals(3, extract.size());
-        JSONSchema reason = extract.get("MyObject");
+        assertEquals(2, extract.size());
+        JSONSchema reason = extract.get("#/MyObject");
 
         assertEquals("""
                         package twitter4j;
@@ -223,7 +223,7 @@ class JSONSchemaEnumTest {
                   }
                 }""");
         assertEquals(3, extract.size());
-        JSONSchema usageCapExceededProblem = extract.get("UsageCapExceededProblem");
+        JSONSchema usageCapExceededProblem = extract.get("#/UsageCapExceededProblem");
 
 
         assertEquals("""

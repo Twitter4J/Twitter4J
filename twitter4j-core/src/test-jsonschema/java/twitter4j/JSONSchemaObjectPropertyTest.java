@@ -48,7 +48,7 @@ class JSONSchemaObjectPropertyTest {
                 }""");
 
 //        assertEquals(6, extract.size());
-        JSONSchema attachments = extract.get("attachments");
+        JSONSchema attachments = extract.get("#/components/schemas/attachments");
         assertEquals("#/components/schemas/attachments", attachments.jsonPointer());
 //        for (JSONSchema value : extract.values()) {
 //            System.out.println(value.jsonPointer()+":"+value.jsonPointer().getClass().getName()+":"+value.typeName()+":"+value.getJavaType(false, "twitter4j"));

@@ -30,7 +30,7 @@ class JSONSchemaTest {
                  
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema mediaHeight = extract.get("MediaHeight");
+        JSONSchema mediaHeight = extract.get("#/MediaHeight");
         assertEquals("""
                         @Nullable
                         @Range(from = 0, to = Long.MAX_VALUE)
@@ -67,7 +67,7 @@ class JSONSchemaTest {
                     }
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema items = extract.get("items");
+        JSONSchema items = extract.get("#/items");
         assertEquals("""
                         @Nullable
                         @Range(from = -180, to = 180)
@@ -105,7 +105,7 @@ class JSONSchemaTest {
                   
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema hTTPStatusCode = extract.get("HTTPStatusCode");
+        JSONSchema hTTPStatusCode = extract.get("#/HTTPStatusCode");
         assertEquals("@Nullable\n@Range(from = 100, to = 599)\nprivate final Integer hTTPStatusCode;",
                 hTTPStatusCode.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
@@ -145,7 +145,7 @@ class JSONSchemaTest {
                   
                 }""");
         assertEquals(2, extract.size());
-        JSONSchema code = extract.get("code");
+        JSONSchema code = extract.get("#/code");
         assertEquals("@Nullable\nprivate final Integer code;",
                 code.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final int code;",
@@ -172,7 +172,7 @@ class JSONSchemaTest {
                 code.asGetterImplementation(true, "twitter4j.v2",null).codeFragment());
 
 
-        JSONSchema hTTPStatusCode = extract.get("HTTPStatusCode");
+        JSONSchema hTTPStatusCode = extract.get("#/HTTPStatusCode");
         assertEquals("""
                 /**
                  * @return HTTP Status Code.
@@ -202,7 +202,7 @@ class JSONSchemaTest {
                     }
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema possiblySensitive = extract.get("possibly_sensitive");
+        JSONSchema possiblySensitive = extract.get("#/possibly_sensitive");
         assertEquals("@Nullable\nprivate final Boolean possiblySensitive;",
                 possiblySensitive.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("this.possiblySensitive = json.getBooleanValue(\"possibly_sensitive\");",
@@ -252,7 +252,7 @@ class JSONSchemaTest {
                       }
                 }""");
         assertEquals(5, extract.size());
-        JSONSchema problemFields = extract.get("ProblemFields");
+        JSONSchema problemFields = extract.get("#/ProblemFields");
         assertEquals("#/ProblemFields", problemFields.jsonPointer());
         assertEquals("""
                 this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;""", problemFields.asConstructorAssignment(true, null));

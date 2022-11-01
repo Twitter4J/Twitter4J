@@ -57,7 +57,7 @@ class JSONSchemaAllOfTest {
                   }
                 }""");
 
-        JSONSchema attachments = extract.get("CashtagEntity");
+        JSONSchema attachments = extract.get("#/components/schemas/CashtagEntity");
         assertEquals("#/components/schemas/CashtagEntity", attachments.jsonPointer());
 
 

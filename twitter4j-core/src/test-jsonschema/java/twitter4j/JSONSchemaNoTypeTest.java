@@ -77,7 +77,7 @@ class JSONSchemaNoTypeTest {
                 }
                 """);
 
-        JSONSchema resourceNotFoundProblem = extract.get("ResourceNotFoundProblem");
+        JSONSchema resourceNotFoundProblem = extract.get("#/components/schemas/ResourceNotFoundProblem");
         assertEquals("#/components/schemas/ResourceNotFoundProblem", resourceNotFoundProblem.jsonPointer());
 
 

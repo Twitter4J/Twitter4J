@@ -21,7 +21,7 @@ class JSONSchemaArrayTest {
                        }
                  }""");
         assertEquals(2, extract.size());
-        JSONSchema position = extract.get("Position");
+        JSONSchema position = extract.get("#/Position");
         assertEquals("private final double[] position;",
                 position.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final double[] position;",
@@ -64,7 +64,7 @@ class JSONSchemaArrayTest {
                        }
                  }""");
         assertEquals(2, extract.size());
-        JSONSchema position = extract.get("Position");
+        JSONSchema position = extract.get("#/Position");
         assertEquals("private final long[] position;",
                 position.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final long[] position;",
@@ -107,7 +107,7 @@ class JSONSchemaArrayTest {
                       }
                 }""");
         assertEquals(2, extract.size());
-        JSONSchema position = extract.get("Position");
+        JSONSchema position = extract.get("#/Position");
         assertEquals("private final List<String> position;",
                 position.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final List<String> position;",
@@ -150,7 +150,7 @@ class JSONSchemaArrayTest {
                       }
                 }""");
         assertEquals(2, extract.size());
-        JSONSchema position = extract.get("Position");
+        JSONSchema position = extract.get("#/Position");
         assertEquals("private final boolean[] position;",
                 position.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("private final boolean[] position;",
@@ -223,7 +223,7 @@ class JSONSchemaArrayTest {
                     }
                   }
                 }""");
-        JSONSchema fullTextEntities = extract.get("FullTextEntities");
+        JSONSchema fullTextEntities = extract.get("#/FullTextEntities");
 
 
         assertEquals("""

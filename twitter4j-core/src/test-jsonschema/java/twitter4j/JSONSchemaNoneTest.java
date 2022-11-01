@@ -25,7 +25,7 @@ class JSONSchemaNoneTest {
                 }
                 """);
         assertEquals(3, extract.size());
-        JSONSchema error = extract.get("Error");
+        JSONSchema error = extract.get("#/Error");
         assertEquals("""
                         private final int code;
                                                 

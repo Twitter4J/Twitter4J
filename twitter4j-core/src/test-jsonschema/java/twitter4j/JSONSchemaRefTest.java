@@ -44,13 +44,13 @@ class JSONSchemaRefTest {
                   }
                 }""");
 
-        assertEquals(6, extract.size());
-        assertEquals("#/components/schemas/HostPort", extract.get("HostPort").jsonPointer());
+        assertEquals(5, extract.size());
+        assertEquals("#/components/schemas/HostPort", extract.get("#/components/schemas/HostPort").jsonPointer());
         for (JSONSchema value : extract.values()) {
-            System.out.println(value.jsonPointer()+":"+value.jsonPointer().getClass().getName()+":"+value.typeName()+":"+value.getJavaType(false, "twitter4j"));
+            System.out.println(value.jsonPointer() + ":" + value.jsonPointer().getClass().getName() + ":" + value.typeName() + ":" + value.getJavaType(false, "twitter4j"));
         }
 
-        JSONSchema problemFields = extract.get("ProblemFields");
+        JSONSchema problemFields = extract.get("#/components/schemas/ProblemFields");
         assertEquals("#/components/schemas/ProblemFields", problemFields.jsonPointer());
         assertEquals("""
                         @NotNull

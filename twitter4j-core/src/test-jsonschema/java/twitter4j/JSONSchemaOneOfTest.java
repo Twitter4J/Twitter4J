@@ -99,7 +99,7 @@ class JSONSchemaOneOfTest {
                 }
                 """);
 
-        JSONSchema problem = extract.get("Problem");
+        JSONSchema problem = extract.get("#/components/schemas/Problem");
         assertEquals("#/components/schemas/Problem", problem.jsonPointer());
 
 

@@ -315,7 +315,7 @@ interface JSONSchema {
             default -> throw new IllegalStateException("unexpected type:" + type);
         };
         if(!(schema instanceof RefSchema)) {
-            schemaMap.put(typeName, schema);
+            schemaMap.put(schema.jsonPointer(), schema);
         }
         return schema;
     }
@@ -326,12 +326,12 @@ interface JSONSchema {
             try {
                 JSONObject propertiesJSONObject = jsonObject.getJSONObject(name);
                 for (String key : propertiesJSONObject.keySet()) {
-                    list.add(toJSONSchemaType(schemaMap, propertiesJSONObject.getJSONObject(key), key, path + "/" + name));
+                    list.add(toJSONSchemaType(schemaMap, propertiesJSONObject.getJSONObject(key), key, path + "/" + name + "/" + key));
                 }
             } catch (JSONException jsone) {
                 JSONArray propertiesJSONArray = jsonObject.getJSONArray(name);
                 for (int i = 0; i < propertiesJSONArray.length(); i++) {
-                    list.add(toJSONSchemaType(schemaMap, propertiesJSONArray.getJSONObject(i), "", path + "/" + ""));
+                    list.add(toJSONSchemaType(schemaMap, propertiesJSONArray.getJSONObject(i), "", path + "/" + name));
                 }
 
             }
@@ -746,7 +746,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         if (hasNoElements()) {
             return Code.of("String");
         }
-        return Code.of(typeName, packageName + "." + typeName);
+        return Code.of(JSONSchema.upperCamelCased(typeName), packageName + "." + JSONSchema.upperCamelCased(typeName));
     }
 
     boolean hasNoElements() {

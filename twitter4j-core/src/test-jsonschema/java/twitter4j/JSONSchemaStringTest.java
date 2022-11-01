@@ -19,7 +19,7 @@ class JSONSchemaStringTest {
                  
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema tweetId = extract.get("TweetID");
+        JSONSchema tweetId = extract.get("#/TweetID");
         assertEquals("@Nullable\nprivate final String tweetID;",
                 tweetId.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("@NotNull\nprivate final String tweetID;",
@@ -53,7 +53,7 @@ class JSONSchemaStringTest {
                   }
                 }""");
         assertEquals(1, extract.size());
-        JSONSchema tweetId = extract.get("end_datetime");
+        JSONSchema tweetId = extract.get("#/end_datetime");
         assertEquals("@Nullable\nprivate final LocalDateTime endDatetime;",
                 tweetId.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("@NotNull\nprivate final LocalDateTime endDatetime;",
