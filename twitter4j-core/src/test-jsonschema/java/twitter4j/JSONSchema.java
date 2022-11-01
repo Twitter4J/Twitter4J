@@ -17,11 +17,11 @@ interface JSONSchema {
 
     String description();
 
-    default @NotNull String asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
+    default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
         Code getterImplementation = asGetterImplementations(interfacePackageName, null);
         Code code = asFieldDeclarations(interfacePackageName, null);
         String imports = composeImports(null, getterImplementation);
-        return """
+        return new JavaFile(upperCamelCased(typeName()) + ".java", """
                 package %1$s;
                 %2$s
                 /**
@@ -38,7 +38,7 @@ interface JSONSchema {
                 }
                 """.formatted(packageName, imports, description(), upperCamelCased(typeName()), lowerCamelCased(typeName()),
                 indent(code.codeFragment, 4), indent(asConstructorAssignments(interfacePackageName), 8),
-                indent(getterImplementation.codeFragment, 4), interfacePackageName);
+                indent(getterImplementation.codeFragment, 4), interfacePackageName));
     }
 
     default @NotNull JavaFile asInterface(@NotNull String interfacePackageName) {

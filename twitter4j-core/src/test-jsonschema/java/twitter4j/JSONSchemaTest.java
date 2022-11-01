@@ -307,7 +307,7 @@ class JSONSchemaTest {
                         """,
                 problemFields.asGetterImplementations("twitter4j.v2", null).codeFragment());
 
-        String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2");
+        String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content();
         assertEquals("""
                         package twitter4j;
                                                 

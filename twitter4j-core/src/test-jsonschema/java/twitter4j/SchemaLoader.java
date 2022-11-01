@@ -29,14 +29,14 @@ class WriteInterfaces {
 
         @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
 
-        var jsonSchemas = JSONSchema.extract("#/components/schemas/", apiJsonLatest);
-        for (JSONSchema value : jsonSchemas.values()) {
-            if (value instanceof ObjectSchema) {
-                JavaFile javaFile = value.asInterface("twitter4j.v2");
-                String javaInterface = javaFile.content();
-                Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()), javaInterface.getBytes());
-            }
-
+        JSONSchemaExtractor extractor = JSONSchemaExtractor.from(apiJsonLatest, "#/components/schemas/");
+        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2")) {
+            String javaInterface = javaFile.content();
+            Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()), javaInterface.getBytes());
+        }
+        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2")) {
+            String javaInterface = javaFile.content();
+            Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", javaFile.fileName()), javaInterface.getBytes());
         }
     }
 }
