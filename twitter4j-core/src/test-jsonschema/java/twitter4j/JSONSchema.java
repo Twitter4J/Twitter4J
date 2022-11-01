@@ -159,20 +159,20 @@ interface JSONSchema {
 
     @NotNull
     default String asConstructorAssignmentArray(String name) {
-        throw new UnsupportedOperationException("not supported");
+        throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     @NotNull
     default String asConstructorAssignments(String packageName) {
-        throw new UnsupportedOperationException("not supported");
+        throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     default @NotNull Code asFieldDeclarations(String packageName, @Nullable String overrideTypeName) {
-        throw new UnsupportedOperationException("not supported");
+        throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     default @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referfencingSchema) {
-        throw new UnsupportedOperationException("not supported");
+        throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     default @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
@@ -194,7 +194,7 @@ interface JSONSchema {
     }
 
     default @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
-        throw new UnsupportedOperationException("not supported");
+        throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     default @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
@@ -314,7 +314,7 @@ interface JSONSchema {
             case "boolean" -> BooleanSchema.from(jsonObject, typeName, jsonPointer);
             default -> throw new IllegalStateException("unexpected type:" + type);
         };
-        if(!(schema instanceof RefSchema)) {
+        if (!(schema instanceof RefSchema)) {
             schemaMap.put(schema.jsonPointer(), schema);
         }
         return schema;
@@ -835,6 +835,11 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
             return first.get();
         }
         throw new NoSuchElementException(ref + " not found");
+    }
+
+    @Override
+    public @NotNull String asConstructorAssignmentArray(String name) {
+        return delegateTo().asConstructorAssignmentArray(name);
     }
 
     @Override

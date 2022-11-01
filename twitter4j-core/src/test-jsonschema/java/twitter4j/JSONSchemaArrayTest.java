@@ -9,17 +9,17 @@ class JSONSchemaArrayTest {
     @Test
     void numberArray() {
         var extract = JSONSchema.extract("#/", """
-                 {
-                   "Position" : {
-                         "type" : "array",
-                         "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
-                         "items" : {
-                           "type" : "number"
-                         },
-                         "minItems" : 2,
-                         "maxItems" : 2
-                       }
-                 }""");
+                {
+                  "Position" : {
+                        "type" : "array",
+                        "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
+                        "items" : {
+                          "type" : "number"
+                        },
+                        "minItems" : 2,
+                        "maxItems" : 2
+                      }
+                }""");
         assertEquals(2, extract.size());
         JSONSchema position = extract.get("#/Position");
         assertEquals("private final double[] position;",
@@ -43,7 +43,7 @@ class JSONSchemaArrayTest {
                          */
                         double[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
@@ -52,17 +52,17 @@ class JSONSchemaArrayTest {
     @Test
     void integerArray() {
         var extract = JSONSchema.extract("#/", """
-                 {
-                   "Position" : {
-                         "type" : "array",
-                         "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
-                         "items" : {
-                           "type" : "integer"
-                         },
-                         "minItems" : 2,
-                         "maxItems" : 2
-                       }
-                 }""");
+                {
+                  "Position" : {
+                        "type" : "array",
+                        "description" : "A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.",
+                        "items" : {
+                          "type" : "integer"
+                        },
+                        "minItems" : 2,
+                        "maxItems" : 2
+                      }
+                }""");
         assertEquals(2, extract.size());
         JSONSchema position = extract.get("#/Position");
         assertEquals("private final long[] position;",
@@ -86,7 +86,7 @@ class JSONSchemaArrayTest {
                          */
                         long[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
@@ -129,7 +129,7 @@ class JSONSchemaArrayTest {
                          */
                         List<String> getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
@@ -172,7 +172,7 @@ class JSONSchemaArrayTest {
                          */
                         boolean[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
 
         assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
         assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
@@ -241,5 +241,27 @@ class JSONSchemaArrayTest {
                     List<UrlEntity> getUrls();
                 }
                 """, fullTextEntities.asInterface("twitter4j.v2").content());
+        assertEquals("""
+                package twitter4j;
+                                
+                import java.util.List;
+                import twitter4j.v2.UrlEntity;
+                                
+                /**
+                 * FullTextEntities
+                 */
+                class FullTextEntitiesImpl implements twitter4j.v2.FullTextEntities {
+                    private final List<UrlEntity> urls;
+                                
+                    FullTextEntitiesImpl(JSONObject json) {
+                        this.urls = json.getJSONArrayAsStream("urls").map(urlsImpl::new).collect(Collectors.toList());
+                    }
+                                
+                    @Override
+                    public List<UrlEntity> getUrls() {
+                        return urls;
+                    }
+                }
+                """, fullTextEntities.asJavaImpl("twitter4j", "twitter4j.v2").content());
     }
 }
