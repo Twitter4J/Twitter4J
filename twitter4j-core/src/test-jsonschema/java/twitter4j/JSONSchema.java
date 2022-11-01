@@ -17,6 +17,12 @@ interface JSONSchema {
 
     String description();
 
+    Set<String> keywords = Set.of("abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while", "_", "exports", "opens", "requires", "uses", "module", "permits", "sealed", "var", "non-sealed", "provides", "to", "with", "open", "record", "transitive", "yield");
+
+    static String escapeKeywords(String fieldName) {
+        return keywords.contains(fieldName) ? fieldName + "_" : fieldName;
+    }
+
     default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
         Code getterImplementation = asGetterImplementations(interfacePackageName, null);
         Code code = asFieldDeclarations(interfacePackageName, null);
@@ -140,7 +146,7 @@ interface JSONSchema {
         String resolvedTypeName = overrideTypeName != null ? upperCamelCased(overrideTypeName) : typeName();
         return Code.of(nullableAnnotation.codeFragment + "%sprivate final %s %s;".formatted(annotation.codeFragment,
                 javaType.codeFragment,
-                lowerCamelCased(resolvedTypeName)), imports);
+                escapeKeywords(lowerCamelCased(resolvedTypeName))), imports);
     }
 
     default Code nullableAnnotation(boolean notNull) {
@@ -207,7 +213,8 @@ interface JSONSchema {
                         public %3$s get%4$s() {
                             return %5$s;
                         }
-                        """.formatted(nullableAnnotation.codeFragment, annotation.codeFragment, javaType.codeFragment, upperCamelCased(resolvedTypeName), lowerCamelCased(resolvedTypeName))
+                        """.formatted(nullableAnnotation.codeFragment, annotation.codeFragment, javaType.codeFragment,
+                        upperCamelCased(resolvedTypeName), escapeKeywords(lowerCamelCased(resolvedTypeName)))
                 , nullableAnnotation, annotation, javaType);
     }
 
@@ -221,8 +228,11 @@ interface JSONSchema {
     }
 
     static String upperCamelCased(@NotNull String typeName) {
+        if ("_".equals(typeName)) {
+            return "_";
+        }
         StringBuilder result = new StringBuilder();
-        for (String s : typeName.split("_")) {
+        for (String s : typeName.replaceAll("-", "_").split("_")) {
             result.append(s.substring(0, 1).toUpperCase()).append(s.substring(1));
         }
         return result.toString();
@@ -427,19 +437,20 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
+        String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
             return """
-                    this.%1$s = json.get%2$s("%3$s");""".formatted(JSONSchema.lowerCamelCased(typeName), useInt() ? "Int" : "Long", typeName);
+                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName);
 
         } else {
             return """
-                    this.%1$s = json.get%2$sValue("%3$s");""".formatted(JSONSchema.lowerCamelCased(typeName), useInt() ? "Int" : "Long", typeName);
+                    this.%1$s = json.get%2$sValue("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName);
         }
     }
 
     @Override
     public @NotNull String asConstructorAssignmentArray(String name) {
-        String lowerCamelCased = JSONSchema.lowerCamelCased(name);
+        String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
         return """
                 this.%1$s = json.getIntArray("%2$s");""".formatted(lowerCamelCased, name);
     }
@@ -482,19 +493,20 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
+        String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
             return """
-                    this.%1$s = json.getDouble("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+                    this.%1$s = json.getDouble("%2$s");""".formatted(fieldName, typeName);
 
         } else {
             return """
-                    this.%1$s = json.getDoubleValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+                    this.%1$s = json.getDoubleValue("%2$s");""".formatted(fieldName, typeName);
         }
     }
 
     @Override
     public @NotNull String asConstructorAssignmentArray(String name) {
-        String lowerCamelCased = JSONSchema.lowerCamelCased(name);
+        String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
         return """
                 this.%1$s = json.getDoubleArray("%2$s");""".formatted(lowerCamelCased, name);
     }
@@ -521,15 +533,16 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
+        String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         return notNull ? """
-                this.%1$s = json.getBoolean("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName) :
+                this.%1$s = json.getBoolean("%2$s");""".formatted(fieldName, typeName) :
                 """
-                        this.%1$s = json.getBooleanValue("%2$s");""".formatted(JSONSchema.lowerCamelCased(typeName), typeName);
+                        this.%1$s = json.getBooleanValue("%2$s");""".formatted(fieldName, typeName);
     }
 
     @Override
     public @NotNull String asConstructorAssignmentArray(String name) {
-        String lowerCamelCased = JSONSchema.lowerCamelCased(name);
+        String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
         return """
                 this.%1$s = json.getBooleanArray("%2$s");""".formatted(lowerCamelCased, name);
     }
@@ -568,19 +581,19 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     @Override
     public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
-        String lowerCamelCased = JSONSchema.lowerCamelCased(typeName);
+        String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         return isDateTime() ?
                 """
-                        this.%1$s = json.getLocalDateTime("%2$s");""".formatted(lowerCamelCased, typeName) :
+                        this.%1$s = json.getLocalDateTime("%2$s");""".formatted(fieldName, typeName) :
                 """
-                        this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, typeName);
+                        this.%1$s = json.getString("%2$s");""".formatted(fieldName, typeName);
     }
 
     @Override
     public @NotNull String asConstructorAssignmentArray(String name) {
-        String lowerCamelCased = JSONSchema.lowerCamelCased(name);
+        String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
         return """
-                this.%1$s = json.getStringList("%2$s");""".formatted(lowerCamelCased, name);
+                this.%1$s = json.getStringList("%2$s");""".formatted(fieldName, name);
     }
 }
 
