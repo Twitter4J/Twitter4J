@@ -196,7 +196,7 @@ class JSONSchemaNoTypeTest {
                         this.value = json.getString("value");
                         this.resourceId = json.getString("resource_id");
                         this.resourceType = ResourceType.of(json.getString("resource_type"));
-                        this.problemFields = json.has("ProblemFields") ? new ProblemFields(json.getJSONObject("ProblemFields")) : null;
+                        this.problemFields = json.has("ProblemFields") ? new ProblemFieldsImpl(json.getJSONObject("ProblemFields")) : null;
                     }
                                 
                     @Nullable
@@ -235,7 +235,7 @@ class JSONSchemaNoTypeTest {
                         return problemFields;
                     }
                 }
-                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2"));
+                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2").content());
     }
 
 }

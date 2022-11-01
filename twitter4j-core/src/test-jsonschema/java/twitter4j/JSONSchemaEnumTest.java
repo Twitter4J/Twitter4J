@@ -149,7 +149,7 @@ class JSONSchemaEnumTest {
                             }
                         }
                         """,
-                reason.asJavaImpl("twitter4j", "twitter4j.v2"));
+                reason.asJavaImpl("twitter4j", "twitter4j.v2").content());
 
         assertEquals("""
                         package twitter4j.v2;

@@ -62,7 +62,7 @@ class JSONSchemaRefTest {
                 problemFields.asFieldDeclarations("twitter4j.v2",null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");
-                        this.theHost = json.has("theHost") ? new HostPort(json.getJSONObject("theHost")) : null;""",
+                        this.theHost = json.has("theHost") ? new HostPortImpl(json.getJSONObject("theHost")) : null;""",
                 problemFields.asConstructorAssignments("twitter4j.v2"));
         assertEquals("""
                         @NotNull
@@ -113,7 +113,7 @@ class JSONSchemaRefTest {
                                                 
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
-                                this.theHost = json.has("theHost") ? new HostPort(json.getJSONObject("theHost")) : null;
+                                this.theHost = json.has("theHost") ? new HostPortImpl(json.getJSONObject("theHost")) : null;
                             }
                                                 
                             @NotNull

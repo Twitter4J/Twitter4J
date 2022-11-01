@@ -772,7 +772,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                         this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, this.typeName)
                 :
                 """
-                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased, overrideTypeName != null ? overrideTypeName : this.typeName);
+                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased + "Impl", overrideTypeName != null ? overrideTypeName : this.typeName);
     }
 
     @Override

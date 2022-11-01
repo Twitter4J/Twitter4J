@@ -81,7 +81,7 @@ class JSONSchemaNoneTest {
                         return message;
                     }
                 }
-                """, error.asJavaImpl("twitter4j", "twitter4j.v2"));
+                """, error.asJavaImpl("twitter4j", "twitter4j.v2").content());
         assertEquals("""
                 package twitter4j.v2;
                                 
