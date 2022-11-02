@@ -70,22 +70,36 @@ class JSONSchemaEnumTest {
                          * reason
                          */
                         enum Reason {
+                            /**
+                             * official-client-forbidden
+                             */
                             OFFICIAL_CLIENT_FORBIDDEN("official-client-forbidden"),
+                            /**
+                             * client-not-enrolled
+                             */
                             CLIENT_NOT_ENROLLED("client-not-enrolled");
+                            /**
+                             * value
+                             */
                             public final String value;
-                                            
+                                                
                             Reason(String value) {
                                 this.value = value;
                             }
-                                            
+                                                
                             @Override
                             public String toString() {
                                 return value;
                             }
-                                            
-                            public static Reason of(String str) {
+                            /**
+                             * Returns the enum constant of the specified enum class with the specified name.
+                             * @param name the name of the constant to return
+                             * @return the enum constant of the specified enum class with the specified name,
+                             * or null if the enum constant is not found.\s
+                             */
+                            public static Reason of(String name) {
                                 for (Reason value : Reason.values()) {
-                                    if (value.value.equals(str)) {
+                                    if (value.value.equals(name)) {
                                         return value;
                                     }
                                 }
@@ -164,8 +178,17 @@ class JSONSchemaEnumTest {
                              * MyReason
                              */
                             enum Reason {
+                                /**
+                                 * official-client-forbidden
+                                 */
                                 OFFICIAL_CLIENT_FORBIDDEN("official-client-forbidden"),
+                                /**
+                                 * client-not-enrolled
+                                 */
                                 CLIENT_NOT_ENROLLED("client-not-enrolled");
+                                /**
+                                 * value
+                                 */
                                 public final String value;
                                                 
                                 Reason(String value) {
@@ -176,10 +199,15 @@ class JSONSchemaEnumTest {
                                 public String toString() {
                                     return value;
                                 }
-                                                
-                                public static Reason of(String str) {
+                                /**
+                                 * Returns the enum constant of the specified enum class with the specified name.
+                                 * @param name the name of the constant to return
+                                 * @return the enum constant of the specified enum class with the specified name,
+                                 * or null if the enum constant is not found.\s
+                                 */
+                                public static Reason of(String name) {
                                     for (Reason value : Reason.values()) {
-                                        if (value.value.equals(str)) {
+                                        if (value.value.equals(name)) {
                                             return value;
                                         }
                                     }
@@ -245,8 +273,17 @@ class JSONSchemaEnumTest {
                              * period
                              */
                             enum Period {
+                                /**
+                                 * Daily
+                                 */
                                 DAILY("Daily"),
+                                /**
+                                 * Monthly
+                                 */
                                 MONTHLY("Monthly");
+                                /**
+                                 * value
+                                 */
                                 public final String value;
                                                 
                                 Period(String value) {
@@ -257,10 +294,15 @@ class JSONSchemaEnumTest {
                                 public String toString() {
                                     return value;
                                 }
-                                                
-                                public static Period of(String str) {
+                                /**
+                                 * Returns the enum constant of the specified enum class with the specified name.
+                                 * @param name the name of the constant to return
+                                 * @return the enum constant of the specified enum class with the specified name,
+                                 * or null if the enum constant is not found.\s
+                                 */
+                                public static Period of(String name) {
                                     for (Period value : Period.values()) {
-                                        if (value.value.equals(str)) {
+                                        if (value.value.equals(name)) {
                                             return value;
                                         }
                                     }

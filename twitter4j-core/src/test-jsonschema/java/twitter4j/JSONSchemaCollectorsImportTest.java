@@ -162,8 +162,17 @@ class JSONSchemaCollectorsImportTest {
                      * voting_status
                      */
                     enum VotingStatus {
+                        /**
+                         * open
+                         */
                         OPEN("open"),
+                        /**
+                         * closed
+                         */
                         CLOSED("closed");
+                        /**
+                         * value
+                         */
                         public final String value;
                                 
                         VotingStatus(String value) {
@@ -174,10 +183,15 @@ class JSONSchemaCollectorsImportTest {
                         public String toString() {
                             return value;
                         }
-                                
-                        public static VotingStatus of(String str) {
+                        /**
+                         * Returns the enum constant of the specified enum class with the specified name.
+                         * @param name the name of the constant to return
+                         * @return the enum constant of the specified enum class with the specified name,
+                         * or null if the enum constant is not found.\s
+                         */
+                        public static VotingStatus of(String name) {
                             for (VotingStatus value : VotingStatus.values()) {
-                                if (value.value.equals(str)) {
+                                if (value.value.equals(name)) {
                                     return value;
                                 }
                             }

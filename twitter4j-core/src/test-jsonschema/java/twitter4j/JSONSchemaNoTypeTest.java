@@ -122,9 +122,21 @@ class JSONSchemaNoTypeTest {
                              * resource_type
                              */
                             enum ResourceType {
+                                /**
+                                 * user
+                                 */
                                 USER("user"),
+                                /**
+                                 * tweet
+                                 */
                                 TWEET("tweet"),
+                                /**
+                                 * media
+                                 */
                                 MEDIA("media");
+                                /**
+                                 * value
+                                 */
                                 public final String value;
                                                 
                                 ResourceType(String value) {
@@ -135,10 +147,15 @@ class JSONSchemaNoTypeTest {
                                 public String toString() {
                                     return value;
                                 }
-                                                
-                                public static ResourceType of(String str) {
+                                /**
+                                 * Returns the enum constant of the specified enum class with the specified name.
+                                 * @param name the name of the constant to return
+                                 * @return the enum constant of the specified enum class with the specified name,
+                                 * or null if the enum constant is not found.\s
+                                 */
+                                public static ResourceType of(String name) {
                                     for (ResourceType value : ResourceType.values()) {
-                                        if (value.value.equals(str)) {
+                                        if (value.value.equals(name)) {
                                             return value;
                                         }
                                     }

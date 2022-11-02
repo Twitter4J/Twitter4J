@@ -626,7 +626,10 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
     @NotNull
     public Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
         String enumStr = JSONSchema.indent(this.enumList.stream().map(e -> """
-                %s("%s")""".formatted(e.toUpperCase().replaceAll("-", "_")
+                /**
+                 * %s
+                 */
+                %s("%s")""".formatted(e, e.toUpperCase().replaceAll("-", "_")
                 , e)).collect(Collectors.joining(",\n")), 4) + ";";
         Code nullableAnnotation = nullableAnnotation(notNull);
         Code annotation = getAnnotation();
@@ -638,6 +641,9 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                  */
                 enum %3$s {
                 %5$s
+                    /**
+                     * value
+                     */
                     public final String value;
                             
                     %3$s(String value) {
@@ -648,10 +654,15 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     public String toString() {
                         return value;
                     }
-                            
-                    public static %3$s of(String str) {
+                    /**
+                     * Returns the enum constant of the specified enum class with the specified name.
+                     * @param name the name of the constant to return
+                     * @return the enum constant of the specified enum class with the specified name,
+                     * or null if the enum constant is not found.\s
+                     */
+                    public static %3$s of(String name) {
                         for (%3$s value : %3$s.values()) {
-                            if (value.value.equals(str)) {
+                            if (value.value.equals(name)) {
                                 return value;
                             }
                         }
