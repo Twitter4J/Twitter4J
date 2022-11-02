@@ -59,11 +59,11 @@ class JSONSchemaRefTest {
                         @NotNull
                         private final HostPort theHost;
                         """,
-                problemFields.asFieldDeclarations("twitter4j.v2",null).codeFragment());
+                problemFields.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");
                         this.theHost = json.has("theHost") ? new HostPortImpl(json.getJSONObject("theHost")) : null;""",
-                problemFields.asConstructorAssignments("twitter4j.v2"));
+                problemFields.asConstructorAssignments("twitter4j.v2").codeFragment());
         assertEquals("""
                         @NotNull
                         @Override

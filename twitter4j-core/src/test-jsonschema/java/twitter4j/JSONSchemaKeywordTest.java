@@ -284,7 +284,7 @@ class JSONSchemaKeywordTest {
                 this.open_ = json.getString("open");
                 this.record_ = json.getString("record");
                 this.transitive_ = json.getString("transitive");
-                this.yield_ = json.getString("yield");""", problemFields.asConstructorAssignments("twitter4j"));
+                this.yield_ = json.getString("yield");""", problemFields.asConstructorAssignments("twitter4j").codeFragment());
         assertEquals("""
                         @Nullable
                         private final String abstract_;

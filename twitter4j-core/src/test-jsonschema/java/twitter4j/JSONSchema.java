@@ -26,7 +26,8 @@ interface JSONSchema {
     default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
         Code getterImplementation = asGetterImplementations(interfacePackageName, null);
         Code code = asFieldDeclarations(interfacePackageName, null);
-        String imports = composeImports(null, getterImplementation);
+        Code constructorAssignments = asConstructorAssignments(interfacePackageName);
+        String imports = composeImports(null, getterImplementation, constructorAssignments);
         return new JavaFile(upperCamelCased(typeName()) + ".java", """
                 package %1$s;
                 %2$s
@@ -43,7 +44,7 @@ interface JSONSchema {
                 %8$s
                 }
                 """.formatted(packageName, imports, description(), upperCamelCased(typeName()), lowerCamelCased(typeName()),
-                indent(code.codeFragment, 4), indent(asConstructorAssignments(interfacePackageName), 8),
+                indent(code.codeFragment, 4), indent(constructorAssignments.codeFragment, 8),
                 indent(getterImplementation.codeFragment, 4), interfacePackageName));
     }
 
@@ -161,15 +162,15 @@ interface JSONSchema {
     }
 
     @NotNull
-    String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName);
+    Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName);
 
     @NotNull
-    default String asConstructorAssignmentArray(String name) {
+    default Code asConstructorAssignmentArray(String name) {
         throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
     @NotNull
-    default String asConstructorAssignments(String packageName) {
+    default Code asConstructorAssignments(String packageName) {
         throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
@@ -435,24 +436,24 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
-            return """
-                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName);
+            return Code.of("""
+                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName));
 
         } else {
-            return """
-                    this.%1$s = json.get%2$sValue("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName);
+            return Code.of("""
+                    this.%1$s = json.get%2$sValue("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName));
         }
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
-        return """
-                this.%1$s = json.getIntArray("%2$s");""".formatted(lowerCamelCased, name);
+        return Code.of("""
+                this.%1$s = json.getIntArray("%2$s");""".formatted(lowerCamelCased, name));
     }
 }
 
@@ -491,24 +492,24 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
-            return """
-                    this.%1$s = json.getDouble("%2$s");""".formatted(fieldName, typeName);
+            return Code.of("""
+                    this.%1$s = json.getDouble("%2$s");""".formatted(fieldName, typeName));
 
         } else {
-            return """
-                    this.%1$s = json.getDoubleValue("%2$s");""".formatted(fieldName, typeName);
+            return Code.of("""
+                    this.%1$s = json.getDoubleValue("%2$s");""".formatted(fieldName, typeName));
         }
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
-        return """
-                this.%1$s = json.getDoubleArray("%2$s");""".formatted(lowerCamelCased, name);
+        return Code.of("""
+                this.%1$s = json.getDoubleArray("%2$s");""".formatted(lowerCamelCased, name));
     }
 }
 
@@ -531,20 +532,20 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
-        return notNull ? """
+        return Code.of(notNull ? """
                 this.%1$s = json.getBoolean("%2$s");""".formatted(fieldName, typeName) :
                 """
-                        this.%1$s = json.getBooleanValue("%2$s");""".formatted(fieldName, typeName);
+                        this.%1$s = json.getBooleanValue("%2$s");""".formatted(fieldName, typeName));
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String lowerCamelCased = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
-        return """
-                this.%1$s = json.getBooleanArray("%2$s");""".formatted(lowerCamelCased, name);
+        return Code.of("""
+                this.%1$s = json.getBooleanArray("%2$s");""".formatted(lowerCamelCased, name));
     }
 }
 
@@ -579,21 +580,21 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
-        return isDateTime() ?
+        return Code.of(isDateTime() ?
                 """
                         this.%1$s = json.getLocalDateTime("%2$s");""".formatted(fieldName, typeName) :
                 """
-                        this.%1$s = json.getString("%2$s");""".formatted(fieldName, typeName);
+                        this.%1$s = json.getString("%2$s");""".formatted(fieldName, typeName));
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(name));
-        return """
-                this.%1$s = json.getStringList("%2$s");""".formatted(fieldName, name);
+        return Code.of("""
+                this.%1$s = json.getStringList("%2$s");""".formatted(fieldName, name));
     }
 }
 
@@ -658,19 +659,19 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String jsonName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String lowerCamelCased = JSONSchema.lowerCamelCased(jsonName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
-        return """
-                this.%1$s = %2$s.of(json.getString("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, jsonName);
+        return Code.of("""
+                this.%1$s = %2$s.of(json.getString("%3$s"));""".formatted(lowerCamelCased, upperCamelCased, jsonName));
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(name);
-        return """
-                this.%1$s = json.getStringList("%2$s");""".formatted(lowerCamelCased, name);
+        return Code.of("""
+                this.%1$s = json.getStringList("%2$s");""".formatted(lowerCamelCased, name));
     }
 }
 
@@ -718,7 +719,7 @@ record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nulla
 
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         return items.asConstructorAssignmentArray(typeName);
     }
@@ -777,31 +778,32 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(overrideTypeName != null ? overrideTypeName : this.typeName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
-        return hasNoElements() ?
+        return Code.of(hasNoElements() ?
                 """
                         this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, this.typeName)
                 :
                 """
-                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased + "Impl", overrideTypeName != null ? overrideTypeName : this.typeName);
+                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased + "Impl", overrideTypeName != null ? overrideTypeName : this.typeName));
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         String lowerCamelCased = JSONSchema.lowerCamelCased(name);
-        String upperCamelCased = JSONSchema.upperCamelCased(name);
-        return """
-                this.%1$s = json.getJSONArrayAsStream("%3$s").map(%3$sImpl::new).collect(Collectors.toList());""".formatted(lowerCamelCased, upperCamelCased, name);
+        String impl = JSONSchema.upperCamelCased(typeName);
+        return Code.of("""
+                this.%1$s = json.getJSONArrayAsStream("%2$s").map(%3$sImpl::new).collect(Collectors.toList());""".formatted(lowerCamelCased, name, impl), "java.util.stream.Collectors");
     }
 
     @Override
-    public @NotNull String asConstructorAssignments(String packageName) {
-        List<String> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
+    public @NotNull Code asConstructorAssignments(String packageName) {
+        List<Code> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asConstructorAssignment(true, null)).forEach(codes::add);
         oneOf.stream().map(e -> e.asConstructorAssignment(false, null)).forEach(codes::add);
-        return String.join("\n", codes);
+        return Code.of(codes.stream().map(Code::codeFragment).collect(Collectors.joining("\n")),
+                codes.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
     }
 
     @Override
@@ -851,7 +853,7 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     @Override
-    public @NotNull String asConstructorAssignmentArray(String name) {
+    public @NotNull Code asConstructorAssignmentArray(String name) {
         return delegateTo().asConstructorAssignmentArray(name);
     }
 
@@ -911,12 +913,12 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     @Override
-    public @NotNull String asConstructorAssignments(String packageName) {
+    public @NotNull Code asConstructorAssignments(String packageName) {
         return delegateTo().asConstructorAssignments(packageName);
     }
 
     @Override
-    public @NotNull String asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
+    public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         return delegateTo().asConstructorAssignment(notNull, overrideTypeName());
     }
 

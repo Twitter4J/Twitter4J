@@ -53,10 +53,10 @@ class JSONSchemaEnumTest {
                 reason.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.reason = Reason.of(json.getString("reason"));""",
-                reason.asConstructorAssignment(false, null));
+                reason.asConstructorAssignment(false, null).codeFragment());
         assertEquals("""
                         this.reason = Reason.of(json.getString("reason"));""",
-                reason.asConstructorAssignment(true, null));
+                reason.asConstructorAssignment(true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override

@@ -32,11 +32,11 @@ class JSONSchemaNoneTest {
                         @NotNull
                         private final String message;
                         """,
-                error.asFieldDeclarations("twitter4j.v2",null).codeFragment());
+                error.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.code = json.getInt("code");
                         this.message = json.getString("message");""",
-                error.asConstructorAssignments("twitter4j.v2"));
+                error.asConstructorAssignments("twitter4j.v2").codeFragment());
         assertEquals("""
                         @Override
                         public int getCode() {
