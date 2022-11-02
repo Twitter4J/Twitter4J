@@ -456,7 +456,7 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
             return Code.of("""
-                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName), Set.of(), Set.of("@SuppressWarnings(\"ConstantConditions\")"));
+                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName));
 
         } else {
             return Code.of("""

@@ -23,8 +23,8 @@ class JSONSchemaSuppressWarningsTest {
                 }
                 """);
         JSONSchema error = extract.get("#/Error");
-        assertEquals(1, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
-        assertTrue(error.asConstructorAssignments("twitter4j").methodLevelAnnotations().contains("@SuppressWarnings(\"ConstantConditions\")"));
+        // primitive type doesn't require suppressWarnings
+        assertEquals(0, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
     }
 
     @Test
@@ -35,6 +35,44 @@ class JSONSchemaSuppressWarningsTest {
                     "properties" : {
                       "code" : {
                         "type" : "integer"
+                      }
+                    }
+                  }
+                      
+                }
+                """);
+        JSONSchema error = extract.get("#/Error");
+        assertEquals(0, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
+    }
+
+    @Test
+    void suppressWarningsBoolean() {
+        var extract = JSONSchema.extract("#/", """
+                {
+                  "Error" : {
+                    "required" : [ "code"],
+                    "properties" : {
+                      "code" : {
+                        "type" : "boolean"
+                      }
+                    }
+                  }
+                      
+                }
+                """);
+        JSONSchema error = extract.get("#/Error");
+        // primitive type doesn't require suppressWarnings
+        assertEquals(0, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
+    }
+
+    @Test
+    void noSuppressWarningsBoolean() {
+        var extract = JSONSchema.extract("#/", """
+                {
+                  "Error" : {
+                    "properties" : {
+                      "code" : {
+                        "type" : "boolean"
                       }
                     }
                   }
@@ -61,8 +99,7 @@ class JSONSchemaSuppressWarningsTest {
                 }
                 """);
         JSONSchema error = extract.get("#/Error");
-        assertEquals(1, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
-        assertTrue(error.asConstructorAssignments("twitter4j").methodLevelAnnotations().contains("@SuppressWarnings(\"ConstantConditions\")"));
+        assertEquals(0, error.asConstructorAssignments("twitter4j").methodLevelAnnotations().size());
     }
 
     @Test
