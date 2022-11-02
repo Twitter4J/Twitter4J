@@ -28,7 +28,7 @@ interface JSONSchema {
         Code code = asFieldDeclarations(interfacePackageName, null);
         Code constructorAssignments = asConstructorAssignments(interfacePackageName);
         String imports = composeImports(null, getterImplementation, constructorAssignments);
-        return new JavaFile(upperCamelCased(typeName()) + ".java", """
+        return new JavaFile(upperCamelCased(typeName()) + "Impl.java", """
                 package %1$s;
                 %2$s
                 /**

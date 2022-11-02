@@ -200,6 +200,7 @@ class JSONSchemaRefTest {
                         """,
                 interfaceDeclaration);
 
+        JavaFile problem = extract.get("#/components/schemas/Problem").asJavaImpl("twitter4j", "twitter4j.v2");
         assertEquals("""
                 package twitter4j;
                                 
@@ -224,6 +225,7 @@ class JSONSchemaRefTest {
                         return genericProblem;
                     }
                 }
-                """, extract.get("#/components/schemas/Problem").asJavaImpl("twitter4j", "twitter4j.v2").content());
+                """, problem.content());
+        assertEquals("ProblemImpl.java", problem.fileName());
     }
 }
