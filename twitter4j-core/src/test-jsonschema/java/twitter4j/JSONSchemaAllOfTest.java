@@ -23,7 +23,7 @@ class JSONSchemaAllOfTest {
                       },
                       "EntityIndices": {
                         "type": "object",
-                        "description": "Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.",
+                        "description": "Represent a https://twitter4j.org/path/to/?something boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.",
                         "required": [
                           "start",
                           "end"
@@ -74,7 +74,7 @@ class JSONSchemaAllOfTest {
                          */
                         public interface CashtagEntity {
                             /**
-                             * @return Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.
+                             * @return Represent a <a href="https://twitter4j.org/path/to/?something">https://twitter4j.org/path/to/?something</a> boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.
                              */
                             @NotNull
                             EntityIndices getEntityIndices();

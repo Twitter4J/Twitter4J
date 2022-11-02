@@ -112,7 +112,7 @@ class JSONSchemaOneOfTest {
                         import org.jetbrains.annotations.Nullable;
                                                 
                         /**
-                         * An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).
+                         * An HTTP Problem Details object, as defined in IETF RFC 7807 (<a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a>).
                          */
                         public interface Problem {
                             /**

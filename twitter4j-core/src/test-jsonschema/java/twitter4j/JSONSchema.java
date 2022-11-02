@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -22,6 +24,34 @@ interface JSONSchema {
     static String escapeKeywords(String fieldName) {
         return keywords.contains(fieldName) ? fieldName + "_" : fieldName;
     }
+
+
+    // !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+    Pattern httpPattern = Pattern.compile("https?://[a-zA-Z0-9!-'*-/:-@\\[-`{-~]+");
+
+    static String link(String javadocContent) {
+        if (javadocContent == null) {
+            return javadocContent;
+        }
+        StringBuilder builder = new StringBuilder();
+
+        int start = 0;
+        Matcher matcher = httpPattern.matcher(javadocContent);
+        while (matcher.find()) {
+            builder.append(javadocContent, start, matcher.start())
+                    .append("<a href=\"")
+                    .append(javadocContent, matcher.start(), matcher.end())
+                    .append("\">")
+                    .append(javadocContent, matcher.start(), matcher.end())
+                    .append("</a>");
+            start = matcher.end();
+        }
+        if (start != 0) {
+            builder.append(javadocContent.substring(start));
+        }
+        return builder.length() == 0 ? javadocContent : builder.toString();
+    }
+
 
     default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
         Code getterImplementation = asGetterImplementations(interfacePackageName, null);
@@ -47,7 +77,7 @@ interface JSONSchema {
                     
                 %8$s
                 }
-                """.formatted(packageName, imports, description(), upperCamelCased(typeName()), lowerCamelCased(typeName()),
+                """.formatted(packageName, imports, link(description()), upperCamelCased(typeName()), lowerCamelCased(typeName()),
                 indent(code.codeFragment, 4), indent(constructorAssignments.codeFragment, 8),
                 indent(getterImplementation.codeFragment, 4), interfacePackageName, constructorAnnotations));
     }
@@ -66,7 +96,7 @@ interface JSONSchema {
                         public interface %4$s {
                         %5$s
                         }
-                        """.formatted(interfacePackageName, imports, description(), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4)));
+                        """.formatted(interfacePackageName, imports, link(description()), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4)));
     }
 
     /**
@@ -208,7 +238,7 @@ interface JSONSchema {
                          * @return %1$s
                          */
                         %2$s%3$s get%4$s();
-                        """.formatted(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description(),
+                        """.formatted(link(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description()),
                         code.codeFragment,
                         annotation.codeFragment + javaType.codeFragment,
                         upperCamelCased(resolvedTypeName))
@@ -629,7 +659,7 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                 /**
                  * %s
                  */
-                %s("%s")""".formatted(e, e.toUpperCase().replaceAll("-", "_")
+                %s("%s")""".formatted(JSONSchema.link(e), e.toUpperCase().replaceAll("-", "_")
                 , e)).collect(Collectors.joining(",\n")), 4) + ";";
         Code nullableAnnotation = nullableAnnotation(notNull);
         Code annotation = getAnnotation();
@@ -674,7 +704,8 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                  * @return %1$s
                  */
                 %2$s%3$s get%4$s();
-                """.formatted(referencingSchema != null ? referencingSchema.description() : description(), nullableAnnotation.codeFragment(), annotation.codeFragment() + javaType.codeFragment(),
+                """.formatted(JSONSchema.link(referencingSchema != null ? referencingSchema.description() : description()),
+                nullableAnnotation.codeFragment(), annotation.codeFragment() + javaType.codeFragment(),
                 JSONSchema.upperCamelCased(resolvedTypeName), enumStr), nullableAnnotation, annotation, javaType);
     }
 

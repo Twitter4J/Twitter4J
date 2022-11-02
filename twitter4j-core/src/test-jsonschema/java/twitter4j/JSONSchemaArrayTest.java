@@ -39,7 +39,7 @@ class JSONSchemaArrayTest {
                 position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         /**
-                         * @return A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+                         * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         double[] getPosition();
                         """,
@@ -82,7 +82,7 @@ class JSONSchemaArrayTest {
                 position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         /**
-                         * @return A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+                         * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         long[] getPosition();
                         """,
@@ -125,7 +125,7 @@ class JSONSchemaArrayTest {
                 position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         /**
-                         * @return A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+                         * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         List<String> getPosition();
                         """,
@@ -168,7 +168,7 @@ class JSONSchemaArrayTest {
                 position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         /**
-                         * @return A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+                         * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         boolean[] getPosition();
                         """,

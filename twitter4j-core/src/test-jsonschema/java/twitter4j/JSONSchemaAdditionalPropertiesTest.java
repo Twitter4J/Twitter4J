@@ -12,7 +12,7 @@ class JSONSchemaAdditionalPropertiesTest {
                   "components": {
                     "schemas": {
                       "InvalidRequestProblem": {
-                        "description": "A problem that indicates this request is invalid.",
+                        "description": "A problem that indicates this request is invalid. http://twitter4j.org/",
                         "type": "object",
                         "allOf": [
                           {
@@ -126,7 +126,7 @@ class JSONSchemaAdditionalPropertiesTest {
                         import java.util.List;
                                                 
                         /**
-                         * A problem that indicates this request is invalid.
+                         * A problem that indicates this request is invalid. <a href="http://twitter4j.org/">http://twitter4j.org/</a>
                          */
                         public interface InvalidRequestProblem {
                             /**
@@ -134,7 +134,7 @@ class JSONSchemaAdditionalPropertiesTest {
                              */
                             @Nullable
                             String getType();
-                        
+                                                
                             /**
                              * @return errors
                              */
