@@ -183,11 +183,13 @@ class JSONSchemaNoTypeTest {
                 import org.jetbrains.annotations.NotNull;
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
                 import twitter4j.v2.ProblemFields;
                                 
                 /**
                  * A problem that indicates that a given Tweet, User, etc. does not exist.
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ResourceNotFoundProblem")
                 class ResourceNotFoundProblemImpl implements twitter4j.v2.ResourceNotFoundProblem {
                     @Nullable
                     private final String type;
@@ -253,7 +255,8 @@ class JSONSchemaNoTypeTest {
                         return problemFields;
                     }
                 }
-                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2").content());
+                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
 }

@@ -246,11 +246,13 @@ class JSONSchemaArrayTest {
                                 
                 import java.util.List;
                 import java.util.stream.Collectors;
+                import javax.annotation.processing.Generated;
                 import twitter4j.v2.UrlEntity;
                                 
                 /**
                  * FullTextEntities
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/FullTextEntities")
                 class FullTextEntitiesImpl implements twitter4j.v2.FullTextEntities {
                     private final List<UrlEntity> urls;
                                 
@@ -263,6 +265,7 @@ class JSONSchemaArrayTest {
                         return urls;
                     }
                 }
-                """, fullTextEntities.asJavaImpl("twitter4j", "twitter4j.v2").content());
+                """, fullTextEntities.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

@@ -4,6 +4,10 @@ import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,8 +60,14 @@ interface JSONSchema {
     default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
         Code getterImplementation = asGetterImplementations(interfacePackageName, null);
         Code code = asFieldDeclarations(interfacePackageName, null);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
+        String date = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT")).format(dateTimeFormatter);
+
         Code constructorAssignments = asConstructorAssignments(interfacePackageName);
-        String imports = composeImports(null, getterImplementation, constructorAssignments);
+        String generateClass = JSONSchema.class.getName();
+        Code generated = Code.of("""
+                @Generated(value = "%s", date = "%s", comments = "%s")""".formatted(generateClass, date, jsonPointer()), "javax.annotation.processing.Generated");
+        String imports = composeImports(null, getterImplementation, constructorAssignments, generated);
         String constructorAnnotations = constructorAssignments.methodLevelAnnotations.stream().sorted().collect(Collectors.joining("\n"));
         if (!constructorAnnotations.isEmpty()) {
             constructorAnnotations += "\n    ";
@@ -68,18 +78,27 @@ interface JSONSchema {
                 /**
                  * %3$s
                  */
-                class %4$sImpl implements %9$s.%4$s {
-                %6$s
-                    
-                    %10$s%4$sImpl(JSONObject json) {
+                %4$s
+                class %5$sImpl implements %6$s.%5$s {
                 %7$s
+                    
+                    %8$s%5$sImpl(JSONObject json) {
+                %9$s
                     }
                     
-                %8$s
+                %10$s
                 }
-                """.formatted(packageName, imports, link(description()), upperCamelCased(typeName()), lowerCamelCased(typeName()),
-                indent(code.codeFragment, 4), indent(constructorAssignments.codeFragment, 8),
-                indent(getterImplementation.codeFragment, 4), interfacePackageName, constructorAnnotations));
+                """.formatted(packageName,//1
+                imports,//2
+                link(description()),//3
+                generated.codeFragment,//4
+                upperCamelCased(typeName()), //5
+                interfacePackageName, //6
+                indent(code.codeFragment, 4),//7
+                constructorAnnotations, // 8
+                indent(constructorAssignments.codeFragment, 8),//9
+                indent(getterImplementation.codeFragment, 4) //10
+        ));
     }
 
     default @NotNull JavaFile asInterface(@NotNull String interfacePackageName) {

@@ -23,7 +23,7 @@ class SchemaLoader {
 
 }
 
-class WriteInterfaces {
+class GenerateCodes {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Path file = Path.of(Objects.requireNonNull(SchemaLoader.class.getResource("/openapi.json")).toURI());
 
@@ -37,6 +37,23 @@ class WriteInterfaces {
         for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2")) {
             String javaInterface = javaFile.content();
             Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", javaFile.fileName()), javaInterface.getBytes());
+        }
+    }
+}
+
+@SuppressWarnings("ResultOfMethodCallIgnored")
+class DeleteGeneratedCodes {
+    public static void main(String[] args) throws IOException, URISyntaxException {
+        Path file = Path.of(Objects.requireNonNull(SchemaLoader.class.getResource("/openapi.json")).toURI());
+
+        @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
+
+        JSONSchemaExtractor extractor = JSONSchemaExtractor.from(apiJsonLatest, "#/components/schemas/");
+        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2")) {
+            Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()).toFile().delete();
+        }
+        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2")) {
+            Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", javaFile.fileName()).toFile().delete();
         }
     }
 }

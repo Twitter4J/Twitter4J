@@ -308,7 +308,6 @@ class JSONSchemaTest {
                         """,
                 problemFields.asGetterImplementations("twitter4j.v2", null).codeFragment());
 
-        String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content();
         assertEquals("""
                         package twitter4j;
                                                 
@@ -317,10 +316,12 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.Range;
                                                 
                         import java.time.LocalDateTime;
+                        import javax.annotation.processing.Generated;
                                                 
                         /**
                          * ProblemFields
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/ProblemFields")
                         class ProblemFieldsImpl implements twitter4j.v2.ProblemFields {
                             @NotNull
                             private final String type;
@@ -369,11 +370,11 @@ class JSONSchemaTest {
                             }
                         }
                         """,
-                javaImpl);
+                problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                        .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
         JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
         assertEquals("ProblemFields.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
@@ -413,7 +414,7 @@ class JSONSchemaTest {
                             Integer getHTTPStatusCode();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
 
     }

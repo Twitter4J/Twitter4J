@@ -134,17 +134,18 @@ class JSONSchemaRefTest {
                         """,
                 problemFields.asGetterDeclarations("twitter4j.v2",null).codeFragment());
 
-        String javaImpl = problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content();
         assertEquals("""
                         package twitter4j;
                                                 
                         import org.jetbrains.annotations.NotNull;
                                                 
+                        import javax.annotation.processing.Generated;
                         import twitter4j.v2.HostPort;
                                                 
                         /**
                          * ProblemFields
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ProblemFields")
                         class ProblemFieldsImpl implements twitter4j.v2.ProblemFields {
                             @NotNull
                             private final String type;
@@ -171,7 +172,8 @@ class JSONSchemaRefTest {
                             }
                         }
                         """,
-                javaImpl);
+                problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                        .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
         JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
         assertEquals("ProblemFields.java", javaFile.fileName());
@@ -206,11 +208,13 @@ class JSONSchemaRefTest {
                                 
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
                 import twitter4j.v2.GenericProblem;
                                 
                 /**
                  * An HTTP Problem Details object, as defined in IETF RFC 7807 (<a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a>).
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/Problem")
                 class ProblemImpl implements twitter4j.v2.Problem {
                     @Nullable
                     private final GenericProblem genericProblem;
@@ -225,7 +229,8 @@ class JSONSchemaRefTest {
                         return genericProblem;
                     }
                 }
-                """, problem.content());
+                """, problem.content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("ProblemImpl.java", problem.fileName());
     }
 }

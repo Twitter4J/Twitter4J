@@ -145,9 +145,12 @@ class JSONSchemaEnumTest {
                                                 
                         import org.jetbrains.annotations.Nullable;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * MyObject
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/MyObject")
                         class MyObjectImpl implements twitter4j.v2.MyObject {
                             @Nullable
                             private final Reason myReason;
@@ -163,7 +166,8 @@ class JSONSchemaEnumTest {
                             }
                         }
                         """,
-                reason.asJavaImpl("twitter4j", "twitter4j.v2").content());
+                reason.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                        .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
         assertEquals("""
                         package twitter4j.v2;

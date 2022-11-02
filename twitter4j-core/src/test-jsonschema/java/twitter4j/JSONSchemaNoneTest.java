@@ -55,9 +55,12 @@ class JSONSchemaNoneTest {
                                 
                 import org.jetbrains.annotations.NotNull;
                                 
+                import javax.annotation.processing.Generated;
+                                
                 /**
                  * Error
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/Error")
                 class ErrorImpl implements twitter4j.v2.Error {
                     private final int code;
                                 
@@ -81,7 +84,8 @@ class JSONSchemaNoneTest {
                         return message;
                     }
                 }
-                """, error.asJavaImpl("twitter4j", "twitter4j.v2").content());
+                """, error.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("""
                 package twitter4j.v2;
                                 
@@ -102,7 +106,8 @@ class JSONSchemaNoneTest {
                     @NotNull
                     String getMessage();
                 }
-                """, error.asInterface("twitter4j.v2").content());
+                """, error.asInterface("twitter4j.v2").content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
 }

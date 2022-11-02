@@ -42,11 +42,13 @@ class JSONSchemaGetterTest {
                                 
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
                 import twitter4j.v2.PromotedMetrics;
                                 
                 /**
                  * Video
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/Video")
                 class VideoImpl implements twitter4j.v2.Video {
                     @Nullable
                     private final PromotedMetrics promotedMetrics;
@@ -61,7 +63,8 @@ class JSONSchemaGetterTest {
                         return promotedMetrics;
                     }
                 }
-                """, extract.get("#/components/schemas/Video").asJavaImpl("twitter4j", "twitter4j.v2").content());
+                """, extract.get("#/components/schemas/Video").asJavaImpl("twitter4j", "twitter4j.v2").content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
     @Test
