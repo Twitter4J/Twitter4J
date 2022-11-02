@@ -772,6 +772,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         List<Code> codes = new ArrayList<>();
         properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).forEach(codes::add);
         allOf.stream().map(e -> e.asFieldDeclaration(true, packageName, overrideTypeName)).forEach(codes::add);
+        oneOf.stream().map(e -> e.asFieldDeclaration(false, packageName, overrideTypeName)).forEach(codes::add);
         return Code.of(codes.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
                 codes.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
 

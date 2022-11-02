@@ -39,12 +39,54 @@ class JSONSchemaRefTest {
                             "$ref": "#/components/schemas/HostPort"
                           }
                         }
+                      },
+                      "Problem": {
+                        "description": "An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).",
+                        "oneOf": [
+                          {
+                            "$ref": "#/components/schemas/GenericProblem"
+                          }
+                        ],
+                        "discriminator": {
+                          "propertyName": "type",
+                          "mapping": {
+                            "about:blank": "#/components/schemas/GenericProblem",
+                            "https://api.twitter.com/labs/2/problems/invalid-request": "#/components/schemas/InvalidRequestProblem",
+                            "https://api.twitter.com/labs/2/problems/client-forbidden": "#/components/schemas/ClientForbiddenProblem",
+                            "https://api.twitter.com/labs/2/problems/resource-not-found": "#/components/schemas/ResourceNotFoundProblem",
+                            "https://api.twitter.com/labs/2/problems/not-authorized-for-resource": "#/components/schemas/ResourceUnauthorizedProblem",
+                            "https://api.twitter.com/labs/2/problems/disallowed-resource": "#/components/schemas/DisallowedResourceProblem",
+                            "https://api.twitter.com/labs/2/problems/unsupported-authentication": "#/components/schemas/UnsupportedAuthenticationProblem",
+                            "https://api.twitter.com/labs/2/problems/usage-capped": "#/components/schemas/UsageCapExceededProblem"
+                          }
+                        }
+                      },
+                      "GenericProblem": {
+                        "description": "A generic problem with no additional information beyond that provided by the HTTP status code.",
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/ProblemFields"
+                          }
+                        ],
+                        "required": [
+                          "status"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "about:blank"
+                            ]
+                          },
+                          "status": {
+                            "type": "integer"
+                          }
+                        }
                       }
                     }
                   }
                 }""");
 
-        assertEquals(5, extract.size());
         assertEquals("#/components/schemas/HostPort", extract.get("#/components/schemas/HostPort").jsonPointer());
         for (JSONSchema value : extract.values()) {
             System.out.println(value.jsonPointer() + ":" + value.jsonPointer().getClass().getName() + ":" + value.typeName() + ":" + value.getJavaType(false, "twitter4j"));
@@ -157,5 +199,31 @@ class JSONSchemaRefTest {
                         }
                         """,
                 interfaceDeclaration);
+
+        assertEquals("""
+                package twitter4j;
+                                
+                import org.jetbrains.annotations.Nullable;
+                                
+                import twitter4j.v2.GenericProblem;
+                                
+                /**
+                 * An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).
+                 */
+                class ProblemImpl implements twitter4j.v2.Problem {
+                    @Nullable
+                    private final GenericProblem genericProblem;
+                                
+                    ProblemImpl(JSONObject json) {
+                        this.genericProblem = json.has("GenericProblem") ? new GenericProblemImpl(json.getJSONObject("GenericProblem")) : null;
+                    }
+                                
+                    @Nullable
+                    @Override
+                    public GenericProblem getGenericProblem() {
+                        return genericProblem;
+                    }
+                }
+                """, extract.get("#/components/schemas/Problem").asJavaImpl("twitter4j", "twitter4j.v2").content());
     }
 }
