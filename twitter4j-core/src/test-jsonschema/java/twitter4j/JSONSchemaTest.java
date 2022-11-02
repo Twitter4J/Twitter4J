@@ -335,6 +335,7 @@ class JSONSchemaTest {
                             @Range(from = 100, to = 599)
                             private final Integer hTTPStatusCode;
                                                 
+                            @SuppressWarnings("ConstantConditions")
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
                                 this.title = json.getString("title");

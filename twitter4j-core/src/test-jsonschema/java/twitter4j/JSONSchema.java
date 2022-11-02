@@ -456,7 +456,7 @@ record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nul
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
         if (notNull) {
             return Code.of("""
-                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName));
+                    this.%1$s = json.get%2$s("%3$s");""".formatted(fieldName, useInt() ? "Int" : "Long", typeName), Set.of(), Set.of("@SuppressWarnings(\"ConstantConditions\")"));
 
         } else {
             return Code.of("""
@@ -602,7 +602,7 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
                 """
                         this.%1$s = json.getLocalDateTime("%2$s");""".formatted(fieldName, typeName) :
                 """
-                        this.%1$s = json.getString("%2$s");""".formatted(fieldName, typeName));
+                        this.%1$s = json.getString("%2$s");""".formatted(fieldName, typeName), Set.of(), notNull ? Set.of("@SuppressWarnings(\"ConstantConditions\")") : Set.of());
     }
 
     @Override

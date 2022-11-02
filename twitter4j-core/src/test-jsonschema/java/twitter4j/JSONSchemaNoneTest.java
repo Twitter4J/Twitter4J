@@ -63,7 +63,8 @@ class JSONSchemaNoneTest {
                                 
                     @NotNull
                     private final String message;
-                                
+                              
+                    @SuppressWarnings("ConstantConditions")
                     ErrorImpl(JSONObject json) {
                         this.code = json.getInt("code");
                         this.message = json.getString("message");
