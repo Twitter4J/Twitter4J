@@ -485,8 +485,7 @@ class JSONSchemaKeywordTest {
                         private final String transitive_;
                                                 
                         @Nullable
-                        private final String yield_;
-                        """,
+                        private final String yield_;""",
                 problemFields.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         @Nullable

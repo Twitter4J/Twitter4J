@@ -37,6 +37,31 @@ class JSONSchemaGetterTest {
                 @Nullable
                 PromotedMetrics getPromotedMetrics();
                 """, extract.get("#/components/schemas/Video/properties/promoted_metrics").asGetterDeclaration(false, "twitter4j", null).codeFragment());
+        assertEquals("""
+                package twitter4j;
+                                
+                import org.jetbrains.annotations.Nullable;
+                                
+                import twitter4j.v2.PromotedMetrics;
+                                
+                /**
+                 * Video
+                 */
+                class VideoImpl implements twitter4j.v2.Video {
+                    @Nullable
+                    private final PromotedMetrics promotedMetrics;
+                                
+                    VideoImpl(JSONObject json) {
+                        this.promotedMetrics = json.has("promoted_metrics") ? new PromotedMetricsImpl(json.getJSONObject("promoted_metrics")) : null;
+                    }
+                                
+                    @Nullable
+                    @Override
+                    public PromotedMetrics getPromotedMetrics() {
+                        return promotedMetrics;
+                    }
+                }
+                """, extract.get("#/components/schemas/Video").asJavaImpl("twitter4j", "twitter4j.v2").content());
     }
 
     @Test
@@ -111,19 +136,7 @@ class JSONSchemaGetterTest {
                     Url getUrl();
                 }
                 """, extract.get("#/components/schemas/entities").asInterface("twitter4j").content());
-        System.out.println(extract.values());
 
-        for (JSONSchema value : extract.values()) {
-            if (value instanceof ObjectSchema) {
-                JavaFile javaFile = value.asInterface("twitter4j.v2");
-                System.out.println(javaFile.fileName());
-
-//                String javaInterface = javaFile.content();
-
-//                Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()), javaInterface.getBytes());
-            }
-
-        }
     }
 
 }

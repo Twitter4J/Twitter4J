@@ -30,8 +30,7 @@ class JSONSchemaNoneTest {
                         private final int code;
                                                 
                         @NotNull
-                        private final String message;
-                        """,
+                        private final String message;""",
                 error.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.code = json.getInt("code");

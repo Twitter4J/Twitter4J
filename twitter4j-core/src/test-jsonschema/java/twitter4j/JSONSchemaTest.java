@@ -272,8 +272,7 @@ class JSONSchemaTest {
                                                 
                         @Nullable
                         @Range(from = 100, to = 599)
-                        private final Integer hTTPStatusCode;
-                        """,
+                        private final Integer hTTPStatusCode;""",
                 problemFields.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");

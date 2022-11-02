@@ -99,8 +99,7 @@ class JSONSchemaRefTest {
                         private final String type;
 
                         @NotNull
-                        private final HostPort theHost;
-                        """,
+                        private final HostPort theHost;""",
                 problemFields.asFieldDeclarations("twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.type = json.getString("type");
@@ -153,6 +152,7 @@ class JSONSchemaRefTest {
                             @NotNull
                             private final HostPort theHost;
                                                 
+                            @SuppressWarnings("ConstantConditions")
                             ProblemFieldsImpl(JSONObject json) {
                                 this.type = json.getString("type");
                                 this.theHost = json.has("theHost") ? new HostPortImpl(json.getJSONObject("theHost")) : null;

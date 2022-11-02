@@ -190,6 +190,7 @@ class JSONSchemaNoTypeTest {
                     @NotNull
                     private final ProblemFields problemFields;
                                 
+                    @SuppressWarnings("ConstantConditions")
                     ResourceNotFoundProblemImpl(JSONObject json) {
                         this.type = json.getString("type");
                         this.parameter = json.getString("parameter");

@@ -28,6 +28,10 @@ interface JSONSchema {
         Code code = asFieldDeclarations(interfacePackageName, null);
         Code constructorAssignments = asConstructorAssignments(interfacePackageName);
         String imports = composeImports(null, getterImplementation, constructorAssignments);
+        String constructorAnnotations = constructorAssignments.methodLevelAnnotations.stream().sorted().collect(Collectors.joining("\n"));
+        if (!constructorAnnotations.isEmpty()) {
+            constructorAnnotations += "\n    ";
+        }
         return new JavaFile(upperCamelCased(typeName()) + "Impl.java", """
                 package %1$s;
                 %2$s
@@ -37,7 +41,7 @@ interface JSONSchema {
                 class %4$sImpl implements %9$s.%4$s {
                 %6$s
                     
-                    %4$sImpl(JSONObject json) {
+                    %10$s%4$sImpl(JSONObject json) {
                 %7$s
                     }
                     
@@ -45,7 +49,7 @@ interface JSONSchema {
                 }
                 """.formatted(packageName, imports, description(), upperCamelCased(typeName()), lowerCamelCased(typeName()),
                 indent(code.codeFragment, 4), indent(constructorAssignments.codeFragment, 8),
-                indent(getterImplementation.codeFragment, 4), interfacePackageName));
+                indent(getterImplementation.codeFragment, 4), interfacePackageName, constructorAnnotations));
     }
 
     default @NotNull JavaFile asInterface(@NotNull String interfacePackageName) {
@@ -69,26 +73,37 @@ interface JSONSchema {
      * @param codeFragment      code fragment
      * @param typesToBeImported types to be imported
      */
-    record Code(String codeFragment, Set<String> typesToBeImported) {
+    record Code(String codeFragment, Set<String> typesToBeImported, Set<String> methodLevelAnnotations) {
         static Code of(String codeFragment, String... toBeImported) {
-            return new Code(codeFragment, Arrays.stream(toBeImported).collect(Collectors.toSet()));
+            return new Code(codeFragment, Arrays.stream(toBeImported).collect(Collectors.toSet()), new HashSet<>());
         }
 
         static Code of(String codeFragment, Set<String> typesToBeImported) {
-            return new Code(codeFragment, typesToBeImported);
+            return new Code(codeFragment, typesToBeImported, new HashSet<>());
+        }
+
+        static Code of(String codeFragment, Set<String> typesToBeImported, Set<String> methodLevelAnnotations) {
+            return new Code(codeFragment, typesToBeImported, methodLevelAnnotations);
         }
 
         static Code of(List<Code> codes) {
-            return new Code(codes.stream().map(e -> e.codeFragment).collect(Collectors.joining("\n")),
-                    codes.stream().flatMap(e -> e.typesToBeImported.stream()).collect(Collectors.toSet()));
+            return of(codes, false);
+        }
+
+        static Code of(List<Code> codes, boolean insertEmptyLine) {
+            return new Code(codes.stream().map(e -> e.codeFragment).collect(Collectors.joining(insertEmptyLine ? "\n\n" : "\n")),
+                    codes.stream().flatMap(e -> e.typesToBeImported.stream()).collect(Collectors.toSet())
+                    , codes.stream().flatMap(e -> e.methodLevelAnnotations.stream()).collect(Collectors.toSet()));
         }
 
         static Code with(String codeFragment, Code... code) {
             return new Code(codeFragment, Arrays.stream(code)
-                    .map(e -> e.typesToBeImported).flatMap(Collection::stream).collect(Collectors.toSet()));
+                    .map(e -> e.typesToBeImported).flatMap(Collection::stream).collect(Collectors.toSet())
+                    , Arrays.stream(code)
+                    .map(e -> e.methodLevelAnnotations).flatMap(Collection::stream).collect(Collectors.toSet()));
         }
 
-        public static Code empty = new Code("", new HashSet<>());
+        public static Code empty = new Code("", new HashSet<>(), new HashSet<>());
     }
 
     static String indent(String tobeFormatted, int numberOfSpaces) {
@@ -773,9 +788,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).forEach(codes::add);
         allOf.stream().map(e -> e.asFieldDeclaration(true, packageName, overrideTypeName)).forEach(codes::add);
         oneOf.stream().map(e -> e.asFieldDeclaration(false, packageName, overrideTypeName)).forEach(codes::add);
-        return Code.of(codes.stream().map(Code::codeFragment).collect(Collectors.joining("\n\n")) + "\n",
-                codes.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
-
+        return Code.of(codes, true);
     }
 
     @Override
@@ -783,11 +796,12 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         String lowerCamelCased = JSONSchema.lowerCamelCased(overrideTypeName != null ? overrideTypeName : this.typeName);
         String upperCamelCased = JSONSchema.upperCamelCased(typeName);
         return Code.of(hasNoElements() ?
-                """
-                        this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, this.typeName)
-                :
-                """
-                        this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased + "Impl", overrideTypeName != null ? overrideTypeName : this.typeName));
+                        """
+                                this.%1$s = json.getString("%2$s");""".formatted(lowerCamelCased, this.typeName)
+                        :
+                        """
+                                this.%1$s = json.has("%3$s") ? new %2$s(json.getJSONObject("%3$s")) : null;""".formatted(lowerCamelCased, upperCamelCased + "Impl", overrideTypeName != null ? overrideTypeName : this.typeName)
+                , new HashSet<>(), notNull ? Set.of("@SuppressWarnings(\"ConstantConditions\")") : new HashSet<>());
     }
 
     @Override
@@ -803,8 +817,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         List<Code> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asConstructorAssignment(true, null)).forEach(codes::add);
         oneOf.stream().map(e -> e.asConstructorAssignment(false, null)).forEach(codes::add);
-        return Code.of(codes.stream().map(Code::codeFragment).collect(Collectors.joining("\n")),
-                codes.stream().flatMap(e -> e.typesToBeImported().stream()).collect(Collectors.toSet()));
+        return Code.of(codes);
     }
 
     @Override
