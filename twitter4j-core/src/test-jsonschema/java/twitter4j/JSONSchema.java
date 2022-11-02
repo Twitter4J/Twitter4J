@@ -177,25 +177,30 @@ interface JSONSchema {
     Code getJavaType(boolean notNull, String packageName);
 
     static String composeImports(@Nullable String ignorePackage, @NotNull Code... code) {
-        String annotationImports = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
+        String nonstandardClasses = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
                 .filter(e -> ignorePackage == null || !e.startsWith(ignorePackage))
-                .filter(e -> e.startsWith("org.jetbrains.annotations"))
+                .filter(e -> !(e.startsWith("javax.") || e.startsWith("java.")))
                 .sorted()
                 .map(e -> "import " + e + ";").collect(Collectors.joining("\n"));
-        String classImports = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
+        String javaxClasses = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
                 .filter(e -> ignorePackage == null || !e.startsWith(ignorePackage))
-                .filter(e -> !e.startsWith("org.jetbrains.annotations"))
+                .filter(e -> (e.startsWith("javax.")))
                 .sorted()
                 .map(e -> "import " + e + ";").collect(Collectors.joining("\n"));
-        if (annotationImports.isEmpty() && classImports.isEmpty()) {
-            return "";
-        }
-        String imports = "";
-        if (!annotationImports.isEmpty()) {
-            imports = "\n" + annotationImports + "\n";
-        }
-        if (!classImports.isEmpty()) {
-            imports += "\n" + classImports + "\n";
+        String javaClasses = Arrays.stream(code).flatMap(e -> e.typesToBeImported.stream())
+                .filter(e -> ignorePackage == null || !e.startsWith(ignorePackage))
+                .filter(e -> e.startsWith("java."))
+                .sorted()
+                .map(e -> "import " + e + ";").collect(Collectors.joining("\n"));
+
+        String javaImports = (javaxClasses.length() != 0 && javaClasses.length() != 0) ?
+                javaxClasses + "\n" + javaClasses :
+                javaxClasses + javaClasses;
+        String imports = (nonstandardClasses.length() != 0 && javaImports.length() != 0) ?
+                nonstandardClasses + "\n\n" + javaImports :
+                nonstandardClasses + javaImports;
+        if (!imports.isEmpty()) {
+            imports = "\n" + imports + "\n";
         }
         return imports;
     }

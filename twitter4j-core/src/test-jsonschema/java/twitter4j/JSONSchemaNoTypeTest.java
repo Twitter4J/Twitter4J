@@ -182,9 +182,9 @@ class JSONSchemaNoTypeTest {
                                 
                 import org.jetbrains.annotations.NotNull;
                 import org.jetbrains.annotations.Nullable;
+                import twitter4j.v2.ProblemFields;
                                 
                 import javax.annotation.processing.Generated;
-                import twitter4j.v2.ProblemFields;
                                 
                 /**
                  * A problem that indicates that a given Tweet, User, etc. does not exist.

@@ -89,12 +89,12 @@ class JSONSchemaCollectorsImportTest {
                 package twitter4j;
                                 
                 import org.jetbrains.annotations.Nullable;
+                import twitter4j.v2.PollOption;
                                 
+                import javax.annotation.processing.Generated;
                 import java.time.LocalDateTime;
                 import java.util.List;
                 import java.util.stream.Collectors;
-                import javax.annotation.processing.Generated;
-                import twitter4j.v2.PollOption;
                                 
                 /**
                  * Represent a Poll attached to a Tweet

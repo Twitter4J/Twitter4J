@@ -315,8 +315,8 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
                                                 
-                        import java.time.LocalDateTime;
                         import javax.annotation.processing.Generated;
+                        import java.time.LocalDateTime;
                                                 
                         /**
                          * ProblemFields

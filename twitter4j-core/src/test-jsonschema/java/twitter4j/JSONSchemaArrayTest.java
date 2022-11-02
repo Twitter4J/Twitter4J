@@ -244,10 +244,11 @@ class JSONSchemaArrayTest {
         assertEquals("""
                 package twitter4j;
                                 
+                import twitter4j.v2.UrlEntity;
+                                
+                import javax.annotation.processing.Generated;
                 import java.util.List;
                 import java.util.stream.Collectors;
-                import javax.annotation.processing.Generated;
-                import twitter4j.v2.UrlEntity;
                                 
                 /**
                  * FullTextEntities

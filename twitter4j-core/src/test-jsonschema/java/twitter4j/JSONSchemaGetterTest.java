@@ -41,9 +41,9 @@ class JSONSchemaGetterTest {
                 package twitter4j;
                                 
                 import org.jetbrains.annotations.Nullable;
+                import twitter4j.v2.PromotedMetrics;
                                 
                 import javax.annotation.processing.Generated;
-                import twitter4j.v2.PromotedMetrics;
                                 
                 /**
                  * Video
