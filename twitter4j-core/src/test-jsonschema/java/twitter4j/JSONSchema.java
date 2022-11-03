@@ -132,6 +132,10 @@ interface JSONSchema {
                 ));
     }
 
+    default boolean hasAnyProperties() {
+        return !asGetterDeclarations("twitter4j", null, false).codeFragment.equals("");
+    }
+
     /**
      * @param codeFragment      code fragment
      * @param typesToBeImported types to be imported
