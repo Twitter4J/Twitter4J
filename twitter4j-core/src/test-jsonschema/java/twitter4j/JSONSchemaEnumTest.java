@@ -548,4 +548,95 @@ class JSONSchemaEnumTest {
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
     }
+    @Test
+    void format2() throws URISyntaxException, IOException {
+        Path file = Path.of(Objects.requireNonNull(SchemaLoader.class.getResource("/openapi.json")).toURI());
+
+        @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
+
+        Map<String, JSONSchema> extract = JSONSchema.extract("#/components/schemas/", apiJsonLatest);
+        JSONSchema schema = extract.get("#/components/schemas/ClientForbiddenProblem");
+
+        assertEquals("""
+                package twitter4j.v2;
+                                
+                import org.jetbrains.annotations.NotNull;
+                import org.jetbrains.annotations.Nullable;
+                                
+                import javax.annotation.processing.Generated;
+                                
+                /**
+                 * A problem that indicates your client is forbidden from making this request.
+                 */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ClientForbiddenProblem")
+                public interface ClientForbiddenProblem {
+                    /**
+                     * @return type
+                     */
+                    @Nullable
+                    String type();
+                                
+                    /**
+                     * reason
+                     */
+                    enum Reason {
+                        /**
+                         * official-client-forbidden
+                         */
+                        OFFICIAL_CLIENT_FORBIDDEN("official-client-forbidden"),
+                        /**
+                         * client-not-enrolled
+                         */
+                        CLIENT_NOT_ENROLLED("client-not-enrolled");
+                        /**
+                         * value
+                         */
+                        public final String value;
+                                
+                        Reason(String value) {
+                            this.value = value;
+                        }
+                        
+                        @Override
+                        public String toString() {
+                            return value;
+                        }
+                        /**
+                         * Returns the enum constant of the specified enum class with the specified name.
+                         *
+                         * @param name the name of the constant to return
+                         * @return the enum constant of the specified enum class with the specified name,
+                         * or null if the enum constant is not found.
+                         */
+                        public static Reason of(String name) {
+                            for (Reason value : Reason.values()) {
+                                if (value.value.equals(name)) {
+                                    return value;
+                                }
+                            }
+                            return null;
+                        }
+                    }
+                        
+                    /**
+                     * @return reason
+                     */
+                    @Nullable
+                    Reason reason();
+                                
+                    /**
+                     * @return registration_url
+                     */
+                    @Nullable
+                    String registrationUrl();
+                                
+                    /**
+                     * @return ProblemFields
+                     */
+                    @NotNull
+                    ProblemFields problemFields();
+                }
+                """, schema.asInterface("twitter4j.v2", true).content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+    }
 }

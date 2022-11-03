@@ -190,9 +190,10 @@ class JSONSchemaCollectorsImportTest {
                         }
                         /**
                          * Returns the enum constant of the specified enum class with the specified name.
+                         *
                          * @param name the name of the constant to return
                          * @return the enum constant of the specified enum class with the specified name,
-                         * or null if the enum constant is not found.\s
+                         * or null if the enum constant is not found.
                          */
                         public static VotingStatus of(String name) {
                             for (VotingStatus value : VotingStatus.values()) {
