@@ -36,17 +36,17 @@ class JSONSchemaArrayTest {
                             return position;
                         }
                         """,
-                position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         double[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -79,17 +79,17 @@ class JSONSchemaArrayTest {
                             return position;
                         }
                         """,
-                position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         long[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -122,17 +122,17 @@ class JSONSchemaArrayTest {
                             return position;
                         }
                         """,
-                position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         List<String> getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -165,17 +165,17 @@ class JSONSchemaArrayTest {
                             return position;
                         }
                         """,
-                position.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return A [GeoJson Position](<a href="https://tools.ietf.org/html/rfc7946#section-3.1.1">https://tools.ietf.org/html/rfc7946#section-3.1.1</a>) in the format `[longitude,latitude]`.
                          */
                         boolean[] getPosition();
                         """,
-                position.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                position.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> position.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> position.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -228,19 +228,23 @@ class JSONSchemaArrayTest {
 
         assertEquals("""
                 package twitter4j.v2;
-                                
+
+                import javax.annotation.processing.Generated;
                 import java.util.List;
                                 
                 /**
                  * FullTextEntities
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/FullTextEntities")
                 public interface FullTextEntities {
                     /**
                      * @return urls
                      */
                     List<UrlEntity> getUrls();
                 }
-                """, fullTextEntities.asInterface("twitter4j.v2").content());
+                """, fullTextEntities
+                .asInterface("twitter4j.v2", false).content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("""
                 package twitter4j;
                                 
@@ -266,7 +270,7 @@ class JSONSchemaArrayTest {
                         return urls;
                     }
                 }
-                """, fullTextEntities.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                """, fullTextEntities.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

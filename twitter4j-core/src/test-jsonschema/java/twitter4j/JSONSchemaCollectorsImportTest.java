@@ -74,7 +74,7 @@ class JSONSchemaCollectorsImportTest {
                             return poll;
                         }
                         """,
-                poll.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                poll.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return Represent a Poll attached to a Tweet
@@ -82,7 +82,7 @@ class JSONSchemaCollectorsImportTest {
                         @Nullable
                         Poll getPoll();
                         """,
-                poll.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                poll.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
 
         assertEquals("""
@@ -142,19 +142,21 @@ class JSONSchemaCollectorsImportTest {
                         return durationMinutes;
                     }
                 }
-                """, poll.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                """, poll.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("""
                 package twitter4j.v2;
                                 
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
                 import java.time.LocalDateTime;
                 import java.util.List;
                                 
                 /**
                  * Represent a Poll attached to a Tweet
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/Poll")
                 public interface Poll {
                     /**
                      * @return options
@@ -220,7 +222,7 @@ class JSONSchemaCollectorsImportTest {
                     @Nullable
                     Long getDurationMinutes();
                 }
-                """, poll.asInterface("twitter4j.v2").content()
+                """, poll.asInterface("twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

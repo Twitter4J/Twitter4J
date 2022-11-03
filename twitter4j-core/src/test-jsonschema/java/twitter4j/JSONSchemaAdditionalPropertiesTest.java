@@ -81,15 +81,18 @@ class JSONSchemaAdditionalPropertiesTest {
                  * @return errors
                  */
                 List<Error> getErrors();
-                """, errors.asGetterDeclaration(true, "twitter4j.v2", null).codeFragment());
+                """, errors.asGetterDeclaration(true, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                 package twitter4j.v2;
                                 
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
+
                 /**
                  * Error
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/InvalidRequestProblem/properties/errors/items")
                 public interface Error {
                     /**
                      * @return parameters
@@ -103,7 +106,9 @@ class JSONSchemaAdditionalPropertiesTest {
                     @Nullable
                     String getMessage();
                 }
-                """, extract.get("#/components/schemas/InvalidRequestProblem/properties/errors/items").asInterface("twitter4j.v2").content());
+                """, extract.get("#/components/schemas/InvalidRequestProblem/properties/errors/items")
+                .asInterface("twitter4j.v2", false).content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
         JSONSchema problemFields = extract.get("#/components/schemas/ProblemFields");
         assertEquals("""
@@ -112,22 +117,23 @@ class JSONSchemaAdditionalPropertiesTest {
                  */
                 @NotNull
                 ProblemFields getProblemFields();
-                """, problemFields.asGetterDeclaration(true, "twitter4j.v2", null).codeFragment());
+                """, problemFields.asGetterDeclaration(true, "twitter4j.v2", null, false).codeFragment());
 
-        JavaFile javaFile = invalidRequestProblem.asInterface("twitter4j.v2");
+        JavaFile javaFile = invalidRequestProblem.asInterface("twitter4j.v2", false);
         assertEquals("InvalidRequestProblem.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
-                                                
+
+                        import javax.annotation.processing.Generated;
                         import java.util.List;
                                                 
                         /**
                          * A problem that indicates this request is invalid. <a href="http://twitter4j.org/">http://twitter4j.org/</a>
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/InvalidRequestProblem")
                         public interface InvalidRequestProblem {
                             /**
                              * @return type
@@ -147,6 +153,6 @@ class JSONSchemaAdditionalPropertiesTest {
                             ProblemFields getProblemFields();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

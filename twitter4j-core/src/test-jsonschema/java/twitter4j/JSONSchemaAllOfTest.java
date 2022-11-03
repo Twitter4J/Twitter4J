@@ -61,17 +61,19 @@ class JSONSchemaAllOfTest {
         assertEquals("#/components/schemas/CashtagEntity", attachments.jsonPointer());
 
 
-        JavaFile javaFile = attachments.asInterface("twitter4j.v2");
+        JavaFile javaFile = attachments.asInterface("twitter4j.v2", false);
         assertEquals("CashtagEntity.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
-                                                
+
                         import org.jetbrains.annotations.NotNull;
+                                                
+                        import javax.annotation.processing.Generated;
                                                 
                         /**
                          * CashtagEntity
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/CashtagEntity")
                         public interface CashtagEntity {
                             /**
                              * @return Represent a <a href="https://twitter4j.org/path/to/?something">https://twitter4j.org/path/to/?something</a> boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.
@@ -86,6 +88,6 @@ class JSONSchemaAllOfTest {
                             CashtagFields getCashtagFields();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

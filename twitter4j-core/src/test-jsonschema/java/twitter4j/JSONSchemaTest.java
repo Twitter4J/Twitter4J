@@ -49,10 +49,10 @@ class JSONSchemaTest {
                             return mediaHeight;
                         }
                         """,
-                mediaHeight.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                mediaHeight.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> mediaHeight.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -86,10 +86,10 @@ class JSONSchemaTest {
                             return items;
                         }
                         """,
-                items.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                items.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> items.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> items.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> items.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> items.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -121,10 +121,10 @@ class JSONSchemaTest {
                             return hTTPStatusCode;
                         }
                         """,
-                hTTPStatusCode.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                hTTPStatusCode.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> hTTPStatusCode.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -162,14 +162,14 @@ class JSONSchemaTest {
                             return code;
                         }
                         """,
-                code.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                code.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         @Override
                         public int getCode() {
                             return code;
                         }
                         """,
-                code.asGetterImplementation(true, "twitter4j.v2", null).codeFragment());
+                code.asGetterImplementation(true, "twitter4j.v2", null, false).codeFragment());
 
 
         JSONSchema hTTPStatusCode = extract.get("#/HTTPStatusCode");
@@ -180,14 +180,14 @@ class JSONSchemaTest {
                 @Nullable
                 @Range(from = 100, to = 599)
                 Integer getHTTPStatusCode();
-                """, hTTPStatusCode.asGetterDeclaration(false, "twitter4j.v2",null).codeFragment());
+                """, hTTPStatusCode.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                 /**
                  * @return HTTP Status Code.
                  */
                 @Range(from = 100, to = 599)
                 int getHTTPStatusCode();
-                """, hTTPStatusCode.asGetterDeclaration(true, "twitter4j.v2",null).codeFragment());
+                """, hTTPStatusCode.asGetterDeclaration(true, "twitter4j.v2", null, false).codeFragment());
 
     }
 
@@ -216,10 +216,10 @@ class JSONSchemaTest {
                             return possiblySensitive;
                         }
                         """,
-                possiblySensitive.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                possiblySensitive.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asInterface("twitter4j.v2", false));
     }
 
 
@@ -306,7 +306,7 @@ class JSONSchemaTest {
                             return hTTPStatusCode;
                         }
                         """,
-                problemFields.asGetterImplementations("twitter4j.v2", null).codeFragment());
+                problemFields.asGetterImplementations("twitter4j.v2", null, false).codeFragment());
 
         assertEquals("""
                         package twitter4j;
@@ -370,10 +370,10 @@ class JSONSchemaTest {
                             }
                         }
                         """,
-                problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                problemFields.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                         .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
-        JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
+        JavaFile javaFile = problemFields.asInterface("twitter4j.v2", false);
         assertEquals("ProblemFields.java", javaFile.fileName());
         assertEquals("""
                         package twitter4j.v2;
@@ -382,11 +382,13 @@ class JSONSchemaTest {
                         import org.jetbrains.annotations.Nullable;
                         import org.jetbrains.annotations.Range;
                                                 
+                        import javax.annotation.processing.Generated;
                         import java.time.LocalDateTime;
                                                 
                         /**
                          * ProblemFields
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/ProblemFields")
                         public interface ProblemFields {
                             /**
                              * @return type

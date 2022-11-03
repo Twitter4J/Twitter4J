@@ -37,10 +37,10 @@ class JSONSchemaStringTest {
                             return tweetID;
                         }
                         """,
-                tweetId.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                tweetId.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -71,10 +71,10 @@ class JSONSchemaStringTest {
                             return endDatetime;
                         }
                         """,
-                tweetId.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                tweetId.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2", false));
     }
 
 }

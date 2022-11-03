@@ -36,7 +36,7 @@ class JSONSchemaGetterTest {
                  */
                 @Nullable
                 PromotedMetrics getPromotedMetrics();
-                """, extract.get("#/components/schemas/Video/properties/promoted_metrics").asGetterDeclaration(false, "twitter4j", null).codeFragment());
+                """, extract.get("#/components/schemas/Video/properties/promoted_metrics").asGetterDeclaration(false, "twitter4j", null, false).codeFragment());
         assertEquals("""
                 package twitter4j;
                                 
@@ -63,7 +63,7 @@ class JSONSchemaGetterTest {
                         return promotedMetrics;
                     }
                 }
-                """, extract.get("#/components/schemas/Video").asJavaImpl("twitter4j", "twitter4j.v2").content()
+                """, extract.get("#/components/schemas/Video").asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
@@ -128,9 +128,12 @@ class JSONSchemaGetterTest {
                                 
                 import org.jetbrains.annotations.Nullable;
                                 
+                import javax.annotation.processing.Generated;
+                                
                 /**
                  * A list of metadata found in the user's profile description.
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/entities")
                 public interface Entities {
                     /**
                      * @return Expanded details for the URL specified in the user's profile, with start and end indices.
@@ -138,7 +141,8 @@ class JSONSchemaGetterTest {
                     @Nullable
                     Url getUrl();
                 }
-                """, extract.get("#/components/schemas/entities").asInterface("twitter4j").content());
+                """, extract.get("#/components/schemas/entities").asInterface("twitter4j", false)
+                .content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
     }
 

@@ -48,7 +48,7 @@ class JSONSchemaNoneTest {
                             return message;
                         }
                         """,
-                error.asGetterImplementations("twitter4j.v2",null).codeFragment());
+                error.asGetterImplementations("twitter4j.v2", null, false).codeFragment());
 
         assertEquals("""
                 package twitter4j;
@@ -84,16 +84,19 @@ class JSONSchemaNoneTest {
                         return message;
                     }
                 }
-                """, error.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                """, error.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("""
                 package twitter4j.v2;
                                 
                 import org.jetbrains.annotations.NotNull;
                                 
+                import javax.annotation.processing.Generated;
+                                
                 /**
                  * Error
                  */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/Error")
                 public interface Error {
                     /**
                      * @return null
@@ -106,7 +109,7 @@ class JSONSchemaNoneTest {
                     @NotNull
                     String getMessage();
                 }
-                """, error.asInterface("twitter4j.v2").content()
+                """, error.asInterface("twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 

@@ -18,15 +18,15 @@ class JSONSchemaExtractor {
         return new JSONSchemaExtractor(schemaDefinition, path);
     }
 
-    List<JavaFile> javaImplFiles(@NotNull String packageName, @NotNull String interfacePackageName) {
+    List<JavaFile> javaImplFiles(@NotNull String packageName, @NotNull String interfacePackageName, boolean noPrefix) {
         return extracted.values().stream().filter(e -> e instanceof ObjectSchema)
-                .map(e -> e.asJavaImpl(packageName, interfacePackageName))
+                .map(e -> e.asJavaImpl(packageName, interfacePackageName, noPrefix))
                 .toList();
     }
 
-    List<JavaFile> interfaceFiles(@NotNull String interfacePackageName) {
+    List<JavaFile> interfaceFiles(@NotNull String interfacePackageName, boolean noPrefix) {
         return extracted.values().stream().filter(e -> e instanceof ObjectSchema)
-                .map(e -> e.asInterface(interfacePackageName))
+                .map(e -> e.asInterface(interfacePackageName, noPrefix))
                 .toList();
     }
 }

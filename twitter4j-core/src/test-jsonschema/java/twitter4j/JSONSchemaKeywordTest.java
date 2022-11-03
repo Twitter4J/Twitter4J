@@ -890,6 +890,1221 @@ class JSONSchemaKeywordTest {
                             return yield_;
                         }
                         """,
-                problemFields.asGetterImplementations("twitter4j.v2", null).codeFragment());
+                problemFields.asGetterImplementations("twitter4j.v2", null, false).codeFragment());
+        assertEquals("""
+                        /**
+                         * @return abstract
+                         */
+                        @Nullable
+                        String getAbstract();
+                                                
+                        /**
+                         * @return continue
+                         */
+                        @Nullable
+                        String getContinue();
+                                                
+                        /**
+                         * @return for
+                         */
+                        @Nullable
+                        String getFor();
+                                                
+                        /**
+                         * @return new
+                         */
+                        @Nullable
+                        String getNew();
+                                                
+                        /**
+                         * @return switch
+                         */
+                        @Nullable
+                        String getSwitch();
+                                                
+                        /**
+                         * @return assert
+                         */
+                        @Nullable
+                        String getAssert();
+                                                
+                        /**
+                         * @return default
+                         */
+                        @Nullable
+                        String getDefault();
+                                                
+                        /**
+                         * @return if
+                         */
+                        @Nullable
+                        String getIf();
+                                                
+                        /**
+                         * @return package
+                         */
+                        @Nullable
+                        String getPackage();
+                                                
+                        /**
+                         * @return synchronized
+                         */
+                        @Nullable
+                        String getSynchronized();
+                                                
+                        /**
+                         * @return boolean
+                         */
+                        @Nullable
+                        String getBoolean();
+                                                
+                        /**
+                         * @return do
+                         */
+                        @Nullable
+                        String getDo();
+                                                
+                        /**
+                         * @return goto
+                         */
+                        @Nullable
+                        String getGoto();
+                                                
+                        /**
+                         * @return private
+                         */
+                        @Nullable
+                        String getPrivate();
+                                                
+                        /**
+                         * @return this
+                         */
+                        @Nullable
+                        String getThis();
+                                                
+                        /**
+                         * @return break
+                         */
+                        @Nullable
+                        String getBreak();
+                                                
+                        /**
+                         * @return double
+                         */
+                        @Nullable
+                        String getDouble();
+                                                
+                        /**
+                         * @return implements
+                         */
+                        @Nullable
+                        String getImplements();
+                                                
+                        /**
+                         * @return protected
+                         */
+                        @Nullable
+                        String getProtected();
+                                                
+                        /**
+                         * @return throw
+                         */
+                        @Nullable
+                        String getThrow();
+                                                
+                        /**
+                         * @return byte
+                         */
+                        @Nullable
+                        String getByte();
+                                                
+                        /**
+                         * @return else
+                         */
+                        @Nullable
+                        String getElse();
+                                                
+                        /**
+                         * @return import
+                         */
+                        @Nullable
+                        String getImport();
+                                                
+                        /**
+                         * @return public
+                         */
+                        @Nullable
+                        String getPublic();
+                                                
+                        /**
+                         * @return throws
+                         */
+                        @Nullable
+                        String getThrows();
+                                                
+                        /**
+                         * @return case
+                         */
+                        @Nullable
+                        String getCase();
+                                                
+                        /**
+                         * @return enum
+                         */
+                        @Nullable
+                        String getEnum();
+                                                
+                        /**
+                         * @return instanceof
+                         */
+                        @Nullable
+                        String getInstanceof();
+                                                
+                        /**
+                         * @return return
+                         */
+                        @Nullable
+                        String getReturn();
+                                                
+                        /**
+                         * @return transient
+                         */
+                        @Nullable
+                        String getTransient();
+                                                
+                        /**
+                         * @return catch
+                         */
+                        @Nullable
+                        String getCatch();
+                                                
+                        /**
+                         * @return extends
+                         */
+                        @Nullable
+                        String getExtends();
+                                                
+                        /**
+                         * @return int
+                         */
+                        @Nullable
+                        String getInt();
+                                                
+                        /**
+                         * @return short
+                         */
+                        @Nullable
+                        String getShort();
+                                                
+                        /**
+                         * @return try
+                         */
+                        @Nullable
+                        String getTry();
+                                                
+                        /**
+                         * @return char
+                         */
+                        @Nullable
+                        String getChar();
+                                                
+                        /**
+                         * @return final
+                         */
+                        @Nullable
+                        String getFinal();
+                                                
+                        /**
+                         * @return interface
+                         */
+                        @Nullable
+                        String getInterface();
+                                                
+                        /**
+                         * @return static
+                         */
+                        @Nullable
+                        String getStatic();
+                                                
+                        /**
+                         * @return void
+                         */
+                        @Nullable
+                        String getVoid();
+                                                
+                        /**
+                         * @return class
+                         */
+                        @Nullable
+                        String getClass();
+                                                
+                        /**
+                         * @return finally
+                         */
+                        @Nullable
+                        String getFinally();
+                                                
+                        /**
+                         * @return long
+                         */
+                        @Nullable
+                        String getLong();
+                                                
+                        /**
+                         * @return strictfp
+                         */
+                        @Nullable
+                        String getStrictfp();
+                                                
+                        /**
+                         * @return volatile
+                         */
+                        @Nullable
+                        String getVolatile();
+                                                
+                        /**
+                         * @return const
+                         */
+                        @Nullable
+                        String getConst();
+                                                
+                        /**
+                         * @return float
+                         */
+                        @Nullable
+                        String getFloat();
+                                                
+                        /**
+                         * @return native
+                         */
+                        @Nullable
+                        String getNative();
+                                                
+                        /**
+                         * @return super
+                         */
+                        @Nullable
+                        String getSuper();
+                                                
+                        /**
+                         * @return while
+                         */
+                        @Nullable
+                        String getWhile();
+                                                
+                        /**
+                         * @return _
+                         */
+                        @Nullable
+                        String get_();
+                                                
+                        /**
+                         * @return exports
+                         */
+                        @Nullable
+                        String getExports();
+                                                
+                        /**
+                         * @return opens
+                         */
+                        @Nullable
+                        String getOpens();
+                                                
+                        /**
+                         * @return requires
+                         */
+                        @Nullable
+                        String getRequires();
+                                                
+                        /**
+                         * @return uses
+                         */
+                        @Nullable
+                        String getUses();
+                                                
+                        /**
+                         * @return module
+                         */
+                        @Nullable
+                        String getModule();
+                                                
+                        /**
+                         * @return permits
+                         */
+                        @Nullable
+                        String getPermits();
+                                                
+                        /**
+                         * @return sealed
+                         */
+                        @Nullable
+                        String getSealed();
+                                                
+                        /**
+                         * @return var
+                         */
+                        @Nullable
+                        String getVar();
+                                                
+                        /**
+                         * @return non-sealed
+                         */
+                        @Nullable
+                        String getNonSealed();
+                                                
+                        /**
+                         * @return provides
+                         */
+                        @Nullable
+                        String getProvides();
+                                                
+                        /**
+                         * @return to
+                         */
+                        @Nullable
+                        String getTo();
+                                                
+                        /**
+                         * @return with
+                         */
+                        @Nullable
+                        String getWith();
+                                                
+                        /**
+                         * @return open
+                         */
+                        @Nullable
+                        String getOpen();
+                                                
+                        /**
+                         * @return record
+                         */
+                        @Nullable
+                        String getRecord();
+                                                
+                        /**
+                         * @return transitive
+                         */
+                        @Nullable
+                        String getTransitive();
+                                                
+                        /**
+                         * @return yield
+                         */
+                        @Nullable
+                        String getYield();
+                        """,
+                problemFields.asGetterDeclarations("twitter4j.v2", null, false).codeFragment());
+
+
+        assertEquals("""
+                        @Nullable
+                        @Override
+                        public String abstract_() {
+                            return abstract_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String continue_() {
+                            return continue_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String for_() {
+                            return for_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String new_() {
+                            return new_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String switch_() {
+                            return switch_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String assert_() {
+                            return assert_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String default_() {
+                            return default_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String if_() {
+                            return if_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String package_() {
+                            return package_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String synchronized_() {
+                            return synchronized_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String boolean_() {
+                            return boolean_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String do_() {
+                            return do_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String goto_() {
+                            return goto_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String private_() {
+                            return private_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String this_() {
+                            return this_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String break_() {
+                            return break_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String double_() {
+                            return double_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String implements_() {
+                            return implements_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String protected_() {
+                            return protected_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String throw_() {
+                            return throw_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String byte_() {
+                            return byte_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String else_() {
+                            return else_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String import_() {
+                            return import_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String public_() {
+                            return public_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String throws_() {
+                            return throws_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String case_() {
+                            return case_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String enum_() {
+                            return enum_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String instanceof_() {
+                            return instanceof_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String return_() {
+                            return return_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String transient_() {
+                            return transient_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String catch_() {
+                            return catch_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String extends_() {
+                            return extends_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String int_() {
+                            return int_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String short_() {
+                            return short_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String try_() {
+                            return try_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String char_() {
+                            return char_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String final_() {
+                            return final_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String interface_() {
+                            return interface_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String static_() {
+                            return static_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String void_() {
+                            return void_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String class_() {
+                            return class_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String finally_() {
+                            return finally_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String long_() {
+                            return long_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String strictfp_() {
+                            return strictfp_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String volatile_() {
+                            return volatile_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String const_() {
+                            return const_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String float_() {
+                            return float_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String native_() {
+                            return native_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String super_() {
+                            return super_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String while_() {
+                            return while_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String __() {
+                            return __;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String exports() {
+                            return exports_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String opens() {
+                            return opens_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String requires() {
+                            return requires_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String uses() {
+                            return uses_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String module() {
+                            return module_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String permits() {
+                            return permits_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String sealed() {
+                            return sealed_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String var() {
+                            return var_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String nonSealed() {
+                            return nonSealed;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String provides() {
+                            return provides_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String to() {
+                            return to_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String with() {
+                            return with_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String open() {
+                            return open_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String record() {
+                            return record_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String transitive() {
+                            return transitive_;
+                        }
+                                                
+                        @Nullable
+                        @Override
+                        public String yield() {
+                            return yield_;
+                        }
+                        """,
+                problemFields.asGetterImplementations("twitter4j.v2", null, true).codeFragment());
+        assertEquals("""
+                        /**
+                         * @return abstract
+                         */
+                        @Nullable
+                        String abstract_();
+                                                
+                        /**
+                         * @return continue
+                         */
+                        @Nullable
+                        String continue_();
+                                                
+                        /**
+                         * @return for
+                         */
+                        @Nullable
+                        String for_();
+                                                
+                        /**
+                         * @return new
+                         */
+                        @Nullable
+                        String new_();
+                                                
+                        /**
+                         * @return switch
+                         */
+                        @Nullable
+                        String switch_();
+                                                
+                        /**
+                         * @return assert
+                         */
+                        @Nullable
+                        String assert_();
+                                                
+                        /**
+                         * @return default
+                         */
+                        @Nullable
+                        String default_();
+                                                
+                        /**
+                         * @return if
+                         */
+                        @Nullable
+                        String if_();
+                                                
+                        /**
+                         * @return package
+                         */
+                        @Nullable
+                        String package_();
+                                                
+                        /**
+                         * @return synchronized
+                         */
+                        @Nullable
+                        String synchronized_();
+                                                
+                        /**
+                         * @return boolean
+                         */
+                        @Nullable
+                        String boolean_();
+                                                
+                        /**
+                         * @return do
+                         */
+                        @Nullable
+                        String do_();
+                                                
+                        /**
+                         * @return goto
+                         */
+                        @Nullable
+                        String goto_();
+                                                
+                        /**
+                         * @return private
+                         */
+                        @Nullable
+                        String private_();
+                                                
+                        /**
+                         * @return this
+                         */
+                        @Nullable
+                        String this_();
+                                                
+                        /**
+                         * @return break
+                         */
+                        @Nullable
+                        String break_();
+                                                
+                        /**
+                         * @return double
+                         */
+                        @Nullable
+                        String double_();
+                                                
+                        /**
+                         * @return implements
+                         */
+                        @Nullable
+                        String implements_();
+                                                
+                        /**
+                         * @return protected
+                         */
+                        @Nullable
+                        String protected_();
+                                                
+                        /**
+                         * @return throw
+                         */
+                        @Nullable
+                        String throw_();
+                                                
+                        /**
+                         * @return byte
+                         */
+                        @Nullable
+                        String byte_();
+                                                
+                        /**
+                         * @return else
+                         */
+                        @Nullable
+                        String else_();
+                                                
+                        /**
+                         * @return import
+                         */
+                        @Nullable
+                        String import_();
+                                                
+                        /**
+                         * @return public
+                         */
+                        @Nullable
+                        String public_();
+                                                
+                        /**
+                         * @return throws
+                         */
+                        @Nullable
+                        String throws_();
+                                                
+                        /**
+                         * @return case
+                         */
+                        @Nullable
+                        String case_();
+                                                
+                        /**
+                         * @return enum
+                         */
+                        @Nullable
+                        String enum_();
+                                                
+                        /**
+                         * @return instanceof
+                         */
+                        @Nullable
+                        String instanceof_();
+                                                
+                        /**
+                         * @return return
+                         */
+                        @Nullable
+                        String return_();
+                                                
+                        /**
+                         * @return transient
+                         */
+                        @Nullable
+                        String transient_();
+                                                
+                        /**
+                         * @return catch
+                         */
+                        @Nullable
+                        String catch_();
+                                                
+                        /**
+                         * @return extends
+                         */
+                        @Nullable
+                        String extends_();
+                                                
+                        /**
+                         * @return int
+                         */
+                        @Nullable
+                        String int_();
+                                                
+                        /**
+                         * @return short
+                         */
+                        @Nullable
+                        String short_();
+                                                
+                        /**
+                         * @return try
+                         */
+                        @Nullable
+                        String try_();
+                                                
+                        /**
+                         * @return char
+                         */
+                        @Nullable
+                        String char_();
+                                                
+                        /**
+                         * @return final
+                         */
+                        @Nullable
+                        String final_();
+                                                
+                        /**
+                         * @return interface
+                         */
+                        @Nullable
+                        String interface_();
+                                                
+                        /**
+                         * @return static
+                         */
+                        @Nullable
+                        String static_();
+                                                
+                        /**
+                         * @return void
+                         */
+                        @Nullable
+                        String void_();
+                                                
+                        /**
+                         * @return class
+                         */
+                        @Nullable
+                        String class_();
+                                                
+                        /**
+                         * @return finally
+                         */
+                        @Nullable
+                        String finally_();
+                                                
+                        /**
+                         * @return long
+                         */
+                        @Nullable
+                        String long_();
+                                                
+                        /**
+                         * @return strictfp
+                         */
+                        @Nullable
+                        String strictfp_();
+                                                
+                        /**
+                         * @return volatile
+                         */
+                        @Nullable
+                        String volatile_();
+                                                
+                        /**
+                         * @return const
+                         */
+                        @Nullable
+                        String const_();
+                                                
+                        /**
+                         * @return float
+                         */
+                        @Nullable
+                        String float_();
+                                                
+                        /**
+                         * @return native
+                         */
+                        @Nullable
+                        String native_();
+                                                
+                        /**
+                         * @return super
+                         */
+                        @Nullable
+                        String super_();
+                                                
+                        /**
+                         * @return while
+                         */
+                        @Nullable
+                        String while_();
+                                                
+                        /**
+                         * @return _
+                         */
+                        @Nullable
+                        String __();
+                                                
+                        /**
+                         * @return exports
+                         */
+                        @Nullable
+                        String exports();
+                                                
+                        /**
+                         * @return opens
+                         */
+                        @Nullable
+                        String opens();
+                                                
+                        /**
+                         * @return requires
+                         */
+                        @Nullable
+                        String requires();
+                                                
+                        /**
+                         * @return uses
+                         */
+                        @Nullable
+                        String uses();
+                                                
+                        /**
+                         * @return module
+                         */
+                        @Nullable
+                        String module();
+                                                
+                        /**
+                         * @return permits
+                         */
+                        @Nullable
+                        String permits();
+                                                
+                        /**
+                         * @return sealed
+                         */
+                        @Nullable
+                        String sealed();
+                                                
+                        /**
+                         * @return var
+                         */
+                        @Nullable
+                        String var();
+                                                
+                        /**
+                         * @return non-sealed
+                         */
+                        @Nullable
+                        String nonSealed();
+                                                
+                        /**
+                         * @return provides
+                         */
+                        @Nullable
+                        String provides();
+                                                
+                        /**
+                         * @return to
+                         */
+                        @Nullable
+                        String to();
+                                                
+                        /**
+                         * @return with
+                         */
+                        @Nullable
+                        String with();
+                                                
+                        /**
+                         * @return open
+                         */
+                        @Nullable
+                        String open();
+                                                
+                        /**
+                         * @return record
+                         */
+                        @Nullable
+                        String record();
+                                                
+                        /**
+                         * @return transitive
+                         */
+                        @Nullable
+                        String transitive();
+                                                
+                        /**
+                         * @return yield
+                         */
+                        @Nullable
+                        String yield();
+                        """,
+                problemFields.asGetterDeclarations("twitter4j.v2", null, true).codeFragment());
+
     }
 }

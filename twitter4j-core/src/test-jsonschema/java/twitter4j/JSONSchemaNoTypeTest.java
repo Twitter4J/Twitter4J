@@ -81,18 +81,20 @@ class JSONSchemaNoTypeTest {
         assertEquals("#/components/schemas/ResourceNotFoundProblem", resourceNotFoundProblem.jsonPointer());
 
 
-        JavaFile javaFile = resourceNotFoundProblem.asInterface("twitter4j.v2");
+        JavaFile javaFile = resourceNotFoundProblem.asInterface("twitter4j.v2", false);
         assertEquals("ResourceNotFoundProblem.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
                         import org.jetbrains.annotations.NotNull;
                         import org.jetbrains.annotations.Nullable;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * A problem that indicates that a given Tweet, User, etc. does not exist.
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ResourceNotFoundProblem")
                         public interface ResourceNotFoundProblem {
                             /**
                              * @return type
@@ -176,7 +178,7 @@ class JSONSchemaNoTypeTest {
                             ProblemFields getProblemFields();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
         assertEquals("""
                 package twitter4j;
                                 
@@ -255,7 +257,7 @@ class JSONSchemaNoTypeTest {
                         return problemFields;
                     }
                 }
-                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                """, resourceNotFoundProblem.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 

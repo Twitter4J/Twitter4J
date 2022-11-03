@@ -103,17 +103,19 @@ class JSONSchemaOneOfTest {
         assertEquals("#/components/schemas/Problem", problem.jsonPointer());
 
 
-        JavaFile javaFile = problem.asInterface("twitter4j.v2");
+        JavaFile javaFile = problem.asInterface("twitter4j.v2", false);
         assertEquals("Problem.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
                         import org.jetbrains.annotations.Nullable;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * An HTTP Problem Details object, as defined in IETF RFC 7807 (<a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a>).
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/Problem")
                         public interface Problem {
                             /**
                              * @return A generic problem with no additional information beyond that provided by the HTTP status code.
@@ -128,7 +130,7 @@ class JSONSchemaOneOfTest {
                             InvalidRequestProblem getInvalidRequestProblem();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
 }

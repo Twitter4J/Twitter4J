@@ -47,7 +47,7 @@ class JSONSchemaRefResolveTest {
 
         for (JSONSchema value : extract.values()) {
             if (value instanceof ObjectSchema) {
-                value.asInterface("twitter4j.v2");
+                value.asInterface("twitter4j.v2", false);
             }
 
         }

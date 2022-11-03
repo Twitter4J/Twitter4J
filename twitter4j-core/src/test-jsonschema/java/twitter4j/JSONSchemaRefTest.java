@@ -118,21 +118,21 @@ class JSONSchemaRefTest {
                             return theHost;
                         }
                         """,
-                problemFields.asGetterImplementations("twitter4j.v2",null).codeFragment());
+                problemFields.asGetterImplementations("twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * @return type
                          */
                         @NotNull
                         String getType();
-                        
+                                                
                         /**
                          * @return theHost: A validly formatted URL.
                          */
                         @NotNull
                         HostPort getTheHost();
                         """,
-                problemFields.asGetterDeclarations("twitter4j.v2",null).codeFragment());
+                problemFields.asGetterDeclarations("twitter4j.v2", null, false).codeFragment());
 
         assertEquals("""
                         package twitter4j;
@@ -172,20 +172,22 @@ class JSONSchemaRefTest {
                             }
                         }
                         """,
-                problemFields.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                problemFields.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                         .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
-        JavaFile javaFile = problemFields.asInterface("twitter4j.v2");
+        JavaFile javaFile = problemFields.asInterface("twitter4j.v2", false);
         assertEquals("ProblemFields.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
                         import org.jetbrains.annotations.NotNull;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * ProblemFields
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ProblemFields")
                         public interface ProblemFields {
                             /**
                              * @return type
@@ -200,9 +202,9 @@ class JSONSchemaRefTest {
                             HostPort getTheHost();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
-        JavaFile problem = extract.get("#/components/schemas/Problem").asJavaImpl("twitter4j", "twitter4j.v2");
+        JavaFile problem = extract.get("#/components/schemas/Problem").asJavaImpl("twitter4j", "twitter4j.v2", false);
         assertEquals("""
                 package twitter4j;
                                 

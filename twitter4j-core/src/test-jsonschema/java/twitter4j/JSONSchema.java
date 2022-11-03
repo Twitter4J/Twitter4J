@@ -23,6 +23,11 @@ interface JSONSchema {
 
     String description();
 
+    @Nullable
+    default String overrideTypeName() {
+        return "".equals(typeName()) ? null : typeName();
+    }
+
     Set<String> keywords = Set.of("abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while", "_", "exports", "opens", "requires", "uses", "module", "permits", "sealed", "var", "non-sealed", "provides", "to", "with", "open", "record", "transitive", "yield");
 
     static String escapeKeywords(String fieldName) {
@@ -56,17 +61,14 @@ interface JSONSchema {
         return builder.length() == 0 ? javadocContent : builder.toString();
     }
 
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
 
-    default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName) {
-        Code getterImplementation = asGetterImplementations(interfacePackageName, null);
+    default @NotNull JavaFile asJavaImpl(@NotNull String packageName, @NotNull String interfacePackageName, boolean noPrefix) {
+        Code getterImplementation = asGetterImplementations(interfacePackageName, null, noPrefix);
         Code code = asFieldDeclarations(interfacePackageName, null);
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
-        String date = ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT")).format(dateTimeFormatter);
 
         Code constructorAssignments = asConstructorAssignments(interfacePackageName);
-        String generateClass = JSONSchema.class.getName();
-        Code generated = Code.of("""
-                @Generated(value = "%s", date = "%s", comments = "%s")""".formatted(generateClass, date, jsonPointer()), "javax.annotation.processing.Generated");
+        Code generated = getGenerated();
         String imports = composeImports(null, getterImplementation, constructorAssignments, generated);
         String constructorAnnotations = constructorAssignments.methodLevelAnnotations.stream().sorted().collect(Collectors.joining("\n"));
         if (!constructorAnnotations.isEmpty()) {
@@ -101,10 +103,15 @@ interface JSONSchema {
         ));
     }
 
-    default @NotNull JavaFile asInterface(@NotNull String interfacePackageName) {
-        Code getterDeclaration = asGetterDeclarations(interfacePackageName, null);
-        String imports = composeImports(interfacePackageName, getterDeclaration);
+    default Code getGenerated() {
+        return Code.of("""
+                @Generated(value = "%s", date = "%s", comments = "%s")""".formatted(JSONSchema.class.getName(), ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT")).format(dateTimeFormatter), jsonPointer()), "javax.annotation.processing.Generated");
+    }
 
+    default @NotNull JavaFile asInterface(@NotNull String interfacePackageName, boolean noPrefix) {
+        Code getterDeclaration = asGetterDeclarations(interfacePackageName, null, noPrefix);
+        Code generated = getGenerated();
+        String imports = composeImports(interfacePackageName, getterDeclaration, generated);
         return new JavaFile(upperCamelCased(typeName()) + ".java",
                 """
                         package %1$s;
@@ -112,10 +119,17 @@ interface JSONSchema {
                         /**
                          * %3$s
                          */
-                        public interface %4$s {
-                        %5$s
+                        %4$s
+                        public interface %5$s {
+                        %6$s
                         }
-                        """.formatted(interfacePackageName, imports, link(description()), upperCamelCased(typeName()), indent(getterDeclaration.codeFragment, 4)));
+                        """.formatted(interfacePackageName,//1
+                        imports,//2
+                        link(description()),//3
+                        generated.codeFragment,//4
+                        upperCamelCased(typeName()),//5
+                        indent(getterDeclaration.codeFragment, 4)//6
+                ));
     }
 
     /**
@@ -247,44 +261,59 @@ interface JSONSchema {
         throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
-    default @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referfencingSchema) {
+    default @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
         throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
-    default @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
+    default @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
         Code annotation = getAnnotation();
         Code javaType = getJavaType(notNull, packageName);
         Code code = nullableAnnotation(notNull);
-        String resolvedTypeName = referencingSchema != null && !"".equals(referencingSchema.typeName())
-                ? referencingSchema.typeName() : typeName();
         return Code.with("""
                         /**
                          * @return %1$s
                          */
-                        %2$s%3$s get%4$s();
-                        """.formatted(link(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description()),
-                        code.codeFragment,
-                        annotation.codeFragment + javaType.codeFragment,
-                        upperCamelCased(resolvedTypeName))
+                        %2$s%3$s %4$s();
+                        """.formatted(link(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description()),//1
+                        code.codeFragment,//2
+                        annotation.codeFragment + javaType.codeFragment,//3
+                        getterMethodName(noPrefix, referencingSchema != null ? referencingSchema.overrideTypeName() : null))//4
                 , annotation, javaType, code);
     }
 
-    default @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
+    default @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName, boolean noPrefix) {
         throw new UnsupportedOperationException("not supported:" + typeName() + "/" + jsonPointer());
     }
 
-    default @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
+    Set<String> keywordsNotForMethodNames = Set.of("abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while", "_");
+
+    default @NotNull String getterMethodName(boolean noPrefix, @Nullable String overrideTypeName) {
+        String resolvedTypeName = overrideTypeName != null ? overrideTypeName : typeName();
+        String result = noPrefix ? lowerCamelCased(resolvedTypeName) :
+                "get" + upperCamelCased(resolvedTypeName);
+
+        if (keywordsNotForMethodNames.contains(result)) {
+            result = result + "_";
+        }
+        return result;
+    }
+
+    default @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName, boolean noPrefix) {
         Code nullableAnnotation = nullableAnnotation(notNull);
         Code annotation = getAnnotation();
         Code javaType = getJavaType(notNull, packageName);
         String resolvedTypeName = overrideTypeName != null ? overrideTypeName : typeName();
         return Code.with("""
                         %1$s%2$s@Override
-                        public %3$s get%4$s() {
+                        public %3$s %4$s() {
                             return %5$s;
                         }
-                        """.formatted(nullableAnnotation.codeFragment, annotation.codeFragment, javaType.codeFragment,
-                        upperCamelCased(resolvedTypeName), escapeKeywords(lowerCamelCased(resolvedTypeName)))
+                        """.formatted(nullableAnnotation.codeFragment, //1
+                        annotation.codeFragment, //2
+                        javaType.codeFragment, //3
+                        getterMethodName(noPrefix, overrideTypeName),//4
+                        escapeKeywords(lowerCamelCased(resolvedTypeName))//5
+                )
                 , nullableAnnotation, annotation, javaType);
     }
 
@@ -298,8 +327,8 @@ interface JSONSchema {
     }
 
     static String upperCamelCased(@NotNull String typeName) {
-        if ("_".equals(typeName)) {
-            return "_";
+        if ("_".equals(typeName) || "__".equals(typeName)) {
+            return typeName;
         }
         StringBuilder result = new StringBuilder();
         for (String s : typeName.replaceAll("-", "_").split("_")) {
@@ -678,7 +707,7 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     @NotNull
-    public Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
+    public Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
         String enumStr = JSONSchema.indent(this.enumList.stream().map(e -> """
                 /**
                  * %s
@@ -887,23 +916,23 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
     }
 
     @Override
-    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
-        List<Code> codes = properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema)).collect(Collectors.toList());
-        allOf.stream().map(e -> e.asGetterDeclaration(true, packageName, referencingSchema)).forEach(codes::add);
-        oneOf.stream().map(e -> e.asGetterDeclaration(false, packageName, referencingSchema)).forEach(codes::add);
+    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
+        List<Code> codes = properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema, noPrefix)).collect(Collectors.toList());
+        allOf.stream().map(e -> e.asGetterDeclaration(true, packageName, referencingSchema, noPrefix)).forEach(codes::add);
+        oneOf.stream().map(e -> e.asGetterDeclaration(false, packageName, referencingSchema, noPrefix)).forEach(codes::add);
         return Code.of(codes);
     }
 
     @Override
-    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
+    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName, boolean noPrefix) {
         List<Code> codes = properties.stream()
-                .map(e -> e.asGetterImplementation(this.required.contains(e.typeName()), packageName, overrideTypeName))
+                .map(e -> e.asGetterImplementation(this.required.contains(e.typeName()), packageName, overrideTypeName, noPrefix))
                 .collect(Collectors.toList());
         allOf.stream()
-                .map(e -> e.asGetterImplementation(true, packageName, overrideTypeName))
+                .map(e -> e.asGetterImplementation(true, packageName, overrideTypeName, noPrefix))
                 .forEach(codes::add);
         oneOf.stream()
-                .map(e -> e.asGetterImplementation(false, packageName, overrideTypeName))
+                .map(e -> e.asGetterImplementation(false, packageName, overrideTypeName, noPrefix))
                 .forEach(codes::add);
         return Code.of(codes);
     }
@@ -957,11 +986,6 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
         return delegateTo().getJavaType(notNull, packageName);
     }
 
-    @Nullable
-    private String overrideTypeName() {
-        return "".equals(typeName) ? null : typeName;
-    }
-
     @Override
     public @NotNull Code asFieldDeclaration(boolean notNull, String packageName, @Nullable String overrideTypeName) {
         return delegateTo().asFieldDeclaration(notNull, packageName, overrideTypeName());
@@ -973,23 +997,23 @@ record RefSchema(@NotNull Map<String, JSONSchema> map, String typeName, String r
     }
 
     @Override
-    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema) {
-        return delegateTo().asGetterImplementations(packageName, overrideTypeName());
+    public @NotNull Code asGetterDeclarations(String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
+        return delegateTo().asGetterDeclarations(packageName, referencingSchema, noPrefix);
     }
 
     @Override
-    public @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema) {
-        return delegateTo().asGetterDeclaration(notNull, packageName, this);
+    public @NotNull Code asGetterDeclaration(boolean notNull, String packageName, @Nullable JSONSchema referencingSchema, boolean noPrefix) {
+        return delegateTo().asGetterDeclaration(notNull, packageName, this, noPrefix);
     }
 
     @Override
-    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asGetterImplementations(packageName, overrideTypeName());
+    public @NotNull Code asGetterImplementations(String packageName, @Nullable String overrideTypeName, boolean noPrefix) {
+        return delegateTo().asGetterImplementations(packageName, overrideTypeName(), noPrefix);
     }
 
     @Override
-    public @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName) {
-        return delegateTo().asGetterImplementation(notNull, packageName, overrideTypeName());
+    public @NotNull Code asGetterImplementation(boolean notNull, String packageName, @Nullable String overrideTypeName, boolean noPrefix) {
+        return delegateTo().asGetterImplementation(notNull, packageName, overrideTypeName(), noPrefix);
     }
 
     @Override

@@ -64,7 +64,7 @@ class JSONSchemaEnumTest {
                             return reason;
                         }
                         """,
-                reason.asGetterImplementation(false, "twitter4j.v2", null).codeFragment());
+                reason.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
         assertEquals("""
                         /**
                          * reason
@@ -113,11 +113,11 @@ class JSONSchemaEnumTest {
                         @Nullable
                         Reason getReason();
                         """,
-                reason.asGetterDeclaration(false, "twitter4j.v2", null).codeFragment());
+                reason.asGetterDeclaration(false, "twitter4j.v2", null, false).codeFragment());
 
 
-        assertThrows(UnsupportedOperationException.class, () -> reason.asJavaImpl("twitter4j", "twitter4j.v2"));
-        assertThrows(UnsupportedOperationException.class, () -> reason.asInterface("twitter4j.v2"));
+        assertThrows(UnsupportedOperationException.class, () -> reason.asJavaImpl("twitter4j", "twitter4j.v2", false));
+        assertThrows(UnsupportedOperationException.class, () -> reason.asInterface("twitter4j.v2", false));
     }
 
     @Test
@@ -166,7 +166,7 @@ class JSONSchemaEnumTest {
                             }
                         }
                         """,
-                reason.asJavaImpl("twitter4j", "twitter4j.v2").content()
+                reason.asJavaImpl("twitter4j", "twitter4j.v2", false).content()
                         .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
         assertEquals("""
@@ -174,9 +174,12 @@ class JSONSchemaEnumTest {
                                                 
                         import org.jetbrains.annotations.Nullable;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * MyObject
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/MyObject")
                         public interface MyObject {
                             /**
                              * MyReason
@@ -226,7 +229,8 @@ class JSONSchemaEnumTest {
                             Reason getMyReason();
                         }
                         """,
-                reason.asInterface("twitter4j.v2").content());
+                reason.asInterface("twitter4j.v2", false).content()
+                        .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
     @Test
@@ -263,9 +267,12 @@ class JSONSchemaEnumTest {
                                                 
                         import org.jetbrains.annotations.Nullable;
                                                 
+                        import javax.annotation.processing.Generated;
+                                                
                         /**
                          * A problem that indicates that a usage cap has been exceeded.
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/UsageCapExceededProblem")
                         public interface UsageCapExceededProblem {
                             /**
                              * @return type
@@ -321,7 +328,8 @@ class JSONSchemaEnumTest {
                             Period getPeriod();
                         }
                         """,
-                usageCapExceededProblem.asInterface("twitter4j.v2").content());
+                usageCapExceededProblem.asInterface("twitter4j.v2", false)
+                        .content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 
 

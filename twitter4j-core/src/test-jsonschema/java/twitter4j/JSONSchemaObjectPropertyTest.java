@@ -47,25 +47,22 @@ class JSONSchemaObjectPropertyTest {
                   }
                 }""");
 
-//        assertEquals(6, extract.size());
         JSONSchema attachments = extract.get("#/components/schemas/attachments");
         assertEquals("#/components/schemas/attachments", attachments.jsonPointer());
-//        for (JSONSchema value : extract.values()) {
-//            System.out.println(value.jsonPointer()+":"+value.jsonPointer().getClass().getName()+":"+value.typeName()+":"+value.getJavaType(false, "twitter4j"));
-//        }
 
 
-        JavaFile javaFile = attachments.asInterface("twitter4j.v2");
+        JavaFile javaFile = attachments.asInterface("twitter4j.v2", false);
         assertEquals("Attachments.java", javaFile.fileName());
-        String interfaceDeclaration = javaFile.content();
         assertEquals("""
                         package twitter4j.v2;
                                                 
+                        import javax.annotation.processing.Generated;
                         import java.util.List;
                                                 
                         /**
                          * Specifies the type of attachments (if any) present in this Tweet.
                          */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/attachments")
                         public interface Attachments {
                             /**
                              * @return A list of Media Keys for each one of the media attachments (if media are attached).
@@ -78,6 +75,6 @@ class JSONSchemaObjectPropertyTest {
                             List<String> getPollIds();
                         }
                         """,
-                interfaceDeclaration);
+                javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
 }

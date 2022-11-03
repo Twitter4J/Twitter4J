@@ -30,11 +30,11 @@ class GenerateCodes {
         @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
 
         JSONSchemaExtractor extractor = JSONSchemaExtractor.from(apiJsonLatest, "#/components/schemas/");
-        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2")) {
+        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2", true)) {
             String javaInterface = javaFile.content();
             Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()), javaInterface.getBytes());
         }
-        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2")) {
+        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2", true)) {
             String javaInterface = javaFile.content();
             Files.write(Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", javaFile.fileName()), javaInterface.getBytes());
         }
@@ -49,10 +49,10 @@ class DeleteGeneratedCodes {
         @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
 
         JSONSchemaExtractor extractor = JSONSchemaExtractor.from(apiJsonLatest, "#/components/schemas/");
-        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2")) {
+        for (JavaFile javaFile : extractor.interfaceFiles("twitter4j.v2", false)) {
             Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", "v2", javaFile.fileName()).toFile().delete();
         }
-        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2")) {
+        for (JavaFile javaFile : extractor.javaImplFiles("twitter4j", "twitter4j.v2", false)) {
             Path.of("twitter4j-core", "src", "test-jsonschema", "java", "twitter4j", javaFile.fileName()).toFile().delete();
         }
     }
