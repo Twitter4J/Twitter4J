@@ -330,6 +330,76 @@ class JSONSchemaEnumTest {
                         """,
                 usageCapExceededProblem.asInterface("twitter4j.v2", false)
                         .content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+
+        assertEquals("""
+                        package twitter4j.v2;
+                                                
+                        import org.jetbrains.annotations.Nullable;
+                                                
+                        import javax.annotation.processing.Generated;
+                                                
+                        /**
+                         * A problem that indicates that a usage cap has been exceeded.
+                         */
+                        @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/UsageCapExceededProblem")
+                        public interface UsageCapExceededProblem {
+                            /**
+                             * @return type
+                             */
+                            @Nullable
+                            String type();
+                                                
+                            /**
+                             * period
+                             */
+                            enum Period {
+                                /**
+                                 * Daily
+                                 */
+                                DAILY("Daily"),
+                                /**
+                                 * Monthly
+                                 */
+                                MONTHLY("Monthly");
+                                /**
+                                 * value
+                                 */
+                                public final String value;
+                                                
+                                Period(String value) {
+                                    this.value = value;
+                                }
+                                                
+                                @Override
+                                public String toString() {
+                                    return value;
+                                }
+                                /**
+                                 * Returns the enum constant of the specified enum class with the specified name.
+                                 * @param name the name of the constant to return
+                                 * @return the enum constant of the specified enum class with the specified name,
+                                 * or null if the enum constant is not found.\s
+                                 */
+                                public static Period of(String name) {
+                                    for (Period value : Period.values()) {
+                                        if (value.value.equals(name)) {
+                                            return value;
+                                        }
+                                    }
+                                    return null;
+                                }
+                            }
+                                                
+                            /**
+                             * @return period
+                             */
+                            @Nullable
+                            Period period();
+                        }
+                        """,
+                usageCapExceededProblem.asInterface("twitter4j.v2", true)
+                        .content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+
     }
 
 

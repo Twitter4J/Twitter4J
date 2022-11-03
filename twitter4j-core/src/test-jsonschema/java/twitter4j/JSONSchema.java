@@ -746,20 +746,23 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     public static %3$s of(String name) {
                         for (%3$s value : %3$s.values()) {
                             if (value.value.equals(name)) {
-                                return value;
+                                        return value;
+                                    }
+                                }
+                                return null;
                             }
                         }
-                        return null;
-                    }
-                }
-                                
-                /**
-                 * @return %1$s
-                 */
-                %2$s%3$s get%4$s();
-                """.formatted(JSONSchema.link(referencingSchema != null ? referencingSchema.description() : description()),
-                nullableAnnotation.codeFragment(), annotation.codeFragment() + javaType.codeFragment(),
-                JSONSchema.upperCamelCased(resolvedTypeName), enumStr), nullableAnnotation, annotation, javaType);
+                                        
+                        /**
+                         * @return %1$s
+                         */
+                        %2$s%3$s %4$s();
+                        """.formatted(JSONSchema.link(referencingSchema != null ? referencingSchema.description() : description()),//1
+                        nullableAnnotation.codeFragment(), //2
+                        annotation.codeFragment() + javaType.codeFragment(), //3
+                        getterMethodName(noPrefix, resolvedTypeName),//4
+                        enumStr),//5
+                nullableAnnotation, annotation, javaType);
     }
 
     @Override
