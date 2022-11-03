@@ -281,7 +281,7 @@ interface JSONSchema {
                         """.formatted(link(referencingSchema != null && !"".equals(referencingSchema.description()) ? referencingSchema.description() : description()),//1
                         code.codeFragment,//2
                         annotation.codeFragment + javaType.codeFragment,//3
-                        getterMethodName(noPrefix, referencingSchema != null ? referencingSchema.overrideTypeName() : null))//4
+                        getterMethodName(noPrefix, notNull, referencingSchema != null ? referencingSchema.overrideTypeName() : null))//4
                 , annotation, javaType, code);
     }
 
@@ -291,10 +291,12 @@ interface JSONSchema {
 
     Set<String> keywordsNotForMethodNames = Set.of("abstract", "continue", "for", "new", "switch", "assert", "default", "if", "package", "synchronized", "boolean", "do", "goto", "private", "this", "break", "double", "implements", "protected", "throw", "byte", "else", "import", "public", "throws", "case", "enum", "instanceof", "return", "transient", "catch", "extends", "int", "short", "try", "char", "final", "interface", "static", "void", "class", "finally", "long", "strictfp", "volatile", "const", "float", "native", "super", "while", "_");
 
-    default @NotNull String getterMethodName(boolean noPrefix, @Nullable String overrideTypeName) {
+    default @NotNull String getterMethodName(boolean noPrefix, boolean notNull, @Nullable String overrideTypeName) {
         String resolvedTypeName = overrideTypeName != null ? overrideTypeName : typeName();
+        // nonnull boolean property accessor starts with "is"
+        String prefix = notNull && this instanceof BooleanSchema ? "is" : "get";
         String result = noPrefix ? lowerCamelCased(resolvedTypeName) :
-                "get" + upperCamelCased(resolvedTypeName);
+                prefix + upperCamelCased(resolvedTypeName);
 
         if (keywordsNotForMethodNames.contains(result)) {
             result = result + "_";
@@ -315,7 +317,7 @@ interface JSONSchema {
                         """.formatted(nullableAnnotation.codeFragment, //1
                         annotation.codeFragment, //2
                         javaType.codeFragment, //3
-                        getterMethodName(noPrefix, overrideTypeName),//4
+                        getterMethodName(noPrefix, notNull, overrideTypeName),//4
                         escapeKeywords(lowerCamelCased(resolvedTypeName))//5
                 )
                 , nullableAnnotation, annotation, javaType);
@@ -723,49 +725,49 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
         Code javaType = getJavaType(notNull, packageName);
         String resolvedTypeName = referencingSchema != null ? referencingSchema.typeName() : typeName;
         return Code.with("""
-                /**
-                 * %1$s
-                 */
-                enum %3$s {
-                %5$s
-                    /**
-                     * value
-                     */
-                    public final String value;
-                            
-                            %3$s(String value) {
-                                this.value = value;
-                            }
-                                    
-                            @Override
-                            public String toString() {
-                                return value;
-                            }
+                        /**
+                         * %1$s
+                         */
+                        enum %3$s {
+                        %5$s
                             /**
-                             * Returns the enum constant of the specified enum class with the specified name.
-                             *
-                             * @param name the name of the constant to return
-                             * @return the enum constant of the specified enum class with the specified name,
-                             * or null if the enum constant is not found.
+                             * value
                              */
-                            public static %3$s of(String name) {
-                                for (%3$s value : %3$s.values()) {
-                                    if (value.value.equals(name)) {
+                            public final String value;
+                                    
+                                    %3$s(String value) {
+                                        this.value = value;
+                                    }
+                                            
+                                    @Override
+                                    public String toString() {
                                         return value;
                                     }
+                                    /**
+                                     * Returns the enum constant of the specified enum class with the specified name.
+                                     *
+                                     * @param name the name of the constant to return
+                                     * @return the enum constant of the specified enum class with the specified name,
+                                     * or null if the enum constant is not found.
+                                     */
+                                    public static %3$s of(String name) {
+                                        for (%3$s value : %3$s.values()) {
+                                            if (value.value.equals(name)) {
+                                                return value;
+                                            }
+                                        }
+                                        return null;
+                                    }
                                 }
-                                return null;
-                            }
-                        }
-                                            
-                        /**
-                         * @return %1$s
-                         */
-                        %2$s%3$s %4$s();
-                        """.formatted(JSONSchema.link(referencingSchema != null ? referencingSchema.description() : description()),//1
+                                                    
+                                /**
+                                 * @return %1$s
+                                 */
+                                %2$s%3$s %4$s();
+                                """.formatted(JSONSchema.link(referencingSchema != null ? referencingSchema.description() : description()),//1
                         nullableAnnotation.codeFragment(), //2
                         annotation.codeFragment() + javaType.codeFragment(), //3
-                        getterMethodName(noPrefix, resolvedTypeName),//4
+                        getterMethodName(noPrefix, notNull, resolvedTypeName),//4
                         enumStr),//5
                 nullableAnnotation, annotation, javaType);
     }

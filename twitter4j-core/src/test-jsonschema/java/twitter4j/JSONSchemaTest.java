@@ -218,6 +218,15 @@ class JSONSchemaTest {
                         """,
                 possiblySensitive.asGetterImplementation(false, "twitter4j.v2", null, false).codeFragment());
 
+        // nonnull boolean getter starts with "is"
+        assertEquals("""
+                        @Override
+                        public boolean isPossiblySensitive() {
+                            return possiblySensitive;
+                        }
+                        """,
+                possiblySensitive.asGetterImplementation(true, "twitter4j.v2", null, false).codeFragment());
+
         assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asJavaImpl("twitter4j", "twitter4j.v2", false));
         assertThrows(UnsupportedOperationException.class, () -> possiblySensitive.asInterface("twitter4j.v2", false));
     }
