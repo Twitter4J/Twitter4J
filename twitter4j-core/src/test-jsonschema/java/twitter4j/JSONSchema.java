@@ -4,7 +4,6 @@ import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -105,7 +104,7 @@ interface JSONSchema {
 
     default Code getGenerated() {
         return Code.of("""
-                @Generated(value = "%s", date = "%s", comments = "%s")""".formatted(JSONSchema.class.getName(), ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT")).format(dateTimeFormatter), jsonPointer()), "javax.annotation.processing.Generated");
+                @Generated(value = "%s", date = "%s", comments = "%s")""".formatted(JSONSchema.class.getName(), ZonedDateTime.now(ZoneId.of("GMT")).format(dateTimeFormatter), jsonPointer()), "javax.annotation.processing.Generated");
     }
 
     default @NotNull JavaFile asInterface(@NotNull String interfacePackageName, boolean noPrefix) {
