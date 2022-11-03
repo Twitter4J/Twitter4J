@@ -729,30 +729,31 @@ record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
                      */
                     public final String value;
                             
-                    %3$s(String value) {
-                        this.value = value;
-                    }
-                            
-                    @Override
-                    public String toString() {
-                        return value;
-                    }
-                    /**
-                     * Returns the enum constant of the specified enum class with the specified name.
-                     * @param name the name of the constant to return
-                     * @return the enum constant of the specified enum class with the specified name,
-                     * or null if the enum constant is not found.\s
-                     */
-                    public static %3$s of(String name) {
-                        for (%3$s value : %3$s.values()) {
-                            if (value.value.equals(name)) {
+                            %3$s(String value) {
+                                this.value = value;
+                            }
+                                    
+                            @Override
+                            public String toString() {
+                                return value;
+                            }
+                            /**
+                             * Returns the enum constant of the specified enum class with the specified name.
+                             *
+                             * @param name the name of the constant to return
+                             * @return the enum constant of the specified enum class with the specified name,
+                             * or null if the enum constant is not found.
+                             */
+                            public static %3$s of(String name) {
+                                for (%3$s value : %3$s.values()) {
+                                    if (value.value.equals(name)) {
                                         return value;
                                     }
                                 }
                                 return null;
                             }
                         }
-                                        
+                                            
                         /**
                          * @return %1$s
                          */

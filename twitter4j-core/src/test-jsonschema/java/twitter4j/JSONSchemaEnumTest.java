@@ -1,6 +1,14 @@
 package twitter4j;
 
+import org.intellij.lang.annotations.Language;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -93,9 +101,10 @@ class JSONSchemaEnumTest {
                             }
                             /**
                              * Returns the enum constant of the specified enum class with the specified name.
+                             *
                              * @param name the name of the constant to return
                              * @return the enum constant of the specified enum class with the specified name,
-                             * or null if the enum constant is not found.\s
+                             * or null if the enum constant is not found.
                              */
                             public static Reason of(String name) {
                                 for (Reason value : Reason.values()) {
@@ -208,9 +217,10 @@ class JSONSchemaEnumTest {
                                 }
                                 /**
                                  * Returns the enum constant of the specified enum class with the specified name.
+                                 *
                                  * @param name the name of the constant to return
                                  * @return the enum constant of the specified enum class with the specified name,
-                                 * or null if the enum constant is not found.\s
+                                 * or null if the enum constant is not found.
                                  */
                                 public static Reason of(String name) {
                                     for (Reason value : Reason.values()) {
@@ -307,9 +317,10 @@ class JSONSchemaEnumTest {
                                 }
                                 /**
                                  * Returns the enum constant of the specified enum class with the specified name.
+                                 *
                                  * @param name the name of the constant to return
                                  * @return the enum constant of the specified enum class with the specified name,
-                                 * or null if the enum constant is not found.\s
+                                 * or null if the enum constant is not found.
                                  */
                                 public static Period of(String name) {
                                     for (Period value : Period.values()) {
@@ -376,9 +387,10 @@ class JSONSchemaEnumTest {
                                 }
                                 /**
                                  * Returns the enum constant of the specified enum class with the specified name.
+                                 *
                                  * @param name the name of the constant to return
                                  * @return the enum constant of the specified enum class with the specified name,
-                                 * or null if the enum constant is not found.\s
+                                 * or null if the enum constant is not found.
                                  */
                                 public static Period of(String name) {
                                     for (Period value : Period.values()) {
@@ -403,4 +415,137 @@ class JSONSchemaEnumTest {
     }
 
 
+    @Test
+    void format() throws IOException, URISyntaxException {
+        Path file = Path.of(Objects.requireNonNull(SchemaLoader.class.getResource("/openapi.json")).toURI());
+
+        @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
+
+        Map<String, JSONSchema> extract = JSONSchema.extract("#/components/schemas/", apiJsonLatest);
+        JSONSchema schema = extract.get("#/components/schemas/UsageCapExceededProblem");
+        assertEquals("""
+                package twitter4j.v2;
+                                
+                import org.jetbrains.annotations.NotNull;
+                import org.jetbrains.annotations.Nullable;
+                                
+                import javax.annotation.processing.Generated;
+                                
+                /**
+                 * A problem that indicates that a usage cap has been exceeded.
+                 */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/UsageCapExceededProblem")
+                public interface UsageCapExceededProblem {
+                    /**
+                     * @return type
+                     */
+                    @Nullable
+                    String type();
+                                
+                    /**
+                     * period
+                     */
+                    enum Period {
+                        /**
+                         * Daily
+                         */
+                        DAILY("Daily"),
+                        /**
+                         * Monthly
+                         */
+                        MONTHLY("Monthly");
+                        /**
+                         * value
+                         */
+                        public final String value;
+                                
+                        Period(String value) {
+                            this.value = value;
+                        }
+                                
+                        @Override
+                        public String toString() {
+                            return value;
+                        }
+                        /**
+                         * Returns the enum constant of the specified enum class with the specified name.
+                         *
+                         * @param name the name of the constant to return
+                         * @return the enum constant of the specified enum class with the specified name,
+                         * or null if the enum constant is not found.
+                         */
+                        public static Period of(String name) {
+                            for (Period value : Period.values()) {
+                                if (value.value.equals(name)) {
+                                    return value;
+                                }
+                            }
+                            return null;
+                        }
+                    }
+                        
+                    /**
+                     * @return period
+                     */
+                    @Nullable
+                    Period period();
+                                
+                    /**
+                     * scope
+                     */
+                    enum Scope {
+                        /**
+                         * Account
+                         */
+                        ACCOUNT("Account"),
+                        /**
+                         * Product
+                         */
+                        PRODUCT("Product");
+                        /**
+                         * value
+                         */
+                        public final String value;
+                                
+                        Scope(String value) {
+                            this.value = value;
+                        }
+                                
+                        @Override
+                        public String toString() {
+                            return value;
+                        }
+                        /**
+                         * Returns the enum constant of the specified enum class with the specified name.
+                         *
+                         * @param name the name of the constant to return
+                         * @return the enum constant of the specified enum class with the specified name,
+                         * or null if the enum constant is not found.
+                         */
+                        public static Scope of(String name) {
+                            for (Scope value : Scope.values()) {
+                                if (value.value.equals(name)) {
+                                    return value;
+                                }
+                            }
+                            return null;
+                        }
+                    }
+                                
+                    /**
+                     * @return scope
+                     */
+                    @Nullable
+                    Scope scope();
+                                
+                    /**
+                     * @return ProblemFields
+                     */
+                    @NotNull
+                    ProblemFields problemFields();
+                }
+                """, schema.asInterface("twitter4j.v2", true).content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+
+    }
 }
