@@ -851,6 +851,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     @NotNull List<JSONSchema> properties,
                     @NotNull List<JSONSchema> allOf,
                     @NotNull List<JSONSchema> oneOf,
+                    @NotNull List<JSONSchema> anyOf,
                     @Nullable String ref,
                     @Nullable JSONSchema items,
                     @Nullable JSONSchema additionalProperties,
@@ -858,10 +859,11 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     @Nullable String example,
                     @Nullable String description) implements JSONSchema {
     static ObjectSchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[allOf, oneOf, description, additionalProperties, type, $ref, required, properties, example, discriminator]");
+        JSONSchema.ensureOneOf(object, "[allOf, anyOf, oneOf, description, additionalProperties, type, $ref, required, properties, example, discriminator]");
         List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "properties");
         List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "allOf");
         List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "oneOf");
+        List<JSONSchema> anyOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "anyOf");
         Boolean additionalPropertiesBoolean = null;
         JSONSchema additionalPropertiesObj = null;
         if (object.has("additionalProperties")) {
@@ -875,7 +877,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
             }
         }
         return new ObjectSchema(typeName, jsonPointer,
-                JSONSchema.toStringList(object, "required"), properties, allOf, oneOf,
+                JSONSchema.toStringList(object, "required"), properties, allOf, oneOf, anyOf,
                 object.getString("$ref"),
                 object.has("items") ? JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"),
                         "items", jsonPointer + "/items") : null,
@@ -904,6 +906,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         properties.stream().map(e -> e.asFieldDeclaration(required.contains(e.typeName()), packageName, overrideTypeName)).forEach(codes::add);
         allOf.stream().map(e -> e.asFieldDeclaration(true, packageName, overrideTypeName)).forEach(codes::add);
         oneOf.stream().map(e -> e.asFieldDeclaration(false, packageName, overrideTypeName)).forEach(codes::add);
+        anyOf.stream().map(e -> e.asFieldDeclaration(false, packageName, overrideTypeName)).forEach(codes::add);
         return Code.of(codes, true);
     }
 
@@ -933,6 +936,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         List<Code> codes = properties.stream().map(e -> e.asConstructorAssignment(this.required.contains(e.typeName()), null)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asConstructorAssignment(true, null)).forEach(codes::add);
         oneOf.stream().map(e -> e.asConstructorAssignment(false, null)).forEach(codes::add);
+        anyOf.stream().map(e -> e.asConstructorAssignment(false, null)).forEach(codes::add);
         return Code.of(codes);
     }
 
@@ -941,6 +945,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         List<Code> codes = properties.stream().map(e -> e.asGetterDeclaration(this.required.contains(e.typeName()), packageName, referencingSchema, noPrefix)).collect(Collectors.toList());
         allOf.stream().map(e -> e.asGetterDeclaration(true, packageName, referencingSchema, noPrefix)).forEach(codes::add);
         oneOf.stream().map(e -> e.asGetterDeclaration(false, packageName, referencingSchema, noPrefix)).forEach(codes::add);
+        anyOf.stream().map(e -> e.asGetterDeclaration(false, packageName, referencingSchema, noPrefix)).forEach(codes::add);
         return Code.of(codes);
     }
 
@@ -953,6 +958,9 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                 .map(e -> e.asGetterImplementation(true, packageName, overrideTypeName, noPrefix))
                 .forEach(codes::add);
         oneOf.stream()
+                .map(e -> e.asGetterImplementation(false, packageName, overrideTypeName, noPrefix))
+                .forEach(codes::add);
+        anyOf.stream()
                 .map(e -> e.asGetterImplementation(false, packageName, overrideTypeName, noPrefix))
                 .forEach(codes::add);
         return Code.of(codes);
