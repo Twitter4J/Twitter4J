@@ -655,10 +655,10 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
 record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nullable String pattern,
                     @Nullable String format,
-                    @NotNull List<String> enumList, @Nullable Integer minLength, @Nullable String description,
+                    @NotNull List<String> enumList, @Nullable Integer minLength,@Nullable Integer maxLength, @Nullable String description,
                     @Nullable String example) implements JSONSchema {
     static StringSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[minLength, pattern, format, description, type, enum, example]");
+        JSONSchema.ensureOneOf(object, "[minLength, pattern, format, description, type, enum, example, maxLength]");
 
         List<String> enumArray = JSONSchema.toStringList(object, "enum");
 
@@ -667,6 +667,7 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
                 object.getString("format"),
                 enumArray,
                 object.getIntValue("minLength"),
+                object.getIntValue("maxLength"),
                 object.optString("description", typeName),
                 object.getString("example")
         );

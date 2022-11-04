@@ -76,5 +76,19 @@ class JSONSchemaStringTest {
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asJavaImpl("twitter4j", "twitter4j.v2", false));
         assertThrows(UnsupportedOperationException.class, () -> tweetId.asInterface("twitter4j.v2", false));
     }
+    @Test
+    void length() {
+        var extract = JSONSchema.extract("#/", """
+                {
+                                "items" : {
+                                  "type" : "string",
+                                  "description" : "The text of a poll choice.",
+                                  "minLength" : 1,
+                                  "maxLength" : 25
+                                }
+                
+                }""");
+        assertEquals(1, extract.size());
+    }
 
 }
