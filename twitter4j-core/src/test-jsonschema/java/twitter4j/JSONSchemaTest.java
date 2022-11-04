@@ -51,10 +51,10 @@ class JSONSchemaTest {
         assertEquals("#/ProblemFields", problemFields.jsonPointer());
         assertEquals("""
                         this.problemFields = json.has("ProblemFields") ? new ProblemFieldsImpl(json.getJSONObject("ProblemFields")) : null;""",
-                problemFields.asConstructorAssignment(true, null).codeFragment());
+                problemFields.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         this.problemFields = json.has("ProblemFields") ? new ProblemFieldsImpl(json.getJSONObject("ProblemFields")) : null;""",
-                problemFields.asConstructorAssignment(false, null).codeFragment());
+                problemFields.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("""
                         @NotNull
                         private final String type;

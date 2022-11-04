@@ -62,10 +62,10 @@ class JSONSchemaEnumTest {
                 reason.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.reason = Reason.of(json.getString("reason"));""",
-                reason.asConstructorAssignment(false, null).codeFragment());
+                reason.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("""
                         this.reason = Reason.of(json.getString("reason"));""",
-                reason.asConstructorAssignment(true, null).codeFragment());
+                reason.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override
@@ -439,10 +439,10 @@ class JSONSchemaEnumTest {
                 @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/UsageCapExceededProblem")
                 public interface UsageCapExceededProblem {
                     /**
-                     * @return type
+                     * @return An HTTP Problem Details object, as defined in IETF RFC 7807 (<a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a>).
                      */
-                    @Nullable
-                    String type();
+                    @NotNull
+                    Problem problem();
                                 
                     /**
                      * period
@@ -485,7 +485,7 @@ class JSONSchemaEnumTest {
                             return null;
                         }
                     }
-                        
+                                
                     /**
                      * @return period
                      */
@@ -539,24 +539,101 @@ class JSONSchemaEnumTest {
                      */
                     @Nullable
                     Scope scope();
-                                
-                    /**
-                     * @return ProblemFields
-                     */
-                    @NotNull
-                    ProblemFields problemFields();
                 }
                 """, schema.asInterface("twitter4j.v2", true).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
 
     }
+
     @Test
-    void format2() throws URISyntaxException, IOException {
-        Path file = Path.of(Objects.requireNonNull(SchemaLoader.class.getResource("/openapi.json")).toURI());
+    void format2() {
 
-        @Language("JSON") String apiJsonLatest = new String(Files.readAllBytes(file));
-
-        Map<String, JSONSchema> extract = JSONSchema.extract("#/components/schemas/", apiJsonLatest);
+        Map<String, JSONSchema> extract = JSONSchema.extract("#/components/schemas/", """
+                {
+                  "components": {
+                    "schemas": {
+                      "ClientForbiddenProblem": {
+                        "description": "A problem that indicates your client is forbidden from making this request.",
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Problem"
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "reason": {
+                                "type": "string",
+                                "enum": [
+                                  "official-client-forbidden",
+                                  "client-not-enrolled"
+                                ]
+                              },
+                              "registration_url": {
+                                "type": "string",
+                                "format": "uri"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "Problem" : {
+                        "type" : "object",
+                        "description" : "An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).",
+                        "required" : [
+                          "type",
+                          "title"
+                        ],
+                        "properties" : {
+                          "detail" : {
+                            "type" : "string"
+                          },
+                          "status" : {
+                            "type" : "integer"
+                          },
+                          "title" : {
+                            "type" : "string"
+                          },
+                          "type" : {
+                            "type" : "string"
+                          }
+                        },
+                        "discriminator" : {
+                          "propertyName" : "type",
+                          "mapping" : {
+                            "about:blank" : "#/components/schemas/GenericProblem",
+                            "https://api.twitter.com/2/problems/client-disconnected" : "#/components/schemas/ClientDisconnectedProblem",
+                            "https://api.twitter.com/2/problems/client-forbidden" : "#/components/schemas/ClientForbiddenProblem",
+                            "https://api.twitter.com/2/problems/conflict" : "#/components/schemas/ConflictProblem",
+                            "https://api.twitter.com/2/problems/disallowed-resource" : "#/components/schemas/DisallowedResourceProblem",
+                            "https://api.twitter.com/2/problems/duplicate-rules" : "#/components/schemas/DuplicateRuleProblem",
+                            "https://api.twitter.com/2/problems/invalid-request" : "#/components/schemas/InvalidRequestProblem",
+                            "https://api.twitter.com/2/problems/invalid-rules" : "#/components/schemas/InvalidRuleProblem",
+                            "https://api.twitter.com/2/problems/noncompliant-rules" : "#/components/schemas/NonCompliantRulesProblem",
+                            "https://api.twitter.com/2/problems/not-authorized-for-field" : "#/components/schemas/FieldUnauthorizedProblem",
+                            "https://api.twitter.com/2/problems/not-authorized-for-resource" : "#/components/schemas/ResourceUnauthorizedProblem",
+                            "https://api.twitter.com/2/problems/operational-disconnect" : "#/components/schemas/OperationalDisconnectProblem",
+                            "https://api.twitter.com/2/problems/resource-not-found" : "#/components/schemas/ResourceNotFoundProblem",
+                            "https://api.twitter.com/2/problems/resource-unavailable" : "#/components/schemas/ResourceUnavailableProblem",
+                            "https://api.twitter.com/2/problems/rule-cap" : "#/components/schemas/RulesCapProblem",
+                            "https://api.twitter.com/2/problems/streaming-connection" : "#/components/schemas/ConnectionExceptionProblem",
+                            "https://api.twitter.com/2/problems/unsupported-authentication" : "#/components/schemas/UnsupportedAuthenticationProblem",
+                            "https://api.twitter.com/2/problems/usage-capped" : "#/components/schemas/UsageCapExceededProblem"
+                          }
+                        }
+                      },
+                      "GenericProblem" : {
+                        "description" : "A generic problem with no additional information beyond that provided by the HTTP status code.",
+                        "allOf" : [
+                          {
+                            "$ref" : "#/components/schemas/Problem"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+                """
+        );
         JSONSchema schema = extract.get("#/components/schemas/ClientForbiddenProblem");
 
         assertEquals("""
@@ -573,10 +650,10 @@ class JSONSchemaEnumTest {
                 @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ClientForbiddenProblem")
                 public interface ClientForbiddenProblem {
                     /**
-                     * @return type
+                     * @return An HTTP Problem Details object, as defined in IETF RFC 7807 (<a href="https://tools.ietf.org/html/rfc7807">https://tools.ietf.org/html/rfc7807</a>).
                      */
-                    @Nullable
-                    String type();
+                    @NotNull
+                    Problem problem();
                                 
                     /**
                      * reason
@@ -598,7 +675,7 @@ class JSONSchemaEnumTest {
                         Reason(String value) {
                             this.value = value;
                         }
-                        
+                                
                         @Override
                         public String toString() {
                             return value;
@@ -619,7 +696,7 @@ class JSONSchemaEnumTest {
                             return null;
                         }
                     }
-                        
+                                
                     /**
                      * @return reason
                      */
@@ -631,14 +708,60 @@ class JSONSchemaEnumTest {
                      */
                     @Nullable
                     String registrationUrl();
-                                
-                    /**
-                     * @return ProblemFields
-                     */
-                    @NotNull
-                    ProblemFields problemFields();
                 }
                 """, schema.asInterface("twitter4j.v2", true).content()
                 .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+
+        assertEquals("""
+                package twitter4j;
+                                
+                import org.jetbrains.annotations.NotNull;
+                import org.jetbrains.annotations.Nullable;
+                import twitter4j.v2.Problem;
+                                
+                import javax.annotation.processing.Generated;
+                                
+                /**
+                 * A problem that indicates your client is forbidden from making this request.
+                 */
+                @Generated(value = "twitter4j.JSONSchema", date = "dateStr", comments = "#/components/schemas/ClientForbiddenProblem")
+                class ClientForbiddenProblemImpl implements twitter4j.v2.ClientForbiddenProblem {
+                    @NotNull
+                    private final Problem problem;
+                                
+                    @Nullable
+                    private final Reason reason;
+                                
+                    @Nullable
+                    private final String registrationUrl;
+                                
+                    @SuppressWarnings("ConstantConditions")
+                    ClientForbiddenProblemImpl(JSONObject json) {
+                        this.problem = json.has("Problem") ? new ProblemImpl(json.getJSONObject("Problem")) : null;
+                        this.reason = Reason.of(json.getString("reason"));
+                        this.registrationUrl = json.getString("registration_url");
+                    }
+                                
+                    @NotNull
+                    @Override
+                    public Problem problem() {
+                        return problem;
+                    }
+                                
+                    @Nullable
+                    @Override
+                    public Reason reason() {
+                        return reason;
+                    }
+                                
+                    @Nullable
+                    @Override
+                    public String registrationUrl() {
+                        return registrationUrl;
+                    }
+                }
+                """, schema.asJavaImpl("twitter4j","twitter4j.v2", true).content()
+                .replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
+
     }
 }

@@ -27,9 +27,9 @@ class JSONSchemaNumberTest {
                 mediaHeight.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.mediaHeight = json.getLongValue("MediaHeight");""",
-                mediaHeight.asConstructorAssignment(false, null).codeFragment());
+                mediaHeight.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.mediaHeight = json.getLong(\"MediaHeight\");",
-                mediaHeight.asConstructorAssignment(true, null).codeFragment());
+                mediaHeight.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Range(from = 0, to = Long.MAX_VALUE)
@@ -65,9 +65,9 @@ class JSONSchemaNumberTest {
                 items.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.items = json.getDoubleValue("items");""",
-                items.asConstructorAssignment(false, null).codeFragment());
+                items.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.items = json.getDouble(\"items\");",
-                items.asConstructorAssignment(true, null).codeFragment());
+                items.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Range(from = -180, to = 180)
@@ -100,9 +100,9 @@ class JSONSchemaNumberTest {
                 hTTPStatusCode.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.hTTPStatusCode = json.getIntValue("HTTPStatusCode");""",
-                hTTPStatusCode.asConstructorAssignment(false, null).codeFragment());
+                hTTPStatusCode.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.hTTPStatusCode = json.getInt(\"HTTPStatusCode\");",
-                hTTPStatusCode.asConstructorAssignment(true, null).codeFragment());
+                hTTPStatusCode.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Range(from = 100, to = 599)
@@ -142,9 +142,9 @@ class JSONSchemaNumberTest {
                 code.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.code = json.getIntValue("code");""",
-                code.asConstructorAssignment(false, null).codeFragment());
+                code.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.code = json.getInt(\"code\");",
-                code.asConstructorAssignment(true, null).codeFragment());
+                code.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override

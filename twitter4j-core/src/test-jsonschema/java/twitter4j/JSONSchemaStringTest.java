@@ -26,10 +26,10 @@ class JSONSchemaStringTest {
                 tweetId.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.tweetID = json.getString("TweetID");""",
-                tweetId.asConstructorAssignment(false, null).codeFragment());
+                tweetId.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("""
                         this.tweetID = json.getString("TweetID");""",
-                tweetId.asConstructorAssignment(true, null).codeFragment());
+                tweetId.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override
@@ -60,10 +60,10 @@ class JSONSchemaStringTest {
                 tweetId.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("""
                         this.endDatetime = json.getLocalDateTime("end_datetime");""",
-                tweetId.asConstructorAssignment(false, null).codeFragment());
+                tweetId.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("""
                         this.endDatetime = json.getLocalDateTime("end_datetime");""",
-                tweetId.asConstructorAssignment(true, null).codeFragment());
+                tweetId.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override

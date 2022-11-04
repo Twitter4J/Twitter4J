@@ -27,9 +27,9 @@ class JSONSchemaArrayTest {
         assertEquals("private final double[] position;",
                 position.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("this.position = json.getDoubleArray(\"Position\");",
-                position.asConstructorAssignment(false, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.position = json.getDoubleArray(\"Position\");",
-                position.asConstructorAssignment(true, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Override
                         public double[] getPosition() {
@@ -70,9 +70,9 @@ class JSONSchemaArrayTest {
         assertEquals("private final long[] position;",
                 position.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("this.position = json.getIntArray(\"Position\");",
-                position.asConstructorAssignment(false, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.position = json.getIntArray(\"Position\");",
-                position.asConstructorAssignment(true, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Override
                         public long[] getPosition() {
@@ -113,9 +113,9 @@ class JSONSchemaArrayTest {
         assertEquals("private final List<String> position;",
                 position.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("this.position = json.getStringList(\"Position\");",
-                position.asConstructorAssignment(false, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.position = json.getStringList(\"Position\");",
-                position.asConstructorAssignment(true, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Override
                         public List<String> getPosition() {
@@ -157,9 +157,9 @@ class JSONSchemaArrayTest {
         assertEquals("private final boolean[] position;",
                 position.asFieldDeclaration(true, "twitter4j.v2", null).codeFragment());
         assertEquals("this.position = json.getBooleanArray(\"Position\");",
-                position.asConstructorAssignment(false, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.position = json.getBooleanArray(\"Position\");",
-                position.asConstructorAssignment(true, null).codeFragment());
+                position.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Override
                         public boolean[] getPosition() {

@@ -22,9 +22,9 @@ class JSONSchemaBooleanTest {
         assertEquals("@Nullable\nprivate final Boolean possiblySensitive;",
                 possiblySensitive.asFieldDeclaration(false, "twitter4j.v2", null).codeFragment());
         assertEquals("this.possiblySensitive = json.getBooleanValue(\"possibly_sensitive\");",
-                possiblySensitive.asConstructorAssignment(false, null).codeFragment());
+                possiblySensitive.asConstructorAssignment("twitter4j", false, null).codeFragment());
         assertEquals("this.possiblySensitive = json.getBoolean(\"possibly_sensitive\");",
-                possiblySensitive.asConstructorAssignment(true, null).codeFragment());
+                possiblySensitive.asConstructorAssignment("twitter4j", true, null).codeFragment());
         assertEquals("""
                         @Nullable
                         @Override
@@ -69,11 +69,11 @@ class JSONSchemaBooleanTest {
 
         assertEquals("""
                         this.possiblySensitive = json.getBoolean("possibly_sensitive", false);""",
-                possiblySensitive.asConstructorAssignment(false,  null).codeFragment());
+                possiblySensitive.asConstructorAssignment("twitter4j", false,  null).codeFragment());
 
         assertEquals("""
                         this.possiblySensitive = json.getBoolean("possibly_sensitive", false);""",
-                possiblySensitive.asConstructorAssignment(true,  null).codeFragment());
+                possiblySensitive.asConstructorAssignment("twitter4j", true,  null).codeFragment());
 
         assertEquals("""
                         @Override
