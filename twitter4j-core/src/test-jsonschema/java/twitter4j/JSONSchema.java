@@ -492,15 +492,18 @@ interface JSONSchema {
 record IntegerSchema(@NotNull String typeName, @NotNull String jsonPointer, @Nullable Long minimum,
                      @Nullable Long maximum,
                      @Nullable String format,
-                     @Nullable String description) implements JSONSchema {
+                     @Nullable String description,
+                     @Nullable String example) implements JSONSchema {
     static IntegerSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[format, description, maximum, type, minimum]");
+        JSONSchema.ensureOneOf(object, "[format, description, example, maximum, type, minimum]");
 
         return new IntegerSchema(typeName, jsonPointer,
                 object.getLongValue("minimum"),
                 object.getLongValue("maximum"),
                 object.getString("format"),
-                object.getString("description"));
+                object.getString("description"),
+                object.getString("example")
+        );
     }
 
     @Override
