@@ -135,7 +135,8 @@ class JSONSchemaEnumTest {
                 {
                   "reason" : {
                      "type" : "string",
-                     "enum" : [ "official-client-forbidden", "client-not-enrolled" ]
+                     "enum" : [ "official-client-forbidden", "client-not-enrolled" ],
+                     "example" : "client-not-enrolled"
                   }
                   ,
                   "MyObject": {

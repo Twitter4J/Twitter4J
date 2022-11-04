@@ -717,11 +717,13 @@ record StringSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 }
 
 record EnumSchema(@NotNull String typeName, @NotNull String jsonPointer,
-                  @NotNull List<String> enumList, @Nullable String description) implements JSONSchema {
+                  @NotNull List<String> enumList, @Nullable String description, @Nullable String example) implements JSONSchema {
     static EnumSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[description, type, enum]");
+        JSONSchema.ensureOneOf(object, "[description, type, enum, example]");
         List<String> enumArray = JSONSchema.toStringList(object, "enum");
-        return new EnumSchema(typeName, jsonPointer, enumArray, object.optString("description", typeName)
+        return new EnumSchema(typeName, jsonPointer, enumArray,
+                object.optString("description", typeName),
+                object.getString("example")
         );
     }
 
