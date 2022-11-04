@@ -145,6 +145,7 @@ class JSONSchemaArrayTest {
                         "items" : {
                           "type" : "boolean"
                         },
+                        "example": [true,false],
                         "minItems" : 2,
                         "maxItems" : 2
                       }

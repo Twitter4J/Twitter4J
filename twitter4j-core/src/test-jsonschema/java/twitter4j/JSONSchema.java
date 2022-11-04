@@ -803,14 +803,17 @@ record JavaFile(@NotNull String fileName, @NotNull String content) {
 
 record ArraySchema(@NotNull String typeName, @NotNull String jsonPointer, @Nullable Integer minItems,
                    @Nullable Integer maxItems, boolean uniqueItems,
-                   @Nullable String description, @NotNull JSONSchema items) implements JSONSchema {
+                   @Nullable String description, @NotNull JSONSchema items,@Nullable String example) implements JSONSchema {
     static ArraySchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[minItems, maxItems, uniqueItems, description, type, items]");
+        JSONSchema.ensureOneOf(object, "[minItems, maxItems, uniqueItems, description, type, items, example]");
         return new ArraySchema(typeName, jsonPointer, object.getIntValue("minItems"),
                 object.getIntValue("maxItems"),
                 object.getBoolean("uniqueItems"),
                 object.optString("description", typeName)
-                , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"), JSONSchema.upperCamelCased(typeName.length() > 1 && typeName.endsWith("s") ? typeName.substring(0, typeName.length() - 1) : "items"), jsonPointer + "/items"));
+                , JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"),
+                JSONSchema.upperCamelCased(typeName.length() > 1 && typeName.endsWith("s") ? typeName.substring(0, typeName.length() - 1) : "items"),
+                jsonPointer + "/items"),
+                object.getString("example"));
     }
 
     @Override
