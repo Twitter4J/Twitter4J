@@ -13,7 +13,8 @@ class JSONSchemaBooleanTest {
                   {
                     "possibly_sensitive" : {
                       "type" : "boolean",
-                      "description" : "Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences."
+                      "description" : "Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences.",
+                      "example": true
                     }
                 }""");
         assertEquals(1, extract.size());
@@ -53,7 +54,8 @@ class JSONSchemaBooleanTest {
                     "possibly_sensitive" : {
                       "type" : "boolean",
                       "default" : false,
-                      "description" : "Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences."
+                      "description" : "Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences.",
+                      "example" : "false"
                     }
                 }""");
         assertEquals(1, extract.size());

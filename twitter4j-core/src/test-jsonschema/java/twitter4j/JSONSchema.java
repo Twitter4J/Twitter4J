@@ -624,12 +624,14 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 
 record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
                      @Nullable Boolean defaultValue,
-                     @Nullable String description) implements JSONSchema {
+                     @Nullable String description, @Nullable String example) implements JSONSchema {
     static BooleanSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[description, type, default]");
+        JSONSchema.ensureOneOf(object, "[description, type, default, example]");
         return new BooleanSchema(typeName, jsonPointer,
                 object.getBooleanValue("default"),
-                object.getString("description"));
+                object.getString("description"),
+                object.getString("example")
+        );
     }
 
     @Override
