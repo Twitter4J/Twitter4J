@@ -235,10 +235,13 @@ interface JSONSchema {
                 javaType.codeFragment,
                 escapeKeywords(lowerCamelCased(resolvedTypeName))), imports);
     }
+    default boolean isDefaultValueSpecified(){
+        return false;
+    }
 
     default Code nullableAnnotation(boolean notNull) {
 
-        return notNull ? (isPrimitive() ? Code.empty : Code.of("@NotNull\n", "org.jetbrains.annotations.NotNull"))
+        return notNull || isDefaultValueSpecified() ? (isPrimitive() ? Code.empty : Code.of("@NotNull\n", "org.jetbrains.annotations.NotNull"))
                 : Code.of("@Nullable\n", "org.jetbrains.annotations.Nullable");
 
     }
@@ -620,11 +623,18 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
 }
 
 record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
+                     @Nullable Boolean defaultValue,
                      @Nullable String description) implements JSONSchema {
     static BooleanSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[description, type]");
+        JSONSchema.ensureOneOf(object, "[description, type, default]");
         return new BooleanSchema(typeName, jsonPointer,
+                object.getBooleanValue("default"),
                 object.getString("description"));
+    }
+
+    @Override
+    public boolean isDefaultValueSpecified() {
+        return defaultValue != null;
     }
 
     @Override
@@ -634,15 +644,16 @@ record BooleanSchema(@NotNull String typeName, @NotNull String jsonPointer,
 
     @Override
     public @NotNull Code getJavaType(boolean notNull, String packageName) {
-        return Code.of(notNull ? "boolean" : "Boolean");
+        return Code.of(notNull || isDefaultValueSpecified() ? "boolean" : "Boolean");
     }
 
     @Override
     public @NotNull Code asConstructorAssignment(boolean notNull, @Nullable String overrideTypeName) {
         String typeName = overrideTypeName != null ? overrideTypeName : this.typeName;
         String fieldName = JSONSchema.escapeKeywords(JSONSchema.lowerCamelCased(typeName));
-        return Code.of(notNull ? """
-                this.%1$s = json.getBoolean("%2$s");""".formatted(fieldName, typeName) :
+        String defaultValueParameter =isDefaultValueSpecified() ? ", "+ defaultValue : "";
+        return Code.of(notNull || isDefaultValueSpecified() ? """
+                this.%1$s = json.getBoolean("%2$s"%3$s);""".formatted(fieldName, typeName, defaultValueParameter) :
                 """
                         this.%1$s = json.getBooleanValue("%2$s");""".formatted(fieldName, typeName));
     }

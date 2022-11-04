@@ -460,14 +460,22 @@ class JSONObject {
      * @return The selected value if it exists.
      */
     public boolean getBoolean(String name) {
+        return getBoolean(name, false);
+    }
+
+    public boolean getBoolean(String name, boolean fallback) {
         if (!has(name)) {
-            return false;
+            return fallback;
         }
         Object object = get(name);
         return JSON.toBoolean(object);
     }
+
     @Nullable
     public Boolean getBooleanValue(String name) throws JSONException {
+        if (!has(name)) {
+            return null;
+        }
         Object object = get(name);
         return JSON.toBoolean(object);
     }
