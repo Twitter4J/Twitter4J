@@ -854,6 +854,7 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
                     @Nullable String ref,
                     @Nullable JSONSchema items,
                     @Nullable JSONSchema additionalProperties,
+                    @Nullable Boolean additionalPropertiesProhibited,
                     @Nullable String example,
                     @Nullable String description) implements JSONSchema {
     static ObjectSchema from(Map<String, JSONSchema> schemaMap, JSONObject object, String typeName, @NotNull String jsonPointer) {
@@ -861,15 +862,25 @@ record ObjectSchema(@NotNull String typeName, @NotNull String jsonPointer,
         List<JSONSchema> properties = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "properties");
         List<JSONSchema> allOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "allOf");
         List<JSONSchema> oneOf = JSONSchema.toJSONSchemaTypeList(schemaMap, object, jsonPointer, "oneOf");
-
+        Boolean additionalPropertiesBoolean = null;
+        JSONSchema additionalPropertiesObj = null;
+        if (object.has("additionalProperties")) {
+            Object additionalPropertiesValue = object.get("additionalProperties");
+            if (additionalPropertiesValue instanceof Boolean) {
+                additionalPropertiesBoolean = (boolean) additionalPropertiesValue;
+            }else{
+                additionalPropertiesObj = JSONSchema.toJSONSchemaType(schemaMap,
+                        object.getJSONObject("additionalProperties"),
+                        "additionalProperties", jsonPointer + "/additionalProperties");
+            }
+        }
         return new ObjectSchema(typeName, jsonPointer,
                 JSONSchema.toStringList(object, "required"), properties, allOf, oneOf,
                 object.getString("$ref"),
                 object.has("items") ? JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("items"),
                         "items", jsonPointer + "/items") : null,
-                object.has("additionalProperties") ?
-                        JSONSchema.toJSONSchemaType(schemaMap, object.getJSONObject("additionalProperties"), "additionalProperties", jsonPointer + "/additionalProperties")
-                        : null,
+                additionalPropertiesObj,
+                additionalPropertiesBoolean,
                 object.getString("example"),
                 object.optString("description", typeName)
         );

@@ -77,4 +77,30 @@ class JSONSchemaObjectPropertyTest {
                         """,
                 javaFile.content().replaceAll("date = \"[0-9\\-:ZT]+\"", "date = \"dateStr\""));
     }
+    @Test
+    void additionalPropertiesFalse() {
+        var extract = JSONSchema.extract("#/components/schemas/", """
+                {
+                  "components": {
+                    "schemas": {
+                      "attachments": {
+                        "type": "object",
+                        "description": "Specifies the type of attachments (if any) present in this Tweet.",
+                        "properties": {
+                          "media_key": {
+                            "type": "string",
+                            "description": "A list of Media Keys for each one of the media attachments (if media are attached)."
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    }
+                  }
+                }
+                """);
+
+        JSONSchema attachments = extract.get("#/components/schemas/attachments");
+        assertEquals("#/components/schemas/attachments", attachments.jsonPointer());
+    }
+
 }
