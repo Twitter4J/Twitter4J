@@ -61,7 +61,7 @@ class DeleteGeneratedCodes {
 class LoadLatest {
     public static void main(String[] args) throws TwitterException, IOException {
         HttpClient http = Twitter.newBuilder().buildConfiguration().http;
-        HttpResponse httpResponse = http.get("https://api.twitter.com/labs/2/openapi.json");
+        HttpResponse httpResponse = http.get("https://api.twitter.com/2/openapi.json");
         String apiJsonLatest = httpResponse.asString();
         String existingApiJson = new String(Files.readAllBytes(Path.of("twitter4j-core", "src", "test", "resources", "openapi.json")));
         if (!existingApiJson.equals(apiJsonLatest)) {
