@@ -568,7 +568,7 @@ record NumberSchema(@NotNull String typeName, @NotNull String jsonPointer, @Null
                     @Nullable String format,
                     @Nullable String description) implements JSONSchema {
     static NumberSchema from(JSONObject object, String typeName, @NotNull String jsonPointer) {
-        JSONSchema.ensureOneOf(object, "[format, maximum, type, minimum]");
+        JSONSchema.ensureOneOf(object, "[format, maximum, type, minimum, description]");
 
         return new NumberSchema(typeName, jsonPointer,
                 object.getLongValue("minimum"),

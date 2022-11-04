@@ -50,6 +50,7 @@ class JSONSchemaNumberTest {
                 {
                     "items" : {
                            "type" : "number",
+                           "description" : "my description",
                            "format" : "double",
                            "minimum" : -180,
                            "maximum" : 180
