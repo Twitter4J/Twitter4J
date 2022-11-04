@@ -48,6 +48,7 @@ class JSONSchemaEnumTest {
                 {
                   "reason" : {
                      "type" : "string",
+                     "pattern": "^[A-Za-z]{1,12}$",
                      "enum" : [ "official-client-forbidden", "client-not-enrolled" ]
                   }
                 }""");
