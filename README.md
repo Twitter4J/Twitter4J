@@ -24,7 +24,7 @@ Add a dependency declaration to pom.xml, or build.gradle as follows:
 ### Gradle
 ```text
 dependencies {
-    compile 'org.twitter4j:twitter4j-core:4.1.2'
+    implementation 'org.twitter4j:twitter4j-core:4.1.2'
 }
 ```
 
