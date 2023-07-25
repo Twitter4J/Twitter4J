@@ -1,4 +1,4 @@
-# Twitter4J
+# X4J
 [&#35;Twitter4J](https://twitter.com/search?q=%23twitter4j&src=typed_query&f=live) is a 100% pure Java library for the Twitter API with no extra dependency. 
 
 [![@t4j_news](https://img.shields.io/twitter/url/https/twitter.com/t4j_news.svg?style=social&label=Follow%20%40t4j_news)](https://twitter.com/t4j_news)
